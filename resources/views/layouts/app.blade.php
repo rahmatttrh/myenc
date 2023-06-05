@@ -130,7 +130,7 @@
    </style>
 </head>
 <body>
-	<div class="wrapper sidebar_minimize">
+	<div class="wrapper">
         @include('layouts.header')
         @include('layouts.sidebar')
 

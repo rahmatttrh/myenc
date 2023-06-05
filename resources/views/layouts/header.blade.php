@@ -4,7 +4,7 @@
       <div class="logo-header " >
          <a href="/" class="logo " >
             {{-- <img src="{{asset('img/logoazzara.svg')}}" alt="navbar brand" class="navbar-brand"> --}}
-            <span class="navbar-brand text-white font-weight-bold font-italic"><i class="fa fa-anchor"></i> E-FLEET  </span>
+            <span class="navbar-brand text-white font-weight-bold font-italic">MY ENC  </span>
          </a>
          <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon">
