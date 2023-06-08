@@ -1,0 +1,191 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Exports\EmployeeExport;
+use App\Imports\BiodataImport;
+use App\Imports\EmployeeImport;
+use App\Models\Biodata;
+use App\Models\Contract;
+use App\Models\Department;
+use App\Models\Designation;
+use App\Models\Employee;
+use App\Models\Role;
+use App\Models\Shift;
+use App\Models\Unit;
+use App\Models\User;
+use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
+
+class EmployeeController extends Controller
+{
+   public function index()
+   {
+      $employees = Employee::get();
+      return view('pages.employee.index', [
+         'employees' => $employees
+      ])->with('i');
+   }
+
+   public function detail($id)
+   {
+      $dekripId = dekripRambo($id);
+      $employee = Employee::find($dekripId);
+      $departments = Department::get();
+      $designations = Designation::get();
+      $roles = Role::get();
+      $shifts = Shift::get();
+      $units = Unit::get();
+
+      return view('pages.employee.detail', [
+         'employee' => $employee,
+         'departments' => $departments,
+         'designations' => $designations,
+         'roles' => $roles,
+         'shifts' => $shifts,
+         'units' => $units,
+      ]);
+   }
+
+   public function create()
+   {
+      $departments = Department::get();
+      $designations = Designation::get();
+      $shifts = Shift::get();
+      $units = Unit::get();
+      $roles = Role::get();
+
+      return view('pages.employee.create', [
+         'departments' => $departments,
+         'designations' => $designations,
+         'shifts' => $shifts,
+         'units' => $units,
+         'roles' => $roles
+      ]);
+   }
+
+   public function store(Request $req)
+   {
+      $req->validate([
+         'id' => 'required',
+         'first_name' => 'required',
+         'last_name' => 'required',
+         'department' => 'required',
+         'email' => 'required|unique:users',
+         'picture' => request('picture') ? 'image|mimes:jpg,jpeg,png|max:5120' : '',
+      ]);
+
+
+      try {
+         $biodata = Biodata::create([
+            'first_name' => $req->first_name,
+            'last_name' => $req->last_name,
+            'gender' => $req->gender,
+            'email' => $req->email,
+            'phone' => $req->phone,
+            'picture' => request('picture') ? request()->file('picture')->store('images/employee/picture') : '',
+         ]);
+      } catch (Exception $e) {
+         return redirect()->back()->with('danger', $e->getMessage());
+      }
+
+      $contract = Contract::create([
+         'unit_id' => $req->unit,
+         'department_id' => $req->department,
+         'designation_id' => $req->designation,
+         'shift_id' => $req->shift,
+         'salary' => $req->salary,
+         'hourly_rate' => $req->hourly_rate,
+         'payslip' => $req->payslip,
+         'desc' => $req->desc
+      ]);
+
+      $employee = Employee::create([
+         'status' => 1,
+         'id_no' => $req->id,
+         'role' => $req->role,
+         'contract_id' => $contract->id,
+         'biodata_id' => $biodata->id
+      ]);
+
+      User::create([
+         'name' => $req->first_name . '' . $req->last_name,
+         'email' => $req->email,
+         'password' => Hash::make('12345678')
+      ]);
+
+      return redirect()->route('employee.detail', enkripRambo($employee->id))->with('success', 'Employee successfully saved');
+   }
+
+   public function update(Request $req)
+   {
+      $req->validate([]);
+
+      $employee = Employee::find($req->employee);
+
+
+      $employee->update([
+         'name' => $req->name,
+         'birth_date' => $req->birth_date,
+         'birth_place' => $req->birth_place,
+         'religion' => $req->religion,
+         'gender' => $req->gender,
+         'address' => $req->address,
+         'email' => $req->email,
+         'phone' => $req->phone,
+      ]);
+
+      return redirect()->back()->with('success', 'Employee successfully updated');
+   }
+
+   public function updatePicture(Request $req)
+   {
+      $req->validate([
+         // 'picture' => request('picture') ? 'image|mimes:jpg,jpeg,png|max:5120' : '',
+      ]);
+
+      $employee = Employee::find($req->employee);
+
+      if (request('picture')) {
+         Storage::delete($employee->picture);
+         $picture = request()->file('picture')->store('images/employee/picture');
+      } elseif ($employee->picture) {
+         $picture = $employee->picture;
+      } else {
+         $picture = null;
+      }
+
+      $employee->biodata->update([
+         'picture' => $picture
+      ]);
+
+      return redirect()->back()->with('success', 'Employee successfully updated');
+   }
+
+   public function export()
+   {
+      return Excel::download(new EmployeeExport, 'employee.xlsx');
+   }
+
+   public function formImport()
+   {
+      return view('pages.employee.import', [])->with('i');
+   }
+
+   public function import(Request $req)
+   {
+      $req->validate([
+         'excel' => 'required'
+      ]);
+      $file = $req->file('excel');
+      $fileName = $file->getClientOriginalName();
+      $file->move('EmployeeData', $fileName);
+
+      Excel::import(new EmployeeImport, public_path('/EmployeeData/' . $fileName));
+
+      return redirect()->route('employee')->with('success', 'Employee Data successfully imported');
+   }
+}

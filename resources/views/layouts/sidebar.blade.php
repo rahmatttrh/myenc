@@ -17,38 +17,44 @@
                </div>
             </div>
             <ul class="nav">
-                  <li class="nav-item">
-                        <a data-toggle="collapse" href="#vessel">
-                           <i class="fas fa-server"></i>
-                           <p>Master</p>
-                           <span class="caret"></span>
-                        </a>
-                        <div class="collapse" id="vessel">
-                           <ul class="nav nav-collapse">
-                              <li>
-                                    <a href="#">
-                                       <span class="sub-item">Master 1</span>
-                                    </a>
-                              </li>
-                              <li>
-                                    <a href="#">
-                                       <span class="sub-item">Master 2</span>
-                                    </a>
-                              </li>
-                              <li>
-                                    <a href="#">
-                                       <span class="sub-item">Master 3</span>
-                                    </a>
-                              </li>
-                           </ul>
-                        </div>
-                  </li>
+               <li class="nav-item">
+                  <a data-toggle="collapse" href="#vessel">
+                     <i class="fas fa-server"></i>
+                     <p>Master Data</p>
+                     <span class="caret"></span>
+                  </a>
+                  <div class="collapse" id="vessel">
+                     <ul class="nav nav-collapse">
+                        <li>
+                           <a href="{{route('department')}}">
+                              <span class="sub-item">Department</span>
+                           </a>
+                        </li>
+                        <li>
+                           <a href="{{route('designation')}}">
+                              <span class="sub-item">Designation</span>
+                           </a>
+                        </li>
+                        <li>
+                           <a href="#">
+                              <span class="sub-item">Shift</span>
+                           </a>
+                        </li>
+                     </ul>
+                  </div>
+               </li>
 
                <li class="nav-section">
                   <span class="sidebar-mini-icon">
                         <i class="fa fa-ellipsis-h"></i>
                   </span>
-                  <h4 class="text-section">Inventory</h4>
+                  <h4 class="text-section">Main Menu</h4>
+               </li>
+               <li class="nav-item">
+                  <a href="{{route('employee')}}">
+                     <i class="fas fa-burn"></i>
+                     <p>Employee</p>
+                  </a>
                </li>
                <li class="nav-item">
                   <a data-toggle="collapse" href="#pms">

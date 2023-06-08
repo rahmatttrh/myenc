@@ -1,9 +1,9 @@
 {{-- <div class="main-header bg-primary"> --}}
-   <div class="main-header " data-background-color="blue">
+   <div class="main-header" data-background-color="purple">
       <!-- Logo Header -->
-      <div class="logo-header " >
+      <div class="logo-header  " >
          <a href="/" class="logo " >
-            {{-- <img src="{{asset('img/logoazzara.svg')}}" alt="navbar brand" class="navbar-brand"> --}}
+            {{-- <img src="{{asset('img/ENC.jpg')}}" alt="navbar brand" class="navbar-brand"> --}}
             <span class="navbar-brand text-white font-weight-bold font-italic">MY ENC  </span>
          </a>
          <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">

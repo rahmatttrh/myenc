@@ -46,11 +46,18 @@
 							</div>
 							<div class="col-lg-6">
 								<div class="p-5">
-									<div class="text-center">
-										<h4 class="text-gray-900">Welcome Back!</h4>
-										<h1 class="font-weight-bold">MY-ENC</h1>
+									<div class="">
+										{{-- <h4 class="text-gray-900">Welcome Back!</h4> --}}
+										<h1 class="" style="font-weight: 900">MY<span class="text-primary">ENC</span></h1>
+                              <small>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Reiciendis beatae adipisci fuga.</small>
 									</div>
 									<hr>
+                           {{-- @error('email')
+                           <div class="alert alert-danger" role="alert">
+                              Oops! {{ $message }}
+                           </div> --}}
+                              
+                           {{-- @enderror --}}
 									<form class="user" method="POST" action="{{ route('login') }}">
 										@csrf
 										<div class="form-group form-group-default">
@@ -58,10 +65,11 @@
 											<input id="email" name="email" type="email" class="form-control @error('email') is-invalid @enderror" required>
 											@error('email')
 											<span class="invalid-feedback bg-danger p-2 rounded mb-2 text-light" role="alert">
-												<strong>Fail! {{ $message }}</strong>
+												<small>{{ $message }}</small>
 											</span>
 											@enderror
 										</div>
+                              
 										<div class="form-group form-group-default">
 											<label for="password" class="placeholder"><b>Password</b></label>
 											<div class="position-relative">
@@ -72,7 +80,7 @@
 											</div>
 											@error('password')
 											<span class="invalid-feedback bg-danger p-2 rounded mb-2 text-light" role="alert">
-												<strong>Fail! {{ $message }}</strong>
+												<small>{{ $message }}</small>
 											</span>
 											@enderror
 										</div>
@@ -80,7 +88,7 @@
 										<button type="submit" class="btn btn-primary btn-block">Login</button>
 									
 										<hr>
-										<p class="small">E-Fleet adalah system management Material Request dan PMS Monitoring yang digunakan oleh PT PEIP</p>
+										<p class="small">Created and Development by ENC IT</p>
 									</form>
 									<hr>
 									<div class="login-account">
