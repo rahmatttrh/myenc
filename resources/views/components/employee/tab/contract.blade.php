@@ -28,6 +28,12 @@
                            @enderror
                         </div>
                      </div>
+                     <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                           <label>ID Employee</label>
+                           <input type="text" class="form-control" name="id" id="id" value="{{$employee->contract->id_no}}">
+                        </div>
+                     </div>
                   </div>
                   <div class="row">
                      <div class="col-md-6">
@@ -120,17 +126,16 @@
             </div>
 
             <div class="tab-pane fade" id="pills-allowances-nobd" role="tabpanel" aria-labelledby="pills-allowances-tab-nobd">
-               <p>
-                  <a class="btn btn-light border" data-toggle="collapse" href="#addAllowances" role="button" aria-expanded="false" aria-controls="addAllowances">
-                    Add ...
-                  </a>
-               </p>
-               <div class="collapse" id="addAllowances">
+               <a class="" data-toggle="collapse" href="#addAllowances" role="button" aria-expanded="false" aria-controls="addAllowances">
+                  <i class="fas fa-plus mr-1"></i>
+                  Add ...
+               </a>
+               <div class="collapse " id="addAllowances">
                   <form action="{{route('employee.update')}}" method="POST">
                      @csrf
                      @method('PUT')
                      <input type="number" name="employee" id="employee" value="{{$employee->id}}" hidden>
-                     <div class="row">
+                     <div class="row mt-3">
                         <div class="col-md-10">
                            <div class="row">
                               <div class="col-md-6">
@@ -172,7 +177,7 @@
                      </div>
                   </form>
                </div>
-               <div class="table-responsive">
+               <div class="table-responsive mt-3">
                   <table id="multi-filter-select" class="display basic-datatables table table-striped " >
                      <thead>
                         <tr>
@@ -192,17 +197,16 @@
             </div>
 
             <div class="tab-pane fade" id="pills-commissions-nobd" role="tabpanel" aria-labelledby="pills-commissions-tab-nobd">
-               <p>
-                  <a class="btn btn-light border" data-toggle="collapse" href="#addCommissions" role="button" aria-expanded="false" aria-controls="addCommissions">
+                  <a class="" data-toggle="collapse" href="#addCommissions" role="button" aria-expanded="false" aria-controls="addCommissions">
+                     <i class="fas fa-plus mr-1"></i>
                     Add ...
                   </a>
-               </p>
                <div class="collapse" id="addCommissions">
                   <form action="{{route('employee.update')}}" method="POST">
                      @csrf
                      @method('PUT')
                      <input type="number" name="employee" id="employee" value="{{$employee->id}}" hidden>
-                     <div class="row">
+                     <div class="row mt-3">
                         <div class="col-md-10">
                            <div class="row">
                               <div class="col-md-6">
@@ -244,7 +248,7 @@
                      </div>
                   </form>
                </div>
-               <div class="table-responsive">
+               <div class="table-responsive mt-3">
                   <table id="multi-filter-select" class="display basic-datatables table table-striped " >
                      <thead>
                         <tr>
@@ -264,17 +268,16 @@
             </div>
 
             <div class="tab-pane fade" id="pills-deductions-nobd" role="tabpanel" aria-labelledby="pills-deductions-tab-nobd">
-               <p>
-                  <a class="btn btn-light border" data-toggle="collapse" href="#addDeductions" role="button" aria-expanded="false" aria-controls="addDeductions">
-                    Add ...
-                  </a>
-               </p>
+               <a class="" data-toggle="collapse" href="#addDeductions" role="button" aria-expanded="false" aria-controls="addDeductions">
+                  <i class="fas fa-plus mr-1"></i>
+                  Add ...
+               </a>
                <div class="collapse" id="addDeductions">
                   <form action="{{route('employee.update')}}" method="POST">
                      @csrf
                      @method('PUT')
                      <input type="number" name="employee" id="employee" value="{{$employee->id}}" hidden>
-                     <div class="row">
+                     <div class="row mt-3">
                         <div class="col-md-10">
                            <div class="row">
                               <div class="col-md-6">
@@ -308,7 +311,7 @@
                      </div>
                   </form>
                </div>
-               <div class="table-responsive">
+               <div class="table-responsive mt-3">
                   <table id="multi-filter-select" class="display basic-datatables table table-striped " >
                      <thead>
                         <tr>
@@ -327,17 +330,16 @@
             </div>
 
             <div class="tab-pane fade" id="pills-reimbursements-nobd" role="tabpanel" aria-labelledby="pills-reimbursements-tab-nobd">
-               <p>
-                  <a class="btn btn-light border" data-toggle="collapse" href="#addReimbursements" role="button" aria-expanded="false" aria-controls="addReimbursements">
-                    Add ...
-                  </a>
-               </p>
+               <a class="" data-toggle="collapse" href="#addReimbursements" role="button" aria-expanded="false" aria-controls="addReimbursements">
+                  <i class="fas fa-plus mr-1"></i>
+                  Add ...
+               </a>
                <div class="collapse" id="addReimbursements">
                   <form action="{{route('employee.update')}}" method="POST">
                      @csrf
                      @method('PUT')
                      <input type="number" name="employee" id="employee" value="{{$employee->id}}" hidden>
-                     <div class="row">
+                     <div class="row mt-3">
                         <div class="col-md-10">
                            <div class="row">
                               <div class="col-md-6">
@@ -379,7 +381,7 @@
                      </div>
                   </form>
                </div>
-               <div class="table-responsive">
+               <div class="table-responsive mt-3">
                   <table id="multi-filter-select" class="display basic-datatables table table-striped " >
                      <thead>
                         <tr>

@@ -61,8 +61,8 @@
                                           @else
                                           <div class="avatar avatar-sm avatar-offline">
                                        @endif
-                                          @if ($employee->biodata->picture)
-                                             <img src="{{asset('storage/' . $employee->biodata->picture)}}" alt="..." class="avatar-img rounded-circle">
+                                          @if ($employee->picture)
+                                             <img src="{{asset('storage/' . $employee->picture)}}" alt="..." class="avatar-img rounded-circle">
                                               @else
                                               <img src="{{asset('img/user.png')}}" alt="..." class="avatar-img rounded-circle">
                                           @endif

@@ -75,6 +75,14 @@ class EmployeeController extends Controller
          'last_name' => 'required',
          'department' => 'required',
          'email' => 'required|unique:users',
+         // 'designation' => 'required',
+         // 'gender' => 'required',
+         // 'phone' => 'required',
+         // 'unit' => 'required',
+         // 'role' => 'required',
+         // 'shift' => 'required',
+         // 'salary' => 'salary',
+         // 'payslip' => 'payslip',
          'picture' => request('picture') ? 'image|mimes:jpg,jpeg,png|max:5120' : '',
       ]);
 
@@ -86,13 +94,13 @@ class EmployeeController extends Controller
             'gender' => $req->gender,
             'email' => $req->email,
             'phone' => $req->phone,
-            'picture' => request('picture') ? request()->file('picture')->store('images/employee/picture') : '',
          ]);
       } catch (Exception $e) {
          return redirect()->back()->with('danger', $e->getMessage());
       }
 
       $contract = Contract::create([
+         'id_no' => $req->id,
          'unit_id' => $req->unit,
          'department_id' => $req->department,
          'designation_id' => $req->designation,
@@ -105,10 +113,10 @@ class EmployeeController extends Controller
 
       $employee = Employee::create([
          'status' => 1,
-         'id_no' => $req->id,
          'role' => $req->role,
          'contract_id' => $contract->id,
-         'biodata_id' => $biodata->id
+         'biodata_id' => $biodata->id,
+         'picture' => request('picture') ? request()->file('picture')->store('images/employee/picture') : '',
       ]);
 
       User::create([
@@ -125,20 +133,41 @@ class EmployeeController extends Controller
       $req->validate([]);
 
       $employee = Employee::find($req->employee);
+      // dd($req->martial);
 
-
-      $employee->update([
-         'name' => $req->name,
+      $employee->biodata->update([
+         'first_name' => $req->first_name,
+         'last_name' => $req->last_name,
          'birth_date' => $req->birth_date,
          'birth_place' => $req->birth_place,
          'religion' => $req->religion,
          'gender' => $req->gender,
+         'marital' => $req->marital,
          'address' => $req->address,
          'email' => $req->email,
          'phone' => $req->phone,
+         'post_code' => $req->post_code,
+         'blood' => $req->blood,
+         'citizenship' => $req->citizenship,
+         'nationality' => $req->nationality,
+         'state' => $req->state,
+         'city' => $req->city,
       ]);
 
       return redirect()->back()->with('success', 'Employee successfully updated');
+   }
+
+   public function updateBio(Request $req)
+   {
+      $req->validate([]);
+
+      $employee = Employee::find($req->employee);
+      $employee->update([
+         'bio' => $req->bio,
+         'experience' => $req->experience
+      ]);
+
+      return redirect()->back()->with('success', 'Employee Bio successfully updated');
    }
 
    public function updatePicture(Request $req)
@@ -158,7 +187,7 @@ class EmployeeController extends Controller
          $picture = null;
       }
 
-      $employee->biodata->update([
+      $employee->update([
          'picture' => $picture
       ]);
 

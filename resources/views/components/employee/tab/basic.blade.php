@@ -30,13 +30,8 @@
                         </div>
                      </div>
                      
-                     <div class="col-md-4">
-                        <div class="form-group form-group-default">
-                           <label>ID Employee</label>
-                           <input type="text" class="form-control" name="id" id="id" value="{{$employee->id_no}}">
-                        </div>
-                     </div>
-                     <div class="col-md-4">
+                     
+                     <div class="col-md-6">
                         <div class="form-group form-group-default">
                            <label>Status</label>
                            <select class="form-control" id="status" name="status">
@@ -45,7 +40,7 @@
                            </select>
                         </div>
                      </div>
-                     <div class="col-md-4">
+                     <div class="col-md-6">
                         <div class="form-group form-group-default">
                            <label>Role</label>
                            <select class="form-control" id="role" name="role">
@@ -77,6 +72,7 @@
                         <div class="form-group form-group-default">
                            <label>Religion</label>
                            <select class="form-control" id="religion" name="religion">
+                              <option value="" disabled selected>Choose one</option>
                               <option {{$employee->biodata->religion == 'Islam' ? 'selected' : ''}} value="Islam" >Islam</option>
                               <option {{$employee->biodata->religion == 'Christian' ? 'selected' : ''}} value="Christian">Christian</option>
                               <option {{$employee->biodata->religion == 'Budha' ? 'selected' : ''}} value="Budha">Budha</option>
@@ -88,6 +84,7 @@
                         <div class="form-group form-group-default">
                            <label>Gender</label>
                            <select class="form-control" id="gender" name="gender">
+                              <option value="" disabled selected>Choose one</option>
                               <option {{$employee->biodata->gender == 'Male' ? 'selected' : ''}} value="Male">Male</option>
                               <option {{$employee->biodata->gender == 'Female' ? 'selected' : ''}} value="Female">Female</option>
                            </select>
@@ -97,6 +94,7 @@
                         <div class="form-group form-group-default">
                            <label>Marital Status</label>
                            <select class="form-control" id="marital" name="marital">
+                              <option value="" disabled selected>Choose one</option>
                               <option {{$employee->biodata->marital == 'Single' ? 'selected' : ''}} value="Single">Single</option>
                               <option {{$employee->biodata->marital == 'Married' ? 'selected' : ''}} value="Married">Married</option>
                            </select>
@@ -128,6 +126,7 @@
                         <div class="form-group form-group-default">
                            <label>Citizenship</label>
                            <select class="form-control" id="citizenship" name="citizenship">
+                              <option value="" disabled selected>Choose one</option>
                               <option {{$employee->biodata->citizenship == 'WNI' ? 'selected' : ''}} value="WNI">WNI</option>
                               <option {{$employee->biodata->citizenship == 'WNA' ? 'selected' : ''}} value="WNA">WNA</option>
                            </select>
@@ -137,6 +136,7 @@
                         <div class="form-group form-group-default">
                            <label>Blood Group</label>
                            <select class="form-control" id="blood" name="blood">
+                              <option value="" disabled selected>Choose one</option>
                               <option {{$employee->biodata->blood == 'A' ? 'selected' : ''}} value="A">A</option>
                               <option {{$employee->biodata->blood == 'B' ? 'selected' : ''}} value="B">B</option>
                               <option {{$employee->biodata->blood == 'AB' ? 'selected' : ''}} value="AB">AB</option>
@@ -226,8 +226,8 @@
                   <input type="number" name="employee" id="employee" value="{{$employee->id}}" hidden>
                   <div class="row">
                      <div class="col-md-3">
-                        @if ($employee->biodata->picture)
-                           <img src="{{asset('storage/' .$employee->biodata->picture)}}" alt="..." class="img-thumbnail">
+                        @if ($employee->picture)
+                           <img src="{{asset('storage/' .$employee->picture)}}" alt="..." class="img-thumbnail">
                            @else
                            <img src="{{asset('img/user.png')}}" alt="..." class="img-thumbnail">
                         @endif

@@ -35,6 +35,7 @@ class EmployeeImport implements ToCollection, WithHeadingRow
 
          $contract = Contract::create([
             // 'contract_no' => $row['contract_no'],
+            'id_no' => $row['id'],
             'unit_id' => $unit->id,
             'department_id' => $department->id,
             'designation_id' => $designation->id,
@@ -44,7 +45,7 @@ class EmployeeImport implements ToCollection, WithHeadingRow
 
          Employee::create([
             'status' => $row['status'],
-            'id_no' => $row['id'],
+
             'role' => $row['role'],
             'biodata_id' => $biodata->id,
             'contract_id' => $contract->id,

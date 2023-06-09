@@ -13,19 +13,28 @@
       <div class="card-body">
          <div class="tab-content mt-2 mb-3" id="pills-without-border-tabContent">
             <div class="tab-pane fade show active" id="pills-bio-nobd" role="tabpanel" aria-labelledby="pills-bio-tab-nobd">
-               <form action="{{route('employee.update')}}" method="POST">
+               <form action="{{route('employee.update.bio')}}" method="POST">
                   @csrf
                   @method('PUT')
                   <input type="number" name="employee" id="employee" value="{{$employee->id}}" hidden>
                   <div class="form-group form-group-default">  
                      <label>Bio *</label>
-                     <textarea type="text" class="form-control" id="first_name" name="first_name"></textarea>
+                     <textarea type="text" class="form-control" id="bio" name="bio">{{$employee->bio}}</textarea>
+                     @error('bio')
+                        <small class="text-danger"><i>{{ $message }}</i></small>
+                     @enderror
                   </div>
                   <div class="form-group form-group-default">  
                      <label>Experience</label>
-                     <select class="form-control" id="designation" name="designation">
-                        <option value="1">Startup</option>
+                     <select class="form-control" id="experience" name="experience">
+                        <option value="" disabled selected>Choose one</option>
+                        <option  {{$employee->experience == 'Startup' ? 'selected' : ''}} value="Startup">Startup</option>
+                        <option {{$employee->experience == 'Intermediate' ? 'selected' : ''}} value="Intermediate">Intermediate</option>
+                        <option {{$employee->experience == 'Expert' ? 'selected' : ''}} value="Expert">Expert</option>
                      </select>
+                     @error('experience')
+                        <small class="text-danger"><i>{{ $message }}</i></small>
+                     @enderror
                   </div>
                   <div class="text-right mt-3 mb-3">
                      <button type="submit" class="btn btn-dark">Update Bio</button>
@@ -33,14 +42,14 @@
                </form>
             </div>
             <div class="tab-pane fade" id="pills-social-nobd" role="tabpanel" aria-labelledby="pills-social-tab-nobd">
-               <p>
-                  <a class="btn btn-light border" data-toggle="collapse" href="#addSocial" role="button" aria-expanded="false" aria-controls="addSocial">
+             
+                  <a class="" data-toggle="collapse" href="#addSocial" role="button" aria-expanded="false" aria-controls="addSocial">
+                     <i class="fas fa-plus mr-1"></i>
                     Add Account ...
                   </a>
-               </p>
                <div class="collapse" id="addSocial">
                   <form action="">
-                     <div class="row">
+                     <div class="row mt-3">
                         <div class="col-md-10">
                            <div class="row">
                               <div class="col-md-4">
@@ -131,14 +140,13 @@
                </div>
             </div>
             <div class="tab-pane fade" id="pills-bank-nobd" role="tabpanel" aria-labelledby="pills-bank-tab-nobd">
-               <p>
-                  <a class="btn btn-light border" data-toggle="collapse" href="#addBank" role="button" aria-expanded="false" aria-controls="addBank">
-                    Add Account ...
+                  <a class="" data-toggle="collapse" href="#addBank" role="button" aria-expanded="false" aria-controls="addBank">
+                     <i class="fas fa-plus mr-1"></i>
+                     Add Account ...
                   </a>
-               </p>
                <div class="collapse" id="addBank">
                   <form action="">
-                     <div class="row">
+                     <div class="row mt-3">
                         <div class="col-md-3">
                            <div class="form-group form-group-default">
                               <label>Bank</label>
@@ -166,6 +174,7 @@
                      </div>
                   </form>
                </div>
+               <div class="mt-3"></div>
                <div class="card card-dark bg-primary-gradient">
                   <div class="card-body bubble-shadow text-white">
                      <div class="row">

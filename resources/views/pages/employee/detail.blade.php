@@ -16,8 +16,8 @@
    </nav>
    <div class="row">
       <div class="col-md-4">
-         <div class="card card-profile card-secondary">
-            <div class="card-header" style="background-image: url('{{asset('img/blogpost.jpg')}}')">
+         <div class="card card-light">
+            {{-- <div class="card-header" style="background-image: url('{{asset('img/blogpost.jpg')}}')">
                <div class="profile-picture">
                   @if ($employee->status == 1)
                      <div class="avatar avatar-xl avatar-online">
@@ -32,15 +32,47 @@
                      @endif
                   </div>
                </div>
+            </div> --}}
+            <div class="card-header">
+               <div class="card-list">
+                  <div class="item-list">
+                     @if ($employee->status == 1)
+                        <div class="avatar avatar-xl avatar-online">
+                        @else
+                        <div class="avatar avatar-xl avatar-offline">
+                     @endif
+                  
+                        @if ($employee->picture)
+                           <img src="{{asset('storage/' . $employee->picture)}}" alt="..." class="avatar-img rounded-circle">
+                           @else
+                           <img src="{{asset('img/user.png')}}" alt="..." class="avatar-img rounded-circle">
+                        @endif
+                     </div>
+                  <div class="info-user ml-3">
+                     <div class="username"><b>{{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</b></div>
+                     <div class="status">{{$employee->contract->designation->name ?? ''}} {{$employee->contract->department->name ?? ''}}</div>
+                  </div>
+                  {{-- <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     <i class="fa fa-ellipsis-h"></i>
+                  </a>
+                  <div class="dropdown-menu">
+                     <a  class="dropdown-item" style="text-decoration: none" href="">Edit</a>
+                     <div class="dropdown-divider"></div>
+                     <a  class="dropdown-item" style="text-decoration: none" href="">Delete</a>
+                  </div> --}}
+                     {{-- <button class="btn btn-icon btn-info btn-round btn-sm">
+                        <i class="fa fa-link"></i>
+                     </button> --}}
+                  </div>
+                  
+                  
+               </div>
             </div>
             <div class="card-body">
-               <div class="user-profile text-center mb--4">
+               {{-- <div class="user-profile text-center mb--4">
                   <div class="h4"><b> {{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</b></div>
                   <small>{{$employee->contract->designation->name ?? ''}} {{$employee->contract->department->name ?? ''}}</small>
-               </div>
-               
-            </div>
-            <div class="card-footer">
+               </div> --}}
                <div class="nav flex-column justify-content-start nav-pills nav-primary" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                   <a class="nav-link active text-left pl-3" id="v-pills-contract-tab" data-toggle="pill" href="#v-pills-contract" role="tab" aria-controls="v-pills-contract" aria-selected="false">
                      <i class="fas fa-file-contract mr-1"></i>
@@ -70,6 +102,7 @@
                      Change Password
                   </a> --}}
                </div>
+               
             </div>
             <div class="card-footer">
                <small>Lorem ipsum dolor sit amet consectetur adipisicing elit.</small>

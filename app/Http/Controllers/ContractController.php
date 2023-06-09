@@ -15,6 +15,7 @@ class ContractController extends Controller
       $contract = Contract::find($req->contract);
       // dd($req->contract);
       $contract->update([
+         'id_no' => $req->id,
          'date' => $req->date,
          'department_id' => $req->department,
          'designation_id' => $req->designation,

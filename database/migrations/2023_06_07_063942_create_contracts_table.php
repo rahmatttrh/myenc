@@ -15,14 +15,14 @@ class CreateContractsTable extends Migration
    {
       Schema::create('contracts', function (Blueprint $table) {
          $table->id();
-         $table->string('no')->nullable();
+         $table->string('id_no')->nullable();
          $table->date('date')->nullable();
          $table->integer('unit_id')->nullable();
          $table->integer('department_id')->nullable();
          $table->integer('designation_id')->nullable();
          $table->integer('shift_id')->nullable();
          $table->integer('salary')->nullable();
-         $table->integer('hourly_rate')->nullable();  
+         $table->integer('hourly_rate')->nullable();
          $table->string('payslip')->nullable();
          $table->date('end')->nullable();
          $table->string('desc')->nullable();

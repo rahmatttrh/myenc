@@ -18,7 +18,7 @@
             <div class="card">
                <div class="card-header d-flex"> 
                   <div class="d-flex  align-items-center">
-                     <div class="card-title">Employee Create</div> 
+                     <div class="card-title">Form Create Employee</div> 
                   </div>
                   
                </div> 
@@ -88,6 +88,7 @@
                                  <div class="form-group form-group-default">
                                     <label>Gender</label>
                                     <select class="form-control" id="gender" name="gender">
+                                       <option value="" disabled selected>Choose one</option>
                                        <option {{old('gender') == 'Male' ? 'selected' : ''}} value="Male">Male</option>
                                        <option {{old('gender') == 'Female' ? 'selected' : ''}} value="Female">Female</option>
                                     </select>
@@ -142,6 +143,7 @@
                                  <div class="form-group form-group-default">
                                     <label>Bussiness Unit</label>
                                     <select class="form-control" id="unit" name="unit">
+                                       <option value="" disabled selected>Choose one</option>
                                        @foreach ($units as $unit)
                                            <option {{old('unit') == $unit->id ? 'selected' : ''}} value="{{$unit->id}}">{{$unit->name}}</option>
                                        @endforeach
@@ -159,6 +161,7 @@
                                     <label>Department</label>
                                     <select class="form-control" id="department" name="department">
                                        {{-- <option >{{$department->name}}</option> --}}
+                                       <option value="" disabled selected>Choose one</option>
                                        @foreach ($departments as $department)
                                            <option {{old('department') == $department->id ? 'selected' : ''}} value="{{$department->id}}">{{$department->name}}</option>
                                        @endforeach
@@ -172,6 +175,7 @@
                                  <div class="form-group form-group-default">
                                     <label>Designation</label>
                                     <select class="form-control" id="designation" name="designation">
+                                       <option value="" disabled selected>Choose one</option>
                                        @foreach ($designations as $designation)
                                            <option {{old('designation') == $designation->id ? 'selected' : ''}} value="{{$designation->id}}">{{$designation->name}}</option>
                                        @endforeach
@@ -185,6 +189,7 @@
                                  <div class="form-group form-group-default">
                                     <label>Role</label>
                                     <select class="form-control" id="role" name="role">
+                                       <option value="" disabled selected>Choose one</option>
                                        @foreach ($roles as $role)
                                            <option {{old('role') == $role->name ? 'selected' : ''}} value="{{$role->name}}">{{$role->name}}</option>
                                        @endforeach
@@ -199,6 +204,7 @@
                                  <div class="form-group form-group-default">
                                     <label>Office Shift</label>
                                     <select class="form-control" id="shift" name="shift">
+                                       <option value="" disabled selected>Choose one</option>
                                        @foreach ($shifts as $shift)
                                            <option {{old('shift') == $shift->id ? 'selected' : ''}} value="{{$shift->id}}">{{$shift->name}}</option>
                                        @endforeach
@@ -221,6 +227,7 @@
                                  <div class="form-group form-group-default">
                                     <label>Payslip Type</label>
                                     <select class="form-control" id="payslip" name="payslip">
+                                       <option value="" disabled selected>Choose one</option>
                                        <option {{old('payslip') == 'Month' ? 'selected' : ''}}  value="Month">Month</option>
                                        <option {{old('payslip') == 'Week' ? 'selected' : ''}} value="Week">Week</option>
                                     </select>

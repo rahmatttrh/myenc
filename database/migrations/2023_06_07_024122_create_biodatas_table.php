@@ -31,7 +31,6 @@ class CreateBiodatasTable extends Migration
          $table->string('state')->nullable();
          $table->string('city')->nullable();
          $table->string('address')->nullable();
-         $table->string('picture')->nullable();
          $table->timestamps();
       });
    }
