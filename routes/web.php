@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ContractController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\EmployeeController;
@@ -46,6 +47,10 @@ Route::middleware(["auth"])->group(function () {
          Route::get('edit/{designation:id}', [DesignationController::class, 'edit'])->name('designation.edit');
          Route::put('update', [DesignationController::class, 'update'])->name('designation.update');
          Route::get('delete/{designation:id}', [DesignationController::class, 'delete'])->name('designation.delete');
+      });
+
+      Route::prefix('contract')->group(function () {
+         Route::put('update', [ContractController::class, 'update'])->name('contract.update');
       });
    });
 });
