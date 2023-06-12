@@ -6,6 +6,7 @@ use App\Models\Biodata;
 use App\Models\Contract;
 use App\Models\Department;
 use App\Models\Designation;
+use App\Models\Emergency;
 use App\Models\Employee;
 use App\Models\Unit;
 use Carbon\Carbon;
@@ -34,7 +35,6 @@ class EmployeeImport implements ToCollection, WithHeadingRow
          $unit = Unit::where('name', $row['bussiness_unit'])->first();
 
          $contract = Contract::create([
-            // 'contract_no' => $row['contract_no'],
             'id_no' => $row['id'],
             'unit_id' => $unit->id,
             'department_id' => $department->id,
@@ -43,12 +43,14 @@ class EmployeeImport implements ToCollection, WithHeadingRow
             'payslip' => $row['payslip_type']
          ]);
 
+         $emergency = Emergency::create([]);
+
          Employee::create([
             'status' => $row['status'],
-
             'role' => $row['role'],
             'biodata_id' => $biodata->id,
             'contract_id' => $contract->id,
+            'emergency_id' => $emergency->id
          ]);
       }
    }

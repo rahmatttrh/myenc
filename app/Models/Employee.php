@@ -35,6 +35,21 @@ class Employee extends Model
       return $this->belongsTo(Role::class);
    }
 
+   public function socialAccounts()
+   {
+      return $this->hasMany(SocialAccount::class);
+   }
+
+   public function bankAccounts()
+   {
+      return $this->hasMany(BankAccount::class);
+   }
+
+   public function emergency()
+   {
+      return $this->belongsTo(Emergency::class);
+   }
+
    // public function shift()
    // {
    //    return $this->belongsTo(Shift::class);

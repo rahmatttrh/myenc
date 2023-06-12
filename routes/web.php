@@ -1,9 +1,13 @@
 <?php
 
+use App\Http\Controllers\BankAccountController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DesignationController;
+use App\Http\Controllers\EmergencyController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\SocialAccountController;
+use App\Models\BankAccount;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -52,6 +56,22 @@ Route::middleware(["auth"])->group(function () {
 
       Route::prefix('contract')->group(function () {
          Route::put('update', [ContractController::class, 'update'])->name('contract.update');
+      });
+
+      Route::prefix('emergency')->group(function () {
+         Route::put('update', [EmergencyController::class, 'update'])->name('emergency.update');
+      });
+
+      Route::prefix('social/account')->group(function () {
+         Route::post('store', [SocialAccountController::class, 'store'])->name('social.account.store');
+         Route::get('delete/{id}', [SocialAccountController::class, 'delete'])->name('social.account.delete');
+         Route::put('update', [SocialAccountController::class, 'update'])->name('social.account.update');
+      });
+
+      Route::prefix('bank/account')->group(function () {
+         Route::post('store', [BankAccountController::class, 'store'])->name('bank.account.store');
+         Route::get('delete/{id}', [BankAccountController::class, 'delete'])->name('bank.account.delete');
+         Route::put('update', [BankAccountController::class, 'update'])->name('bank.account.update');
       });
    });
 });

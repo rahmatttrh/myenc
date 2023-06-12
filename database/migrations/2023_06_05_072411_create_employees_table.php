@@ -19,6 +19,7 @@ class CreateEmployeesTable extends Migration
          $table->string('role')->nullable();
          $table->integer('biodata_id')->nullable();
          $table->integer('contract_id')->nullable();
+         $table->integer('emergency_id')->nullable();
          $table->string('picture')->nullable();
          $table->string('bio')->nullable();
          $table->string('experience')->nullable();

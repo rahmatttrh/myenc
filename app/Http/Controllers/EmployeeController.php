@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\EmployeeExport;
 use App\Imports\BiodataImport;
 use App\Imports\EmployeeImport;
+use App\Models\Bank;
 use App\Models\Biodata;
 use App\Models\Contract;
 use App\Models\Department;
@@ -12,6 +13,8 @@ use App\Models\Designation;
 use App\Models\Employee;
 use App\Models\Role;
 use App\Models\Shift;
+use App\Models\Social;
+use App\Models\SocialAccount;
 use App\Models\Unit;
 use App\Models\User;
 use Exception;
@@ -39,6 +42,9 @@ class EmployeeController extends Controller
       $roles = Role::get();
       $shifts = Shift::get();
       $units = Unit::get();
+      $socials = Social::get();
+      $banks = Bank::get();
+
 
       return view('pages.employee.detail', [
          'employee' => $employee,
@@ -47,6 +53,8 @@ class EmployeeController extends Controller
          'roles' => $roles,
          'shifts' => $shifts,
          'units' => $units,
+         'socials' => $socials,
+         'banks' => $banks
       ]);
    }
 

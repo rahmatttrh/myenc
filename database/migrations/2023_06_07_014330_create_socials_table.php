@@ -6,28 +6,28 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateSocialsTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
-    {
-        Schema::create('socials', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('logo');
-            $table->timestamps();
-        });
-    }
+   /**
+    * Run the migrations.
+    *
+    * @return void
+    */
+   public function up()
+   {
+      Schema::create('socials', function (Blueprint $table) {
+         $table->id();
+         $table->string('name');
+         $table->string('logo')->nullable();
+         $table->timestamps();
+      });
+   }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('socials');
-    }
+   /**
+    * Reverse the migrations.
+    *
+    * @return void
+    */
+   public function down()
+   {
+      Schema::dropIfExists('socials');
+   }
 }

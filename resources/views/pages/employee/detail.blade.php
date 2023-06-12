@@ -15,29 +15,13 @@
       </ol>
    </nav>
    <div class="row">
-      <div class="col-md-4">
+      <div class="col-md-3">
          <div class="card card-light">
-            {{-- <div class="card-header" style="background-image: url('{{asset('img/blogpost.jpg')}}')">
-               <div class="profile-picture">
-                  @if ($employee->status == 1)
-                     <div class="avatar avatar-xl avatar-online">
-                     @else
-                     <div class="avatar avatar-xl avatar-offline">
-                  @endif
-                  
-                     @if ($employee->biodata->picture)
-                     <img src="{{asset('storage/' . $employee->biodata->picture)}}" alt="..." class="avatar-img rounded-circle">
-                         @else
-                         <img src="{{asset('img/user.png')}}" alt="..." class="avatar-img rounded-circle">
-                     @endif
-                  </div>
-               </div>
-            </div> --}}
             <div class="card-header">
                <div class="card-list">
                   <div class="item-list">
                      @if ($employee->status == 1)
-                        <div class="avatar avatar-xl avatar-online">
+                        <div class="avatar avatar avatar-online">
                         @else
                         <div class="avatar avatar-xl avatar-offline">
                      @endif
@@ -48,24 +32,11 @@
                            <img src="{{asset('img/user.png')}}" alt="..." class="avatar-img rounded-circle">
                         @endif
                      </div>
-                  <div class="info-user ml-3">
-                     <div class="username"><b>{{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</b></div>
-                     <div class="status">{{$employee->contract->designation->name ?? ''}} {{$employee->contract->department->name ?? ''}}</div>
+                     <div class="info-user ml-3">
+                        <div class="username"><b>{{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</b></div>
+                        <div class="status">{{$employee->contract->designation->name ?? ''}} {{$employee->contract->department->name ?? ''}}</div>
+                     </div>
                   </div>
-                  {{-- <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                     <i class="fa fa-ellipsis-h"></i>
-                  </a>
-                  <div class="dropdown-menu">
-                     <a  class="dropdown-item" style="text-decoration: none" href="">Edit</a>
-                     <div class="dropdown-divider"></div>
-                     <a  class="dropdown-item" style="text-decoration: none" href="">Delete</a>
-                  </div> --}}
-                     {{-- <button class="btn btn-icon btn-info btn-round btn-sm">
-                        <i class="fa fa-link"></i>
-                     </button> --}}
-                  </div>
-                  
-                  
                </div>
             </div>
             <div class="card-body">
@@ -81,16 +52,16 @@
                   </a>
                   <a class="nav-link  text-left pl-3" id="v-pills-basic-tab" data-toggle="pill" href="#v-pills-basic" role="tab" aria-controls="v-pills-basic" aria-selected="true">
                      <i class="fas fa-address-book mr-1"></i>
-                     Basic Information
+                     Basic 
                   </a>
                   
                   <a class="nav-link text-left pl-3" id="v-pills-personal-tab" data-toggle="pill" href="#v-pills-personal" role="tab" aria-controls="v-pills-personal" aria-selected="false">
                      <i class="fas fa-user mr-1"></i>
-                     Personal Information
+                     Personal 
                   </a>
                   <a class="nav-link text-left pl-3" id="v-pills-account-tab" data-toggle="pill" href="#v-pills-account" role="tab" aria-controls="v-pills-account" aria-selected="false">
                      <i class="fas fa-credit-card mr-1"></i>
-                     Account Information
+                     Account 
                   </a>
 
                   <a class="nav-link text-left pl-3" id="v-pills-document-tab" data-toggle="pill" href="#v-pills-document" role="tab" aria-controls="v-pills-document" aria-selected="false">
@@ -111,13 +82,13 @@
          
          
       </div>
-      <div class="col-md-8">
+      <div class="col-md-9">
          <div class="tab-content" id="v-pills-tabContent">
-            <x-employee.tab.basic :employee="$employee" :departments="$departments" :designations="$designations" :roles="$roles"/>
-            <x-employee.tab.contract :employee="$employee" :departments="$departments" :designations="$designations" :roles="$roles" :shifts="$shifts"/>
-            <x-employee.tab.personal :employee="$employee" :departments="$departments" :designations="$designations" :roles="$roles"/>
-            <x-employee.tab.account :employee="$employee" :departments="$departments" :designations="$designations" :roles="$roles" />
-            <x-employee.tab.document :employee="$employee" :departments="$departments" :designations="$designations" :roles="$roles" />
+            <x-employee.basic.basic :employee="$employee" :departments="$departments" :designations="$designations" :roles="$roles"/>
+            <x-employee.contract.contract :employee="$employee" :departments="$departments" :designations="$designations" :roles="$roles" :shifts="$shifts"/>
+            <x-employee.personal.personal :employee="$employee" :departments="$departments" :designations="$designations" :roles="$roles" :socials="$socials" :banks="$banks"/>
+            <x-employee.account.account :employee="$employee" :departments="$departments" :designations="$designations" :roles="$roles" />
+            <x-employee.document.document :employee="$employee" :departments="$departments" :designations="$designations" :roles="$roles" />
          </div>
          
       </div>

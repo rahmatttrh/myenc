@@ -16,21 +16,35 @@ class SocialSeeder extends Seeder
    {
       Social::create([
          'name' => 'Facebook',
-         'logo' => 'img/facebook.png',
+         'logo' => 'img/social/facebook.png',
          'created_at' => NOW(),
          'updated_at' => NOW()
       ]);
 
       Social::create([
          'name' => 'Instagram',
-         'logo' => 'img/instagram.png',
+         'logo' => 'img/social/instagram.png',
          'created_at' => NOW(),
          'updated_at' => NOW()
       ]);
 
       Social::create([
          'name' => 'Twitter',
-         'logo' => 'img/twitter.png',
+         'logo' => 'img/social/twitter.png',
+         'created_at' => NOW(),
+         'updated_at' => NOW()
+      ]);
+
+      Social::create([
+         'name' => 'Github',
+         'logo' => 'img/social/github.png',
+         'created_at' => NOW(),
+         'updated_at' => NOW()
+      ]);
+
+      Social::create([
+         'name' => 'Linkedin',
+         'logo' => 'img/social/linkedin.png',
          'created_at' => NOW(),
          'updated_at' => NOW()
       ]);

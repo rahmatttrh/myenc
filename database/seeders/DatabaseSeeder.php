@@ -20,7 +20,9 @@ class DatabaseSeeder extends Seeder
          DepartmentSeeder::class,
          DesignationSeeder::class,
          UnitSeeder::class,
-         ShiftSeeder::class
+         ShiftSeeder::class,
+         SocialSeeder::class,
+         BankSeeder::class
          // VesselStatusSeeder::class
       ]);
    }
