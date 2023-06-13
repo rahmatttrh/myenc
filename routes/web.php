@@ -28,8 +28,8 @@ Route::middleware(["auth"])->group(function () {
 
    Route::group(['middleware' => ['role:admin']], function () {
       Route::prefix('employee')->group(function () {
-         Route::get('/', [EmployeeController::class, 'index'])->name('employee');
-         Route::get('detail/{employee:id}', [EmployeeController::class, 'detail'])->name('employee.detail');
+         Route::get('tab/{tab}', [EmployeeController::class, 'index'])->name('employee');
+         Route::get('detail/{employee:id}/{tab}', [EmployeeController::class, 'detail'])->name('employee.detail');
          Route::get('create', [EmployeeController::class, 'create'])->name('employee.create');
          Route::post('store', [EmployeeController::class, 'store'])->name('employee.store');
          Route::put('update', [EmployeeController::class, 'update'])->name('employee.update');
@@ -38,6 +38,11 @@ Route::middleware(["auth"])->group(function () {
          Route::get('export', [EmployeeController::class, 'export'])->name('employee.export');
          Route::get('import', [EmployeeController::class, 'formImport'])->name('employee.import');
          Route::post('import', [EmployeeController::class, 'import'])->name('employee.import');
+
+         Route::prefix('draft')->group(function () {
+            Route::get('/', [EmployeeController::class, 'draft'])->name('employee.draft');
+            Route::post('/publish', [EmployeeController::class, 'publish'])->name('employee.publish');
+         });
       });
       Route::prefix('department')->group(function () {
          Route::get('/', [DepartmentController::class, 'index'])->name('department');

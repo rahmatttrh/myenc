@@ -1,22 +1,24 @@
-<div class="tab-pane fade show active" id="v-pills-contract" role="tabpanel" aria-labelledby="v-pills-contract-tab">
+<div class="tab-pane fade {{$panel == 'contract' ? 'show active' : ''}} " id="v-pills-contract" role="tabpanel" aria-labelledby="v-pills-contract-tab">
    <div class="card card-with-nav">
       <div class="card-header">
          <div class="row row-nav-line">
             <ul class="nav nav-tabs nav-line nav-color-secondary" role="tablist">
-               <li class="nav-item"> <a class="nav-link active show " id="pills-contract-tab-nobd" data-toggle="pill" href="#pills-contract-nobd" role="tab" aria-controls="pills-contract-nobd" aria-selected="true">Contract</a> </li>
-               <li class="nav-item"> <a class="nav-link" id="pills-allowances-tab-nobd" data-toggle="pill" href="#pills-allowances-nobd" role="tab" aria-controls="pills-allowances-nobd" aria-selected="false">Allowances</a> </li>
-               <li class="nav-item"> <a class="nav-link" id="pills-commissions-tab-nobd" data-toggle="pill" href="#pills-commissions-nobd" role="tab" aria-controls="pills-commissions-nobd" aria-selected="false">Commissions</a> </li>
-               <li class="nav-item"> <a class="nav-link" id="pills-deductions-tab-nobd" data-toggle="pill" href="#pills-deductions-nobd" role="tab" aria-controls="pills-deductions-nobd" aria-selected="false">Deductions</a> </li>
-               <li class="nav-item"> <a class="nav-link" id="pills-reimbursements-tab-nobd" data-toggle="pill" href="#pills-reimbursements-nobd" role="tab" aria-controls="pills-reimbursements-nobd" aria-selected="false">Reimbursements</a> </li>
+               <li class="nav-item"> <a class="nav-link show active" id="pills-contract-tab-nobd" data-toggle="pill" href="#pills-contract-nobd" role="tab" aria-controls="pills-contract-nobd" aria-selected="true">Contract</a> </li>
+               <li class="nav-item"> <a class="nav-link " id="pills-allowances-tab-nobd" data-toggle="pill" href="#pills-allowances-nobd" role="tab" aria-controls="pills-allowances-nobd" aria-selected="false">Allowances</a> </li>
+               <li class="nav-item"> <a class="nav-link " id="pills-commissions-tab-nobd" data-toggle="pill" href="#pills-commissions-nobd" role="tab" aria-controls="pills-commissions-nobd" aria-selected="false">Commissions</a> </li>
+               <li class="nav-item"> <a class="nav-link " id="pills-deductions-tab-nobd" data-toggle="pill" href="#pills-deductions-nobd" role="tab" aria-controls="pills-deductions-nobd" aria-selected="false">Deductions</a> </li>
+               <li class="nav-item"> <a class="nav-link " id="pills-reimbursements-tab-nobd" data-toggle="pill" href="#pills-reimbursements-nobd" role="tab" aria-controls="pills-reimbursements-nobd" aria-selected="false">Reimbursements</a> </li>
             </ul>
          </div>
       </div>
       <div class="card-body">
          <div class="tab-content mt-2 mb-3" id="pills-without-border-tabContent">
+
             <div class="tab-pane fade show active" id="pills-contract-nobd" role="tabpanel" aria-labelledby="pills-contract-tab-nobd">
                <form action="{{route('contract.update')}}" method="POST">
                   @csrf
                   @method('PUT')
+                  <input type="number" name="employee" id="employee" value="{{$employee->id}}" hidden>
                   <input type="number" name="contract" id="contract" value="{{$employee->contract_id}}" hidden>
                   <div class="row">
                      <div class="col-md-6">
@@ -125,7 +127,7 @@
                </form>
             </div>
 
-            <div class="tab-pane fade" id="pills-allowances-nobd" role="tabpanel" aria-labelledby="pills-allowances-tab-nobd">
+            <div class="tab-pane fade " id="pills-allowances-nobd" role="tabpanel" aria-labelledby="pills-allowances-tab-nobd">
                <a class="" data-toggle="collapse" href="#addAllowances" role="button" aria-expanded="false" aria-controls="addAllowances">
                   <i class="fas fa-plus mr-1"></i>
                   Add ...
@@ -196,7 +198,7 @@
                </div>
             </div>
 
-            <div class="tab-pane fade" id="pills-commissions-nobd" role="tabpanel" aria-labelledby="pills-commissions-tab-nobd">
+            <div class="tab-pane fade " id="pills-commissions-nobd" role="tabpanel" aria-labelledby="pills-commissions-tab-nobd">
                   <a class="" data-toggle="collapse" href="#addCommissions" role="button" aria-expanded="false" aria-controls="addCommissions">
                      <i class="fas fa-plus mr-1"></i>
                     Add ...
@@ -329,7 +331,7 @@
                </div>
             </div>
 
-            <div class="tab-pane fade" id="pills-reimbursements-nobd" role="tabpanel" aria-labelledby="pills-reimbursements-tab-nobd">
+            <div class="tab-pane fade " id="pills-reimbursements-nobd" role="tabpanel" aria-labelledby="pills-reimbursements-tab-nobd">
                <a class="" data-toggle="collapse" href="#addReimbursements" role="button" aria-expanded="false" aria-controls="addReimbursements">
                   <i class="fas fa-plus mr-1"></i>
                   Add ...
@@ -399,6 +401,7 @@
                   </table>
                </div>
             </div>
+
          </div>
          
       </div>

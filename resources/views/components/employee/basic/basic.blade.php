@@ -1,9 +1,9 @@
-<div class="tab-pane fade" id="v-pills-basic" role="tabpanel" aria-labelledby="v-pills-basic-tab">
+<div class="tab-pane fade {{$panel == 'basic' ? 'show active' : ''}}" id="v-pills-basic" role="tabpanel" aria-labelledby="v-pills-basic-tab">
    <div class="card card-with-nav">
       <div class="card-header">
          <div class="row row-nav-line">
             <ul class="nav nav-tabs nav-line nav-color-secondary" role="tablist">
-               <li class="nav-item"> <a class="nav-link active show " id="pills-biodata-tab-nobd" data-toggle="pill" href="#pills-biodata-nobd" role="tab" aria-controls="pills-biodata-nobd" aria-selected="true">Basic Information</a> </li>
+               <li class="nav-item"> <a class="nav-link show active" id="pills-basic-tab-nobd" data-toggle="pill" href="#pills-basic-nobd" role="tab" aria-controls="pills-basic-nobd" aria-selected="true">Basic Information</a> </li>
                <li class="nav-item"> <a class="nav-link" id="pills-profile-tab-nobd" data-toggle="pill" href="#pills-profile-nobd" role="tab" aria-controls="pills-profile-nobd" aria-selected="false">Profile Picture</a> </li>
                {{-- <li class="nav-item"> <a class="nav-link" id="pills-contact-tab-nobd" data-toggle="pill" href="#pills-contact-nobd" role="tab" aria-controls="pills-contact-nobd" aria-selected="false">Social Networking</a> </li> --}}
             </ul>
@@ -11,7 +11,7 @@
       </div>
       <div class="card-body">
          <div class="tab-content mt-2 mb-3" id="pills-without-border-tabContent">
-            <div class="tab-pane fade show active" id="pills-biodata-nobd" role="tabpanel" aria-labelledby="pills-biodata-tab-nobd">
+            <div class="tab-pane fade show active" id="pills-basic-nobd" role="tabpanel" aria-labelledby="pills-basic-tab-nobd">
                <form action="{{route('employee.update')}}" method="POST">
                   @csrf
                   @method('PUT')
@@ -219,7 +219,7 @@
                   </div>
                </form>
             </div>
-            <div class="tab-pane fade" id="pills-profile-nobd" role="tabpanel" aria-labelledby="pills-profile-tab-nobd">
+            <div class="tab-pane fade " id="pills-profile-nobd" role="tabpanel" aria-labelledby="pills-profile-tab-nobd">
                <form action="{{route('employee.update.picture')}}" method="POST" enctype="multipart/form-data">
                   @csrf
                   @method('PUT')

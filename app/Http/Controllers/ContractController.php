@@ -27,6 +27,6 @@ class ContractController extends Controller
          'desc' => $req->desc
       ]);
 
-      return redirect()->back()->with('success', 'Contract successfully updated');
+      return redirect()->route('employee.detail', [enkripRambo($req->employee), enkripRambo('contract')])->with('success', 'Contract successfully updated');
    }
 }

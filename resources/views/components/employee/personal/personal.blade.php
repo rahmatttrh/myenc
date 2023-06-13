@@ -1,12 +1,12 @@
-<div class="tab-pane fade" id="v-pills-personal" role="tabpanel" aria-labelledby="v-pills-personal-tab">
+<div class="tab-pane fade {{$panel == 'personal' ? 'show active' : ''}}" id="v-pills-personal" role="tabpanel" aria-labelledby="v-pills-personal-tab">
    <div class="card card-with-nav">
       <div class="card-header">
          <div class="row row-nav-line">
             <ul class="nav nav-tabs nav-line nav-color-secondary" role="tablist">
-               <li class="nav-item"> <a class="nav-link active show " id="pills-bio-tab-nobd" data-toggle="pill" href="#pills-bio-nobd" role="tab" aria-controls="pills-bio-nobd" aria-selected="true">Bio</a> </li>
-               <li class="nav-item"> <a class="nav-link" id="pills-social-tab-nobd" data-toggle="pill" href="#pills-social-nobd" role="tab" aria-controls="pills-social-nobd" aria-selected="false">Social</a> </li>
-               <li class="nav-item"> <a class="nav-link" id="pills-bank-tab-nobd" data-toggle="pill" href="#pills-bank-nobd" role="tab" aria-controls="pills-bank-nobd" aria-selected="false">Bank Account</a> </li>
-               <li class="nav-item"> <a class="nav-link" id="pills-emergency-tab-nobd" data-toggle="pill" href="#pills-emergency-nobd" role="tab" aria-controls="pills-emergency-nobd" aria-selected="false">Emergency Contact</a> </li>
+               <li class="nav-item"> <a class="nav-link show active " id="pills-bio-tab-nobd" data-toggle="pill" href="#pills-bio-nobd" role="tab" aria-controls="pills-bio-nobd" aria-selected="true">Bio</a> </li>
+               <li class="nav-item"> <a class="nav-link " id="pills-social-tab-nobd" data-toggle="pill" href="#pills-social-nobd" role="tab" aria-controls="pills-social-nobd" aria-selected="false">Social</a> </li>
+               <li class="nav-item"> <a class="nav-link " id="pills-bank-tab-nobd" data-toggle="pill" href="#pills-bank-nobd" role="tab" aria-controls="pills-bank-nobd" aria-selected="false">Bank Account</a> </li>
+               <li class="nav-item"> <a class="nav-link " id="pills-emergency-tab-nobd" data-toggle="pill" href="#pills-emergency-nobd" role="tab" aria-controls="pills-emergency-nobd" aria-selected="false">Emergency Contact</a> </li>
             </ul>
          </div>
       </div>
@@ -41,7 +41,7 @@
                   </div>
                </form>
             </div>
-            <div class="tab-pane fade" id="pills-social-nobd" role="tabpanel" aria-labelledby="pills-social-tab-nobd">
+            <div class="tab-pane fade " id="pills-social-nobd" role="tabpanel" aria-labelledby="pills-social-tab-nobd">
              
                   <a class="" data-toggle="collapse" href="#addSocial" role="button" aria-expanded="false" aria-controls="addSocial">
                      <i class="fas fa-plus mr-1"></i>
@@ -118,7 +118,7 @@
                </div>
             </div>
 
-            <div class="tab-pane fade" id="pills-bank-nobd" role="tabpanel" aria-labelledby="pills-bank-tab-nobd">
+            <div class="tab-pane fade " id="pills-bank-nobd" role="tabpanel" aria-labelledby="pills-bank-tab-nobd">
                   <a class="" data-toggle="collapse" href="#addBank" role="button" aria-expanded="false" aria-controls="addBank">
                      <i class="fas fa-plus mr-1"></i>
                      Add Account ...

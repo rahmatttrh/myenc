@@ -25,17 +25,52 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class EmployeeController extends Controller
 {
-   public function index()
+   public function index($enkripTab)
    {
-      $employees = Employee::get();
+      $tab = dekripRambo($enkripTab);
+      // dd($tab);
+      $employees = Employee::where('status', 1)->get();
+      $draftEmployees = Employee::where('status', 0)->get();
       return view('pages.employee.index', [
+         'employees' => $employees,
+         'draftEmployees' => $draftEmployees,
+         'tab' => $tab
+      ])->with('i');
+   }
+
+   public function draft()
+   {
+      $employees = Employee::where('status', 0)->get();
+      return view('pages.employee.draft', [
          'employees' => $employees
       ])->with('i');
    }
 
-   public function detail($id)
+   public function publish(Request $req)
+   {
+      $req->validate([
+         'id_item' => 'required'
+      ]);
+
+      $arrayItem = $req->id_item;
+      $jumlah = count($arrayItem);
+
+
+
+      for ($i = 0; $i < $jumlah; $i++) {
+
+         Employee::where('id', $arrayItem[$i])
+            ->update([
+               'status' => 1,
+            ]);
+      }
+      return redirect()->route('employee')->with('success', 'Employee successfully published');
+   }
+
+   public function detail($id, $enkripPanel)
    {
       $dekripId = dekripRambo($id);
+      $panel = dekripRambo($enkripPanel);
       $employee = Employee::find($dekripId);
       $departments = Department::get();
       $designations = Designation::get();
@@ -44,6 +79,9 @@ class EmployeeController extends Controller
       $units = Unit::get();
       $socials = Social::get();
       $banks = Bank::get();
+
+      // $panel = 'contract';
+      // $tab = 'contract';
 
 
       return view('pages.employee.detail', [
@@ -54,7 +92,9 @@ class EmployeeController extends Controller
          'shifts' => $shifts,
          'units' => $units,
          'socials' => $socials,
-         'banks' => $banks
+         'banks' => $banks,
+         'panel' => $panel
+         // 'tab' => $tab
       ]);
    }
 
@@ -162,7 +202,7 @@ class EmployeeController extends Controller
          'city' => $req->city,
       ]);
 
-      return redirect()->back()->with('success', 'Employee successfully updated');
+      return redirect()->route('employee.detail', [enkripRambo($employee->id), enkripRambo('basic')])->with('success', 'Employee successfully updated');
    }
 
    public function updateBio(Request $req)
@@ -223,6 +263,7 @@ class EmployeeController extends Controller
 
       Excel::import(new EmployeeImport, public_path('/EmployeeData/' . $fileName));
 
-      return redirect()->route('employee')->with('success', 'Employee Data successfully imported');
+
+      return redirect()->route('employee', enkripRambo('draft'))->with('success', 'Employee Data successfully imported');
    }
 }

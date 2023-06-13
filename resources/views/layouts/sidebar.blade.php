@@ -51,27 +51,27 @@
                   <h4 class="text-section">Main Menu</h4>
                </li>
                <li class="nav-item">
-                  <a href="{{route('employee')}}">
+                  <a href="{{route('employee', enkripRambo('active'))}}">
                      <i class="fas fa-burn"></i>
                      <p>Employee</p>
                   </a>
                </li>
-               <li class="nav-item">
+               {{-- <li class="nav-item">
                   <a data-toggle="collapse" href="#pms">
                      <i class="fas fa-desktop"></i>
-                     <p>Example</p>
+                     <p>Employee</p>
                      <span class="caret"></span>
                   </a>
                   <div class="collapse" id="pms">
                      <ul class="nav nav-collapse">
                         <li>
-                           <a href="#">
-                              <span class="sub-item">1</span>
+                           <a href="{{route('employee')}}">
+                              <span class="sub-item">Active</span>
                            </a>
                         </li>
                         <li>
-                           <a href="#">
-                              <span class="sub-item">2</span>
+                           <a href="{{route('employee.draft')}}">
+                              <span class="sub-item">Draft</span>
                            </a>
                         </li>
                      </ul>
@@ -82,7 +82,7 @@
                      <i class="fas fa-burn"></i>
                      <p>Example</p>
                   </a>
-               </li>
+               </li> --}}
 
               
             </ul>

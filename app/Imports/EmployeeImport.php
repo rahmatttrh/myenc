@@ -46,7 +46,7 @@ class EmployeeImport implements ToCollection, WithHeadingRow
          $emergency = Emergency::create([]);
 
          Employee::create([
-            'status' => $row['status'],
+            'status' => 0,
             'role' => $row['role'],
             'biodata_id' => $biodata->id,
             'contract_id' => $contract->id,

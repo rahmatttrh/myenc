@@ -10,12 +10,12 @@
    <nav aria-label="breadcrumb ">
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
-         <li class="breadcrumb-item" aria-current="page"><a href="{{route('employee')}}">Employee</a></li>
+         <li class="breadcrumb-item" aria-current="page"><a href="{{route('employee', enkripRambo('active'))}}">Employee</a></li>
          <li class="breadcrumb-item active" aria-current="page">Detail</li>
       </ol>
    </nav>
    <div class="row">
-      <div class="col-md-3">
+      <div class="col-md-4">
          <div class="card card-light">
             <div class="card-header">
                <div class="card-list">
@@ -45,26 +45,26 @@
                   <small>{{$employee->contract->designation->name ?? ''}} {{$employee->contract->department->name ?? ''}}</small>
                </div> --}}
                <div class="nav flex-column justify-content-start nav-pills nav-primary" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                  <a class="nav-link active text-left pl-3" id="v-pills-contract-tab" data-toggle="pill" href="#v-pills-contract" role="tab" aria-controls="v-pills-contract" aria-selected="false">
+                  <a class="nav-link {{$panel == 'contract' ? 'active' : ''}}  text-left pl-3" id="v-pills-contract-tab" data-toggle="pill" href="#v-pills-contract" role="tab" aria-controls="v-pills-contract" aria-selected="false">
                      <i class="fas fa-file-contract mr-1"></i>
                     
                      Contract
                   </a>
-                  <a class="nav-link  text-left pl-3" id="v-pills-basic-tab" data-toggle="pill" href="#v-pills-basic" role="tab" aria-controls="v-pills-basic" aria-selected="true">
+                  <a class="nav-link {{$panel == 'basic' ? 'active' : ''}} text-left pl-3" id="v-pills-basic-tab" data-toggle="pill" href="#v-pills-basic" role="tab" aria-controls="v-pills-basic" aria-selected="true">
                      <i class="fas fa-address-book mr-1"></i>
                      Basic 
                   </a>
                   
-                  <a class="nav-link text-left pl-3" id="v-pills-personal-tab" data-toggle="pill" href="#v-pills-personal" role="tab" aria-controls="v-pills-personal" aria-selected="false">
+                  <a class="nav-link {{$panel == 'personal' ? 'active' : ''}} text-left pl-3" id="v-pills-personal-tab" data-toggle="pill" href="#v-pills-personal" role="tab" aria-controls="v-pills-personal" aria-selected="false">
                      <i class="fas fa-user mr-1"></i>
                      Personal 
                   </a>
-                  <a class="nav-link text-left pl-3" id="v-pills-account-tab" data-toggle="pill" href="#v-pills-account" role="tab" aria-controls="v-pills-account" aria-selected="false">
+                  <a class="nav-link {{$panel == 'account' ? 'active' : ''}} text-left pl-3" id="v-pills-account-tab" data-toggle="pill" href="#v-pills-account" role="tab" aria-controls="v-pills-account" aria-selected="false">
                      <i class="fas fa-credit-card mr-1"></i>
                      Account 
                   </a>
 
-                  <a class="nav-link text-left pl-3" id="v-pills-document-tab" data-toggle="pill" href="#v-pills-document" role="tab" aria-controls="v-pills-document" aria-selected="false">
+                  <a class="nav-link {{$panel == 'document' ? 'active' : ''}} text-left pl-3" id="v-pills-document-tab" data-toggle="pill" href="#v-pills-document" role="tab" aria-controls="v-pills-document" aria-selected="false">
                      <i class="fas fa-file mr-1"></i>
                      Document
                   </a>
@@ -82,13 +82,13 @@
          
          
       </div>
-      <div class="col-md-9">
+      <div class="col-md-8">
          <div class="tab-content" id="v-pills-tabContent">
-            <x-employee.basic.basic :employee="$employee" :departments="$departments" :designations="$designations" :roles="$roles"/>
-            <x-employee.contract.contract :employee="$employee" :departments="$departments" :designations="$designations" :roles="$roles" :shifts="$shifts"/>
-            <x-employee.personal.personal :employee="$employee" :departments="$departments" :designations="$designations" :roles="$roles" :socials="$socials" :banks="$banks"/>
-            <x-employee.account.account :employee="$employee" :departments="$departments" :designations="$designations" :roles="$roles" />
-            <x-employee.document.document :employee="$employee" :departments="$departments" :designations="$designations" :roles="$roles" />
+            <x-employee.contract.contract :employee="$employee" :departments="$departments" :designations="$designations" :roles="$roles" :shifts="$shifts" :panel="$panel" />
+            <x-employee.basic.basic :employee="$employee" :departments="$departments" :designations="$designations" :roles="$roles" :panel="$panel"/>
+            <x-employee.personal.personal :employee="$employee" :departments="$departments" :designations="$designations" :roles="$roles" :socials="$socials" :banks="$banks"  :panel="$panel"/>
+            <x-employee.account.account :employee="$employee" :departments="$departments" :designations="$designations" :roles="$roles" :panel="$panel" />
+            <x-employee.document.document :employee="$employee" :departments="$departments" :designations="$designations" :roles="$roles":panel="$panel" />
          </div>
          
       </div>
