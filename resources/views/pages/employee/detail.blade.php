@@ -7,21 +7,49 @@
 @section('content')
 <div class="page-inner">
    {{-- <h4 class="page-title">User Profile</h4> --}}
-   <nav aria-label="breadcrumb ">
+   {{-- <nav aria-label="breadcrumb ">
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
          <li class="breadcrumb-item" aria-current="page"><a href="{{route('employee', enkripRambo('active'))}}">Employee</a></li>
          <li class="breadcrumb-item active" aria-current="page">Detail</li>
       </ol>
-   </nav>
+   </nav> --}}
+   <div class="page-header d-flex">
+      <h5 class="page-title">Detail Employee</h5>
+      <ul class="breadcrumbs">
+         <li class="nav-home">
+            <a href="/">
+               <i class="flaticon-home"></i>
+            </a>
+         </li>
+         <li class="separator">
+            <i class="flaticon-right-arrow"></i>
+         </li>
+         @if (auth()->user()->hasRole('Administrator'))
+            <li class="nav-item">
+               <a href="{{route('employee', enkripRambo('active'))}}">Employee</a>
+            </li>
+            @else
+            <li class="nav-item">
+               <a href="#">Employee</a>
+            </li>
+         @endif
+         <li class="separator">
+            <i class="flaticon-right-arrow"></i>
+         </li>
+         <li class="nav-item">
+            <a href="#">Detail</a>
+         </li>
+      </ul>
+   </div>
    <div class="row">
       <div class="col-md-4">
-         <div class="card card-light">
+         <div class="card card-light shadow-none border">
             <div class="card-header">
                <div class="card-list">
                   <div class="item-list">
-                     @if ($employee->status == 1)
-                        <div class="avatar avatar avatar-online">
+                     @if ($employee->biodata->status == 1)
+                        <div class="avatar avatar-xl avatar-online">
                         @else
                         <div class="avatar avatar-xl avatar-offline">
                      @endif
@@ -33,7 +61,7 @@
                         @endif
                      </div>
                      <div class="info-user ml-3">
-                        <div class="username"><b>{{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</b></div>
+                        <div class="username"><h3>{{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</h3></div>
                         <div class="status">{{$employee->contract->designation->name ?? ''}} {{$employee->contract->department->name ?? ''}}</div>
                      </div>
                   </div>
@@ -61,12 +89,12 @@
                   </a>
                   <a class="nav-link {{$panel == 'account' ? 'active' : ''}} text-left pl-3" id="v-pills-account-tab" data-toggle="pill" href="#v-pills-account" role="tab" aria-controls="v-pills-account" aria-selected="false">
                      <i class="fas fa-credit-card mr-1"></i>
-                     Account 
+                     Account  
                   </a>
 
                   <a class="nav-link {{$panel == 'document' ? 'active' : ''}} text-left pl-3" id="v-pills-document-tab" data-toggle="pill" href="#v-pills-document" role="tab" aria-controls="v-pills-document" aria-selected="false">
                      <i class="fas fa-file mr-1"></i>
-                     Document
+                     Document  
                   </a>
                   {{-- <a class="nav-link text-left pl-3" id="v-pills-bank-tab" data-toggle="pill" href="#v-pills-bank" role="tab" aria-controls="v-pills-bank" aria-selected="false">
                      <i class="fas fa-key mr-1"></i>
@@ -75,20 +103,28 @@
                </div>
                
             </div>
-            <div class="card-footer">
-               <small>Lorem ipsum dolor sit amet consectetur adipisicing elit.</small>
+            <div class="card-footer pb-4">
+               {{-- <small>Lorem ipsum dolor sit amet consectetur adipisicing elit.</small> --}}
+               <small>Completeness 25%</small>
+               <div class="progress">
+                  <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
             </div>
          </div>
-         
-         
       </div>
       <div class="col-md-8">
+         @if ($employee->status == 0)
+         <div class="alert alert-warning shadow-none">
+            <small class="text-muted">You can not change data before activate employee</small>
+         </div>
+         @endif
+         
          <div class="tab-content" id="v-pills-tabContent">
-            <x-employee.contract.contract :employee="$employee" :departments="$departments" :designations="$designations" :roles="$roles" :shifts="$shifts" :panel="$panel" />
+            <x-employee.contract.contract :employee="$employee" :departments="$departments" :designations="$designations" :roles="$roles" :shifts="$shifts" :panel="$panel" :i="0"/>
             <x-employee.basic.basic :employee="$employee" :departments="$departments" :designations="$designations" :roles="$roles" :panel="$panel"/>
             <x-employee.personal.personal :employee="$employee" :departments="$departments" :designations="$designations" :roles="$roles" :socials="$socials" :banks="$banks"  :panel="$panel"/>
             <x-employee.account.account :employee="$employee" :departments="$departments" :designations="$designations" :roles="$roles" :panel="$panel" />
-            <x-employee.document.document :employee="$employee" :departments="$departments" :designations="$designations" :roles="$roles":panel="$panel" />
+            <x-employee.document.document :employee="$employee" :documents="$employee->documents" :panel="$panel" :i="0" />
          </div>
          
       </div>

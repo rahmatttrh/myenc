@@ -37,10 +37,11 @@
                      @enderror
                   </div>
                   <div class="text-right mt-3 mb-3">
-                     <button type="submit" class="btn btn-dark">Update Bio</button>
+                     <button type="submit" class="btn btn-dark" {{$employee->status == 0 ? 'disabled' : ''}}>Update Bio</button>
                   </div>
                </form>
             </div>
+
             <div class="tab-pane fade " id="pills-social-nobd" role="tabpanel" aria-labelledby="pills-social-tab-nobd">
              
                   <a class="" data-toggle="collapse" href="#addSocial" role="button" aria-expanded="false" aria-controls="addSocial">
@@ -88,7 +89,7 @@
                            </div>
                         </div>
                         <div class="col-md-2">
-                           <button type="submit" class="btn btn-primary btn-block">Add</button>
+                           <button type="submit" class="btn btn-primary btn-block" {{$employee->status == 0 ? 'disabled' : ''}}>Add</button>
                         </div>
                      </div>
                   </form>
@@ -160,7 +161,7 @@
                            </div>
                         </div>
                         <div class="col-md-2">
-                           <button type="submit" class="btn btn-primary btn-block">Add</button>
+                           <button type="submit" class="btn btn-primary btn-block" {{$employee->status == 0 ? 'disabled' : ''}}>Add</button>
                         </div>
                      </div>
                   </form>
@@ -249,7 +250,7 @@
                         @enderror
                      </div>
                   <div class="text-right mt-3 mb-3">
-                     <button type="submit" class="btn btn-dark">Update Contact</button>
+                     <button type="submit" class="btn btn-dark" {{$employee->status == 0 ? 'disabled' : ''}}>Update Contact</button>
                   </div>
                </form>
             </div>

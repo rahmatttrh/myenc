@@ -81,8 +81,8 @@
                                     <td class="text-center"><input type="checkbox" class="case" name="id_item[]" value="{{$employee->id}}" /> </td>
                                     <td>{{++$i}}</td>
                                     {{-- <td><a href="{{route('employee.detail', enkripRambo($employee->id))}}">{{$employee->name}}</a> </td> --}}
-                                    <td class="d-flex align-items-center">
-                                       <div>
+                                    <td >
+                                       <div class="text-nowrap">
                                           <a href="{{route('employee.detail', enkripRambo($employee->id))}}">{{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</a><br>
                                           {{-- <small class="text-muted">{{$employee->biodata->email}}</small> --}}
                                        </div>

@@ -30,16 +30,29 @@
                         </div>
                      </div>
                      
-                     
-                     <div class="col-md-6">
-                        <div class="form-group form-group-default">
-                           <label>Status</label>
-                           <select class="form-control" id="status" name="status">
-                              <option {{$employee->biodata->status == '1' ? 'selected' : ''}} value="1">Active</option>
-                              <option {{$employee->biodata->status == '0' ? 'selected' : ''}} value="0">Off</option>
-                           </select>
+                     @if ($employee->status == 0)
+                        <div class="col-md-6">
+                           <div class="form-group form-group-default">
+                              <label>Status</label>
+                              <select class="form-control" id="status" name="status" disabled>
+                                 <option {{$employee->biodata->status == '1' ? 'selected' : ''}} value="1">Active</option>
+                                 <option {{$employee->biodata->status == '0' ? 'selected' : ''}} value="0">Off</option>
+                              </select>
+                              {{-- <small class="text-muted mt-2">* Please publish this account</small> --}}
+                           </div>
                         </div>
-                     </div>
+                        @else
+                        <div class="col-md-6">
+                           <div class="form-group form-group-default">
+                              <label>Status</label>
+                              <select class="form-control" id="status" name="status">
+                                 <option {{$employee->biodata->status == '1' ? 'selected' : ''}} value="1">Active</option>
+                                 <option {{$employee->biodata->status == '2' ? 'selected' : ''}} value="2">Off</option>
+                              </select>
+                           </div>
+                        </div>
+                     @endif
+                     
                      <div class="col-md-6">
                         <div class="form-group form-group-default">
                            <label>Role</label>
@@ -175,47 +188,9 @@
                      </div>
                    
                   </div>
-                  {{-- <div class="row">
-                     <div class="col-md-4">
-                        <div class="form-group form-group-default">
-                           <label>Department</label>
-                           <select class="form-control" id="department" name="department">
-                              @foreach ($departments as $department)
-                                 <option {{$employee->department_id == $department->id ? 'selected' : ''}} value="{{$department->id}}">{{$department->name}}</option>
-                              @endforeach
-                           </select>
-                        </div>
-                     </div>
-                     <div class="col-md-4">
-                        <div class="form-group form-group-default">
-                           <label>Designation</label>
-                           <select class="form-control" id="designation" name="designation">
-                              @foreach ($designations as $designation)
-                                  <option {{$employee->designation_id == $designation->id ? 'selected' : ''}} value="{{$designation->id}}">{{$designation->name}}</option>
-                              @endforeach
-                           </select>
-                        </div>
-                     </div>
-                     <div class="col-md-4">
-                        <div class="form-group form-group-default">
-                           <label>Office Shift</label>
-                           <select class="form-control" id="formGroupDefaultSelect">
-                              <option>Office</option>
-                              <option>Operational</option>
-                           </select>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="row">
-                     <div class="col-md-12">
-                        <div class="form-group form-group-default">
-                           <label>Address</label>
-                           <textarea type="text" class="form-control" name="address" id="address">{{$employee->biodata->address}}</textarea>
-                        </div>
-                     </div>
-                  </div> --}}
+               
                   <div class="text-right mt-3 mb-3">
-                     <button type="submit" class="btn btn-dark">Update</button>
+                     <button type="submit" class="btn btn-dark" {{$employee->status == 0 ? 'disabled' : ''}} disabled>Update</button>
                   </div>
                </form>
             </div>
@@ -242,7 +217,7 @@
                      </div>
                   </div>
                   <hr>
-                  <button class="btn btn-dark">Update</button>
+                  <button class="btn btn-dark" {{$employee->status == 0 ? 'disabled' : ''}}>Update</button>
                </form>
             </div>
            

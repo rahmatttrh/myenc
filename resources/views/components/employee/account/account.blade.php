@@ -19,15 +19,15 @@
             <input type="number" name="employee" id="employee" value="{{$employee->id}}" hidden>
             <div class="form-group form-group-default">  
                <label>Email *</label>
-               <input type="text" class="form-control" value="{{$employee->biodata->email}}" id="first_name" name="first_name">
+               <input type="text" class="form-control" readonly value="{{$employee->biodata->email}}" id="first_name" name="first_name">
             </div>
-            <a href="">
+            <a href="{{route('password.request')}}">
                <i class="fas fa-key mr-1"></i>
                Change password...
             </a>
-            <div class="text-right mt-3 mb-3">
-               <button type="submit" class="btn btn-dark">Update Bio</button>
-            </div>
+               {{-- <div class="text-right mt-3 mb-3">
+                  <button type="submit" class="btn btn-dark" {{$employee->status == 0 ? 'disabled' : ''}}>Update</button>
+               </div> --}}
          </form>
       </div>
    </div>

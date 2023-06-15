@@ -16,7 +16,9 @@ class CreateEmployeesTable extends Migration
       Schema::create('employees', function (Blueprint $table) {
          $table->id();
          $table->integer('status');
+         $table->integer('completeness')->nullable();
          $table->string('role')->nullable();
+         $table->integer('user_id')->nullable();
          $table->integer('biodata_id')->nullable();
          $table->integer('contract_id')->nullable();
          $table->integer('emergency_id')->nullable();

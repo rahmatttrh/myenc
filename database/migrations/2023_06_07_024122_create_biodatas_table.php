@@ -15,6 +15,7 @@ class CreateBiodatasTable extends Migration
    {
       Schema::create('biodatas', function (Blueprint $table) {
          $table->id();
+         $table->string('status')->nullable();
          $table->string('first_name');
          $table->string('last_name');
          $table->string('phone')->nullable();

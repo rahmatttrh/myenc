@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
    use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
@@ -42,4 +42,26 @@ class User extends Authenticatable
    protected $casts = [
       'email_verified_at' => 'datetime',
    ];
+
+   public function employee()
+   {
+      return $this->hasOne(Employee::class);
+   }
+
+   public function getRoleName()
+   {
+      if ($this->hasRole('Administrator')) {
+         $name = 'Administrator';
+      } elseif ($this->hasRole('Staff')) {
+         $name = 'Staff';
+      }
+      return $name;
+   }
+
+   public function getEmployeeId()
+   {
+      // $biodata = Biodata::where('email', $this->email)->first();
+
+      return 1;
+   }
 }

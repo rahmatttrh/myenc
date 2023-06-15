@@ -41,11 +41,14 @@
                   <ul class="dropdown-menu dropdown-user animated fadeIn">
                         <li>
                            <div class="user-box">
-                              <div class="avatar-lg"><img src="{{asset('img/businessman.png')}}" alt="image profile" class="avatar-img bg-info rounded"></div>
+                              <div class="avatar-lg border rounded">
+                                 <img src="{{asset('img/businessman.png')}}" alt="image profile" class="avatar-img bg-muted">
+                              </div>
                               
                               <div class="u-text">
-                                    <h4>Admin</h4>
-                                    <p class="text-muted">admin@gmail.com</p>
+                                    <h4>{{auth()->user()->name}}</h4>
+                                    {{-- <small class="text-muted">{{auth()->user()->getRoleName()}}</small> --}}
+                                    <small class="text-muted">{{auth()->user()->email}}</small>
                                     {{-- <a href="profile.html" class="btn btn-rounded btn-danger btn-sm">View Profile</a> --}}
                               </div>
                            </div>

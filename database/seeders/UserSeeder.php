@@ -20,10 +20,19 @@ class UserSeeder extends Seeder
          'name' => 'Admin',
          'email' => 'admin@gmail.com',
          'password' => Hash::make('12345678'),
+         'email_verified_at' => NOW(),
          'created_at' => NOW(),
          'updated_at' => NOW()
       ]);
+      $admin->assignRole('Administrator');
 
-      $admin->assignRole('admin');
+      $developer = User::create([
+         'name' => 'Developer',
+         'email' => 'developer@gmail.com',
+         'password' => Hash::make('12345678'),
+         'created_at' => NOW(),
+         'updated_at' => NOW()
+      ]);
+      $developer->assignRole('Administrator');
    }
 }

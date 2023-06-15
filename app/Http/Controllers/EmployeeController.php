@@ -49,22 +49,38 @@ class EmployeeController extends Controller
    public function publish(Request $req)
    {
       $req->validate([
-         'id_item' => 'required'
+         'id_item' => 'required',
       ]);
 
       $arrayItem = $req->id_item;
       $jumlah = count($arrayItem);
 
-
-
       for ($i = 0; $i < $jumlah; $i++) {
+         $employee = Employee::find($arrayItem[$i]);
 
-         Employee::where('id', $arrayItem[$i])
-            ->update([
-               'status' => 1,
+         try {
+            $user = User::create([
+               'name' => $employee->biodata->first_name . ' ' . $employee->biodata->last_name,
+               'email' => $employee->biodata->email,
+               'password' => Hash::make('12345678')
             ]);
+         } catch (Exception $e) {
+            return redirect()->back()->with('danger', 'Can not activate employee  ' . $employee->biodata->first_name . ' ' . $employee->biodata->last_name . ', Error log : ' . $e->getMessage());
+         }
+
+         $employee->update([
+            'status' => 1,
+            'user_id' => $user->id
+         ]);
+
+         $employee->biodata->update([
+            'status' => 1,
+         ]);
+
+         $user->assignRole($employee->role);
+         $user->sendEmailVerificationNotification();
       }
-      return redirect()->route('employee')->with('success', 'Employee successfully published');
+      return redirect()->route('employee', enkripRambo('active'))->with('success', 'Employee successfully activated and Email Verification has ben sent.');
    }
 
    public function detail($id, $enkripPanel)
@@ -80,6 +96,9 @@ class EmployeeController extends Controller
       $socials = Social::get();
       $banks = Bank::get();
 
+
+
+      // dd($employee->documents);
       // $panel = 'contract';
       // $tab = 'contract';
 
@@ -123,20 +142,12 @@ class EmployeeController extends Controller
          'last_name' => 'required',
          'department' => 'required',
          'email' => 'required|unique:users',
-         // 'designation' => 'required',
-         // 'gender' => 'required',
-         // 'phone' => 'required',
-         // 'unit' => 'required',
-         // 'role' => 'required',
-         // 'shift' => 'required',
-         // 'salary' => 'salary',
-         // 'payslip' => 'payslip',
          'picture' => request('picture') ? 'image|mimes:jpg,jpeg,png|max:5120' : '',
       ]);
 
-
       try {
          $biodata = Biodata::create([
+            'status' => 0,
             'first_name' => $req->first_name,
             'last_name' => $req->last_name,
             'gender' => $req->gender,
@@ -146,6 +157,8 @@ class EmployeeController extends Controller
       } catch (Exception $e) {
          return redirect()->back()->with('danger', $e->getMessage());
       }
+
+
 
       $contract = Contract::create([
          'id_no' => $req->id,
@@ -160,20 +173,16 @@ class EmployeeController extends Controller
       ]);
 
       $employee = Employee::create([
-         'status' => 1,
+         'status' => 0,
          'role' => $req->role,
          'contract_id' => $contract->id,
          'biodata_id' => $biodata->id,
-         'picture' => request('picture') ? request()->file('picture')->store('images/employee/picture') : '',
+         'picture' => request('picture') ? request()->file('picture')->store('employee/picture') : '',
       ]);
 
-      User::create([
-         'name' => $req->first_name . '' . $req->last_name,
-         'email' => $req->email,
-         'password' => Hash::make('12345678')
-      ]);
 
-      return redirect()->route('employee.detail', enkripRambo($employee->id))->with('success', 'Employee successfully saved');
+
+      return redirect()->route('employee.detail', [enkripRambo($employee->id), enkripRambo('contract')])->with('success', 'Employee successfully saved');
    }
 
    public function update(Request $req)
@@ -183,7 +192,9 @@ class EmployeeController extends Controller
       $employee = Employee::find($req->employee);
       // dd($req->martial);
 
+
       $employee->biodata->update([
+         'status' => $req->status,
          'first_name' => $req->first_name,
          'last_name' => $req->last_name,
          'birth_date' => $req->birth_date,
@@ -215,7 +226,7 @@ class EmployeeController extends Controller
          'experience' => $req->experience
       ]);
 
-      return redirect()->back()->with('success', 'Employee Bio successfully updated');
+      return redirect()->route('employee.detail', [enkripRambo($employee->id), enkripRambo('personal')])->with('success', 'Employee Bio successfully updated');
    }
 
    public function updatePicture(Request $req)
@@ -239,7 +250,7 @@ class EmployeeController extends Controller
          'picture' => $picture
       ]);
 
-      return redirect()->back()->with('success', 'Employee successfully updated');
+      return redirect()->route('employee.detail', [enkripRambo($employee->id), enkripRambo('basic')])->with('success', 'Employee successfully updated');
    }
 
    public function export()

@@ -236,6 +236,28 @@
          {{-- request()->session()->forget('name'); --}}
       @endif
 
+      @if (session('resent'))
+         <script>
+            $(document).ready(function() {
+                  var content = {};
+                  content.message = "A fresh verification link has been sent to your email address.";
+               content.title = 'Success';
+                  content.icon = 'fa fa-check-circle';
+
+                  $.notify(content,{
+            type: 'info',
+            placement: {
+               from: 'top',
+               align: 'right'
+            },
+            time: 1000,
+            delay: 0,
+               });
+                  
+            });
+         </script>
+      @endif
+
 
       @if ($errors->any())  
          @foreach ($errors->all() as $error)

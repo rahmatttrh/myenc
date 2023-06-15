@@ -5,8 +5,9 @@
 @section('content')
    
    <div class="page-inner">
-      <div class="page-header">
-         <h5 class="page-title">Employee {{$tab}}</h5>
+      <div class="page-header d-flex">
+         
+         <h5 class="page-title">Employee</h5>
          <ul class="breadcrumbs">
             <li class="nav-home">
                <a href="/">
@@ -20,6 +21,34 @@
                <a href="#">Employee</a>
             </li>
          </ul>
+         <div class="ml-auto">
+            {{-- <button type="button" class="btn btn-light btn-round btn-page-header-dropdown dropdown-toggle" data-toggle="dropdown" >
+                  <i class="fa fa-ellipsis-h"></i> Option
+            </button> --}}
+            <button class="btn btn-light border btn-round " data-toggle="dropdown">
+               <i class="fa fa-ellipsis-h"></i>
+            </button>
+            <div class="dropdown-menu">
+               
+               
+               <a  class="dropdown-item" style="text-decoration: none" href="{{route('employee.create')}}">Create</a>
+               <a  class="dropdown-item" style="text-decoration: none" href="{{route('employee.import')}}">Import</a>
+               {{-- <div class="dropdown-divider"></div>            --}}
+               <div class="dropdown-divider"></div>
+               <a class="dropdown-item" style="text-decoration: none" href="" target="_blank">Print Preview</a>
+            </div>
+         </div>
+         {{-- <div class="ml-auto">
+            <a href="" type="button" class="mt-3 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+               <i class="fa fa-ellipsis-h"></i>
+            </a>
+            <div class="dropdown-menu">
+               <a  class="dropdown-item" style="text-decoration: none" href="{{route('employee.create')}}">Create</a>
+               <a  class="dropdown-item" style="text-decoration: none" href="{{route('employee.import')}}">Import</a>
+               <div class="dropdown-divider"></div>
+               <a class="dropdown-item" style="text-decoration: none" href="{{route('employee.export')}}" target="_blank">Print Preview</a>
+            </div>
+         </div> --}}
       </div>
       {{-- <nav aria-label="breadcrumb ">
          <ol class="breadcrumb  ">
@@ -48,7 +77,7 @@
             </div>
          </div>
       </div> --}}
-      <div class="card card-with-nav">
+      <div class="card card-with-nav shadow-none border">
          <div class="card-header d-flex"> 
             <div class="row row-nav-line">
                <ul class="nav nav-tabs nav-line nav-color-secondary" role="tablist">
@@ -58,18 +87,7 @@
                   
                </ul>
             </div>
-            <div class="ml-auto">
-               <a href="" type="button" class="mt-3 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="fa fa-ellipsis-h"></i>
-               </a>
-               <div class="dropdown-menu">
-                  <a  class="dropdown-item" style="text-decoration: none" href="{{route('employee.create')}}">Create</a>
-                  <a  class="dropdown-item" style="text-decoration: none" href="{{route('employee.import')}}">Import</a>
-                  {{-- <div class="dropdown-divider"></div>            --}}
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" style="text-decoration: none" href="{{route('employee.export')}}" target="_blank">Print Preview</a>
-               </div>
-            </div>
+            
          </div> 
          <div class="card-body">
             <div class="tab-content" id="pills-without-border-tabContent">
@@ -78,7 +96,7 @@
                      <table id="multi-filter-select" class="display basic-datatables table table-striped " >
                         <thead>
                            <tr>
-                              <th>No</th>
+                              <th class="">No</th>
                               <th>Name</th>
                               <th>ID</th>
                               <th>Phone</th>
@@ -91,11 +109,11 @@
                         <tbody>
                            @foreach ($employees as $employee)
                               <tr>
-                                 <td>{{++$i}}</td>
+                                 <td class="text-center">{{++$i}}</td>
                                  {{-- <td><a href="{{route('employee.detail', enkripRambo($employee->id))}}">{{$employee->name}}</a> </td> --}}
-                                 <td class="d-flex align-items-center">
+                                 <td class="d-flex align-items-center text-nowrap">
                                     <div class="profile-picture mr-3">
-                                       @if ($employee->status == 1)
+                                       @if ($employee->biodata->status == 1)
                                           <div class="avatar avatar-sm avatar-online">
                                           @else
                                           <div class="avatar avatar-sm avatar-offline">
@@ -123,7 +141,7 @@
                                  <td>{{$employee->contract->department->name ?? ''}}</td>
                                  <td>{{$employee->contract->designation->name ?? ''}}</td>
                                  <td>
-                                    @if ($employee->status == 1)
+                                    @if ($employee->biodata->status == 1)
                                     <span class="badge badge-info">Active</span>
                                     @else
                                     <span class="badge badge-muted">Off</span>
@@ -144,7 +162,7 @@
                         <div class="alert alert-danger mt-2">{{ $message }}</div>
                      @enderror
                   <div class="d-inline-flex align-items-center">
-                     <button type="submit" name="submit" class="btn btn-sm btn-primary mr-3">Publish</button>
+                     <button type="submit" name="submit" class="btn btn-sm btn-primary mr-3">Activate</button>
                      <div class="d-inline-flex align-items-center">
                            <span class="badge badge-muted badge-counter">
                               <span id="total">0</span>
@@ -171,7 +189,7 @@
                               <tr>
                                  <td class="text-center"><input type="checkbox" class="case" name="id_item[]" value="{{$employee->id}}" /> </td>
                                  {{-- <td><a href="{{route('employee.detail', enkripRambo($employee->id))}}">{{$employee->name}}</a> </td> --}}
-                                 <td class="d-flex align-items-center">
+                                 <td class="text-nowrap">
                                     <div>
                                        <a href="{{route('employee.detail', [enkripRambo($employee->id), enkripRambo('contract')])}}">{{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</a><br>
                                        {{-- <small class="text-muted">{{$employee->biodata->email}}</small> --}}

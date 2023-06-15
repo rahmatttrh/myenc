@@ -22,7 +22,7 @@ class SocialAccountController extends Controller
          'link' => $req->link
       ]);
 
-      return redirect()->back()->with('success', 'Social Account successfully added');
+      return redirect()->route('employee.detail', [enkripRambo($req->employee), enkripRambo('personal')])->with('success', 'Social Account successfully added');
    }
 
    public function update(Request $req)
@@ -34,7 +34,7 @@ class SocialAccountController extends Controller
          'link' => $req->link
       ]);
 
-      return redirect()->back()->with('success', 'Social Account successfully updated');
+      return redirect()->route('employee.detail', [enkripRambo($socialAccount->employee_id), enkripRambo('personal')])->with('success', 'Social Account successfully updated');
    }
 
    public function delete($id)
@@ -44,6 +44,6 @@ class SocialAccountController extends Controller
 
       $socialAccount->delete();
 
-      return redirect()->back()->with('success', 'Social Account successfully deleted');
+      return redirect()->route('employee.detail', [enkripRambo($socialAccount->employee_id), enkripRambo('personal')])->with('success', 'Social Account successfully deleted');
    }
 }

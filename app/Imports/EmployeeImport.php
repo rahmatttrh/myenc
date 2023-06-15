@@ -23,6 +23,7 @@ class EmployeeImport implements ToCollection, WithHeadingRow
    {
       foreach ($rows as $row) {
          $biodata = Biodata::create([
+            'status' => 0,
             'first_name' => $row['first_name'],
             'last_name' => $row['last_name'],
             'email' => $row['email'],

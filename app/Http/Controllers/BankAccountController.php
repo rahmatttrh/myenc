@@ -18,7 +18,7 @@ class BankAccountController extends Controller
          'expired_date' => $req->expired_date
       ]);
 
-      return redirect()->back()->with('success', 'Bank Account successfully added');
+      return redirect()->route('employee.detail', [enkripRambo($req->employee), enkripRambo('personal')])->with('success', 'Bank Account successfully added');
    }
 
    public function update(Request $req)
@@ -30,7 +30,7 @@ class BankAccountController extends Controller
          'expired_date' => $req->expired_date
       ]);
 
-      return redirect()->back()->with('success', 'Bank Account successfully updated');
+      return redirect()->route('employee.detail', [enkripRambo($bankAccount->employee_id), enkripRambo('personal')])->with('success', 'Bank Account successfully updated');
    }
 
    public function delete($id)
@@ -40,6 +40,6 @@ class BankAccountController extends Controller
 
       $bankAccount->delete();
 
-      return redirect()->back()->with('success', 'Bank Account successfully deleted');
+      return redirect()->route('employee.detail', [enkripRambo($bankAccount->employee_id), enkripRambo('personal')])->with('success', 'Bank Account successfully deleted');
    }
 }

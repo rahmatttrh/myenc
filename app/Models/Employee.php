@@ -50,6 +50,36 @@ class Employee extends Model
       return $this->belongsTo(Emergency::class);
    }
 
+   public function user()
+   {
+      return $this->belongsTo(User::class);
+   }
+
+   public function documents()
+   {
+      return $this->hasMany(Document::class);
+   }
+
+   public function allowances()
+   {
+      return $this->hasMany(Allowance::class);
+   }
+
+   public function commissions()
+   {
+      return $this->hasMany(Commission::class);
+   }
+
+   public function deductions()
+   {
+      return $this->hasMany(Deduction::class);
+   }
+
+   public function reimbursements()
+   {
+      return $this->hasMany(Reimbursement::class);
+   }
+
    // public function shift()
    // {
    //    return $this->belongsTo(Shift::class);

@@ -1,5 +1,5 @@
 <div class="tab-pane fade {{$panel == 'contract' ? 'show active' : ''}} " id="v-pills-contract" role="tabpanel" aria-labelledby="v-pills-contract-tab">
-   <div class="card card-with-nav">
+   <div class="card card-with-nav shadow-none border">
       <div class="card-header">
          <div class="row row-nav-line">
             <ul class="nav nav-tabs nav-line nav-color-secondary" role="tablist">
@@ -122,7 +122,7 @@
                   
                   
                   <div class="text-right mt-3 mb-3">
-                     <button type="submit" class="btn btn-dark">Update Contract</button>
+                     <button type="submit" class="btn btn-dark" {{$employee->status == 0 ? 'disabled' : ''}}>Update Contract</button>
                   </div>
                </form>
             </div>
@@ -133,9 +133,8 @@
                   Add ...
                </a>
                <div class="collapse " id="addAllowances">
-                  <form action="{{route('employee.update')}}" method="POST">
+                  <form action="{{route('employee.allowances.store')}}" method="POST">
                      @csrf
-                     @method('PUT')
                      <input type="number" name="employee" id="employee" value="{{$employee->id}}" hidden>
                      <div class="row mt-3">
                         <div class="col-md-10">
@@ -143,36 +142,42 @@
                               <div class="col-md-6">
                                  <div class="form-group form-group-default">  
                                     <label>Allowances Option</label>
-                                    <select class="form-control" id="designation" name="designation">
-                                       <option value="1">1</option>
+                                    <select class="form-control" id="option" name="option">
+                                       <option value="" disabled selected>Select one</option>
+                                       <option value="Perjalanan Dinas">Perjalanan Dinas</option>
+                                       <option value="Hari Raya">Hari Raya</option>
+                                       <option value="Kompensasi">Kompensasi</option>
+                                       <option value="Menikah">Menikah</option>
                                     </select>
                                  </div>
                               </div>
                               <div class="col-md-6">
                                  <div class="form-group form-group-default">  
-                                    <label>Ammount Option</label>
-                                    <select class="form-control" id="designation" name="designation">
-                                       <option value="1">1</option>
+                                    <label>Type</label>
+                                    <select class="form-control" id="amount_option" name="amount_option">
+                                       <option value="" disabled selected>Select one</option>
+                                       <option value="IDR">IDR</option>
+                                       <option value="USD">USD</option>
                                     </select>
                                  </div>
                               </div>
                               <div class="col-md-6">
                                  <div class="form-group form-group-default">  
                                     <label>Title</label>
-                                    <input type="text" class="form-control" id="date" name="date" >
+                                    <input type="text" class="form-control" id="title" name="title" >
                                  </div>
                               </div>
                               <div class="col-md-6">
                                  <div class="form-group form-group-default">  
                                     <label>Ammount</label>
-                                    <input type="text" class="form-control" id="date" name="date" >
+                                    <input type="text" class="form-control" id="amount" name="amount" >
                                  </div>
                               </div>
                            </div>
                         </div>
                         <div class="col-md-2">
                            <div class="text-right">
-                              <button type="submit" class="btn btn-block btn-dark">Add</button>
+                              <button type="submit" class="btn btn-block btn-dark" {{$employee->status == 0 ? 'disabled' : ''}}>Add</button>
                            </div>
                         </div>
                         
@@ -186,13 +191,31 @@
                            <th>No</th>
                            <th>Title</th>
                            <th>Amount</th>
-                           <th>Allowances Option</th>
+                           <th>Type</th>
                            <th>Amount Option</th>
                            {{-- <th class="text-right">Action</th> --}}
                         </tr>
                      </thead>
                      <tbody>
-                        
+                        @foreach ($employee->allowances as $allow)
+                           <tr>
+                              <td class="text-center">{{++$i}}</td>
+                              <td class="text-nowrap">
+                                 <a href=""  class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {{$allow->title}}
+                                 </a>
+                                 <div class="dropdown-menu">
+                                    <a  class="dropdown-item" href=""  data-toggle="modal" data-target="#modal-edit-allow-{{$allow->id}}">Edit</a>
+                                    <a  class="dropdown-item" href="" data-toggle="modal" data-target="#modal-delete-allow-{{$allow->id}}">Delete</a>
+                                 </div>
+                              </td>
+                              <td>{{formatRupiah($allow->amount)}}</td>
+                              <td>{{$allow->option}}</td>
+                              <td>{{$allow->amount_option}}</td>
+                           </tr>
+                           <x-employee.contract.modal.delete-allow :allow="$allow" />
+                           <x-employee.contract.modal.edit-allow :allow="$allow" />
+                        @endforeach
                      </tbody>
                   </table>
                </div>
@@ -204,9 +227,8 @@
                     Add ...
                   </a>
                <div class="collapse" id="addCommissions">
-                  <form action="{{route('employee.update')}}" method="POST">
+                  <form action="{{route('employee.allowances.store')}}" method="POST">
                      @csrf
-                     @method('PUT')
                      <input type="number" name="employee" id="employee" value="{{$employee->id}}" hidden>
                      <div class="row mt-3">
                         <div class="col-md-10">
@@ -215,35 +237,40 @@
                                  <div class="form-group form-group-default">  
                                     <label>Commission Option</label>
                                     <select class="form-control" id="designation" name="designation">
-                                       <option value="1">1</option>
+                                       <option value="" disabled selected>Choose one</option>
+                                       <option value="Penjualan">Penjualan</option>
+                                       <option value="Berjenjang">Berjenjang</option>
+                                       <option value="Premi">Premi</option>
                                     </select>
                                  </div>
                               </div>
                               <div class="col-md-6">
                                  <div class="form-group form-group-default">  
-                                    <label>Ammount Option</label>
-                                    <select class="form-control" id="designation" name="designation">
-                                       <option value="1">1</option>
+                                    <label>Type</label>
+                                    <select class="form-control" id="amount_option" name="amount_option">
+                                       <option value="" disabled selected>Select one</option>
+                                       <option value="IDR">IDR</option>
+                                       <option value="USD">USD</option>
                                     </select>
                                  </div>
                               </div>
                               <div class="col-md-6">
                                  <div class="form-group form-group-default">  
                                     <label>Title</label>
-                                    <input type="text" class="form-control" id="date" name="date" >
+                                    <input type="text" class="form-control" id="title" name="title" >
                                  </div>
                               </div>
                               <div class="col-md-6">
                                  <div class="form-group form-group-default">  
                                     <label>Ammount</label>
-                                    <input type="text" class="form-control" id="date" name="date" >
+                                    <input type="text" class="form-control" id="amount" name="amount" >
                                  </div>
                               </div>
                            </div>
                         </div>
                         <div class="col-md-2">
                            <div class="text-right">
-                              <button type="submit" class="btn btn-block btn-dark">Add</button>
+                              <button type="submit" class="btn btn-block btn-dark" {{$employee->status == 0 ? 'disabled' : ''}}>Add</button>
                            </div>
                         </div>
                         
@@ -306,7 +333,7 @@
                         </div>
                         <div class="col-md-2">
                            <div class="text-right">
-                              <button type="submit" class="btn btn-block btn-dark">Add</button>
+                              <button type="submit" class="btn btn-block btn-dark" {{$employee->status == 0 ? 'disabled' : ''}}>Add</button>
                            </div>
                         </div>
                         
@@ -376,7 +403,7 @@
                         </div>
                         <div class="col-md-2">
                            <div class="text-right">
-                              <button type="submit" class="btn btn-block btn-dark">Add</button>
+                              <button type="submit" class="btn btn-block btn-dark" {{$employee->status == 0 ? 'disabled' : ''}}>Add</button>
                            </div>
                         </div>
                         
