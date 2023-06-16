@@ -1,5 +1,5 @@
 <div class="tab-pane fade {{$panel == 'account' ? 'show active' : ''}}" id="v-pills-account" role="tabpanel" aria-labelledby="v-pills-account-tab">
-   <div class="card">
+   <div class="card shadow-none border">
       <div class="card-header">
          
          <div class="row">
