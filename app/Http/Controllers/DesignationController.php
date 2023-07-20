@@ -23,7 +23,7 @@ class DesignationController extends Controller
          'name' => $req->name
       ]);
 
-      return redirect()->back()->with('success', 'Designation successfully added');
+      return redirect()->back()->with('success', 'Position successfully added');
    }
 
    public function edit($id)
@@ -45,7 +45,7 @@ class DesignationController extends Controller
          'name' => $req->name
       ]);
 
-      return redirect()->route('designation')->with('success', 'Designation successfully updated');
+      return redirect()->route('designation')->with('success', 'Position successfully updated');
    }
 
    public function delete($id)
@@ -54,6 +54,7 @@ class DesignationController extends Controller
       $designation = Designation::find($dekripId);
 
       $designation->delete();
-      return redirect()->route('designation')->with('success', 'Designation successfully deleted');
+      return redirect()->route('designation')->with('success', 'Position successfully deleted');
    }
 }
+   

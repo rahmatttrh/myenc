@@ -8,7 +8,7 @@
       <nav aria-label="breadcrumb ">
          <ol class="breadcrumb  ">
             <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Designation</li>
+            <li class="breadcrumb-item active" aria-current="page">Position</li>
          </ol>
       </nav>
       
@@ -52,7 +52,7 @@
             <div class="card shadow-none border" >
                <div class="card-header d-flex"> 
                   <div class="d-flex  align-items-center">
-                     <div class="card-title">Designation List</div> 
+                     <div class="card-title">Position List</div> 
                   </div>
                   <div class="btn-group btn-group-page-header ml-auto">
                      <button type="button" class="btn btn-light btn-round btn-page-header-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

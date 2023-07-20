@@ -36,5 +36,11 @@ class DesignationSeeder extends Seeder
          'created_at' => NOW(),
          'updated_at' => NOW()
       ]);
+
+      Designation::create([
+         'name' => 'Admin',
+         'created_at' => NOW(),
+         'updated_at' => NOW()
+      ]);
    }
 }

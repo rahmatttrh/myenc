@@ -33,7 +33,7 @@
                            </li>
                            <li>
                               <a href="{{route('designation')}}">
-                                 <span class="sub-item">Designation</span>
+                                 <span class="sub-item">Position</span>
                               </a>
                            </li>
                            <li>

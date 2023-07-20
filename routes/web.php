@@ -9,6 +9,7 @@ use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EmergencyController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SocialAccountController;
 use App\Http\Controllers\VerificationController;
 use App\Models\BankAccount;
@@ -35,9 +36,7 @@ Route::middleware(["auth", "verified"])->group(function () {
    // Route::get('/email/verify/{id}/{hash}', 'VerificationController@verify')->name('verification.verify')->middleware(['signed']);
    // Route::post('/email/resend', 'VerificationController@resend')->name('verification.resend');
 
-   Route::get('/', function () {
-      return view('home');
-   });
+   Route::get('/', [HomeController::class, 'index']);
 
    Route::get('employee/detail/{employee:id}/{tab}', [EmployeeController::class, 'detail'])->name('employee.detail');
 

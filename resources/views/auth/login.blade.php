@@ -4,7 +4,7 @@
 
 <head>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<title>E-Fleet - Login</title>
+	<title>MyENC - Login</title>
 	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
 	<link rel="icon" href="{{asset('/img/anchor.png')}}" type="image/x-icon"/>
 
@@ -41,7 +41,7 @@
 				<div class="card o-hidden border-0 shadow-lg my-5">
 					<div class="card-body p-0">
 						<div class="row">
-							<div class="col-lg-6 d-none d-lg-block " style="background-image: url({{asset('img/vessel/vessel1.jpg')}});background-repeat: no-repeat;background-size: cover;border-radius: 5px;">
+							<div class="col-lg-6 d-none d-lg-block " style="background-image: url({{asset('img/bg/hr2.jpg')}});background-repeat: no-repeat;background-size: cover;border-radius: 5px;">
 								<img class="mt-3" src="{{asset('img/logo/enc2.jpg')}}" alt="">
 							</div>
 							<div class="col-lg-6">
@@ -49,7 +49,7 @@
 									<div class="">
 										{{-- <h4 class="text-gray-900">Welcome Back!</h4> --}}
 										<h1 class="" style="font-weight: 900">MY<span class="text-primary">ENC</span></h1>
-                              <small>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Reiciendis beatae adipisci fuga.</small>
+                              <small>Ekanuri Human Resource Management System</small>
 									</div>
 									<hr>
                            {{-- @error('email')
@@ -87,8 +87,8 @@
 										
 										<button type="submit" class="btn btn-primary btn-block">Login</button>
 									
-										<hr>
-										<p class="small">Created and Development by ENC IT</p>
+										{{-- <hr>
+										<p class="small">Created and Development by ENC IT</p> --}}
 									</form>
 									<hr>
 									<div class="login-account">

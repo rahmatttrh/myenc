@@ -10,6 +10,7 @@ use App\Models\Emergency;
 use App\Models\Employee;
 use App\Models\Unit;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -22,6 +23,11 @@ class EmployeeImport implements ToCollection, WithHeadingRow
    public function collection(Collection $rows)
    {
       foreach ($rows as $row) {
+         $department = Department::where('name', $row['department'])->first();
+         $designation = Designation::where('name', $row['designation'])->first();
+         $unit = Unit::where('name', $row['business_unit'])->first();
+         // dd($row['first_name']);
+
          $biodata = Biodata::create([
             'status' => 0,
             'first_name' => $row['first_name'],
@@ -30,10 +36,6 @@ class EmployeeImport implements ToCollection, WithHeadingRow
             'phone' => $row['phone'],
             'gender' => $row['gender'],
          ]);
-
-         $department = Department::where('name', $row['department'])->first();
-         $designation = Designation::where('name', $row['designation'])->first();
-         $unit = Unit::where('name', $row['bussiness_unit'])->first();
 
          $contract = Contract::create([
             'id_no' => $row['id'],
@@ -45,7 +47,6 @@ class EmployeeImport implements ToCollection, WithHeadingRow
          ]);
 
          $emergency = Emergency::create([]);
-
          Employee::create([
             'status' => 0,
             'role' => $row['role'],

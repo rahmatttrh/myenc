@@ -103,12 +103,13 @@
                </div>
                
             </div>
-            <div class="card-footer pb-4">
+            <div class="card-footer">
                {{-- <small>Lorem ipsum dolor sit amet consectetur adipisicing elit.</small> --}}
-               <small>Completeness 25%</small>
+               {{-- <small>Completeness 25%</small>
                <div class="progress">
                   <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
+                </div> --}}
+                <small>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste unde beatae inventore.</small>
             </div>
          </div>
       </div>

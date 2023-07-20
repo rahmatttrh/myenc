@@ -272,7 +272,15 @@ class EmployeeController extends Controller
       $fileName = $file->getClientOriginalName();
       $file->move('EmployeeData', $fileName);
 
+      // try {
+      //    Excel::import(new EmployeeImport, public_path('/EmployeeData/' . $fileName));
+      // } catch (Exception $e) {
+      //    return redirect()->back()->with('danger', 'Import Failed ' . $e->getMessage());
+      // }
+
       Excel::import(new EmployeeImport, public_path('/EmployeeData/' . $fileName));
+
+
 
 
       return redirect()->route('employee', enkripRambo('draft'))->with('success', 'Employee Data successfully imported');
