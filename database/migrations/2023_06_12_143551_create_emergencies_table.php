@@ -19,6 +19,7 @@ class CreateEmergenciesTable extends Migration
          $table->string('phone')->nullable();
          $table->string('email')->nullable();
          $table->string('address')->nullable();
+         $table->string('hubungan')->nullable();
          $table->timestamps();
       });
    }

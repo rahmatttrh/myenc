@@ -78,7 +78,14 @@ class EmployeeController extends Controller
          ]);
 
          $user->assignRole($employee->role);
-         $user->sendEmailVerificationNotification();
+
+         // Cek email apakah ada atau belum 
+
+         $emailEnv = env('MAIL_FROM_ADDRESS');
+         if ($emailEnv != null) {
+            // jika ada kirim email
+            $user->sendEmailVerificationNotification();
+         }
       }
       return redirect()->route('employee', enkripRambo('active'))->with('success', 'Employee successfully activated and Email Verification has ben sent.');
    }

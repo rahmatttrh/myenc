@@ -20,12 +20,22 @@ class UnitSeeder extends Seeder
          'updated_at' => NOW()
       ]);
       Unit::create([
+         'name' => 'Perkasa',
+         'created_at' => NOW(),
+         'updated_at' => NOW()
+      ]);
+      Unit::create([
          'name' => 'Peip',
          'created_at' => NOW(),
          'updated_at' => NOW()
       ]);
       Unit::create([
          'name' => 'Ekajaya',
+         'created_at' => NOW(),
+         'updated_at' => NOW()
+      ]);
+      Unit::create([
+         'name' => 'KCI',
          'created_at' => NOW(),
          'updated_at' => NOW()
       ]);

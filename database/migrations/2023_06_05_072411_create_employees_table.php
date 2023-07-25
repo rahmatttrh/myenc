@@ -15,11 +15,17 @@ class CreateEmployeesTable extends Migration
    {
       Schema::create('employees', function (Blueprint $table) {
          $table->id();
-         $table->integer('status');
+         $table->integer('status')->nullable();
          $table->integer('completeness')->nullable();
          $table->string('role')->nullable();
          $table->integer('user_id')->nullable();
          $table->integer('biodata_id')->nullable();
+         $table->string('nik', 50)->nullable();
+         $table->date('entry_date')->nullable(); //tanggal masuk 
+         $table->date('determination_date')->nullable(); // Tanggal penetapan karyawan
+         // LAMA KERJA (sekarang - tanggal masuk )
+         // MASA KERJA (sekarang - tanggal penetapan/determination)
+
          $table->integer('contract_id')->nullable();
          $table->integer('emergency_id')->nullable();
          $table->string('picture')->nullable();
