@@ -10,6 +10,7 @@ use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EmergencyController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PeComponentController;
 use App\Http\Controllers\SocialAccountController;
 use App\Http\Controllers\VerificationController;
 use App\Models\BankAccount;
@@ -109,6 +110,16 @@ Route::middleware(["auth", "verified"])->group(function () {
          Route::post('store', [BankAccountController::class, 'store'])->name('bank.account.store');
          Route::get('delete/{id}', [BankAccountController::class, 'delete'])->name('bank.account.delete');
          Route::put('update', [BankAccountController::class, 'update'])->name('bank.account.update');
+      });
+
+
+      // PE
+      Route::prefix('pe-component')->group(function () {
+         Route::get('/', [PeComponentController::class, 'index'])->name('pe.component');
+         // Route::post('store', [DepartmentController::class, 'store'])->name('department.store');
+         // Route::get('edit/{department:id}', [DepartmentController::class, 'edit'])->name('department.edit');
+         // Route::put('update', [DepartmentController::class, 'update'])->name('department.update');
+         // Route::get('delete/{department:id}', [DepartmentController::class, 'delete'])->name('department.delete');
       });
    });
 });

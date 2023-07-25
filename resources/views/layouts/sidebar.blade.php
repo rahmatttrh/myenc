@@ -66,7 +66,7 @@
                <div class="collapse" id="kpi">
                   <ul class="nav nav-collapse">
                      <li>
-                        <a href="{{route('department')}}">
+                        <a href="{{route('pe.component')}}">
                            <span class="sub-item">Component</span>
                         </a>
                      </li>

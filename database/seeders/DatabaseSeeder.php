@@ -22,7 +22,8 @@ class DatabaseSeeder extends Seeder
          UnitSeeder::class,
          ShiftSeeder::class,
          SocialSeeder::class,
-         BankSeeder::class
+         BankSeeder::class,
+         PeComponentSeeder::class
          // VesselStatusSeeder::class
       ]);
    }
