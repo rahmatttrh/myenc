@@ -11,10 +11,14 @@ use App\Http\Controllers\EmergencyController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PeComponentController;
+use App\Http\Controllers\PeKpiController;
+use App\Http\Controllers\PekpiDetailController;
 use App\Http\Controllers\SocialAccountController;
 use App\Http\Controllers\VerificationController;
 use App\Models\BankAccount;
 use App\Models\Commission;
+use App\Models\PeKpi;
+use App\Models\PekpiDetail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -120,6 +124,16 @@ Route::middleware(["auth", "verified"])->group(function () {
          // Route::get('edit/{department:id}', [DepartmentController::class, 'edit'])->name('department.edit');
          // Route::put('update', [DepartmentController::class, 'update'])->name('department.update');
          // Route::get('delete/{department:id}', [DepartmentController::class, 'delete'])->name('department.delete');
+      });
+      // kpi
+      Route::prefix('kpi')->group(function () {
+         Route::get('/', [PeKpiController::class, 'index'])->name('kpi');
+         Route::post('', [PeKpiController::class, 'store'])->name('kpi.store');
+         Route::get('{id}', [PeKpiController::class, 'edit'])->name('kpi.edit');
+         Route::get('delete/{designation:id}', [PeKpiController::class, 'delete'])->name('kpi.delete');  // Belum selesai semua
+
+         // DETAIL
+         Route::post('/detail', [PekpiDetailController::class, 'store'])->name('kpidetail.store');
       });
    });
 });

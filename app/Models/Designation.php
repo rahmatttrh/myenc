@@ -19,4 +19,9 @@ class Designation extends Model
    {
       return $this->hasMany(Contract::class);
    }
+
+   public function kpi()
+   {
+      return $this->hasMany(PeKpi::class);
+   }
 }

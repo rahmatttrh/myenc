@@ -43,7 +43,7 @@ class EmployeeImport implements ToCollection, WithHeadingRow
             'email' => $row['email'],
             'phone' => $row['phone'],
             'gender' => $row['gender'],
-            'agama' => $row['agama'], //agama
+            'religion' => $row['agama'], //agama
             'birth_place' => $row['tempat_lahir'], //
             'birth_date' => $row['tanggal_lahir'], //tanggal lahir
             'no_ktp' => $row['no_ktp'],
@@ -92,6 +92,7 @@ class EmployeeImport implements ToCollection, WithHeadingRow
          Employee::create([
             'status' => 0,
             'role' => $row['role'],
+            'department_id' => $department->id,
             'biodata_id' => $biodata->id,
             'contract_id' => $contract->id,
             'emergency_id' => $emergency->id,

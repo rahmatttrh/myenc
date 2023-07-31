@@ -71,7 +71,7 @@
                         </a>
                      </li>
                      <li>
-                        <a href="{{route('designation')}}">
+                        <a href="{{route('kpi')}}">
                            <span class="sub-item">KPI</span>
                         </a>
                      </li>

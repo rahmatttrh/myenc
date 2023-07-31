@@ -19,7 +19,9 @@ class CreateEmployeesTable extends Migration
          $table->integer('completeness')->nullable();
          $table->string('role')->nullable();
          $table->integer('user_id')->nullable();
+         $table->integer('department_id')->nullable();
          $table->integer('biodata_id')->nullable();
+         $table->integer('kpi_id')->nullable();
          $table->string('nik', 50)->nullable();
          $table->date('entry_date')->nullable(); //tanggal masuk 
          $table->date('determination_date')->nullable(); // Tanggal penetapan karyawan
@@ -31,6 +33,8 @@ class CreateEmployeesTable extends Migration
          $table->string('picture')->nullable();
          $table->string('bio')->nullable();
          $table->string('experience')->nullable();
+
+         // FIELD INI ADA DI BIODATA
          // $table->string('name')->nullable();
          // $table->string('phone')->nullable();
          // $table->string('email')->nullable();
