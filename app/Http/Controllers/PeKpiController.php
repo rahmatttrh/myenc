@@ -52,10 +52,12 @@ class PeKpiController extends Controller
         $kpi = PeKpi::find(dekripRambo($id));
         $datas = PekpiDetail::where('kpi_id', dekripRambo($id))->get();
         $employes = Employee::where('department_id', $kpi->departement_id)
+            ->where('designation_id', $kpi->designation_id)
             ->where('status', '1')
             ->where('kpi_id', null)
             ->get();
-        $users = Employee::where('kpi_id', $kpi->id)->get();
+        $users = Employee::where('kpi_id', $kpi->id)
+            ->get();
         // dd($kpi->departement_id);
 
         // dd($employes);
@@ -70,5 +72,26 @@ class PeKpiController extends Controller
             'users' => $users,
             'datas' => $datas
         ])->with('i');
+    }
+
+    public function addUser(Request $req)
+    {
+        $req->validate([
+            'kpi_id' => 'required',
+            'employe_id' => 'required'
+        ]);
+
+        $result = Employee::where('id', $req->employe_id)
+            ->update([
+                'kpi_id' => $req->kpi_id,
+            ]);
+
+
+        if ($result) {
+            # code...
+            return redirect()->back()->with('success', 'User successfully added KPI');
+        } else {
+            return redirect()->back()->with('danger', 'Failed');
+        }
     }
 }

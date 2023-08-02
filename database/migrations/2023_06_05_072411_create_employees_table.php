@@ -20,6 +20,7 @@ class CreateEmployeesTable extends Migration
          $table->string('role')->nullable();
          $table->integer('user_id')->nullable();
          $table->integer('department_id')->nullable();
+         $table->integer('designation_id')->nullable();
          $table->integer('biodata_id')->nullable();
          $table->integer('kpi_id')->nullable();
          $table->string('nik', 50)->nullable();

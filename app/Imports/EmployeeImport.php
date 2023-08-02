@@ -93,6 +93,7 @@ class EmployeeImport implements ToCollection, WithHeadingRow
             'status' => 0,
             'role' => $row['role'],
             'department_id' => $department->id,
+            'designation_id' => $designation->id,
             'biodata_id' => $biodata->id,
             'contract_id' => $contract->id,
             'emergency_id' => $emergency->id,

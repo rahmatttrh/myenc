@@ -134,6 +134,7 @@ Route::middleware(["auth", "verified"])->group(function () {
 
          // DETAIL
          Route::post('/detail', [PekpiDetailController::class, 'store'])->name('kpidetail.store');
+         Route::post('/detail/add-user', [PeKpiController::class, 'addUser'])->name('kpi.add.user');
       });
    });
 });

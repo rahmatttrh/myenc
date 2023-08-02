@@ -15,6 +15,12 @@ class DepartmentSeeder extends Seeder
    public function run()
    {
       Department::create([
+         'name' => 'HRD',
+         'created_at' => NOW(),
+         'updated_at' => NOW()
+      ]);
+
+      Department::create([
          'name' => 'IT',
          'created_at' => NOW(),
          'updated_at' => NOW()

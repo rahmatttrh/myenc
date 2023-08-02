@@ -116,7 +116,7 @@ KPI
                                 @foreach ($datas as $data)
                                 <tr>
                                     <td>{{++$i}}</td>
-                                    <td><a href="{{'data/'. enkripRambo($data->id)}}"> {{$data->objective}} </a></td>
+                                    <td>{{$data->objective}}</td>
                                     <td>{{$data->kpi}}</td>
                                     <td><b> {{$data->weight}} % </b></td>
                                     <td>{{$data->target}}</td>
@@ -156,10 +156,14 @@ KPI
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @php
+                                        $no=1;
+                                        @endphp
                                         @foreach ($users as $user)
+
                                         <tr>
-                                            <td>{{++$i}}</td>
-                                            <td><a href="{{'data/'. enkripRambo($user->id)}}"> {{$user->biodata->first_name}} </a></td>
+                                            <td>{{$no++}}</td>
+                                            <td>{{$user->biodata->first_name}}</td>
                                             <td class="text-right">
                                                 {{--<a href="{{route('data.edit', enkripRambo($user->id) )}}">Edit</a>--}}
                                                 <a href="#" data-toggle="modal" data-target="#modal-delete-{{$user->id}}">Delete</a>
@@ -185,15 +189,14 @@ KPI
 
                         </div>
                         <div class="card-body">
-                            <form action="{{route('kpidetail.store')}}" method="POST">
+                            <form action="{{route('kpi.add.user')}}" method="POST">
                                 @csrf
                                 <input type="hidden" name="kpi_id" value="{{$kpi->id}}">
-                                <input type="hidden" name="metode" value="cum">
                                 <div class="form-group form-group-default">
                                     <label>Employe</label>
                                     <select class="form-control" name="employe_id">
                                         @foreach ($employes as $employe)
-                                        <option value="{{$employe->id}}">{{$employe->biodata->first_name}}</option>
+                                        <option value="{{$employe->id}}">{{$employe->biodata->first_name}} {{$employe->biodata->last_name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
