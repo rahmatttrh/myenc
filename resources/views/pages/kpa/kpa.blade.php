@@ -8,7 +8,7 @@ KPA
     <nav aria-label="breadcrumb ">
         <ol class="breadcrumb  ">
             <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
-            <li class="breadcrumb-item active" aria-current="page">KPI</li>
+            <li class="breadcrumb-item active" aria-current="page">KPA</li>
         </ol>
     </nav>
 
@@ -147,7 +147,7 @@ KPA
                                 @foreach ($kpas as $kpa)
                                 <tr>
                                     <td>{{++$i}}</td>
-                                    <td>{{$kpa->employe->biodata->fullName()}}</td>
+                                    <td><a href="{{route('kpa.edit', enkripRambo($kpa->id))}}"> {{$kpa->employe->biodata->fullName()}} </a></td>
                                     <td>{{date('F Y', strtotime($kpa->date))  }}</td>
                                     <td><span class="badge badge-primary badge-lg"><b>{{$kpa->achievement}}</b></span></td>
                                     <td class="text-right">

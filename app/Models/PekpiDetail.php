@@ -9,4 +9,9 @@ class PekpiDetail extends Model
 {
     use HasFactory;
     protected $guarded = [];
+
+    public function kpadetail()
+    {
+        return $this->hasMany(PekpaDetail::class);
+    }
 }

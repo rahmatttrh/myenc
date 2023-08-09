@@ -101,4 +101,27 @@ class PeKpaController extends Controller
 
         return redirect()->back()->with('success', 'KPI successfully added');
     }
+
+    public function edit($id)
+    {
+
+        $kpa = PeKpa::find(dekripRambo($id));
+        $datas = PekpaDetail::where('kpa_id', $kpa->id)->get();
+        $employes = Employee::where('status', '1')
+            ->whereNotNull('kpi_id')
+            ->get();
+
+        // dd($datas);
+
+
+        if (!isset($kpa)) {
+            return back()->with('danger', 'Id KPA Anda Salah');
+        }
+
+        return view('pages.kpa.kpa-edit', [
+            'kpa' => $kpa,
+            'employes' => $employes,
+            'datas' => $datas
+        ])->with('i');
+    }
 }

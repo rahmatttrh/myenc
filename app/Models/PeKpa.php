@@ -14,4 +14,9 @@ class PeKpa extends Model
     {
         return $this->belongsTo(Employee::class);
     }
+
+    public function kpadetail()
+    {
+        return $this->hasMany(PekpaDetail::class);
+    }
 }
