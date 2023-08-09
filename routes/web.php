@@ -11,6 +11,7 @@ use App\Http\Controllers\EmergencyController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PeComponentController;
+use App\Http\Controllers\PeKpaController;
 use App\Http\Controllers\PeKpiController;
 use App\Http\Controllers\PekpiDetailController;
 use App\Http\Controllers\SocialAccountController;
@@ -132,9 +133,19 @@ Route::middleware(["auth", "verified"])->group(function () {
          Route::get('{id}', [PeKpiController::class, 'edit'])->name('kpi.edit');
          Route::get('delete/{designation:id}', [PeKpiController::class, 'delete'])->name('kpi.delete');  // Belum selesai semua
 
+         // id yang di gunakan id employee
+         // untuk melakukan penilaian
+         Route::get('employe/{id}', [PeKpiController::class, 'kpiEmploye'])->name('kpi.employe');
+
          // DETAIL
          Route::post('/detail', [PekpiDetailController::class, 'store'])->name('kpidetail.store');
          Route::post('/detail/add-user', [PeKpiController::class, 'addUser'])->name('kpi.add.user');
+      });
+
+      // KPA
+      Route::prefix('kpa')->group(function () {
+         Route::get('/', [PeKpaController::class, 'index'])->name('kpa');
+         Route::post('/', [PeKpaController::class, 'store'])->name('kpa.store');
       });
    });
 });

@@ -80,6 +80,11 @@ class Employee extends Model
       return $this->hasMany(Reimbursement::class);
    }
 
+   public function kpa()
+   {
+      return $this->hasMany(PeKpa::class);
+   }
+
    // public function shift()
    // {
    //    return $this->belongsTo(Shift::class);

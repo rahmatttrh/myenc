@@ -223,10 +223,10 @@
                </div>
                <div class="card-body">
                   <div class="d-flex">
-                     <div class="avatar avatar-online">
+                     <!-- <div class="avatar avatar-online">
                         {{-- <span class="avatar-title rounded-circle border border-white bg-info">J</span> --}}
                         <img src="{{asset('img/jm_denis.jpg')}}" alt="..." class="avatar-img rounded-circle">
-                     </div>
+                     </div> -->
                      <div class="flex-1 ml-3 pt-1">
                         <h5 class="text-uppercase fw-bold mb-1">9 Januari 1995</h5>
                         <span class="text-muted">Rahmat Hidayat</span>
@@ -234,10 +234,10 @@
                   </div>
                   <div class="separator-dashed"></div>
                   <div class="d-flex">
-                     <div class="avatar avatar-online">
+                     <!-- <div class="avatar avatar-online">
                         {{-- <span class="avatar-title rounded-circle border border-white bg-secondary">P</span> --}}
                         <img src="{{asset('img/chadengle.jpg')}}" alt="..." class="avatar-img rounded-circle">
-                     </div>
+                     </div> -->
                      <div class="flex-1 ml-3 pt-1">
                         <h5 class="text-uppercase fw-bold mb-1">11 Januari 1965</h5>
                         <span class="text-muted">Ahmad Juantoro</span>
@@ -254,10 +254,10 @@
                </div>
                <div class="card-body">
                   <div class="d-flex">
-                     <div class="avatar avatar-online">
+                     <!-- <div class="avatar avatar-online">
                         {{-- <span class="avatar-title rounded-circle border border-white bg-info">J</span> --}}
                         <img src="{{asset('img/mlane.jpg')}}" alt="..." class="avatar-img rounded-circle">
-                     </div>
+                     </div> -->
                      <div class="flex-1 ml-3 pt-1">
                         <h5 class="text-uppercase fw-bold mb-1">Contract end at 12 June 2023</h5>
                         <span class="text-muted">Abdul Fikri</span>
@@ -265,10 +265,10 @@
                   </div>
                   <div class="separator-dashed"></div>
                   <div class="d-flex">
-                     <div class="avatar avatar-online">
+                     <!-- <div class="avatar avatar-online">
                         {{-- <span class="avatar-title rounded-circle border border-white bg-secondary">P</span> --}}
                         <img src="{{asset('img/talha.jpg')}}" alt="..." class="avatar-img rounded-circle">
-                     </div>
+                     </div> -->
                      <div class="flex-1 ml-3 pt-1">
                         <h5 class="text-uppercase fw-bold mb-1">Contract end at 15 June 2023</h5>
                         <span class="text-muted">Dareza</span>
@@ -291,7 +291,7 @@
             data: {
                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
                datasets : [{
-                  label: "Sales",
+                  label: "Resign",
                   backgroundColor: 'rgb(23, 125, 255)',
                   borderColor: 'rgb(23, 125, 255)',
                   data: [3, 2, 9, 5, 4, 6, 4, 6, 7, 8, 7, 4],

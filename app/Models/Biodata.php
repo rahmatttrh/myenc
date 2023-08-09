@@ -14,4 +14,13 @@ class Biodata extends Model
    {
       return $this->hasOne(Employee::class);
    }
+
+
+
+
+   // function custom
+   public function fullName()
+   {
+      return $this->first_name . ' ' . $this->last_name;
+   }
 }

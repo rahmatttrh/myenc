@@ -26,6 +26,18 @@ class PeKpiController extends Controller
         ])->with('i');
     }
 
+    // digunakan utnuk apprasioal
+    public function kpiEmploye($id)
+    {
+        $employe = Employee::find($id);
+        $kpi = PeKpi::where('id', $employe->kpi_id)->first();
+        $datas = PekpiDetail::where('kpi_id', $kpi->id)->get();
+
+        $jsonData = $datas->toJson();
+
+        return $jsonData;
+    }
+
     public function store(Request $req)
     {
         $req->validate([

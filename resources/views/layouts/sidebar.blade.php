@@ -76,6 +76,11 @@
                         </a>
                      </li>
                      <li>
+                        <a href="{{route('kpa')}}">
+                           <span class="sub-item">KPI Apprasial</span>
+                        </a>
+                     </li>
+                     <li>
                         <a href="#">
                            <span class="sub-item">...</span>
                         </a>
