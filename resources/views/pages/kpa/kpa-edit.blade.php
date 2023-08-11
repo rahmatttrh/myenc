@@ -56,22 +56,126 @@ KPA
                                     <th>Target</th>
                                     <th>Value</th>
                                     <th>Achievement</th>
-                                    <th>Attachment (PDF)</th> <!-- Kolom Attachment -->
-                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($datas as $data)
+
+                                @php
+                                $urlPdf = Storage::url($data->evidence) ;
+                                @endphp
                                 <tr>
                                     <td>{{++$i}}</td>
-                                    <td><a href=""> {{$data->kpidetail->objective}} </a></td>
+                                    <td><a href="#" data-target="#myModal-{{$data->id}}" data-toggle="modal"> {{$data->kpidetail->objective}} </a></td>
                                     <td> {{$data->kpidetail->weight}}</td>
                                     <td> {{$data->kpidetail->target}}</td>
                                     <td> {{$data->value}}</td>
                                     <td class="text-right"> <b>{{$data->achievement}}</b></td>
-                                    <td> <a href="{{$data->evidence}}">Lihat</a> </td>
-                                    <td>Edit</td>
                                 </tr>
+
+
+                                <div class="modal fade" id="myModal-{{$data->id}}" data-bs-backdrop="static">
+                                    <div class="modal-dialog" style="max-width: 80%;">
+                                        <div class="modal-content">
+
+                                            <!-- Bagian header modal -->
+                                            <div class="modal-header bg-primary">
+                                                <h3 class="modal-title">{{$data->kpidetail->objective}} </h3>
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            </div>
+
+                                            <form method="POST" action="{{route('kpa.update',$kpa->id) }}" enctype="multipart/form-data">
+                                                @csrf
+                                                @method('PUT')
+
+                                                <input type="hidden" name="id" value="{{$data->id}}">
+                                                <input type="hidden" name="kpa_id" value="{{$kpa->id}}">
+
+                                                <!-- Bagian konten modal -->
+                                                <div class="modal-body">
+
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <div class="card shadow-none border">
+                                                                <div class="card-header d-flex">
+                                                                    <div class="d-flex  align-items-center">
+                                                                        <div class="card-title">Form Edit</div>
+                                                                    </div>
+
+                                                                </div>
+                                                                <div class="card-body">
+                                                                    <div class="form-group">
+                                                                        <label for="objective">Objective:</label>
+                                                                        <input type="text" class="form-control" id="objective" name="objective" value="{{ $data->kpidetail->objective }}" readonly>
+                                                                    </div>
+
+                                                                    <div class="form-group">
+                                                                        <label for="weight">Weight:</label>
+                                                                        <input type="text" class="form-control" id="weight" name="weight" value="{{ $data->kpidetail->weight }}" readonly>
+                                                                    </div>
+
+                                                                    <div class="form-group">
+                                                                        <label for="target">Target:</label>
+                                                                        <input type="text" class="form-control" id="target" name="target" value="{{ $data->kpidetail->target }}" readonly>
+                                                                    </div>
+
+                                                                    <div class="form-group">
+                                                                        <label for="value">Value:</label>
+                                                                        <input type="text" class="form-control value" id="value" name="value" data-key="{{ $data->id }}" data-target="{{ $data->kpidetail->target }}" data-weight="{{ $data->kpidetail->weight }}" value="{{ old('value', $data->value) }}" autocomplete="off">
+                                                                    </div>
+
+                                                                    <div class="form-group">
+                                                                        <label for="achievement">Achievement:</label>
+                                                                        <input type="text" class="form-control" id="achievement-{{$data->id}}" name="achievement" value="{{ $data->achievement }}" readonly>
+                                                                    </div>
+
+                                                                    <div class="form-group">
+                                                                        <label for="attachment">Evidence</label>
+                                                                        <input type="file" class="form-control-file attachment" id="attachment" data-key="{{ $data->id }}" name="attachment" accept=".pdf">
+                                                                        <label for="attachment">*opsional jika evidence ingin di rubah</label>
+                                                                    </div>
+                                                                    <div class="d-flex justify-content-between">
+                                                                        <button type="reset" class="btn btn-secondary ml-auto">
+                                                                            <i class="fa fa-refresh"></i> Reset
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-8">
+                                                            <div class="card shadow-none border">
+                                                                <div class="card-header d-flex">
+                                                                    <div class="d-flex  align-items-center">
+                                                                        <div class="card-title">Evidence</div>
+                                                                    </div>
+
+                                                                </div>
+                                                                <div class="card-body">
+                                                                    @if ($data->evidence)
+                                                                    <iframe src="{{ Storage::url($data->evidence) }}" id="pdfPreview-{{$data->id}}" width=" 100%" height="575px"></iframe>
+                                                                    @else
+                                                                    <p>No attachment available.</p>
+                                                                    @endif
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+
+                                                </div>
+
+                                                <!-- Bagian footer modal -->
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Tutup</button>
+                                                    <button type="submit" class="btn btn-warning">Update</button>
+                                                </div>
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
                                 @endforeach
                             </tbody>
                             <tfoot>
@@ -81,6 +185,7 @@ KPA
                                 </tr>
                             </tfoot>
                         </table>
+                        <small class="text-danger">* Jika anda ingin mengupdate nilai value, silahkan klik objective</small>
                     </div>
                 </div>
             </div>
@@ -93,154 +198,64 @@ KPA
 @push('js_footer')
 <script>
     $(document).ready(function() {
+        $('.attachment').on('change', function() {
+            var input = $(this)[0];
 
-        bulanPenilaian();
+            var key = $(this).data('key');
 
-        // let employeeId = "<?= $kpa->employe_id ?>";
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
 
-        $('#employee_id').val(employeeId);
+                    showPdf(e.target.result, key);
 
-        $("#tableCreate tbody").empty();
-
-        $.ajax({
-            url: '/kpi/employe/' + employeeId,
-            type: 'GET',
-            dataType: 'json',
-            success: function(data) {
-
-                $('#kpi_id').val(data[0].kpi_id);
-
-                var table = $("#tableCreate tbody");
-                $.each(data, function(index, rowData) {
-                    var row = $("<tr>").attr("id", "row_" + rowData.id); // Tambahkan ID indeks pada baris
-                    row.append($("<td>").text(index + 1));
-                    row.append($("<td>").text(rowData.objective));
-                    row.append($("<td>").text(rowData.weight));
-                    row.append($("<td>").text(rowData.target));
-                    var input = $("<input>").attr({
-                        "type": "text",
-                        "class": "form-control",
-                        "name": `qty[${rowData.id}]`, // Menggunakan ID sebagai bagian dari array name
-                        "value": 0,
-                        "min": 0.01,
-                        "max": rowData.target,
-                        "step": "0.01" // Step untuk 2 digit desimal
-                    }).on('input', function() {
-                        // Menghapus angka nol di depan input jika ada
-                        var inputValue = $(this).val();
-                        inputValue = inputValue.replace(/^0+/, '');
-                        $(this).val(inputValue);
-
-                        calculateAchievement(rowData.id, rowData.target);
-                        calculateTotalAchievement();
-                    });
-
-                    row.append($("<td>").append(input));
-                    var achievementInput = $("<input>").attr({
-                        "type": "text",
-                        "class": "form-control text-bold",
-                        "name": "achievement_" + rowData.id,
-                        "placeholder": "0",
-                        "readonly": true
-                    }).css("font-weight", "bold"); // Menambahkan style font-weight: bold
-
-                    row.append($("<td>").append(achievementInput));
-
-                    var attachmentInput = $("<input>").attr({
-                        "type": "file",
-                        "class": "form-control",
-                        "name": `attachment[${rowData.id}]`, // Menggunakan ID sebagai bagian dari array name
-                        "required": true, // Tambahkan atribut readonly
-                        "accept": ".pdf" // Hanya izinkan file PDF
-                    });
-
-                    row.append($("<td>").append(attachmentInput));
-
-
-                    table.append(row);
-                });
-
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.error('AJAX Error:', textStatus, errorThrown);
+                };
+                reader.readAsDataURL(input.files[0]);
             }
         });
 
-
-        $("#btnCreate").click(function() {
-
-            $('#boxCreate').show();
-            // Tambahkan kode lain yang ingin Anda eksekusi saat tombol diklik di sini
-        });
-
-        $("#hide").click(function() {
-
-            $('#boxCreate').hide();
-            // Tambahkan kode lain yang ingin Anda eksekusi saat tombol diklik di sini
-        });
-
-        $('.date').change(function() {
-            bulanPenilaian();
-        });
-
-
-        function validasiInput(index) {
-
-            var inputVal = parseFloat($(`input[name="qty[${index}]"]`).val());
-
+        function showPdf(data, id) {
+            $('#pdfPreview-' + id).attr('src', ''); // Mengosongkan atribut src
+            $('#pdfPreview-' + id).attr('src', data); // Menetapkan atribut src dengan tampilan pratinjau baru
+            $('#pdfPreview-' + id).show();
         }
 
-        function calculateAchievement(index, target) {
+        $('.value').on('input', function() {
+            var inputValue = $(this).val();
 
-            // validasi dulu
-            // validasiInput(index);
+            // Hapus angka 0 di depan jika ada
+            inputValue = inputValue.replace(/^0+(?=\d)/, '');
 
-            var inputVal = parseFloat($(`input[name="qty[${index}]"]`).val()) || 0; // Menggantikan dengan nilai 0 jika null atau kosong
-            // var inputVal = parseFloat($(`input[name="qty[${index}]"]`).val()) || 0.1; // Ganti 0 dengan 0.1 jika null atau kosong
+            $(this).val(inputValue);
 
-            // var inputVal = parseFloat($(`input[name="qty[${index}]"]`).val());
+            var key = parseFloat($(this).data('key'));
+            var targetValue = parseFloat($(this).data('target'));
+            var weightValue = parseFloat($(this).data('weight'));
 
-            // if (isNaN(inputVal) || inputVal <= 0) {
-            //     inputVal = 0; // Set nilai ke 0.1 jika kosong atau bernilai 0
-            //     $(`input[name="qty[${index}]"]`).val(inputVal)
-            // }
 
-            var targetVal = parseFloat($(`#tableCreate tbody #row_${index} td:eq(3)`).text());
-            var weightVal = parseFloat($(`#tableCreate tbody #row_${index} td:eq(2)`).text());
 
-            if (!isNaN(inputVal) && inputVal >= 0.1 && inputVal <= target) {
-                var result = (inputVal / targetVal) * weightVal;
-                $(`input[name="achievement_${index}"]`).val(Math.round(result));
+            validateInput($(this), targetValue);
+
+            let achievementValue = Math.round(($(this).val() / targetValue) * weightValue);
+
+            $('#achievement-' + key).val(achievementValue);
+
+        });
+
+        function validateInput(input, targetValue) {
+            var inputValue = parseFloat(input.val());
+
+            if (isNaN(inputValue) || inputValue < 0.1) {
+                input.removeClass('is-valid');
+                input.addClass('is-invalid');
+            } else if (inputValue > targetValue) {
+                input.val(targetValue);
+                input.removeClass('is-invalid');
+                input.addClass('is-valid');
             } else {
-                $(`input[name="achievement_${index}"]`).val("Invalid Input");
+                input.removeClass('is-invalid');
+                input.addClass('is-valid');
             }
-        }
-
-        function calculateTotalAchievement() {
-            var totalAchievement = 0;
-            $("input[name^='achievement_']").each(function() {
-                var value = parseFloat($(this).val());
-                if (!isNaN(value)) {
-                    totalAchievement += value;
-                }
-            });
-
-            $("#totalAchievement").text(totalAchievement.toFixed(2));
-        }
-
-        // Fungsi untuk mengosongkan tabel
-        function clearTable() {
-            $("#tableCreate tbody").empty();
-        }
-
-        function bulanPenilaian() {
-            let bulan = $('#bulan').val();
-            let tahun = $('#tahun').val();
-
-            let date = tahun + '-' + bulan + '-01';
-
-            $('#date').val(date);
-
         }
 
     })

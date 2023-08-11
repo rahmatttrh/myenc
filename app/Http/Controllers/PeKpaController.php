@@ -88,7 +88,7 @@ class PeKpaController extends Controller
                 'kpidetail_id' => $kpidetail_id,
                 'value' => $value,
                 'achievement' => $achievement,
-                'evidence' => $pdfFileName
+                'evidence' => 'kpa-evidence/' . $pdfFileName
             ]);
 
             $acvTotal += $achievement;
@@ -123,5 +123,50 @@ class PeKpaController extends Controller
             'employes' => $employes,
             'datas' => $datas
         ])->with('i');
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'id' => 'required',
+            'value' => 'required',
+            'achievement' => 'required'
+        ]);
+
+
+        if ($request->attachment) {
+            # code...
+            $pdfFile = $request->attachment;
+
+            $pdfFileName = time() . '_' . $request->id . '.pdf';
+            $pdfFile->storeAs('kpa-evidence', $pdfFileName, 'public');
+
+            $return = PekpaDetail::where('id', $request->id)
+                ->update([
+                    'value' => $request->value,
+                    'achievement' => $request->achievement,
+                    'evidence' => 'kpa-evidence/' . $pdfFileName
+                ]);
+        } else {
+
+            $return = PekpaDetail::where('id', $request->id)
+                ->update([
+                    'value' => $request->value,
+                    'achievement' => $request->achievement
+                ]);
+        }
+
+        $acvTotal = PekpaDetail::where('kpa_id', $request->kpa_id)->sum('achievement');
+
+        $updateKpa = PeKpa::where('id', $request->kpa_id)
+            ->update([
+                'achievement' => $acvTotal
+            ]);
+
+        if ($updateKpa) {
+            return redirect()->back()->with('success', 'Data successfully Updated');
+        } else {
+            return redirect()->back()->with('danger', 'Failed');
+        }
     }
 }

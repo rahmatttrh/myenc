@@ -147,6 +147,7 @@ Route::middleware(["auth", "verified"])->group(function () {
          Route::get('/', [PeKpaController::class, 'index'])->name('kpa');
          Route::post('/', [PeKpaController::class, 'store'])->name('kpa.store');
          Route::get('edit/{id}', [PeKpaController::class, 'edit'])->name('kpa.edit');
+         Route::put('update/{id}', [PeKpaController::class, 'update'])->name('kpa.update');
       });
    });
 });
