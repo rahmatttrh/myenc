@@ -169,4 +169,15 @@ class PeKpaController extends Controller
             return redirect()->back()->with('danger', 'Failed');
         }
     }
+
+
+    public function delete($id)
+    {
+        $dekripId = dekripRambo($id);
+
+        $kpa = PeKpa::find($dekripId);
+
+        $kpa->delete();
+        return redirect()->route('kpa')->with('success', 'KPA successfully deleted');
+    }
 }

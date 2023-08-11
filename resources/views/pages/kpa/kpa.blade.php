@@ -140,6 +140,7 @@ KPA
                                     <th>Employe</th>
                                     <th>Date</th>
                                     <th>Achievement</th>
+                                    <th>Status</th>
                                     <th class="text-right">Action</th>
                                 </tr>
                             </thead>
@@ -150,12 +151,18 @@ KPA
                                     <td><a href="{{route('kpa.edit', enkripRambo($kpa->id))}}"> {{$kpa->employe->biodata->fullName()}} </a></td>
                                     <td>{{date('F Y', strtotime($kpa->date))  }}</td>
                                     <td><span class="badge badge-primary badge-lg"><b>{{$kpa->achievement}}</b></span></td>
+                                    @if($kpa->status == 0)
+                                    <td><span class="badge badge-warning badge-lg"><b>Draft</b></span></td>
+                                    @else ($kpa->status == 1)
+                                    <td><span class="badge badge-success badge-lg"><b>Release</b></span></td>
+                                    @endif
                                     <td class="text-right">
                                         {{--<a href="{{route('kpa.edit', enkripRambo($kpa->id) )}}">Edit</a>--}}
-                                        <a href="#" data-toggle="modal" data-target="#modal-delete-{{$kpa->id}}">Delete</a>
+                                        <button class="btn btn-warning"><i class="fas fa-rocket"></i> Submit</button>
+                                        <button class="btn btn-danger" data-toggle="modal" data-target="#modal-delete-{{$kpa->id}}"><i class="fas fa-trash"></i> Delete</button>
                                     </td>
                                 </tr>
-                                {{-- <x-modal.delete :id="$kpa->id" :body="$kpa->name" url="{{route('kpa.delete', enkripRambo($kpa->id))}}" /> --}}
+                                <x-modal.delete :id="$kpa->id" :body="'KPI ' . $kpa->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($kpa->date))   " url="{{route('kpa.delete', enkripRambo($kpa->id))}}" />
                                 @endforeach
                             </tbody>
                         </table>
