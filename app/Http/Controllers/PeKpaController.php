@@ -180,4 +180,20 @@ class PeKpaController extends Controller
         $kpa->delete();
         return redirect()->route('kpa')->with('success', 'KPA successfully deleted');
     }
+
+    public function submit(Request $request, $id)
+    {
+        $request->validate([
+            'id' => 'required'
+        ]);
+
+        $result = PeKpa::where('id', $request->id)
+            ->update(['status' => '1']);
+
+        if ($result) {
+            return redirect()->back()->with('success', 'Data successfully Submit');
+        } else {
+            return redirect()->back()->with('danger', 'Failed');
+        }
+    }
 }

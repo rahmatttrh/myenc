@@ -116,6 +116,16 @@ KPA
     <div class="row">
         <div class="col-md-12">
             <div class="card shadow-none border">
+                <div class="card-header">
+                    <ul class="nav nav-tabs card-header-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">Monthly</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Summary</a>
+                        </li>
+                    </ul>
+                </div>
                 <div class="card-header d-flex">
                     <div class="d-flex  align-items-center">
                         <div class="card-title">List All Performance Apprasial</div>
@@ -157,11 +167,15 @@ KPA
                                     <td><span class="badge badge-success badge-lg"><b>Release</b></span></td>
                                     @endif
                                     <td class="text-right">
-                                        {{--<a href="{{route('kpa.edit', enkripRambo($kpa->id) )}}">Edit</a>--}}
-                                        <button class="btn btn-warning"><i class="fas fa-rocket"></i> Submit</button>
+                                        @if($kpa->status == 0)
+                                        <button class="btn btn-warning" data-toggle="modal" data-target="#modal-submit-{{$kpa->id}}"><i class="fas fa-rocket"></i> Submit</button>
                                         <button class="btn btn-danger" data-toggle="modal" data-target="#modal-delete-{{$kpa->id}}"><i class="fas fa-trash"></i> Delete</button>
+                                        @else ($kpa->status == 1)
+                                        -
+                                        @endif
                                     </td>
                                 </tr>
+                                <x-modal.submit :id="$kpa->id" :body="'KPI ' . $kpa->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($kpa->date))   " url="{{route('kpa.submit', enkripRambo($kpa->id))}}" />
                                 <x-modal.delete :id="$kpa->id" :body="'KPI ' . $kpa->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($kpa->date))   " url="{{route('kpa.delete', enkripRambo($kpa->id))}}" />
                                 @endforeach
                             </tbody>
