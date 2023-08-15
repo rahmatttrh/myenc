@@ -10,6 +10,7 @@ use App\Models\PekpaDetail;
 use App\Models\PeKpi;
 use App\Models\PekpiDetail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PeKpaController extends Controller
 {
@@ -195,5 +196,130 @@ class PeKpaController extends Controller
         } else {
             return redirect()->back()->with('danger', 'Failed');
         }
+    }
+
+
+    public function summary()
+    {
+
+        $kpis = PeKpi::get();
+        $kpas = PeKpa::orderBy('date', 'desc')
+            ->orderBy('employe_id')
+            ->get();
+
+        $designations = Designation::orderBy('name')->get();
+        $departements = Department::orderBy('name')->get();
+
+        $employes = Employee::where('status', '1')
+            ->whereNotNull('kpi_id')
+            ->get();
+
+
+
+        return view('pages.kpa.kpa-summary', [
+            'designations' => $designations,
+            'departements' => $departements,
+            'kpis' => $kpis,
+            'kpas' => $kpas,
+            'employes' => $employes
+        ])->with('i');
+    }
+
+    // public function summaryDetail(Request $request)
+    // {
+    //     dd($request);
+    // }
+
+    public function summaryDetail(Request $request)
+    {
+
+        $semester = $request->semester;
+        $tahun = $request->tahun;
+
+
+        if ($semester == 'I') {
+            # JIKA SEMESTER I
+            $startMonth = 1; // Bulan Mei
+            $endMonth = 6; // Bulan Agustus
+
+            // $products = Product::
+            //     ->get();
+
+        } else if ($semester == 'II') {
+            # JIKA SEMSESTER II
+
+            $startMonth = 7; // Bulan Mei
+            $endMonth = 12; // Bulan Agustus
+        }
+
+        $kpas = PeKpa::where('employe_id', $request->employe_id)
+            ->where('status', '>', 0)
+            ->whereYear('date', $tahun)
+            ->whereMonth('date', '>=', $startMonth)
+            ->whereMonth('date', '<=', $endMonth)
+            ->orderBy('date', 'desc')
+            ->orderBy('employe_id')
+            ->get();
+
+        // $results = PeKpa::selectRaw('MONTH(date) as month, COALESCE(SUM(achievement), 0) as total_achievement')
+        //     ->whereMonth('date', '>=', $startMonth)
+        //     ->whereMonth('date', '<=', $endMonth)
+        //     ->groupBy(DB::raw('MONTH(date)'))
+        //     ->get();
+
+        // $achievementData = [];
+        // foreach ($results as $result) {
+        //     $achievementData[$result->month] = $result->total_achievement;
+        // }
+
+        // dd($results);
+
+        $months = range($startMonth, $endMonth);
+
+
+        $achievementData = array_fill_keys($months, 0);
+
+        $achievements = PeKpa::selectRaw('MONTH(date) as month, achievement')
+            ->whereIn(DB::raw('MONTH(date)'), $months)
+            ->where('employe_id', $request->employe_id)
+            ->where('status', '>', 0)
+            ->whereYear('date', $tahun)
+            ->get();
+
+        $index = 0;
+        foreach ($achievements as $achievement) {
+            $month = $achievement->month;
+            $achievementData[$month] = $achievement->achievement;
+
+            $index++;
+        }
+
+        // dd($achievementData);
+
+
+        // mencari nilai rating persemester
+        $rating = PeKpa::where('employe_id', $request->employe_id)
+            ->where('status', '>', 0)
+            ->whereYear('date', $tahun)
+            ->whereMonth('date', '>=', $startMonth)
+            ->whereMonth('date', '<=', $endMonth)
+            ->avg('achievement');
+
+        $employes = Employee::where('status', '1')
+            ->whereNotNull('kpi_id')
+            ->get();
+
+        $karyawan = Employee::find($request->employe_id);
+
+
+        return view('pages.kpa.kpa-summary-detail', [
+            'kpas' => $kpas,
+            'employes' => $employes,
+            'karyawan' => $karyawan,
+            'semester' => $semester,
+            'tahun' => $tahun,
+            'rating' => intval($rating),
+            'achievementData' => $achievementData
+        ])->with('i');
     }
 }

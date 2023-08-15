@@ -16,16 +16,17 @@ KPA
             <div class="card shadow-none border">
                 <div class="card-header d-flex">
                     <div class="d-flex  align-items-center">
-                        <div class="card-title">Give Performance Apprasial</div>
+                        <div class="card-title">Summary KPI</div>
                     </div>
 
                 </div>
-                <div class="card-body">
-                    <form>
-                        @csrf
+                <form action="{{route('kpa.summary.detail')}}" method="GET">
+                    @csrf
+                    <div class="card-body">
+
                         <div class="form-group form-group-default">
                             <label>Employee</label>
-                            <select class="form-control" name="employe_id" id="employe_id">
+                            <select class="form-control" name="employe_id" id="employe_id" required>
                                 <option value="">--- Choose Employe ---</option>
                                 @foreach ($employes as $employe)
                                 <option value="{{$employe->id}}">{{$employe->biodata->first_name}} {{$employe->biodata->last_name}}</option>
@@ -33,22 +34,12 @@ KPA
                             </select>
                         </div>
                         <div class="form-group form-group-default">
-                            <label>Month</label>
+                            <label>Semester</label>
                             <div class="row">
                                 <div class="col">
-                                    <select class="form-control form-select date" id="bulan" name="bulan">
-                                        <option value="01" {{ date('m') == '02' ? 'selected' : '' }} {{ date('m') < '02' ? 'disabled' : '' }}>Januari</option>
-                                        <option value="02" {{ date('m') == '03' ? 'selected' : '' }} {{ date('m') < '03' ? 'disabled' : '' }}>Februari</option>
-                                        <option value="03" {{ date('m') == '04' ? 'selected' : '' }} {{ date('m') < '04' ? 'disabled' : '' }}>Maret</option>
-                                        <option value="04" {{ date('m') == '05' ? 'selected' : '' }} {{ date('m') < '05' ? 'disabled' : '' }}>April</option>
-                                        <option value="05" {{ date('m') == '06' ? 'selected' : '' }} {{ date('m') < '06' ? 'disabled' : '' }}>Mei</option>
-                                        <option value="06" {{ date('m') == '07' ? 'selected' : '' }} {{ date('m') < '07' ? 'disabled' : '' }}>Juni</option>
-                                        <option value="07" {{ date('m') == '08' ? 'selected' : '' }} {{ date('m') < '08' ? 'disabled' : '' }}>Juli</option>
-                                        <option value="08" {{ date('m') == '09' ? 'selected' : '' }} {{ date('m') < '09' ? 'disabled' : '' }}>Agustus</option>
-                                        <option value="09" {{ date('m') == '10' ? 'selected' : '' }} {{ date('m') < '10' ? 'disabled' : '' }}>September</option>
-                                        <option value="10" {{ date('m') == '11' ? 'selected' : '' }} {{ date('m') < '11' ? 'disabled' : '' }}>Oktober</option>
-                                        <option value="11" {{ date('m') == '12' ? 'selected' : '' }} {{ date('m') < '12' ? 'disabled' : '' }}>November</option>
-                                        <option value="12" {{ date('m') == '01' ? 'selected' : '' }}>Desember</option>
+                                    <select class="form-control form-select date" id="bulan" name="semester">
+                                        <option value="I" {{ date('m') == '02' ? 'selected' : '' }} {{ date('m') < '02' ? 'disabled' : '' }}>I</option>
+                                        <option value="II" {{ date('m') == '03' ? 'selected' : '' }} {{ date('m') < '03' ? 'disabled' : '' }}>II</option>
                                     </select>
                                 </div>
                                 <div class="col">
@@ -60,15 +51,20 @@ KPA
                                 </div>
                             </div>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" class="btn btn-primary ml-auto"><i class="fas fa-check"></i> Cek</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
         <div class="col-md-9">
             <div class="card shadow-none border">
                 <div class="card-header">
                     <div class="col-md-1 float-right mb-3">
-                        <button type="button" id="hide" class="btn btn-block btn-danger"><i class="fa fa-minus"></i> Hide </button>
+                        <!-- <button type="button" id="hide" class="btn btn-block btn-danger"><i class="fa fa-minus"></i> Hide </button> -->
                     </div>
                     <div class="card-title">Objective KPI</div>
                 </div>
@@ -112,78 +108,6 @@ KPA
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card shadow-none border">
-                <div class="card-header">
-                    <ul class="nav nav-tabs card-header-tabs">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="#">Monthly</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{route('kpa.summary')}}">Summary</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="card-header d-flex">
-                    <div class="d-flex  align-items-center">
-                        <div class="card-title">List All Performance Apprasial</div>
-                    </div>
-                    <div class="btn-group btn-group-page-header ml-auto">
-                        <button type="button" class="btn btn-light btn-round btn-page-header-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fa fa-ellipsis-h"></i>
-                        </button>
-                        <div class="dropdown-menu">
-                            <btn id="btnCreate" class="dropdown-item" style="text-decoration: none">Create</btn>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" style="text-decoration: none" href="" target="_blank">Print Preview</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table id="basic-datatables" class="display basic-datatables table table-striped ">
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Employe</th>
-                                    <th>Date</th>
-                                    <th>Achievement</th>
-                                    <th>Status</th>
-                                    <th class="text-right">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($kpas as $kpa)
-                                <tr>
-                                    <td>{{++$i}}</td>
-                                    <td><a href="{{route('kpa.edit', enkripRambo($kpa->id))}}"> {{$kpa->employe->biodata->fullName()}} </a></td>
-                                    <td>{{date('F Y', strtotime($kpa->date))  }}</td>
-                                    <td><span class="badge badge-primary badge-lg"><b>{{$kpa->achievement}}</b></span></td>
-                                    @if($kpa->status == 0)
-                                    <td><span class="badge badge-warning badge-lg"><b>Draft</b></span></td>
-                                    @else ($kpa->status == 1)
-                                    <td><span class="badge badge-success badge-lg"><b>Release</b></span></td>
-                                    @endif
-                                    <td class="text-right">
-                                        @if($kpa->status == 0)
-                                        <button class="btn btn-warning" data-toggle="modal" data-target="#modal-submit-{{$kpa->id}}"><i class="fas fa-rocket"></i> Submit</button>
-                                        <button class="btn btn-danger" data-toggle="modal" data-target="#modal-delete-{{$kpa->id}}"><i class="fas fa-trash"></i> Delete</button>
-                                        @else ($kpa->status == 1)
-                                        -
-                                        @endif
-                                    </td>
-                                </tr>
-                                <x-modal.submit :id="$kpa->id" :body="'KPI ' . $kpa->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($kpa->date))   " url="{{route('kpa.submit', enkripRambo($kpa->id))}}" />
-                                <x-modal.delete :id="$kpa->id" :body="'KPI ' . $kpa->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($kpa->date))   " url="{{route('kpa.delete', enkripRambo($kpa->id))}}" />
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
 @endsection
@@ -191,8 +115,6 @@ KPA
 @push('js_footer')
 <script>
     $(document).ready(function() {
-
-        $('#boxCreate').hide();
 
         bulanPenilaian();
 
@@ -239,8 +161,8 @@ KPA
                             "class": "form-control",
                             "name": `qty[${rowData.id}]`, // Menggunakan ID sebagai bagian dari array name
                             "value": 0,
-                            "min": 0.01,
-                            "max": rowData.target,
+                            "min": 0 I,
+                            "max": rIIData.target,
                             "step": "0.01" // Step untuk 2 digit desimal
                         }).on('input', function() {
                             // Menghapus angka nol di depan input jika ada
