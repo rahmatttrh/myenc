@@ -116,10 +116,10 @@ KPI
                                 @foreach ($datas as $data)
                                 <tr>
                                     <td>{{++$i}}</td>
-                                    <td>{{$data->objective}}</td>
+                                    <td><a href="" data-toggle="modal" data-target="#detail-{{$data->id}}"> {{$data->objective}}</a></td>
                                     <td>{{$data->kpi}}</td>
                                     <td><b> {{$data->weight}} % </b></td>
-                                    <td>{{$data->target}}</td>
+                                    <td> <a href="" data-toggle="modal" data-target="#poin-{{$data->id}}"> <i>{{$data->target}}</i> </a></td>
                                     <td>{{$data->priode_target}}</td>
                                     <td class="text-right">
                                         {{--<a href="{{route('data.edit', enkripRambo($data->id) )}}">Edit</a>--}}
@@ -128,6 +128,139 @@ KPI
                                 </tr>
                                 <x-modal.delete :id="$data->id" :body="$data->name" url="" />
                                 {{--<x-modal.delete :id="$data->id" :body="$data->name" url="{{route('data.delete', enkripRambo($data->id))}}" />--}}
+
+                                <!-- Modal -->
+                                <div class="modal fade " id="detail-{{$data->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <form>
+                                                <div class="modal-header">
+                                                    <h3 class="modal-title" id="exampleModalLabel"><br><i>{{$data->objective}}</i></h3>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="card shadow-none border">
+                                                                <div class="card-header d-flex">
+                                                                    <div class="d-flex  align-items-center">
+                                                                        <div class="card-title">Detail</div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="card-body">
+                                                                    <div class="form-group form-group-default">
+                                                                        <label>Objective</label>
+                                                                        {{$data->objective}}
+                                                                    </div>
+                                                                    <div class="form-group form-group-default">
+                                                                        <label>KPI</label>
+                                                                        {{$data->kpi}}
+                                                                    </div>
+                                                                    <div class="form-group form-group-default">
+                                                                        <label>Weight</label>
+                                                                        {{$data->weight}} %
+                                                                    </div>
+                                                                    <div class="form-group form-group-default">
+                                                                        <label>Target</label>
+                                                                        {{$data->target}}
+                                                                    </div>
+                                                                    <div class="form-group form-group-default">
+                                                                        <label>Priode Target</label>
+                                                                        {{$data->priode_target}}
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        @php
+                                                        $points = $data->points;
+                                                        @endphp
+                                                        <div class="col-md-6">
+                                                            <div class="card shadow-none border">
+                                                                <div class="card-header d-flex">
+                                                                    <div class="d-flex  align-items-center">
+                                                                        <div class="card-title">KPI Point</div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="card-body">
+
+                                                                    @if($points->count() > 0)
+                                                                    @foreach ($points as $point)
+
+                                                                    <div class="form-group form-group-default">
+                                                                        <div class="d-flex justify-content-between mb-3">
+                                                                            <label>
+                                                                                <h3>{{ $point->point }}</h3>
+                                                                            </label>
+                                                                            <a href="{{route('kpi.point.delete', enkripRambo($point->id))}}" class="btn btn-danger btn-xs"> <i class="fas fa-trash"></i> </a>
+                                                                        </div>
+                                                                        {{$point->keterangan}}
+                                                                    </div>
+                                                                    @endforeach
+                                                                    @else
+                                                                    <div class="form-group form-group-default">
+                                                                        <label>
+                                                                        </label>
+                                                                        - Tidak ada data KPI poin -
+                                                                    </div>
+                                                                    @endif
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Modal -->
+                                <div class="modal fade " id="poin-{{$data->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <form action="{{route('kpi.point.store')}}" method="POST">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h3 class="modal-title" id="exampleModalLabel">Create KPI Poin <br><i>{{$data->objective}}</i></h3>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="card shadow-none border">
+                                                        <div class="card-header d-flex">
+                                                            <div class="d-flex  align-items-center">
+                                                                <div class="card-title">Form Create KPI Poin</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            @csrf
+                                                            <input type="hidden" name="kpi_id" value="{{$kpi->id}}">
+                                                            <input type="hidden" name="pekpi_detail_id" value="{{$data->id}}">
+                                                            <div class="form-group form-group-default">
+                                                                <label>Poin</label>
+                                                                <input required value="4" id="point" min="1" max="4" name="point" type="number" class="form-control">
+                                                            </div>
+                                                            <div class="form-group form-group-default">
+                                                                <label>Keterangan</label>
+                                                                <textarea required name="keterangan" id="" class="form-control" rows="5"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-primary">Save</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
                                 @endforeach
                             </tbody>
                         </table>

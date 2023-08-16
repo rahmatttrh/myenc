@@ -7,6 +7,7 @@ use App\Models\Designation;
 use App\Models\Employee;
 use App\Models\PeKpi;
 use App\Models\PekpiDetail;
+use App\Models\PekpiPoint;
 use Illuminate\Http\Request;
 
 class PeKpiController extends Controller
@@ -86,6 +87,21 @@ class PeKpiController extends Controller
         ])->with('i');
     }
 
+    public function deletePoint($id)
+    {
+
+        $point = PekpiPoint::find(dekripRambo($id));
+        $delete = $point->delete();
+
+        if ($delete) {
+            # code...
+            return back()->with('success', 'Point successfully deleted');
+        } else {
+            # code...
+            return back()->with('danger', 'Failed');
+        }
+    }
+
     public function addUser(Request $req)
     {
         $req->validate([
@@ -104,6 +120,39 @@ class PeKpiController extends Controller
             return redirect()->back()->with('success', 'User successfully added KPI');
         } else {
             return redirect()->back()->with('danger', 'Failed');
+        }
+    }
+
+    // Store Apprasial
+    public function storePoint(Request $req)
+    {
+
+        $req->validate([
+            'kpi_id' => 'required',
+            'pekpi_detail_id' => 'required',
+            'point' => 'required',
+            'keterangan' => 'required'
+        ]);
+
+        $cek = PekpiPoint::where('pekpi_detail_id', $req->pekpi_detail_id)
+            ->where('point', $req->point)->first();
+
+        if ($cek) {
+            return back()->with('danger', 'Objective dengan poin ' . $req->point . ' tersebut sudah ada!');
+        }
+
+        $insert = PekpiPoint::create([
+            'pekpi_detail_id' => $req->pekpi_detail_id,
+            'point' => $req->point,
+            'keterangan' => $req->keterangan
+        ]);
+
+        if ($insert) {
+            # code...
+            return back()->with('success', 'KPI Point successfully added');
+        } else {
+            # code...
+            return back()->with('error', 'Failed');
         }
     }
 }

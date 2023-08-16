@@ -14,4 +14,9 @@ class PekpiDetail extends Model
     {
         return $this->hasMany(PekpaDetail::class);
     }
+
+    public function points()
+    {
+        return $this->hasMany(PekpiPoint::class);
+    }
 }

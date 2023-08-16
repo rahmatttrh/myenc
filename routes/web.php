@@ -140,6 +140,11 @@ Route::middleware(["auth", "verified"])->group(function () {
          // DETAIL
          Route::post('/detail', [PekpiDetailController::class, 'store'])->name('kpidetail.store');
          Route::post('/detail/add-user', [PeKpiController::class, 'addUser'])->name('kpi.add.user');
+
+
+         // KPI POINT
+         Route::post('point', [PeKpiController::class, 'storePoint'])->name('kpi.point.store');
+         Route::get('delete-point/{id}', [PeKpiController::class, 'deletePoint'])->name('kpi.point.delete');  // Belum selesai semua
       });
 
       // KPA

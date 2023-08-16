@@ -15,7 +15,7 @@ class CreatePekpiPointsTable extends Migration
     {
         Schema::create('pekpi_points', function (Blueprint $table) {
             $table->tinyIncrements('id');
-            $table->bigInteger('pekpidetail_id');
+            $table->bigInteger('pekpi_detail_id');
             $table->integer('point');
             $table->string('keterangan');
             $table->timestamps();
