@@ -126,8 +126,7 @@ KPI
                                         <a href="#" data-toggle="modal" data-target="#modal-delete-{{$data->id}}">Delete</a>
                                     </td>
                                 </tr>
-                                <x-modal.delete :id="$data->id" :body="$data->name" url="" />
-                                {{--<x-modal.delete :id="$data->id" :body="$data->name" url="{{route('data.delete', enkripRambo($data->id))}}" />--}}
+                                <x-modal.delete :id="$data->id" :body="$data->objective" url="{{route('kpi.objective.delete', enkripRambo($data->id))}}" />
 
                                 <!-- Modal -->
                                 <div class="modal fade " id="detail-{{$data->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -264,6 +263,9 @@ KPI
                                 @endforeach
                             </tbody>
                         </table>
+                        <small class="text-danger">*Untuk melihat KPI Point silahkan klik data pada kolom objective </small>
+                        <br>
+                        <small class="text-danger">*Dan untuk menambahkan KPI Point silahkan klik data pada kolom target</small>
                     </div>
                 </div>
             </div>

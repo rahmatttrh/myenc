@@ -20,8 +20,13 @@ class PekpiDetailController extends Controller
             'priode_target' => 'required'
         ]);
 
+        $totalWeight = PekpiDetail::where('kpi_id', $req->kpi_id)->sum('weight');
 
-        PekpiDetail::create([
+        if ($totalWeight + $req->weight > 100) {
+            return back()->with('danger', 'Bobot lebih dari status');
+        }
+
+        $insert = PekpiDetail::create([
             'kpi_id' => $req->kpi_id,
             'metode' => $req->metode,
             'objective' => $req->objective,
@@ -31,6 +36,12 @@ class PekpiDetailController extends Controller
             'priode_target' => $req->priode_target
         ]);
 
-        return redirect()->back()->with('success', 'Objective KPI successfully added');
+        if ($insert) {
+            # code...
+            return redirect()->back()->with('success', 'Objective KPI successfully added');
+        } else {
+            # code...
+            return back()->with('danger', 'Failed');
+        }
     }
 }

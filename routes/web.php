@@ -131,7 +131,7 @@ Route::middleware(["auth", "verified"])->group(function () {
          Route::get('/', [PeKpiController::class, 'index'])->name('kpi');
          Route::post('', [PeKpiController::class, 'store'])->name('kpi.store');
          Route::get('{id}', [PeKpiController::class, 'edit'])->name('kpi.edit');
-         Route::get('delete/{designation:id}', [PeKpiController::class, 'delete'])->name('kpi.delete');  // Belum selesai semua
+         Route::get('delete-objective/{id}', [PeKpiController::class, 'deleteObjective'])->name('kpi.objective.delete');  // Belum selesai semua
 
          // id yang di gunakan id employee
          // untuk melakukan penilaian

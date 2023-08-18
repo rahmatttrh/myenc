@@ -128,7 +128,7 @@ KPA
                                                                         <label for="achievement">Achievement:</label>
                                                                         <input type="text" class="form-control" id="achievement-{{$data->id}}" name="achievement" value="{{ $data->achievement }}" readonly>
                                                                     </div>
-
+                                                                    @if($kpa->status == '0')
                                                                     <div class="form-group">
                                                                         <label for="attachment">Evidence</label>
                                                                         <input type="file" class="form-control-file attachment" id="attachment" data-key="{{ $data->id }}" name="attachment" accept=".pdf">
@@ -139,6 +139,7 @@ KPA
                                                                             <i class="fa fa-refresh"></i> Reset
                                                                         </button>
                                                                     </div>
+                                                                    @endif
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -169,7 +170,9 @@ KPA
                                                 <!-- Bagian footer modal -->
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-danger" data-dismiss="modal">Tutup</button>
+                                                    @if($kpa->status == '0')
                                                     <button type="submit" class="btn btn-warning">Update</button>
+                                                    @endif
                                                 </div>
                                             </form>
 
