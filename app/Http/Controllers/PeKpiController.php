@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Department;
 use App\Models\Designation;
 use App\Models\Employee;
+use App\Models\PeKpa;
 use App\Models\PekpaDetail;
 use App\Models\PeKpi;
 use App\Models\PekpiDetail;
@@ -86,6 +87,27 @@ class PeKpiController extends Controller
             'users' => $users,
             'datas' => $datas
         ])->with('i');
+    }
+
+    public function delete($id)
+    {
+        // CEK APAKAH ADA RELASI DI TABLE KPA DETAIL
+        $cek  =  PeKpa::where('kpi_id', dekripRambo($id))->get();
+        if ($cek->count() != 0) {
+            # code...
+            return  back()->with('danger', 'KPI ada relasi di KPI Aprasial !');
+        }
+
+        $kpiDetail = PeKpi::find(dekripRambo($id));
+        $delete = $kpiDetail->delete();
+
+        if ($delete) {
+            # code...
+            return back()->with('success', 'KPI successfully deleted');
+        } else {
+            # code...
+            return back()->with('danger', 'Failed');
+        }
     }
 
     public function deleteObjective($id)

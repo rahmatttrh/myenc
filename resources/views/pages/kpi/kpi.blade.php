@@ -107,7 +107,7 @@ Designation
                                 <a href="#" data-toggle="modal" data-target="#modal-delete-{{$kpi->id}}">Delete</a>
                             </td>
                         </tr>
-                        <x-modal.delete :id="$kpi->id" :body="$kpi->name" url="" />
+                        <x-modal.delete :id="$kpi->id" :body="$kpi->title" url="{{route('kpi.delete', enkripRambo($kpi->id))}}" />
                         @endforeach
                     </tbody>
                 </table>
