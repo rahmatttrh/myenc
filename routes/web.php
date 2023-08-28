@@ -155,12 +155,18 @@ Route::middleware(["auth", "verified"])->group(function () {
          Route::post('/', [PeKpaController::class, 'store'])->name('kpa.store');
          Route::get('edit/{id}', [PeKpaController::class, 'edit'])->name('kpa.edit');
          Route::put('update/{id}', [PeKpaController::class, 'update'])->name('kpa.update');
+         // ADDTIONAL
+         Route::put('addtional-update/{id}', [PeKpaController::class, 'updateAddtional'])->name('kpa.addtional.update');
+
          Route::get('delete/{kpa:id}', [PeKpaController::class, 'delete'])->name('kpa.delete');
          Route::put('submit/{id}', [PeKpaController::class, 'submit'])->name('kpa.submit');
 
          Route::get('/summary', [PeKpaController::class, 'summary'])->name('kpa.summary');
          // Route::post('/summary/detail', [PeKpaController::class, 'summaryDetail'])->name('kpa.summary.detail');
          Route::get('/summary/detail', [PeKpaController::class, 'summaryDetail'])->name('kpa.summary.detail');
+
+         Route::post('addtional/{id}', [PeKpaController::class, 'storeAddtional'])->name('kpa.addtional.store');
+         Route::get('addtional-delete/{id}', [PeKpaController::class, 'deleteAddtional'])->name('kpa.addtional.delete');
       });
    });
 });

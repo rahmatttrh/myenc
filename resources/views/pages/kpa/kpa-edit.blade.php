@@ -39,8 +39,20 @@ KPA
         </div>
         <div class="col-md-9">
             <div class="card shadow-none border">
-                <div class="card-header">
-                    <div class="card-title">Objective KPI</div>
+                <div class="card-header d-flex">
+                    <div class="d-flex  align-items-center">
+                        <div class="card-title">Objective KPI</div>
+                    </div>
+                    @if($kpa->status == '0')
+                    <div class="btn-group btn-group-page-header ml-auto">
+                        <button type="button" class="btn btn-light btn-round btn-page-header-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-ellipsis-h"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            <btn data-target="#modalAddtional" data-toggle="modal" class="dropdown-item" style="text-decoration: none">Addtional Objective</btn>
+                        </div>
+                    </div>
+                    @endif
                 </div>
                 <input type="hidden" id="kpi_id" name="kpi_id">
                 <input type="hidden" id="employee_id" name="employe_id">
@@ -59,6 +71,9 @@ KPA
                                 </tr>
                             </thead>
                             <tbody>
+                                @php
+                                $totalAcv = 0;
+                                @endphp
                                 @foreach ($datas as $data)
 
                                 @php
@@ -179,11 +194,131 @@ KPA
                                         </div>
                                     </div>
                                 </div>
+                                @php
+                                $totalAcv += $data->achievement;
+                                @endphp
+
                                 @endforeach
                             </tbody>
                             <tfoot>
+                                @if($addtional)
                                 <tr>
-                                    <th colspan="5" class="text-right">Achievement</th>
+                                    <td class="text-right" colspan="5">Achievement</td>
+                                    <td class="text-right"><b>{{$totalAcv}}</b></td>
+                                </tr>
+                                <tr>
+                                    <td>Addtional </td>
+                                    <td><b><a href="#" data-target="#modalAddtional" data-toggle="modal">{{$addtional->addtional_objective}}</a></b></td>
+                                    <td>{{$addtional->addtional_weight}}</td>
+                                    <td>{{$addtional->addtional_target}}</td>
+                                    <td>{{$addtional->value}}</td>
+                                    <td class="text-right"><b>{{$addtional->achievement}}</b></td>
+                                </tr>
+
+                                <div class="modal fade" id="modalAddtional" data-bs-backdrop="static">
+                                    <div class="modal-dialog" style="max-width: 80%;">
+                                        <div class="modal-content">
+
+                                            <!-- Bagian header modal -->
+                                            <div class="modal-header bg-primary">
+                                                <h3 class="modal-title">{{$addtional->addtional_objective}} </h3>
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            </div>
+
+                                            <form method="POST" action="{{route('kpa.addtional.update',$kpa->id) }}" enctype="multipart/form-data">
+                                                @csrf
+                                                @method('PUT')
+
+                                                <input type="hidden" name="id" value="{{$data->id}}">
+                                                <input type="hidden" name="kpa_id" value="{{$kpa->id}}">
+
+                                                <!-- Bagian konten modal -->
+                                                <div class="modal-body">
+
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <div class="card shadow-none border">
+                                                                <div class="card-header d-flex">
+                                                                    <div class="d-flex  align-items-center">
+                                                                        <div class="card-title">Form Edit</div>
+                                                                    </div>
+
+                                                                </div>
+                                                                <div class="card-body">
+                                                                    <div class="form-group">
+                                                                        <label for="objective">Objective:</label>
+                                                                        <input type="text" class="form-control" id="objective" name="objective" value="{{ $addtional->addtional_objective }}">
+                                                                    </div>
+
+                                                                    <div class="form-group">
+                                                                        <label for="weight">Weight:</label>
+                                                                        <input type="number" class="form-control" id="weight" name="weight" min="1" max="20" value="{{ $addtional->addtional_weight }}">
+                                                                    </div>
+
+                                                                    <div class="form-group">
+                                                                        <label for="target">Target:</label>
+                                                                        <input type="text" class="form-control" id="target" name="target" value="{{ $addtional->addtional_target }}" readonly>
+                                                                    </div>
+
+                                                                    <div class="form-group">
+                                                                        <label for="value">Value:</label>
+                                                                        <input type="text" class="form-control valueAddtional" id="value" name="value" data-key="{{ $addtional->id }}" data-target="{{ $addtional->addtional_target }}" data-weight="{{ $addtional->addtional_weight }}" value="{{ old('value', $addtional->value) }}" autocomplete="off">
+                                                                    </div>
+
+                                                                    <div class="form-group">
+                                                                        <label for="achievement">Achievement:</label>
+                                                                        <input type="text" class="form-control" id="achievement-{{$addtional->id}}" name="achievement" value="{{ $addtional->achievement }}" readonly>
+                                                                    </div>
+                                                                    @if($kpa->status == '0')
+                                                                    <div class="form-group">
+                                                                        <label for="attachment">Evidence</label>
+                                                                        <input type="file" class="form-control-file attachment" id="attachment" data-key="{{ $addtional->id }}" name="attachment" accept=".pdf">
+                                                                        <label for="attachment">*opsional jika evidence ingin di rubah</label>
+                                                                    </div>
+                                                                    @endif
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-8">
+                                                            <div class="card shadow-none border">
+                                                                <div class="card-header d-flex">
+                                                                    <div class="d-flex  align-items-center">
+                                                                        <div class="card-title">Evidence</div>
+                                                                    </div>
+
+                                                                </div>
+                                                                <div class="card-body">
+                                                                    @if ($data->evidence)
+                                                                    <iframe src="{{ Storage::url($addtional->evidence) }}" id="pdfPreview-{{$addtional->id}}" width=" 100%" height="575px"></iframe>
+                                                                    @else
+                                                                    <p>No attachment available.</p>
+                                                                    @endif
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+
+                                                </div>
+
+                                                <!-- Bagian footer modal -->
+                                                <div class="modal-footer">
+                                                    @if($kpa->status == '0')
+                                                    <a href="/kpa/addtional-delete/{{enkripRambo($addtional->id)}}" onclick="return confirm('Apakah Anda yakin ingin menghapus item ini?')"><button type="button" class="btn btn-danger"> <i class="fa fa-trash "></i> Delete</button></a>
+                                                    <button type="submit" class="btn btn-warning">Update</button>
+                                                    @endif
+                                                    <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                @endif
+                                <tr>
+                                    <th colspan="5" class="text-right">Achievement Final</th>
                                     <th class="text-right" id="totalAchievement">{{$kpa->achievement}}</th>
                                 </tr>
                             </tfoot>
@@ -192,6 +327,86 @@ KPA
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalAddtional" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <!-- Bagian header modal -->
+            <div class="modal-header">
+                <h3 class="modal-title"> </h3>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            {{-- <form method="POST" action="{{route('kpa.update',$kpa->id) }}" enctype="multipart/form-data"> --}}
+            <form method="POST" action="{{route('kpa.addtional.store',$kpa->id) }}" enctype="multipart/form-data">
+                @csrf
+
+                <input type="hidden" name="id" value="{{$data->id}}">
+                <input type="hidden" name="kpa_id" value="{{$kpa->id}}">
+
+                <!-- Bagian konten modal -->
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card shadow-none border">
+                                <div class="card-header d-flex">
+                                    <div class="d-flex  align-items-center">
+                                        <div class="card-title">Form Addtional Objective</div>
+                                    </div>
+
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label for="objective">Objective:</label>
+                                        <input type="text" class="form-control" id="objective" name="objective" value="" placeholder="isi objective" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="weight">Weight:</label>
+                                        <input type="number" class="form-control calculateAdd" id="weight-addtional" name="weight" min="1" max="20" value="20">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="target">Target:</label>
+                                        <input type="text" class="form-control" id="target" name="target" value="4" readonly>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="value">Value:</label>
+                                        <input type="text" class="form-control value calculateAdd" id="value-addtional" name="value" data-target="4" value="4" autocomplete="off">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="achievement">Achievement:</label>
+                                        <input type="text" class="form-control" id="achievement-addtional" name="achievement" value="20" readonly>
+                                    </div>
+                                    @if($kpa->status == '0')
+                                    <div class="form-group">
+                                        <label for="attachment">Evidence</label>
+                                        <input type="file" class="form-control-file attachment" id="attachment" name="attachment" accept=".pdf" required>
+                                        <label for="attachment">*opsional jika evidence ingin di rubah</label>
+                                    </div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bagian footer modal -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Tutup</button>
+                    @if($kpa->status == '0')
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                    @endif
+                </div>
+            </form>
+
         </div>
     </div>
 </div>
@@ -244,6 +459,40 @@ KPA
             $('#achievement-' + key).val(achievementValue);
 
         });
+
+        $('.valueAddtional').on('input', function() {
+            var inputValue = $(this).val();
+
+            // Hapus angka 0 di depan jika ada
+            inputValue = inputValue.replace(/^0+(?=\d)/, '');
+
+            $(this).val(inputValue);
+
+            var key = parseFloat($(this).data('key'));
+            var targetValue = parseFloat($(this).data('target'));
+            var weightValue = parseFloat($(this).data('weight'));
+
+
+
+            validateInput($(this), targetValue);
+
+            let achievementValue = Math.round(($(this).val() / targetValue) * weightValue);
+
+            $('#achievement-' + key).val(achievementValue);
+
+        });
+
+        $('.calculateAdd').on('input', function() {
+
+            let weightAdd = $("#weight-addtional").val();
+            let valueAdd = $("#value-addtional").val();
+
+            let totalAdd = Math.round((valueAdd / 4) * weightAdd); // 4 DI AMBIL Dari nilai default target
+
+            $('#achievement-addtional').val(totalAdd);
+        });
+
+
 
         function validateInput(input, targetValue) {
             var inputValue = parseFloat(input.val());

@@ -16,9 +16,13 @@ class CreatePekpaDetailsTable extends Migration
         Schema::create('pekpa_details', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('kpa_id');
-            $table->bigInteger('kpidetail_id');
+            $table->bigInteger('kpidetail_id')->nullable();
             $table->decimal('value', 6, 2)->default(0);
             $table->integer('achievement')->default(0);
+            $table->string('addtional', 1)->default(0);
+            $table->string('addtional_objective')->nullable();
+            $table->integer('addtional_weight', 1)->default(0);
+            $table->integer('addtional_target')->nullable();
             $table->string('evidence');
             $table->timestamps();
         });

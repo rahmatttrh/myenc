@@ -107,7 +107,11 @@ class PeKpaController extends Controller
     {
 
         $kpa = PeKpa::find(dekripRambo($id));
-        $datas = PekpaDetail::where('kpa_id', $kpa->id)->get();
+        $datas = PekpaDetail::where('kpa_id', $kpa->id)->where('addtional', '0')->get();
+        // Additional 
+        $addtional = PekpaDetail::where('kpa_id', $kpa->id)->where('addtional', '1')->first();
+        // dd($addtional);
+
         $employes = Employee::where('status', '1')
             ->whereNotNull('kpi_id')
             ->get();
@@ -122,6 +126,7 @@ class PeKpaController extends Controller
         return view('pages.kpa.kpa-edit', [
             'kpa' => $kpa,
             'employes' => $employes,
+            'addtional' => $addtional,
             'datas' => $datas
         ])->with('i');
     }
@@ -168,6 +173,106 @@ class PeKpaController extends Controller
             return redirect()->back()->with('success', 'Data successfully Updated');
         } else {
             return redirect()->back()->with('danger', 'Failed');
+        }
+    }
+
+    public function updateAddtional(Request $request, $id)
+    {
+        dd($request);
+        $request->validate([
+            'id' => 'required',
+            'objective' => 'required',
+            'weight' => 'required',
+            'target' => 'required',
+            'value' => 'required',
+            'achievement' => 'required'
+        ]);
+
+
+        // if ($request->attachment) {
+        //     # code...
+        //     $pdfFile = $request->attachment;
+
+        //     $pdfFileName = time() . '_' . $request->id . '.pdf';
+        //     $pdfFile->storeAs('kpa-evidence', $pdfFileName, 'public');
+
+        //     $return = PekpaDetail::where('id', $request->id)
+        //         ->update([
+        //             'value' => $request->value,
+        //             'achievement' => $request->achievement,
+        //             'evidence' => 'kpa-evidence/' . $pdfFileName
+        //         ]);
+        // } else {
+
+        //     $return = PekpaDetail::where('id', $request->id)
+        //         ->update([
+        //             'value' => $request->value,
+        //             'achievement' => $request->achievement
+        //         ]);
+        // }
+
+        // $acvTotal = PekpaDetail::where('kpa_id', $request->kpa_id)->sum('achievement');
+
+        // $updateKpa = PeKpa::where('id', $request->kpa_id)
+        //     ->update([
+        //         'achievement' => $acvTotal
+        //     ]);
+
+        // if ($updateKpa) {
+        //     return redirect()->back()->with('success', 'Data successfully Updated');
+        // } else {
+        //     return redirect()->back()->with('danger', 'Failed');
+        // }
+    }
+
+    public function storeAddtional(Request $request, $id)
+    {
+        $request->validate([
+            'kpa_id' => 'required',
+            'objective' => 'required',
+            'weight' => 'required',
+            'target' => 'required',
+            'value' => 'required',
+            'achievement' => 'required'
+        ]);
+
+        $pdfFile = $request->attachment;
+
+        $pdfFileName = time() . '_addtional_' . $request->kpa_id . '.pdf';
+        $pdfFile->storeAs('kpa-evidence', $pdfFileName, 'public');
+
+        $acv = PeKpa::where('id', $request->kpa_id)->sum('achievement');
+
+        $totalWeight = 100 + $request->weight;
+
+
+        // Acivement total = activment di tambahan addational di bagi total weight
+        $acvTotal = round((($acv + $request->achievement) / $totalWeight) * 100);
+
+        $insert = PekpaDetail::create([
+            'kpa_id' => $request->kpa_id,
+            'kpidetail_id' => NULL,
+            'value' => $request->value,
+            'achievement' => $request->achievement,
+            'addtional' => '1',
+            'addtional_objective' => $request->objective,
+            'addtional_target' => $request->target,
+            'addtional_weight' => $request->weight,
+            'evidence' => 'kpa-evidence/' . $pdfFileName
+        ]);
+
+
+
+        $update = PeKpa::where('id', $request->kpa_id)
+            ->update([
+                'achievement' => $acvTotal
+            ]);
+
+
+        if ($insert && $update) {
+            return back()->with('success', 'Data successfully Created');
+        } else {
+            return back()->with('danger', 'Failed');
         }
     }
 
@@ -321,5 +426,16 @@ class PeKpaController extends Controller
             'rating' => intval($rating),
             'achievementData' => $achievementData
         ])->with('i');
+    }
+
+
+    public function deleteAddtional($id)
+    {
+        $dekripId = dekripRambo($id);
+
+        $kpadetail = PekpaDetail::find($dekripId);
+
+        $kpadetail->delete();
+        return back()->with('success', 'Addtional successfully deleted');
     }
 }
