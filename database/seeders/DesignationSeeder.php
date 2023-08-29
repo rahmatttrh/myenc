@@ -15,30 +15,50 @@ class DesignationSeeder extends Seeder
    public function run()
    {
       Designation::create([
-         'name' => 'Manager',
-         'created_at' => NOW(),
-         'updated_at' => NOW()
-      ]);
-      Designation::create([
-         'name' => 'Assistant Manager',
-         'created_at' => NOW(),
-         'updated_at' => NOW()
-      ]);
-
-      Designation::create([
-         'name' => 'Supervisor',
+         'name' => 'Staff',
+         'golongan' => '1',
          'created_at' => NOW(),
          'updated_at' => NOW()
       ]);
 
       Designation::create([
          'name' => 'Staff',
+         'golongan' => '2',
          'created_at' => NOW(),
          'updated_at' => NOW()
       ]);
 
       Designation::create([
-         'name' => 'Admin',
+         'name' => 'Team Leader',
+         'golongan' => '3',
+         'created_at' => NOW(),
+         'updated_at' => NOW()
+      ]);
+
+      Designation::create([
+         'name' => 'Supervisor',
+         'golongan' => '4',
+         'created_at' => NOW(),
+         'updated_at' => NOW()
+      ]);
+
+      Designation::create([
+         'name' => 'Asst. Manager',
+         'golongan' => '5',
+         'created_at' => NOW(),
+         'updated_at' => NOW()
+      ]);
+
+      Designation::create([
+         'name' => 'Manager',
+         'golongan' => '6',
+         'created_at' => NOW(),
+         'updated_at' => NOW()
+      ]);
+
+      Designation::create([
+         'name' => 'GM',
+         'golongan' => '7',
          'created_at' => NOW(),
          'updated_at' => NOW()
       ]);

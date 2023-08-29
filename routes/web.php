@@ -3,6 +3,7 @@
 use App\Http\Controllers\AllowanceController;
 use App\Http\Controllers\BankAccountController;
 use App\Http\Controllers\CommissionController;
+use App\Http\Controllers\CompositionController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DesignationController;
@@ -167,6 +168,11 @@ Route::middleware(["auth", "verified"])->group(function () {
 
          Route::post('addtional/{id}', [PeKpaController::class, 'storeAddtional'])->name('kpa.addtional.store');
          Route::get('addtional-delete/{id}', [PeKpaController::class, 'deleteAddtional'])->name('kpa.addtional.delete');
+      });
+
+      // KPA
+      Route::prefix('generate')->group(function () {
+         Route::get('/komposisi', [CompositionController::class, 'komposisi'])->name('kpa');
       });
    });
 });
