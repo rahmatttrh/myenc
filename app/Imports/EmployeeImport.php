@@ -24,8 +24,10 @@ class EmployeeImport implements ToCollection, WithHeadingRow
    {
       foreach ($rows as $row) {
 
+
          $department = Department::where('name', $row['department'])->first();
-         $designation = Designation::where('name', $row['designation'])->first();
+         $designation = Designation::where('name', 'Staff')->first();
+
          $unit = Unit::where('name', $row['business_unit'])->first();
          // dd($row['first_name']);
 

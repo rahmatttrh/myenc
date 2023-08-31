@@ -172,7 +172,7 @@ Route::middleware(["auth", "verified"])->group(function () {
 
       // KPA
       Route::prefix('generate')->group(function () {
-         Route::get('/komposisi', [CompositionController::class, 'komposisi'])->name('kpa');
+         Route::get('/komposisi', [CompositionController::class, 'komposisi'])->name('komposisi');
       });
    });
 });
