@@ -208,19 +208,19 @@ KPA
                                 </tr>
                                 <tr>
                                     <td>Addtional </td>
-                                    <td><b><a href="#" data-target="#modalAddtional" data-toggle="modal">{{$addtional->addtional_objective}}</a></b></td>
+                                    <td><b><a href="#" data-target="#modalEditAddtional" data-toggle="modal">{{$addtional->addtional_objective}}</a></b></td>
                                     <td>{{$addtional->addtional_weight}}</td>
                                     <td>{{$addtional->addtional_target}}</td>
                                     <td>{{$addtional->value}}</td>
                                     <td class="text-right"><b>{{$addtional->achievement}}</b></td>
                                 </tr>
 
-                                <div class="modal fade" id="modalAddtional" data-bs-backdrop="static">
+                                <div class="modal fade" id="modalEditAddtional" data-bs-backdrop="static">
                                     <div class="modal-dialog" style="max-width: 80%;">
                                         <div class="modal-content">
 
                                             <!-- Bagian header modal -->
-                                            <div class="modal-header bg-primary">
+                                            <div class="modal-header bg-success">
                                                 <h3 class="modal-title">{{$addtional->addtional_objective}} </h3>
                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                             </div>
@@ -229,8 +229,8 @@ KPA
                                                 @csrf
                                                 @method('PUT')
 
-                                                <input type="hidden" name="id" value="{{$data->id}}">
-                                                <input type="hidden" name="kpa_id" value="{{$kpa->id}}">
+                                                <input type="hidden" name="id" value="{{$addtional->id}}">
+                                                <input type="hidden" name="kpa_id" value="{{$addtional->kpa_id}}">
 
                                                 <!-- Bagian konten modal -->
                                                 <div class="modal-body">
@@ -252,22 +252,22 @@ KPA
 
                                                                     <div class="form-group">
                                                                         <label for="weight">Weight:</label>
-                                                                        <input type="number" class="form-control" id="weight" name="weight" min="1" max="20" value="{{ $addtional->addtional_weight }}">
+                                                                        <input type="number" class="form-control" id="weight-edit" name="weight" min="1" max="20" value="{{ $addtional->addtional_weight }}">
                                                                     </div>
 
                                                                     <div class="form-group">
                                                                         <label for="target">Target:</label>
-                                                                        <input type="text" class="form-control" id="target" name="target" value="{{ $addtional->addtional_target }}" readonly>
+                                                                        <input type="text" class="form-control" id="target-edit" name="target" value="{{ $addtional->addtional_target }}" readonly>
                                                                     </div>
 
                                                                     <div class="form-group">
                                                                         <label for="value">Value:</label>
-                                                                        <input type="text" class="form-control valueAddtional" id="value" name="value" data-key="{{ $addtional->id }}" data-target="{{ $addtional->addtional_target }}" data-weight="{{ $addtional->addtional_weight }}" value="{{ old('value', $addtional->value) }}" autocomplete="off">
+                                                                        <input type="text" class="form-control " id="value-edit" name="value" data-key="{{ $addtional->id }}" data-target="{{ $addtional->addtional_target }}" data-weight="{{ $addtional->addtional_weight }}" value="{{ old('value', $addtional->value) }}" autocomplete="off">
                                                                     </div>
 
                                                                     <div class="form-group">
                                                                         <label for="achievement">Achievement:</label>
-                                                                        <input type="text" class="form-control" id="achievement-{{$addtional->id}}" name="achievement" value="{{ $addtional->achievement }}" readonly>
+                                                                        <input type="text" class="form-control" id="achievement-edit" name="achievement" value="{{ $addtional->achievement }}" readonly>
                                                                     </div>
                                                                     @if($kpa->status == '0')
                                                                     <div class="form-group">
@@ -340,8 +340,7 @@ KPA
                 <h3 class="modal-title"> </h3>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
-
-            {{-- <form method="POST" action="{{route('kpa.update',$kpa->id) }}" enctype="multipart/form-data"> --}}
+            }
             <form method="POST" action="{{route('kpa.addtional.store',$kpa->id) }}" enctype="multipart/form-data">
                 @csrf
 
@@ -368,17 +367,17 @@ KPA
 
                                     <div class="form-group">
                                         <label for="weight">Weight:</label>
-                                        <input type="number" class="form-control calculateAdd" id="weight-addtional" name="weight" min="1" max="20" value="20">
+                                        <input type="number" class="form-control" id="weight-addtional" name="weight" min="1" max="20" value="20">
                                     </div>
 
                                     <div class="form-group">
                                         <label for="target">Target:</label>
-                                        <input type="text" class="form-control" id="target" name="target" value="4" readonly>
+                                        <input type="text" class="form-control" id="target-addtional" name="target" value="4" readonly>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="value">Value:</label>
-                                        <input type="text" class="form-control value calculateAdd" id="value-addtional" name="value" data-target="4" value="4" autocomplete="off">
+                                        <input type="text" class="form-control" id="value-addtional" name="value" data-target="4" value="4" autocomplete="off">
                                     </div>
 
                                     <div class="form-group">
@@ -460,26 +459,92 @@ KPA
 
         });
 
-        $('.valueAddtional').on('input', function() {
-            var inputValue = $(this).val();
+        function calculateAchievement() {
+            var value = parseFloat($('#value-addtional').val());
+            var targetValue = parseFloat($('#target-addtional').val());
+            var weightValue = parseFloat($('#weight-addtional').val());
 
-            // Hapus angka 0 di depan jika ada
-            inputValue = inputValue.replace(/^0+(?=\d)/, '');
+            if (isNaN(value) || value <= 0.1) {
+                value = 0;
+                $('#value-addtional').val(value);
+            }
 
+            validateInput($('#value-addtional'), targetValue);
+
+            let achievementValue = Math.round((value / targetValue) * weightValue);
+
+            // Batasi nilai achievementValue menjadi rentang 1 hingga 20
+            achievementValue = Math.min(Math.max(achievementValue, 1), 20);
+
+            $('#achievement-addtional').val(achievementValue);
+        }
+
+        $('#value-addtional').on('input', function() {
+            var inputValue = $(this).val().replace(/^0+(?=\d)/, '');
             $(this).val(inputValue);
+            calculateAchievement();
+        });
 
-            var key = parseFloat($(this).data('key'));
-            var targetValue = parseFloat($(this).data('target'));
-            var weightValue = parseFloat($(this).data('weight'));
+        $('#weight-addtional').on('input', function() {
+            var weightValue = parseFloat($(this).val());
+
+            // Jika weightValue kosong, set nilai menjadi 1
+            if (isNaN(weightValue) || weightValue <= 0) {
+                weightValue = 1;
+                $('#weight-addtional').val(weightValue);
+            }
+
+            // Batasi nilai weightValue menjadi maksimal 20
+            weightValue = Math.min(weightValue, 20);
+
+            $('#weight-addtional').val(weightValue);
+
+            calculateAchievement();
+        });
 
 
+        // Edit
+        function calculateAchievementEdit() {
+            var value = parseFloat($('#value-edit').val());
+            var targetValue = parseFloat($('#target-edit').val());
+            var weightValue = parseFloat($('#weight-edit').val());
 
-            validateInput($(this), targetValue);
+            if (isNaN(value) || value <= 0.1) {
+                value = 0;
+                $('#value-edit').val(value);
+            }
 
-            let achievementValue = Math.round(($(this).val() / targetValue) * weightValue);
+            validateInput($('#value-edit'), targetValue);
 
-            $('#achievement-' + key).val(achievementValue);
+            let achievementValue = Math.round((value / targetValue) * weightValue);
 
+            // Batasi nilai achievementValue menjadi rentang 1 hingga 20
+            achievementValue = Math.min(Math.max(achievementValue, 1), 20);
+
+            $('#achievement-edit').val(achievementValue);
+        }
+
+        $('#value-edit').on('input', function() {
+            var inputValue = $(this).val().replace(/^0+(?=\d)/, '');
+            $(this).val(inputValue);
+            calculateAchievementEdit();
+        });
+
+        $('#weight-edit').on('input', function() {
+            var weightValue = parseFloat($(this).val());
+
+            // Jika weightValue kosong, set nilai menjadi 1
+            if (isNaN(weightValue) || weightValue <= 0) {
+                weightValue = 1;
+                $('#weight-edit').val(weightValue);
+            }
+
+            // Batasi nilai weightValue menjadi maksimal 20
+            weightValue = Math.min(weightValue, 20);
+
+            $('#weight-edit').val(weightValue);
+
+            calculateAchievementEdit();
         });
 
         $('.calculateAdd').on('input', function() {
@@ -487,10 +552,13 @@ KPA
             let weightAdd = $("#weight-addtional").val();
             let valueAdd = $("#value-addtional").val();
 
+            console.log('test');
+
             let totalAdd = Math.round((valueAdd / 4) * weightAdd); // 4 DI AMBIL Dari nilai default target
 
             $('#achievement-addtional').val(totalAdd);
         });
+
 
 
 
@@ -511,5 +579,9 @@ KPA
         }
 
     })
+
+    function hitungYuk() {
+        return $('#value-addtional').val();
+    }
 </script>
 @endpush
