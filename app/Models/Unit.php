@@ -9,4 +9,10 @@ class Unit extends Model
 {
     use HasFactory;
     protected $guarded = [];
+
+
+    public function departments()
+    {
+        return $this->hasMany(Department::class);
+    }
 }

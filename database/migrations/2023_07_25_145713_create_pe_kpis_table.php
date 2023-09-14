@@ -16,7 +16,7 @@ class CreatePeKpisTable extends Migration
         Schema::create('pe_kpis', function (Blueprint $table) {
             $table->integerIncrements('id');
             $table->bigInteger('departement_id');
-            $table->bigInteger('designation_id');
+            $table->bigInteger('position_id');
             $table->string('title');
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();

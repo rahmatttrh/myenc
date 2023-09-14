@@ -55,6 +55,12 @@ class Employee extends Model
       return $this->belongsTo(User::class);
    }
 
+   public function position()
+   {
+      return $this->belongsTo(Position::class);
+   }
+
+
    public function documents()
    {
       return $this->hasMany(Document::class);

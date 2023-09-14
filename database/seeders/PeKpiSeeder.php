@@ -16,7 +16,7 @@ class PeKpiSeeder extends Seeder
     {
         PeKpi::create([
             'departement_id' => 2,
-            'designation_id' => 4,
+            'position_id' => 3,
             'title' => 'KPI IT Hardware',
             'created_at' => NOW(),
             'updated_at' => NOW()

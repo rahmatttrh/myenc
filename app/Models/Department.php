@@ -10,6 +10,18 @@ class Department extends Model
    use HasFactory;
    protected $guarded = [];
 
+
+   public function unit()
+   {
+      return $this->belongsTo(Unit::class);
+   }
+
+   public function sub_depts()
+   {
+      return $this->hasMany(SubDept::class);
+   }
+
+
    public function employees()
    {
       return $this->hasMany(Employee::class);

@@ -29,8 +29,8 @@ KPI
                             <i class="fa fa-user"></i> {{$kpi->departement->name}}
                         </div>
                         <div class="form-group form-group-default">
-                            <label>Posisi</label>
-                            <i class="fa fa-user"></i> {{$kpi->designation->name}}
+                            <label>Jabatan</label>
+                            <i class="fa fa-user"></i> {{$kpi->position->name}}
                         </div>
                     </form>
                 </div>

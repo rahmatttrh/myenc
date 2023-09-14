@@ -16,7 +16,7 @@
                </a>
             </div>
          </div>
-         @if (auth()->user()->hasRole('Administrator'))
+         @if (auth()->user()->hasRole('Administrator|HRD'))
          <ul class="nav">
             <li class="nav-item">
                <a data-toggle="collapse" href="#vessel">
@@ -27,18 +27,28 @@
                <div class="collapse" id="vessel">
                   <ul class="nav nav-collapse">
                      <li>
+                        <a href="{{route('unit')}}">
+                           <span class="sub-item">Bisnis Unit</span>
+                        </a>
+                     </li>
+                     <li>
                         <a href="{{route('department')}}">
                            <span class="sub-item">Department</span>
                         </a>
                      </li>
                      <li>
                         <a href="{{route('designation')}}">
-                           <span class="sub-item">Position</span>
+                           <span class="sub-item">Level</span>
                         </a>
                      </li>
                      <li>
-                        <a href="#">
-                           <span class="sub-item">Shift</span>
+                        <a href="{{route('position')}}">
+                           <span class="sub-item">Jabatan</span>
+                        </a>
+                     </li>
+                     <li>
+                        <a href="{{route('so')}}">
+                           <span class="sub-item">Struktur Organisasi</span>
                         </a>
                      </li>
                   </ul>
@@ -57,6 +67,29 @@
                   <p>Employee</p>
                </a>
             </li>
+
+         </ul>
+         @endif
+         <ul class="nav">
+
+
+            <li class="nav-section">
+               <span class="sidebar-mini-icon">
+                  <i class="fa fa-ellipsis-h"></i>
+               </span>
+               <h4 class="text-section">Main Menu</h4>
+            </li>
+
+            @if (!auth()->user()->hasRole('Administrator'))
+            <li class="nav-item">
+               <a href="{{route('employee.detail', [enkripRambo(auth()->user()->employee->id), enkripRambo('contract')])}}">
+                  <i class="fas fa-users"></i>
+                  <p>My Profile</p>
+               </a>
+            </li>
+            @endif
+
+            @if (auth()->user()->hasRole('Administrator|HRD|Leader|Manager'))
             <li class="nav-item">
                <a data-toggle="collapse" href="#kpi">
                   <i class="fas fa-bullseye"></i>
@@ -65,11 +98,13 @@
                </a>
                <div class="collapse" id="kpi">
                   <ul class="nav nav-collapse">
+                     @if (auth()->user()->hasRole('Administrator|HRD'))
                      <li>
                         <a href="{{route('pe.component')}}">
                            <span class="sub-item">Component</span>
                         </a>
                      </li>
+                     @endif
                      <li>
                         <a href="{{route('kpi')}}">
                            <span class="sub-item">KPI</span>
@@ -88,85 +123,10 @@
                   </ul>
                </div>
             </li>
-            {{-- <li class="nav-item">
-                     <a data-toggle="collapse" href="#pms">
-                        <i class="fas fa-desktop"></i>
-                        <p>Employee</p>
-                        <span class="caret"></span>
-                     </a>
-                     <div class="collapse" id="pms">
-                        <ul class="nav nav-collapse">
-                           <li>
-                              <a href="{{route('employee')}}">
-            <span class="sub-item">Active</span>
-            </a>
-            </li>
-            <li>
-               <a href="{{route('employee.draft')}}">
-                  <span class="sub-item">Draft</span>
-               </a>
-            </li>
+            @endif
          </ul>
+
       </div>
-      </li>
-      <li class="nav-item">
-         <a href="#">
-            <i class="fas fa-burn"></i>
-            <p>Example</p>
-         </a>
-      </li> --}}
-
-
-      </ul>
-      @else
-      <ul class="nav">
-
-
-         <li class="nav-section">
-            <span class="sidebar-mini-icon">
-               <i class="fa fa-ellipsis-h"></i>
-            </span>
-            <h4 class="text-section">Main Menu</h4>
-         </li>
-         <li class="nav-item">
-            <a href="{{route('employee.detail', [enkripRambo(auth()->user()->employee->id), enkripRambo('contract')])}}">
-               <i class="fas fa-users"></i>
-               <p>My Profile</p>
-            </a>
-         </li>
-         {{-- <li class="nav-item">
-                     <a data-toggle="collapse" href="#pms">
-                        <i class="fas fa-desktop"></i>
-                        <p>Employee</p>
-                        <span class="caret"></span>
-                     </a>
-                     <div class="collapse" id="pms">
-                        <ul class="nav nav-collapse">
-                           <li>
-                              <a href="{{route('employee')}}">
-         <span class="sub-item">Active</span>
-         </a>
-         </li>
-         <li>
-            <a href="{{route('employee.draft')}}">
-               <span class="sub-item">Draft</span>
-            </a>
-         </li>
-      </ul>
    </div>
-   </li>
-   <li class="nav-item">
-      <a href="#">
-         <i class="fas fa-burn"></i>
-         <p>Example</p>
-      </a>
-   </li> --}}
-
-
-   </ul>
-   @endif
-
-</div>
-</div>
 </div>
 <!-- End Sidebar -->

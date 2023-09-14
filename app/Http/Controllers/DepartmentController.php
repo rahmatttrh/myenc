@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Department;
+use App\Models\Position;
+use App\Models\SubDept;
 use Illuminate\Http\Request;
 
 class DepartmentController extends Controller
 {
    public function index()
    {
-      $departments = Department::get();
+      $departments = Department::orderBy('unit_id', 'desc')->get();
       return view('pages.department.index', [
          'departments' => $departments
       ])->with('i');
@@ -66,5 +68,32 @@ class DepartmentController extends Controller
       return view('pages.position.index', [
          // 'departments' => $departments
       ])->with('i');
+   }
+
+   // Fetch Data
+   public function fetchData($id)
+   {
+      // Mengambil data dari database menggunakan model
+      $data = Department::where('id', $id)->first();
+      $subDepts = SubDept::where('department_id', $id)->get();
+      $jmlSubDept = $subDepts->count();
+
+      if ($jmlSubDept == 1) {
+         # code...
+         $subDept = SubDept::where('department_id', $id)->first();
+         $positions = Position::where('sub_dept_id', $subDept->id)->orderBy('name')->get();
+      } else {
+         # code...
+         $positions = '';
+      }
+
+
+      // Mengembalikan data dalam format JSON
+      return response()->json([
+         'data' => $data,
+         'subDepts' => $subDepts,
+         'positions' => $positions,
+         'jmlSubDept' => $jmlSubDept
+      ]);
    }
 }

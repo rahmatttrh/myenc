@@ -10,9 +10,9 @@ class PeKpi extends Model
     use HasFactory;
     protected $guarded = [];
 
-    public function designation()
+    public function position()
     {
-        return $this->belongsTo(Designation::class);
+        return $this->belongsTo(Position::class);
     }
 
     public function departement()

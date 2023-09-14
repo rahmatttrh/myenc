@@ -15,12 +15,17 @@ use App\Http\Controllers\PeComponentController;
 use App\Http\Controllers\PeKpaController;
 use App\Http\Controllers\PeKpiController;
 use App\Http\Controllers\PekpiDetailController;
+use App\Http\Controllers\PositionController;
 use App\Http\Controllers\SocialAccountController;
+use App\Http\Controllers\SoController;
+use App\Http\Controllers\SubDeptController;
+use App\Http\Controllers\UnitController;
 use App\Http\Controllers\VerificationController;
 use App\Models\BankAccount;
 use App\Models\Commission;
 use App\Models\PeKpi;
 use App\Models\PekpiDetail;
+use App\Models\Position;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,7 +39,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(["auth", "verified"])->group(function () {
+Route::middleware(["auth"])->group(function () {
 
    /**
     * Verification Routes
@@ -47,7 +52,7 @@ Route::middleware(["auth", "verified"])->group(function () {
 
    Route::get('employee/detail/{employee:id}/{tab}', [EmployeeController::class, 'detail'])->name('employee.detail');
 
-   Route::group(['middleware' => ['role:Administrator']], function () {
+   Route::group(['middleware' => ['role:Administrator|HRD']], function () {
       Route::prefix('employee')->group(function () {
          Route::get('tab/{tab}', [EmployeeController::class, 'index'])->name('employee');
 
@@ -82,12 +87,31 @@ Route::middleware(["auth", "verified"])->group(function () {
          });
       });
 
+      Route::prefix('unit')->group(function () {
+         Route::get('/', [UnitController::class, 'index'])->name('unit');
+
+         // Belum
+         Route::post('store', [UnitController::class, 'store'])->name('unit.store');
+         Route::get('edit/{unit:id}', [UnitController::class, 'edit'])->name('unit.edit');
+         Route::put('update', [UnitController::class, 'update'])->name('unit.update');
+         Route::get('delete/{unit:id}', [UnitController::class, 'delete'])->name('unit.delete');
+
+         Route::get('fetch-data/{id}', [UnitController::class, 'fetchData'])->name('unit.fetch-data');
+      });
+
       Route::prefix('department')->group(function () {
          Route::get('/', [DepartmentController::class, 'index'])->name('department');
          Route::post('store', [DepartmentController::class, 'store'])->name('department.store');
          Route::get('edit/{department:id}', [DepartmentController::class, 'edit'])->name('department.edit');
          Route::put('update', [DepartmentController::class, 'update'])->name('department.update');
          Route::get('delete/{department:id}', [DepartmentController::class, 'delete'])->name('department.delete');
+
+         Route::get('fetch-data/{id}', [DepartmentController::class, 'fetchData'])->name('department.fetch-data');
+      });
+
+      Route::prefix('sub-dept')->group(function () {
+
+         Route::get('fetch-data/{id}', [SubDeptController::class, 'fetchData'])->name('department.fetch-data');
       });
 
       Route::prefix('designation')->group(function () {
@@ -96,6 +120,14 @@ Route::middleware(["auth", "verified"])->group(function () {
          Route::get('edit/{designation:id}', [DesignationController::class, 'edit'])->name('designation.edit');
          Route::put('update', [DesignationController::class, 'update'])->name('designation.update');
          Route::get('delete/{designation:id}', [DesignationController::class, 'delete'])->name('designation.delete');
+      });
+
+      Route::prefix('position')->group(function () {
+         Route::get('/', [PositionController::class, 'index'])->name('position');
+         //    Route::post('store', [DesignationController::class, 'store'])->name('position.store');
+         //    Route::get('edit/{position:id}', [DesignationController::class, 'edit'])->name('position.edit');
+         //    Route::put('update', [DesignationController::class, 'update'])->name('position.update');
+         //    Route::get('delete/{position:id}', [DesignationController::class, 'delete'])->name('position.delete');
       });
 
       Route::prefix('contract')->group(function () {
@@ -118,6 +150,10 @@ Route::middleware(["auth", "verified"])->group(function () {
          Route::put('update', [BankAccountController::class, 'update'])->name('bank.account.update');
       });
 
+      // PE
+      Route::prefix('so')->group(function () {
+         Route::get('/', [SoController::class, 'index'])->name('so');
+      });
 
       // PE
       Route::prefix('pe-component')->group(function () {
@@ -127,6 +163,18 @@ Route::middleware(["auth", "verified"])->group(function () {
          // Route::put('update', [DepartmentController::class, 'update'])->name('department.update');
          // Route::get('delete/{department:id}', [DepartmentController::class, 'delete'])->name('department.delete');
       });
+
+
+      // KPA
+      Route::prefix('generate')->group(function () {
+         Route::get('/komposisi', [CompositionController::class, 'komposisi'])->name('komposisi');
+      });
+   });
+
+
+   // Role Campuran  
+
+   Route::group(['middleware' => ['role:Administrator|HRD|Leader|Manager']], function () {
       // kpi
       Route::prefix('kpi')->group(function () {
          Route::get('/', [PeKpiController::class, 'index'])->name('kpi');
@@ -169,13 +217,9 @@ Route::middleware(["auth", "verified"])->group(function () {
          Route::post('addtional/{id}', [PeKpaController::class, 'storeAddtional'])->name('kpa.addtional.store');
          Route::get('addtional-delete/{id}', [PeKpaController::class, 'deleteAddtional'])->name('kpa.addtional.delete');
       });
-
-      // KPA
-      Route::prefix('generate')->group(function () {
-         Route::get('/komposisi', [CompositionController::class, 'komposisi'])->name('komposisi');
-      });
    });
 });
+
 
 
 

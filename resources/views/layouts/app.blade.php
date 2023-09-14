@@ -30,6 +30,7 @@
       <link rel="stylesheet" href="{{asset('css/demo.css')}}">
       <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.0/dist/trix.css">
       <script type="text/javascript" src="https://unpkg.com/trix@2.0.0/dist/trix.umd.min.js"></script>
+      <script src="https://balkan.app/js/OrgChart.js"></script>
       <style>
          .shadow-none{
             box-shadow: none
@@ -42,6 +43,17 @@
          .card-hover:hover{
             background-color: rgb(241, 240, 240);
             text-decoration: none;
+         }
+
+         #tree {
+                  width: 100%;
+                  height: 100%;
+               }
+
+         .custom-node{
+            padding-top: 30px; /* Atur padding sesuai kebutuhan Anda */
+            padding-bottom: 30px; /* Atur padding sesuai kebutuhan Anda */
+            /* Atur properti lain jika diperlukan */
          }
       </style>
    </head>
@@ -126,7 +138,7 @@
 
             $('.basic-datatables').DataTable( {
                "lengthMenu": [[5, 10, 15, 25, 50, 100 , -1], [5, 10, 15, 25, 50, 100, "All"]],
-               "pageLength": 5,
+               "pageLength": 10,
                initComplete: function () {
                      this.api().columns().every( function () {
                         var column = this;

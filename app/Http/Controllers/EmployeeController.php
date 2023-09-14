@@ -29,7 +29,12 @@ class EmployeeController extends Controller
    {
       $tab = dekripRambo($enkripTab);
       // dd($tab);
-      $employees = Employee::where('status', 1)->get();
+      $employees = Employee::where('status', 1)
+         ->orderBy('department_id')
+         ->orderBy('sub_dept_id')
+         ->orderBy('designation_id')
+         ->orderBy('position_id')
+         ->get();
       $draftEmployees = Employee::where('status', 0)->get();
       return view('pages.employee.index', [
          'employees' => $employees,

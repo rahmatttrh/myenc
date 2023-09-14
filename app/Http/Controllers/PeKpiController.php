@@ -10,6 +10,7 @@ use App\Models\PekpaDetail;
 use App\Models\PeKpi;
 use App\Models\PekpiDetail;
 use App\Models\PekpiPoint;
+use App\Models\Unit;
 use Illuminate\Http\Request;
 
 class PeKpiController extends Controller
@@ -18,12 +19,11 @@ class PeKpiController extends Controller
     {
 
         $kpis = PeKpi::get();
-
-        $designations = Designation::orderBy('name')->get();
+        $units = Unit::orderBy('name')->get();
         $departements = Department::orderBy('name')->get();
 
         return view('pages.kpi.kpi', [
-            'designations' => $designations,
+            'units' => $units,
             'departements' => $departements,
             'kpis' => $kpis
         ])->with('i');
@@ -45,13 +45,25 @@ class PeKpiController extends Controller
     {
         $req->validate([
             'title' => 'required',
-            'designation_id' => 'required',
+            'position_id' => 'required',
             'departement_id' => 'required'
         ]);
 
+        // Validasi KPA
+        $cek = PeKpi::where([
+            'position_id' => 'required',
+            'departement_id' => 'required'
+        ])->first();
+
+
+
+        if ($cek) {
+            return redirect()->back()->with('danger', 'KPI untuk jabatan tersebut sudah ada!');
+        }
+
         PeKpi::create([
             'title' => $req->title,
-            'designation_id' => $req->designation_id,
+            'position_id' => $req->position_id,
             'departement_id' => $req->departement_id
 
         ]);
@@ -66,21 +78,20 @@ class PeKpiController extends Controller
         $kpis = PeKpi::get();
         $kpi = PeKpi::find(dekripRambo($id));
         $datas = PekpiDetail::where('kpi_id', dekripRambo($id))->get();
+
+
+
         $employes = Employee::where('department_id', $kpi->departement_id)
-            ->where('designation_id', $kpi->designation_id)
+            ->where('position_id', $kpi->position_id)
             ->where('status', '1')
             ->where('kpi_id', null)
             ->get();
+
+
         $users = Employee::where('kpi_id', $kpi->id)
             ->get();
-        // dd($kpi->departement_id);
-
-        // dd($employes);
-
-        $designations = Designation::orderBy('name')->get();
 
         return view('pages.kpi.kpi-edit', [
-            'designations' => $designations,
             'kpis' => $kpis,
             'kpi' => $kpi,
             'employes' => $employes,

@@ -17,7 +17,7 @@ class CreateBiodatasTable extends Migration
          $table->id();
          $table->string('status')->nullable();
          $table->string('first_name');
-         $table->string('last_name');
+         $table->string('last_name')->nullable();
          $table->string('phone')->nullable();
          $table->string('email')->nullable();
          $table->string('no_ktp', 20)->nullable(); // Nomor induk Kependudukan
