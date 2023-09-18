@@ -30,6 +30,7 @@ Designation
                         <div class="form-group form-group-default">
                             <label>Bisnis Unit</label>
                             <select class="form-control" name="unit_id" id="unit_id">
+                                <option value="">--Pilih Bisnis Unit--</option>
                                 @foreach ($units as $unit)
                                 <option value="{{$unit->id}}">{{$unit->name}}</option>
                                 @endforeach

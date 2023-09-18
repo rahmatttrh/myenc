@@ -52,6 +52,12 @@ Route::middleware(["auth"])->group(function () {
 
    Route::get('employee/detail/{employee:id}/{tab}', [EmployeeController::class, 'detail'])->name('employee.detail');
 
+   // Fetch 
+   Route::get('unit/fetch-data/{id}', [UnitController::class, 'fetchData'])->name('unit.fetch-data');
+   Route::get('department/fetch-data/{id}', [DepartmentController::class, 'fetchData'])->name('department.fetch-data');
+   Route::get('sub-dept/fetch-data/{id}', [SubDeptController::class, 'fetchData'])->name('department.fetch-data');
+   // End Fetch
+
    Route::group(['middleware' => ['role:Administrator|HRD']], function () {
       Route::prefix('employee')->group(function () {
          Route::get('tab/{tab}', [EmployeeController::class, 'index'])->name('employee');
@@ -95,8 +101,6 @@ Route::middleware(["auth"])->group(function () {
          Route::get('edit/{unit:id}', [UnitController::class, 'edit'])->name('unit.edit');
          Route::put('update', [UnitController::class, 'update'])->name('unit.update');
          Route::get('delete/{unit:id}', [UnitController::class, 'delete'])->name('unit.delete');
-
-         Route::get('fetch-data/{id}', [UnitController::class, 'fetchData'])->name('unit.fetch-data');
       });
 
       Route::prefix('department')->group(function () {
@@ -105,13 +109,9 @@ Route::middleware(["auth"])->group(function () {
          Route::get('edit/{department:id}', [DepartmentController::class, 'edit'])->name('department.edit');
          Route::put('update', [DepartmentController::class, 'update'])->name('department.update');
          Route::get('delete/{department:id}', [DepartmentController::class, 'delete'])->name('department.delete');
-
-         Route::get('fetch-data/{id}', [DepartmentController::class, 'fetchData'])->name('department.fetch-data');
       });
 
       Route::prefix('sub-dept')->group(function () {
-
-         Route::get('fetch-data/{id}', [SubDeptController::class, 'fetchData'])->name('department.fetch-data');
       });
 
       Route::prefix('designation')->group(function () {

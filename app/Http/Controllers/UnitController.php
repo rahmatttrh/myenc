@@ -19,9 +19,17 @@ class UnitController extends Controller
     // Fetch Data
     public function fetchData($id)
     {
+
         // Mengambil data dari database menggunakan model
         $data = Unit::where('id', $id)->first();
-        $departments = Department::where('unit_id', $id)->get();
+
+        // Data Department
+        if (auth()->user()->hasRole('Administrator|HRD')) {
+            $departments = Department::where('unit_id', $id)->get();
+        } else if (auth()->user()->hasRole('Leader|Manager')) {
+            // Hanya di kasih akses divisi nya saja 
+            $departments = Department::where('id', auth()->user()->getEmployee()->department_id)->get();
+        }
 
         // Mengembalikan data dalam format JSON
         return response()->json([

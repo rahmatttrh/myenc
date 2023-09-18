@@ -15,10 +15,10 @@ class Employee extends Model
       return $this->belongsTo(Biodata::class);
    }
 
-   // public function department()
-   // {
-   //    return $this->belongsTo(Department::class);
-   // }
+   public function department()
+   {
+      return $this->belongsTo(Department::class);
+   }
 
    // public function designation()
    // {

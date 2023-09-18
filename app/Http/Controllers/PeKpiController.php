@@ -17,10 +17,28 @@ class PeKpiController extends Controller
 {
     public function index()
     {
+        $employee = auth()->user()->getEmployee();
 
-        $kpis = PeKpi::get();
-        $units = Unit::orderBy('name')->get();
-        $departements = Department::orderBy('name')->get();
+        // Data KPI
+        if (auth()->user()->hasRole('Administrator|HRD')) {
+            $kpis = PeKpi::get();
+        } else if (auth()->user()->hasRole('Leader|Manager')) {
+            $kpis = PeKpi::where('departement_id', $employee->department_id)->get();
+        }
+
+        // Data Unit
+        if (auth()->user()->hasRole('Administrator|HRD')) {
+            $units = Unit::orderBy('name')->get();
+        } else if (auth()->user()->hasRole('Leader|Manager')) {
+            $units = Unit::where('id', $employee->department->unit->id)->get();
+        }
+
+        // Data Department
+        if (auth()->user()->hasRole('Administrator|HRD')) {
+            $departements = Department::orderBy('name')->get();
+        } else if (auth()->user()->hasRole('Leader|Manager')) {
+            $departements = Department::where('id', $employee->department_id)->get();
+        }
 
         return view('pages.kpi.kpi', [
             'units' => $units,
