@@ -19,6 +19,7 @@ class UserSeeder extends Seeder
       $admin = User::create([
          'name' => 'Admin',
          'email' => 'admin@gmail.com',
+         'username' => '112233',
          'password' => Hash::make('12345678'),
          'email_verified_at' => NOW(),
          'created_at' => NOW(),
@@ -29,6 +30,7 @@ class UserSeeder extends Seeder
       $developer = User::create([
          'name' => 'Developer',
          'email' => 'developer@gmail.com',
+         'username' => '445566',
          'password' => Hash::make('12345678'),
          'created_at' => NOW(),
          'updated_at' => NOW()
