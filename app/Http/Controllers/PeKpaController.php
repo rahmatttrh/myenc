@@ -16,25 +16,47 @@ class PeKpaController extends Controller
 {
     public function index()
     {
+        $employee = auth()->user()->getEmployee();
+        // Data KPI
+        if (auth()->user()->hasRole('Administrator|HRD')) {
+            $kpas = PeKpa::orderBy('date', 'desc')
+                ->orderBy('employe_id')
+                ->get();
 
-        $kpis = PeKpi::get();
-        $kpas = PeKpa::orderBy('date', 'desc')
-            ->orderBy('employe_id')
-            ->get();
+
+            $employes = Employee::where('status', '1')
+                ->whereNotNull('kpi_id')
+                ->get();
+            // 
+        } else if (auth()->user()->hasRole('Leader|Manager')) {
+
+            $kpas = DB::table('pe_kpas')
+                ->join('pe_kpis', 'pe_kpas.kpi_id', '=', 'pe_kpis.id')
+                ->where('pe_kpis.departement_id', $employee->department_id)
+                ->get();
+
+            // Convert the query builder result to Order model instances
+            $kpas = PeKpa::hydrate($kpas->toArray());
+
+            // dd($kpas);
+
+
+
+            $employes = Employee::where('department_id', $employee->department_id)
+                ->where('status', '1')
+                ->whereNotNull('kpi_id')
+                ->get();
+
+            // 
+        }
 
         $designations = Designation::orderBy('name')->get();
         $departements = Department::orderBy('name')->get();
-
-        $employes = Employee::where('status', '1')
-            ->whereNotNull('kpi_id')
-            ->get();
-
 
 
         return view('pages.kpa.kpa', [
             'designations' => $designations,
             'departements' => $departements,
-            'kpis' => $kpis,
             'kpas' => $kpas,
             'employes' => $employes
         ])->with('i');
@@ -361,19 +383,45 @@ class PeKpaController extends Controller
 
     public function summary()
     {
+        $employee = auth()->user()->getEmployee();
+
+        if (auth()->user()->hasRole('Administrator|HRD')) {
+            $kpas = PeKpa::orderBy('date', 'desc')
+                ->orderBy('employe_id')
+                ->get();
+
+
+            $employes = Employee::where('status', '1')
+                ->whereNotNull('kpi_id')
+                ->get();
+            // 
+        } else if (auth()->user()->hasRole('Leader|Manager')) {
+
+            $kpas = DB::table('pe_kpas')
+                ->join('pe_kpis', 'pe_kpas.kpi_id', '=', 'pe_kpis.id')
+                ->where('pe_kpis.departement_id', $employee->department_id)
+                ->get();
+
+            // Convert the query builder result to Order model instances
+            $kpas = PeKpa::hydrate($kpas->toArray());
+
+            // dd($kpas);
+
+
+
+            $employes = Employee::where('department_id', $employee->department_id)
+                ->where('status', '1')
+                ->whereNotNull('kpi_id')
+                ->get();
+
+            // 
+        }
+
 
         $kpis = PeKpi::get();
-        $kpas = PeKpa::orderBy('date', 'desc')
-            ->orderBy('employe_id')
-            ->get();
 
         $designations = Designation::orderBy('name')->get();
         $departements = Department::orderBy('name')->get();
-
-        $employes = Employee::where('status', '1')
-            ->whereNotNull('kpi_id')
-            ->get();
-
 
 
         return view('pages.kpa.kpa-summary', [
