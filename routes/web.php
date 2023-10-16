@@ -21,11 +21,6 @@ use App\Http\Controllers\SoController;
 use App\Http\Controllers\SubDeptController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\VerificationController;
-use App\Models\BankAccount;
-use App\Models\Commission;
-use App\Models\PeKpi;
-use App\Models\PekpiDetail;
-use App\Models\Position;
 use Illuminate\Support\Facades\Route;
 
 /*

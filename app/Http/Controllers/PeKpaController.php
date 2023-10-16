@@ -440,6 +440,22 @@ class PeKpaController extends Controller
 
     public function summaryDetail(Request $request)
     {
+        $employee = auth()->user()->getEmployee();
+
+        if (auth()->user()->hasRole('Administrator|HRD')) {
+
+            $employes = Employee::where('status', '1')
+                ->whereNotNull('kpi_id')
+                ->get();
+            // 
+        } else if (auth()->user()->hasRole('Leader|Manager')) {
+
+            $employes = Employee::where('department_id', $employee->department_id)
+                ->where('status', '1')
+                ->whereNotNull('kpi_id')
+                ->get();
+        }
+
 
         $semester = $request->semester;
         $tahun = $request->tahun;
@@ -513,9 +529,7 @@ class PeKpaController extends Controller
             ->whereMonth('date', '<=', $endMonth)
             ->avg('achievement');
 
-        $employes = Employee::where('status', '1')
-            ->whereNotNull('kpi_id')
-            ->get();
+
 
         $karyawan = Employee::find($request->employe_id);
 
