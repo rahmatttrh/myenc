@@ -40,14 +40,67 @@ class PeKpaController extends Controller
 
             // dd($kpas);
 
-
-
             $employes = Employee::where('department_id', $employee->department_id)
                 ->where('status', '1')
                 ->whereNotNull('kpi_id')
                 ->get();
 
-            // 
+            // Outstanding Query
+            // Membuat array untuk menyimpan hasil query
+            // $hasilQuery = array();
+
+            // $bulanSekarang = date('n');
+
+            // // Loop dari bulan 1 hingga 12
+            // for ($bulan = 1; $bulan <= $bulanSekarang; $bulan++) {
+            //     // Mengambil data untuk bulan saat ini
+
+            //     // mencari data karyawan pada departemen ini 
+            //     $employees = Employee::where('department_id', $employee->department_id)
+            //         ->where('designation_id', '<=', '4')
+            //         ->get();
+
+            //     // looping karywanya
+            //     foreach ($employees as $key => $karyawan) {
+            //         # code...
+            //         $kpa = PeKpa::where('employe_id', $karyawan->id)
+            //             ->whereMonth('date', $bulan)
+            //             ->first();
+
+            //         if (!$kpa) {
+            //             # code...
+            //             $hasilQuery[$bulan][$karyawan->id] = [
+            //                 'employe_id' => $karyawan->id,
+            //                 'employe' => $karyawan->biodata->fullName(),
+            //                 'bulan' => $bulan,
+            //                 'status' => 'Belum ada data!'
+            //             ];
+            //         }
+            //     }
+
+
+            //     //     $query = "SELECT *
+            //     //   FROM pe_kpas
+            //     //   WHERE DATE_FORMAT(date, '%m') = $bulan
+            //     //   AND DATE_FORMAT(date, '%Y') = YEAR(NOW())";
+
+            //     //     // Eksekusi query
+            //     //     $result = PeKpa::where('departement_id', $employee->department_id);
+
+            //     //     // Periksa apakah query berhasil
+            //     //     if ($result) {
+            //     //         // Menyimpan hasil query dalam array
+            //     //         $hasilQuery[$bulan] = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+            //     //         // Bebaskan hasil query
+            //     //         mysqli_free_result($result);
+            //     //     } else {
+            //     //         // echo "Error: " . mysqli_error($koneksi);
+            //     //     }
+            // }
+
+            // dd($hasilQuery);
+            // die;
         }
 
         $designations = Designation::orderBy('name')->get();
@@ -442,7 +495,7 @@ class PeKpaController extends Controller
     {
         $employee = auth()->user()->getEmployee();
 
-        if (auth()->user()->hasRole('Administrator|HRD')) {
+        if (auth()->user()->hasRole('Administrator')) {
 
             $employes = Employee::where('status', '1')
                 ->whereNotNull('kpi_id')
