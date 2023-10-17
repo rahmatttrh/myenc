@@ -33,12 +33,11 @@ class PeKpaController extends Controller
             $kpas = DB::table('pe_kpas')
                 ->join('pe_kpis', 'pe_kpas.kpi_id', '=', 'pe_kpis.id')
                 ->where('pe_kpis.departement_id', $employee->department_id)
+                ->select('pe_kpas.*')
                 ->get();
 
             // Convert the query builder result to Order model instances
             $kpas = PeKpa::hydrate($kpas->toArray());
-
-            // dd($kpas);
 
             $employes = Employee::where('department_id', $employee->department_id)
                 ->where('status', '1')
@@ -180,8 +179,8 @@ class PeKpaController extends Controller
 
     public function edit($id)
     {
-
         $kpa = PeKpa::find(dekripRambo($id));
+        // dd(dekripRambo($id));
         $datas = PekpaDetail::where('kpa_id', $kpa->id)->where('addtional', '0')->get();
         // Additional 
         $addtional = PekpaDetail::where('kpa_id', $kpa->id)->where('addtional', '1')->first();

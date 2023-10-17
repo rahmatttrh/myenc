@@ -262,7 +262,7 @@ KPA
 
                                                                     <div class="form-group">
                                                                         <label for="value">Value:</label>
-                                                                        <input type="text" class="form-control " id="value-edit" name="value" data-key="{{ $addtional->id }}" data-target="{{ $addtional->addtional_target }}" data-weight="{{ $addtional->addtional_weight }}" value="{{ old('value', $addtional->value) }}" autocomplete="off">
+                                                                        <input type="text" class="form-control" {{$kpa->status > 0 ? 'readonly' : '' }}  id="value-edit" name="value" data-key="{{ $addtional->id }}" data-target="{{ $addtional->addtional_target }}" data-weight="{{ $addtional->addtional_weight }}" value="{{ old('value', $addtional->value) }}" autocomplete="off">
                                                                     </div>
 
                                                                     <div class="form-group">
