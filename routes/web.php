@@ -205,6 +205,13 @@ Route::middleware(["auth"])->group(function () {
          Route::get('delete/{kpa:id}', [PeKpaController::class, 'delete'])->name('kpa.delete');
          Route::put('submit/{id}', [PeKpaController::class, 'submit'])->name('kpa.submit');
 
+         Route::patch('done-validasi/{id}', [PeKpaController::class, 'doneValidasi'])->name('kpa.done.validasi');
+         Route::patch('reject-validasi/{id}', [PeKpaController::class, 'rejectValidasi'])->name('kpa.reject.validasi');
+         Route::patch('resending-validasi/{id}', [PeKpaController::class, 'resendingValidasi'])->name('kpa.resending.validasi');
+
+         // Validasi
+         Route::patch('item-validasi/{id}', [PeKpaController::class, 'itemValidasi'])->name('kpa.item.validasi');
+
          Route::get('/summary', [PeKpaController::class, 'summary'])->name('kpa.summary');
          // Route::post('/summary/detail', [PeKpaController::class, 'summaryDetail'])->name('kpa.summary.detail');
          Route::get('/summary/detail', [PeKpaController::class, 'summaryDetail'])->name('kpa.summary.detail');

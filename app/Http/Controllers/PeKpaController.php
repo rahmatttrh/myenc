@@ -28,6 +28,10 @@ class PeKpaController extends Controller
                 ->whereNotNull('kpi_id')
                 ->get();
             // 
+
+            $outAssesments = $this->outstandingAssessment();
+
+            // 
         } else if (auth()->user()->hasRole('Leader|Manager')) {
 
             $kpas = DB::table('pe_kpas')
@@ -43,63 +47,9 @@ class PeKpaController extends Controller
                 ->where('status', '1')
                 ->whereNotNull('kpi_id')
                 ->get();
-
-            // Outstanding Query
-            // Membuat array untuk menyimpan hasil query
-            // $hasilQuery = array();
-
-            // $bulanSekarang = date('n');
-
-            // // Loop dari bulan 1 hingga 12
-            // for ($bulan = 1; $bulan <= $bulanSekarang; $bulan++) {
-            //     // Mengambil data untuk bulan saat ini
-
-            //     // mencari data karyawan pada departemen ini 
-            //     $employees = Employee::where('department_id', $employee->department_id)
-            //         ->where('designation_id', '<=', '4')
-            //         ->get();
-
-            //     // looping karywanya
-            //     foreach ($employees as $key => $karyawan) {
-            //         # code...
-            //         $kpa = PeKpa::where('employe_id', $karyawan->id)
-            //             ->whereMonth('date', $bulan)
-            //             ->first();
-
-            //         if (!$kpa) {
-            //             # code...
-            //             $hasilQuery[$bulan][$karyawan->id] = [
-            //                 'employe_id' => $karyawan->id,
-            //                 'employe' => $karyawan->biodata->fullName(),
-            //                 'bulan' => $bulan,
-            //                 'status' => 'Belum ada data!'
-            //             ];
-            //         }
-            //     }
-
-
-            //     //     $query = "SELECT *
-            //     //   FROM pe_kpas
-            //     //   WHERE DATE_FORMAT(date, '%m') = $bulan
-            //     //   AND DATE_FORMAT(date, '%Y') = YEAR(NOW())";
-
-            //     //     // Eksekusi query
-            //     //     $result = PeKpa::where('departement_id', $employee->department_id);
-
-            //     //     // Periksa apakah query berhasil
-            //     //     if ($result) {
-            //     //         // Menyimpan hasil query dalam array
-            //     //         $hasilQuery[$bulan] = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
-            //     //         // Bebaskan hasil query
-            //     //         mysqli_free_result($result);
-            //     //     } else {
-            //     //         // echo "Error: " . mysqli_error($koneksi);
-            //     //     }
-            // }
-
-            // dd($hasilQuery);
-            // die;
+            // 
+            $outAssesments = $this->outstandingAssessment($employee->department_id);
+            // 
         }
 
         $designations = Designation::orderBy('name')->get();
@@ -110,7 +60,8 @@ class PeKpaController extends Controller
             'designations' => $designations,
             'departements' => $departements,
             'kpas' => $kpas,
-            'employes' => $employes
+            'employes' => $employes,
+            'outAssesments' =>  $outAssesments
         ])->with('i');
     }
 
@@ -190,6 +141,26 @@ class PeKpaController extends Controller
             ->whereNotNull('kpi_id')
             ->get();
 
+
+        $isDone = false;
+        $isReject = false;
+
+        if ($kpa->status == '1') {
+            # code...
+
+            $dataOpen = PekpaDetail::where('kpa_id', $kpa->id)->where('status', '0')->get();
+            if ($dataOpen->count() == 0) {
+                $dataReject = PekpaDetail::where('kpa_id', $kpa->id)->where('status', '101')->get();
+
+                if ($dataReject->count() == 0) {
+                    // Valid Semua
+                    $isDone = true;
+                } else {
+                    // ada yang belum valid
+                    $isReject = true;
+                }
+            }
+        }
         // dd($datas);
 
 
@@ -201,6 +172,8 @@ class PeKpaController extends Controller
             'kpa' => $kpa,
             'employes' => $employes,
             'addtional' => $addtional,
+            'isDone' => $isDone,
+            'isReject' => $isReject,
             'datas' => $datas
         ])->with('i');
     }
@@ -432,6 +405,72 @@ class PeKpaController extends Controller
         }
     }
 
+    public function itemValidasi(Request $request, $id)
+    {
+        $kpaD = PekpaDetail::find($request->id);
+
+        if ($request->act == 'valid') {
+            $status = '1';
+            $reasonRejection = null;
+        } else {
+            $status = '101';
+            $reasonRejection = $request->alasan_penolakan;
+        }
+
+
+        $updateKpaD = $kpaD->update([
+            'status' => $status,
+            'status_keterangan' => $request->act,
+            'reason_rejection' => $reasonRejection
+        ]);
+
+        if ($updateKpaD) {
+            return back()->with('success', 'Data successfully Updated');
+        } else {
+            return back()->with('danger', 'Failed');
+        }
+
+        dd($kpaD);
+    }
+
+    public function doneValidasi(Request $request, $id)
+    {
+
+        $result = PeKpa::where('id', $request->id)
+            ->update(['status' => '2']);
+
+        if ($result) {
+            return redirect()->back()->with('success', 'Data successfully Submit');
+        } else {
+            return redirect()->back()->with('danger', 'Failed');
+        }
+    }
+
+    public function rejectValidasi(Request $request, $id)
+    {
+
+        $result = PeKpa::where('id', $request->id)
+            ->update(['status' => '101']);
+
+        if ($result) {
+            return redirect()->back()->with('success', 'Data successfully Reject');
+        } else {
+            return redirect()->back()->with('danger', 'Failed');
+        }
+    }
+
+    public function resendingValidasi(Request $request, $id)
+    {
+
+        $result = PeKpa::where('id', $request->id)
+            ->update(['status' => '1']);
+
+        if ($result) {
+            return redirect()->back()->with('success', 'Data successfully Sending');
+        } else {
+            return redirect()->back()->with('danger', 'Failed');
+        }
+    }
 
     public function summary()
     {
@@ -617,5 +656,61 @@ class PeKpaController extends Controller
         } else {
             return back()->with('danger', 'Addtional fail deleted!');
         }
+    }
+
+    private function outstandingAssessment($departmentId = 'All')
+    {
+        // Outstanding Query
+        // Membuat array untuk menyimpan hasil query
+        $outAssesment = array();
+
+        $bulanMulai = 7;   // Bulan untuk mulai atau mengetahui ouststanding assesment
+
+        $bulanSekarang = date('n');
+
+
+        $tahun = date('Y');
+
+        // Loop dari bulan 1 hingga 12
+        for ($bulan = $bulanSekarang; $bulan >= $bulanMulai; $bulan--) {
+            // Mengambil data untuk bulan saat ini
+
+            if ($departmentId == 'All') {
+                # code...
+                $employees = Employee::where('designation_id', '<=', '4')
+                    ->get();
+            } else {
+                # code...
+                $employees = Employee::where('department_id', $departmentId)
+                    ->where('designation_id', '<=', '4')
+                    ->get();
+            }
+
+            // mencari data karyawan pada departemen ini 
+
+
+            // looping karywanya
+            foreach ($employees as $key => $karyawan) {
+                # cek apakah ada penilai kpi di bulan ini
+                $kpa = PeKpa::where('employe_id', $karyawan->id)
+                    ->whereMonth('date', $bulan)
+                    ->whereYear('date', $tahun)
+                    ->first();
+
+                if (!$kpa) {
+                    # jika tidak ada mauskan kedalam oustanding
+
+                    $outAssesment[$bulan][$karyawan->id] = [
+                        'employe_id' => $karyawan->id,
+                        'employe' => $karyawan->biodata->fullName(),
+                        'bulan' => $bulan,
+                        'tahun' => $tahun,
+                        'status' => 'Belum ada data!'
+                    ];
+                }
+            }
+        }
+
+        return $outAssesment;
     }
 }

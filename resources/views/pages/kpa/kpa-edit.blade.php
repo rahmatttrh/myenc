@@ -33,6 +33,18 @@ KPA
                             <label>Month</label>
                             {{ date('M Y', strtotime($kpa->date))}}
                         </div>
+                        <div class="form-group form-group-default">
+                            <label>Status</label>
+                            @if($kpa->status == 0)
+                            <td><span class="badge badge-dark badge-lg"><b>Draft</b></span></td>
+                            @elseif($kpa->status == '1')
+                            <td><span class="badge badge-warning badge-lg"><b>Validasi HRD</b></span></td>
+                            @elseif($kpa->status == '2')
+                            <td><span class="badge badge-success badge-lg"><b>Done</b></span></td>
+                            @elseif($kpa->status == '101')
+                            <td><span class="badge badge-danger badge-lg"><b>Di Reject</b></span></td>
+                            @endif
+                        </div>
                     </form>
                 </div>
             </div>
@@ -53,6 +65,23 @@ KPA
                         </div>
                     </div>
                     @endif
+
+                    @if (auth()->user()->hasRole('Administrator|HRD'))
+                    @if($isDone)
+                    <button onclick="doneValidasi({{$kpa->id}})" class=" btn btn-sm btn-primary ml-auto"><i class="fa fa-check"></i> Done</button>
+                    <form id="done-validasi" action="{{route('kpa.done.validasi', $kpa->id)}}" method="POST"> @csrf @method('patch')</form>
+                    @elseif($isReject)
+                    <button onclick="rejectValidasi({{$kpa->id}})" class="btn btn-sm btn-danger ml-auto"><i class="fa fa-reply"></i> Reject</button>
+                    <form id="reject-validasi" action="{{route('kpa.reject.validasi', $kpa->id)}}" method="POST"> @csrf @method('patch') </form>
+                    @endif
+                    @endif
+
+
+                    <!-- Resubmit -->
+                    @if($kpa->status == '101')
+                    <button onclick="resendingValidasi({{$kpa->id}})" class=" btn btn-sm btn-primary ml-auto"><i class="fa fa-rocket"></i> Resending</button>
+                    <form id="resending-validasi" action="{{route('kpa.resending.validasi', $kpa->id)}}" method="POST"> @csrf @method('patch')</form>
+                    @endif
                 </div>
                 <input type="hidden" id="kpi_id" name="kpi_id">
                 <input type="hidden" id="employee_id" name="employe_id">
@@ -68,6 +97,10 @@ KPA
                                     <th>Target</th>
                                     <th>Value</th>
                                     <th>Achievement</th>
+                                    @if($kpa->status == '1' || $kpa->status == '101')
+                                    <th>Status</th>
+                                    <th>Keterangan</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -86,6 +119,20 @@ KPA
                                     <td> {{$data->kpidetail->target}}</td>
                                     <td> {{$data->value}}</td>
                                     <td class="text-right"> <b>{{$data->achievement}}</b></td>
+                                    @if($kpa->status == '1' || $kpa->status == '101')
+                                    <td>
+                                        @if($data->status == '0')
+                                        <span class="badge badge-default">Open</span>
+                                        @elseif($data->status == '1')
+                                        <span class="badge badge-success">Valid</span>
+                                        @elseif($data->status == '101')
+                                        <span class="badge badge-danger">Invalid</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <br>{{$data->reason_rejection}}
+                                    </td>
+                                    @endif
                                 </tr>
 
 
@@ -98,25 +145,22 @@ KPA
                                                 <h3 class="modal-title">{{$data->kpidetail->objective}} </h3>
                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                             </div>
+                                            <!-- Bagian konten modal -->
+                                            <div class="modal-body">
 
-                                            <form method="POST" action="{{route('kpa.update',$kpa->id) }}" enctype="multipart/form-data">
-                                                @csrf
-                                                @method('PUT')
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="card shadow-none border">
+                                                            <form method="POST" action="{{route('kpa.update',$kpa->id) }}" enctype="multipart/form-data">
+                                                                @csrf
+                                                                @method('PUT')
 
-                                                <input type="hidden" name="id" value="{{$data->id}}">
-                                                <input type="hidden" name="kpa_id" value="{{$kpa->id}}">
-
-                                                <!-- Bagian konten modal -->
-                                                <div class="modal-body">
-
-                                                    <div class="row">
-                                                        <div class="col-md-4">
-                                                            <div class="card shadow-none border">
+                                                                <input type="hidden" name="id" value="{{$data->id}}">
+                                                                <input type="hidden" name="kpa_id" value="{{$kpa->id}}">
                                                                 <div class="card-header d-flex">
                                                                     <div class="d-flex  align-items-center">
                                                                         <div class="card-title">Form Edit</div>
                                                                     </div>
-
                                                                 </div>
                                                                 <div class="card-body">
                                                                     <div class="form-group">
@@ -136,60 +180,88 @@ KPA
 
                                                                     <div class="form-group">
                                                                         <label for="value">Value:</label>
-                                                                        <input type="text" class="form-control value" id="value" name="value" data-key="{{ $data->id }}" data-target="{{ $data->kpidetail->target }}" data-weight="{{ $data->kpidetail->weight }}" value="{{ old('value', $data->value) }}" autocomplete="off">
+                                                                        <input type="text" class="form-control value" {{ in_array($kpa->status, ['1', '2']) ? 'readonly' : '' }} id="value" name="value" data-key="{{ $data->id }}" data-target="{{ $data->kpidetail->target }}" data-weight="{{ $data->kpidetail->weight }}" value="{{ old('value', $data->value) }}" autocomplete="off">
                                                                     </div>
 
                                                                     <div class="form-group">
                                                                         <label for="achievement">Achievement:</label>
                                                                         <input type="text" class="form-control" id="achievement-{{$data->id}}" name="achievement" value="{{ $data->achievement }}" readonly>
                                                                     </div>
-                                                                    @if($kpa->status == '0')
+                                                                    @if($kpa->status == '0' || $kpa->status == '101')
                                                                     <div class="form-group">
                                                                         <label for="attachment">Evidence</label>
                                                                         <input type="file" class="form-control-file attachment" id="attachment" data-key="{{ $data->id }}" name="attachment" accept=".pdf">
                                                                         <label for="attachment">*opsional jika evidence ingin di rubah</label>
                                                                     </div>
-                                                                    <div class="d-flex justify-content-between">
-                                                                        <button type="reset" class="btn btn-secondary ml-auto">
+                                                                    <div class="d-flex justify-content-between btn-group float-right">
+                                                                        <!-- <button type="reset" class="btn btn-secondary ml-auto">
                                                                             <i class="fa fa-refresh"></i> Reset
-                                                                        </button>
+                                                                        </button> -->
+                                                                        <button type="submit" class="btn btn-warning">Update</button>
                                                                     </div>
                                                                     @endif
                                                                 </div>
-                                                            </div>
+
+                                                            </form>
                                                         </div>
-                                                        <div class="col-md-8">
-                                                            <div class="card shadow-none border">
+                                                        <!-- Form Validasi HRD -->
+                                                        @if($kpa->status == '1')
+                                                        <div class="card shadow-none border">
+                                                            <form method="POST" action="{{route('kpa.item.validasi',$kpa->id)}}">
+                                                                @csrf
+                                                                @method('patch')
+                                                                <input type="hidden" name="id" value="{{$data->id}}">
+                                                                <input type="hidden" name="act" class="act" value="valid">
                                                                 <div class="card-header d-flex">
                                                                     <div class="d-flex  align-items-center">
-                                                                        <div class="card-title">Evidence</div>
+                                                                        <div class="card-title">Validasi</div>
                                                                     </div>
-
                                                                 </div>
-                                                                <div class="card-body">
-                                                                    @if ($data->evidence)
-                                                                    <iframe src="{{ Storage::url($data->evidence) }}" id="pdfPreview-{{$data->id}}" width=" 100%" height="575px"></iframe>
-                                                                    @else
-                                                                    <p>No attachment available.</p>
-                                                                    @endif
-
+                                                                <div class="card-body boxPerbaikan">
+                                                                    <label for="form-control">Alasan Penolakan </label>
+                                                                    <textarea name="alasan_penolakan" id="alasan_penolakan" class="form-control alasan_penolakan" rows="4" placeholder="Tuliskan alasan penolakan disini!"></textarea>
                                                                 </div>
+                                                                <div class="card-footer ">
+                                                                    <div class="float-right">
+                                                                        <button class="btn btn-success validBtn"><i class="fa fa-check"></i> Valid</button>
+                                                                        <button type="button" class="btn btn-danger invalidBtn" id="invalidBtn"><i class="fa fa-window-close"></i> Invalid</button>
+                                                                        <button class="btn btn-danger confirmBtn"><i class="fa fa-check"></i> Confirm</button>
+                                                                        <button type="button" class="btn btn-default cancelBtn"><i class="fa fa-window-close"></i> Cancel</button>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                        @endif
+                                                        <!-- End Form Validasi HRD -->
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <div class="card shadow-none border">
+                                                            <div class="card-header d-flex">
+                                                                <div class="d-flex  align-items-center">
+                                                                    <div class="card-title">Evidence</div>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="card-body">
+                                                                @if ($data->evidence)
+                                                                <iframe src="{{ Storage::url($data->evidence) }}" id="pdfPreview-{{$data->id}}" width=" 100%" height="575px"></iframe>
+                                                                @else
+                                                                <p>No attachment available.</p>
+                                                                @endif
+
                                                             </div>
                                                         </div>
                                                     </div>
-
-
-
                                                 </div>
 
-                                                <!-- Bagian footer modal -->
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Tutup</button>
-                                                    @if($kpa->status == '0')
-                                                    <button type="submit" class="btn btn-warning">Update</button>
-                                                    @endif
-                                                </div>
-                                            </form>
+
+
+                                            </div>
+
+                                            <!-- Bagian footer modal -->
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Tutup</button>
+                                            </div>
 
                                         </div>
                                     </div>
@@ -262,7 +334,7 @@ KPA
 
                                                                     <div class="form-group">
                                                                         <label for="value">Value:</label>
-                                                                        <input type="text" class="form-control" {{$kpa->status > 0 ? 'readonly' : '' }}  id="value-edit" name="value" data-key="{{ $addtional->id }}" data-target="{{ $addtional->addtional_target }}" data-weight="{{ $addtional->addtional_weight }}" value="{{ old('value', $addtional->value) }}" autocomplete="off">
+                                                                        <input type="text" class="form-control" {{$kpa->status > 0 ? 'readonly' : '' }} id="value-edit" name="value" data-key="{{ $addtional->id }}" data-target="{{ $addtional->addtional_target }}" data-weight="{{ $addtional->addtional_weight }}" value="{{ old('value', $addtional->value) }}" autocomplete="off">
                                                                     </div>
 
                                                                     <div class="form-group">
@@ -323,7 +395,9 @@ KPA
                                 </tr>
                             </tfoot>
                         </table>
+                        @if($kpa->status == '0'|| $kpa->status == '101')
                         <small class="text-danger">* Jika anda ingin mengupdate nilai value, silahkan klik objective</small>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -415,6 +489,46 @@ KPA
 @push('js_footer')
 <script>
     $(document).ready(function() {
+
+        $('.boxPerbaikan').hide();
+
+        // $('#invalidBtn').click(function() {
+        //     console.log('test');
+        // });
+        $('.confirmBtn').hide();
+        $('.cancelBtn').hide();
+
+        $('.invalidBtn').click(function() {
+            // Tindakan yang akan dijalankan saat tombol diklik
+            $('.boxPerbaikan').show();
+            $('.validBtn').hide();
+            $('.invalidBtn').hide();
+
+            $('.confirmBtn').show();
+            $('.cancelBtn').show();
+            // Menambahkan atribut 'required' ke elemen input
+
+            $('.alasan_penolakan').prop('required', true);
+
+            $('.act').val('invalid');
+        });
+
+        $('.cancelBtn').click(function() {
+            // Tindakan yang akan dijalankan saat tombol diklik
+            $('.boxPerbaikan').hide();
+            $('.validBtn').show();
+            $('.invalidBtn').show();
+
+            $('.confirmBtn').hide();
+            $('.cancelBtn').hide();
+
+            // Menghapus atribut 'required' dari elemen input
+            $('.alasan_penolakan').removeAttr('required');
+
+            $('.act').val('valid');
+        });
+
+
         $('.attachment').on('change', function() {
             var input = $(this)[0];
 
@@ -582,6 +696,52 @@ KPA
 
     function hitungYuk() {
         return $('#value-addtional').val();
+    }
+
+    function doneValidasi(id, pesan = 'Konfirmasi') {
+        swal({
+                title: "Done",
+                text: pesan + ",Yakin ingin menyelesaikan validasi ini ?",
+                icon: "info",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $('#done-validasi').submit();
+                }
+            });
+    }
+
+
+    function rejectValidasi(id, pesan = 'Konfirmasi') {
+        swal({
+                title: "Reject",
+                text: pesan + ",Anda Yakin ingin mereject data ini ?",
+                icon: "info",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $('#reject-validasi').submit();
+                }
+            });
+    }
+
+    function resendingValidasi(id, pesan = 'Konfirmasi') {
+        swal({
+                title: "Konfirmasi",
+                text: "Anda Yakin ingin mengirimkan kembali data ini?",
+                icon: "info",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $('#resending-validasi').submit();
+                }
+            });
     }
 </script>
 @endpush

@@ -161,15 +161,19 @@ KPA
                                     <td>{{date('F Y', strtotime($kpa->date))  }}</td>
                                     <td><span class="badge badge-primary badge-lg"><b>{{$kpa->achievement}}</b></span></td>
                                     @if($kpa->status == 0)
-                                    <td><span class="badge badge-warning badge-lg"><b>Draft</b></span></td>
-                                    @else ($kpa->status == 1)
-                                    <td><span class="badge badge-success badge-lg"><b>Release</b></span></td>
+                                    <td><span class="badge badge-dark badge-lg"><b>Draft</b></span></td>
+                                    @elseif($kpa->status == '1')
+                                    <td><span class="badge badge-warning badge-lg"><b>Validasi HRD</b></span></td>
+                                    @elseif($kpa->status == '2')
+                                    <td><span class="badge badge-success badge-lg"><b>Done</b></span></td>
+                                    @elseif($kpa->status == '101')
+                                    <td><span class="badge badge-danger badge-lg"><b>Di Reject</b></span></td>
                                     @endif
                                     <td class="text-right">
                                         @if($kpa->status == 0)
-                                        <button class="btn btn-warning" data-toggle="modal" data-target="#modal-submit-{{$kpa->id}}"><i class="fas fa-rocket"></i> Submit</button>
-                                        <button class="btn btn-danger" data-toggle="modal" data-target="#modal-delete-{{$kpa->id}}"><i class="fas fa-trash"></i> Delete</button>
-                                        @else ($kpa->status == 1)
+                                        <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-submit-{{$kpa->id}}"><i class="fas fa-rocket"></i> Submit</button>
+                                        <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-delete-{{$kpa->id}}"><i class="fas fa-trash"></i> Delete</button>
+                                        @else ($kpa->status == '1' || $kpa->status == '2')
                                         -
                                         @endif
                                     </td>
@@ -177,6 +181,21 @@ KPA
                                 <x-modal.submit :id="$kpa->id" :body="'KPI ' . $kpa->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($kpa->date))   " url="{{route('kpa.submit', enkripRambo($kpa->id))}}" />
                                 <x-modal.delete :id="$kpa->id" :body="'KPI ' . $kpa->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($kpa->date))   " url="{{route('kpa.delete', enkripRambo($kpa->id))}}" />
                                 @endforeach
+                                <!-- <tr>
+                                    <td>
+                                        Outstanding Assessment
+                                    </td>
+                                </tr>
+                                @foreach ($outAssesments as $datas)
+                                @foreach($datas as $data)
+                                <tr>
+                                    <td></td>
+                                    <td>{{$data['employe']}}</td>
+                                    <td>{{$data['bulan']}}</td>
+                                    <td colspan="3">{{$data['status']}}</td>
+                                </tr>
+                                @endforeach
+                                @endforeach -->
                             </tbody>
                         </table>
                     </div>
