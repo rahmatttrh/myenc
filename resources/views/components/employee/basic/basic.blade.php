@@ -18,41 +18,41 @@
                   <input type="number" name="employee" id="employee" value="{{$employee->id}}" hidden>
                   <div class="row">
                      <div class="col-md-6">
-                        <div class="form-group form-group-default">  
+                        <div class="form-group form-group-default">
                            <label>First Name</label>
                            <input type="text" class="form-control" id="first_name" name="first_name" value="{{$employee->biodata->first_name}}">
                         </div>
                      </div>
                      <div class="col-md-6">
-                        <div class="form-group form-group-default">  
+                        <div class="form-group form-group-default">
                            <label>Last Name</label>
                            <input type="text" class="form-control" id="last_name" name="last_name" value="{{$employee->biodata->last_name}}">
                         </div>
                      </div>
-                     
+
                      @if ($employee->status == 0)
-                        <div class="col-md-6">
-                           <div class="form-group form-group-default">
-                              <label>Status</label>
-                              <select class="form-control" id="status" name="status" disabled>
-                                 <option {{$employee->biodata->status == '1' ? 'selected' : ''}} value="1">Active</option>
-                                 <option {{$employee->biodata->status == '0' ? 'selected' : ''}} value="0">Off</option>
-                              </select>
-                              {{-- <small class="text-muted mt-2">* Please publish this account</small> --}}
-                           </div>
+                     <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                           <label>Status</label>
+                           <select class="form-control" id="status" name="status" disabled>
+                              <option {{$employee->biodata->status == '1' ? 'selected' : ''}} value="1">Active</option>
+                              <option {{$employee->biodata->status == '0' ? 'selected' : ''}} value="0">Off</option>
+                           </select>
+                           {{-- <small class="text-muted mt-2">* Please publish this account</small> --}}
                         </div>
-                        @else
-                        <div class="col-md-6">
-                           <div class="form-group form-group-default">
-                              <label>Status</label>
-                              <select class="form-control" id="status" name="status">
-                                 <option {{$employee->biodata->status == '1' ? 'selected' : ''}} value="1">Active</option>
-                                 <option {{$employee->biodata->status == '2' ? 'selected' : ''}} value="2">Off</option>
-                              </select>
-                           </div>
+                     </div>
+                     @else
+                     <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                           <label>Status</label>
+                           <select class="form-control" id="status" name="status">
+                              <option {{$employee->biodata->status == '1' ? 'selected' : ''}} value="1">Active</option>
+                              <option {{$employee->biodata->status == '2' ? 'selected' : ''}} value="2">Off</option>
+                           </select>
                         </div>
+                     </div>
                      @endif
-                     
+
                      <div class="col-md-6">
                         <div class="form-group form-group-default">
                            <label>Role</label>
@@ -60,7 +60,7 @@
                               @foreach ($roles as $role)
                               <option {{$employee->biodata->role_id == $role->id ? 'selected' : ''}} value="{{$role->id}}">{{$role->name}}</option>
                               @endforeach
-                              
+
                               {{-- <option {{$employee->biodata->gender == 'Female' ? 'selected' : ''}} value="Female">Female</option> --}}
                            </select>
                         </div>
@@ -86,7 +86,7 @@
                            <label>Religion</label>
                            <select class="form-control" id="religion" name="religion">
                               <option value="" disabled selected>Choose one</option>
-                              <option {{$employee->biodata->religion == 'Islam' ? 'selected' : ''}} value="Islam" >Islam</option>
+                              <option {{$employee->biodata->religion == 'Islam' ? 'selected' : ''}} value="Islam">Islam</option>
                               <option {{$employee->biodata->religion == 'Christian' ? 'selected' : ''}} value="Christian">Christian</option>
                               <option {{$employee->biodata->religion == 'Budha' ? 'selected' : ''}} value="Budha">Budha</option>
                               <option {{$employee->biodata->religion == 'Hindu' ? 'selected' : ''}} value="Hindu">Hindu</option>
@@ -125,7 +125,7 @@
                            <input type="text" class="form-control" value="{{$employee->biodata->birth_place}}" name="birth_place" id="birth_place">
                         </div>
                      </div>
-                     
+
                   </div>
                   <div class="row">
                      <div class="col-md-4">
@@ -134,7 +134,7 @@
                            <input type="text" class="form-control" value="{{$employee->biodata->post_code}}" name="post_code" id="post_code">
                         </div>
                      </div>
-                     
+
                      <div class="col-md-4">
                         <div class="form-group form-group-default">
                            <label>Citizenship</label>
@@ -157,7 +157,7 @@
                            </select>
                         </div>
                      </div>
-                   
+
                   </div>
                   <div class="row">
                      <div class="col-md-6">
@@ -178,7 +178,7 @@
                            <input type="text" class="form-control" value="{{$employee->biodata->nationality}}" name="nationality" id="nationality">
                         </div>
                      </div>
-                     
+
 
                      <div class="col-md-12">
                         <div class="form-group form-group-default">
@@ -186,11 +186,11 @@
                            <textarea type="text" class="form-control" value="" name="address" id="address">{{$employee->biodata->address}}</textarea>
                         </div>
                      </div>
-                   
+
                   </div>
-               
+
                   <div class="text-right mt-3 mb-3">
-                     <button type="submit" class="btn btn-dark" {{$employee->status == 0 ? 'disabled' : ''}} disabled>Update</button>
+                     <button type="submit" class="btn btn-dark" {{$employee->status == 0 ? 'disabled' : ''}}>Update</button>
                   </div>
                </form>
             </div>
@@ -202,12 +202,12 @@
                   <div class="row">
                      <div class="col-md-3">
                         @if ($employee->picture)
-                           <img src="{{asset('storage/' .$employee->picture)}}" alt="..." class="img-thumbnail">
-                           @else
-                           <img src="{{asset('img/user.png')}}" alt="..." class="img-thumbnail">
+                        <img src="{{asset('storage/' .$employee->picture)}}" alt="..." class="img-thumbnail">
+                        @else
+                        <img src="{{asset('img/user.png')}}" alt="..." class="img-thumbnail">
                         @endif
-                        
-                        
+
+
                      </div>
                      <div class="col-md-9">
                         <div class="form-group form-group-default">
@@ -220,9 +220,9 @@
                   <button class="btn btn-dark" {{$employee->status == 0 ? 'disabled' : ''}}>Update</button>
                </form>
             </div>
-           
+
          </div>
-         
+
       </div>
    </div>
 </div>
