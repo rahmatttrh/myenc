@@ -38,8 +38,8 @@ KPA
                             <div class="row">
                                 <div class="col">
                                     <select class="form-control form-select date" id="bulan" name="semester">
-                                        <option value="I" {{ date('m') == '02' ? 'selected' : '' }} {{ date('m') < '02' ? 'disabled' : '' }}>I</option>
-                                        <option value="II" {{ date('m') == '03' ? 'selected' : '' }} {{ date('m') < '03' ? 'disabled' : '' }}>II</option>
+                                        <option value="I" {{ date('m') < '07' ? 'selected' : '' }}  >I</option>
+                                        <option value="II" {{ date('m') > '06' ? 'selected' : '' }}  >II</option>
                                     </select>
                                 </div>
                                 <div class="col">
