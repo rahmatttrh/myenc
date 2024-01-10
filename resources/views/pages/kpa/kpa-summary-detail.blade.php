@@ -39,7 +39,7 @@ KPA
                                 <div class="col">
                                     <select class="form-control form-select date" name="semester">
                                         <option value="I" {{ $semester == 'I' ? 'selected' : '' }}>I</option>
-                                        <option value="II" {{ $semester == 'II' ? 'selected' : '' }} {{ date('m') < '06' ? 'disabled' : '' }}>II</option>
+                                        <option value="II" {{ $semester == 'II' ? 'selected' : '' }}>II</option>
                                     </select>
                                 </div>
                                 <div class="col">

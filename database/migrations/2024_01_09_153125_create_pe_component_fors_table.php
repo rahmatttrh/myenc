@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePeComponentsTable extends Migration
+class CreatePeComponentForsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreatePeComponentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('pe_components', function (Blueprint $table) {
-            $table->tinyIncrements('id');
-            $table->string('name');
-            $table->integer('weight');
-            $table->string('table')->nullable();
-            $table->tinyInteger('group_id')->nullable();
+        Schema::create('pe_component_fors', function (Blueprint $table) {
+            $table->smallIncrements('id');
+            $table->tinyInteger('group_id');
+            $table->tinyInteger('designation_id');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ class CreatePeComponentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pe_components');
+        Schema::dropIfExists('pe_component_fors');
     }
 }

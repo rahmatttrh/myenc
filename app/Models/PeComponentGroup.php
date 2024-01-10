@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PeComponent extends Model
+class PeComponentGroup extends Model
 {
     use HasFactory;
     protected $guarded = [];
 
-    public function group()
+    public function components()
     {
-        return $this->belongsTo(PeComponentGroup::class, 'group_id');
+        return $this->hasMany(PeComponent::class, 'group_id');
     }
 }

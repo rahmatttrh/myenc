@@ -26,7 +26,7 @@ Department
                 <div class="dropdown-menu">
 
 
-                    <a class="dropdown-item" style="text-decoration: none" href="{{route('employee.create')}}">Create</a>
+                    {{-- <a class="dropdown-item" style="text-decoration: none" href="{{route('employee.create')}}">Create</a> --}}
                     {{-- <div class="dropdown-divider"></div>            --}}
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" style="text-decoration: none" href="" target="_blank">Print Preview</a>
@@ -40,17 +40,30 @@ Department
                     <thead>
                         <tr>
                             <th>No</th>
+                            <th>Group</th>
                             <th>Komponen</th>
                             <th>Bobot</th>
 
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($components as $component)
+                        @foreach ($groups as $group)
                         <tr>
-                            <td>{{++$i}}</td>
+                            <td rowspan="{{$group->components->count()}}">{{++$i}}</td>
+                            <td rowspan=" {{$group->components->count()}}">{{$group->name}}</td>
+                            @foreach ($group->components as $component)
+                            <!-- <tr> -->
+
                             <td>{{$component->name}}</td>
-                            <td>{{$component->weight}} % </td>
+                            <td>{{$component->weight}}%</td>
+                        </tr>
+
+                        @endforeach
+                        <!-- <td>{{$group->weight}} % </td> -->
+                        </tr>
+
+                        <tr>
+                            <td colspan="4"></td>
                         </tr>
 
                         @endforeach

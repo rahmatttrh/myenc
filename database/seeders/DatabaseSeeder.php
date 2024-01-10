@@ -23,7 +23,9 @@ class DatabaseSeeder extends Seeder
          ShiftSeeder::class,
          SocialSeeder::class,
          BankSeeder::class,
+         PeComponentGroupSeeder::class,
          PeComponentSeeder::class,
+         PeComponentForSeeder::class,
          PeKpiSeeder::class,
          PekpiDetailSeeder::class
          // VesselStatusSeeder::class
