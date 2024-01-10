@@ -105,7 +105,7 @@
                      </div>
                      <div class="col-md-4">
                         <div class="form-group form-group-default">
-                           <label>Marital Status</label>
+                           <label>Status Perkawinan</label>
                            <select class="form-control" id="marital" name="marital">
                               <option value="" disabled selected>Choose one</option>
                               <option {{$employee->biodata->marital == 'Single' ? 'selected' : ''}} value="Single">Single</option>

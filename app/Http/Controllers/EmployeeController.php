@@ -11,6 +11,7 @@ use App\Models\Contract;
 use App\Models\Department;
 use App\Models\Designation;
 use App\Models\Employee;
+use App\Models\Position;
 use App\Models\Role;
 use App\Models\Shift;
 use App\Models\Social;
@@ -97,10 +98,21 @@ class EmployeeController extends Controller
 
    public function detail($id, $enkripPanel)
    {
+      // $employee = auth()->user()->getEmployee();
+      // // Data KPI
+      // if (auth()->user()->hasRole('Administrator|HRD')) {
+
+      //    // 
+      // } else if (auth()->user()->hasRole('Leader|Manager')) {
+      // }
+
       $dekripId = dekripRambo($id);
-      $panel = dekripRambo($enkripPanel);
       $employee = Employee::find($dekripId);
+
       $departments = Department::get();
+      $positions = Position::where('sub_dept_id', $employee->sub_dept_id)->get();
+
+      $panel = dekripRambo($enkripPanel);
       $designations = Designation::get();
       $roles = Role::get();
       $shifts = Shift::get();
@@ -119,6 +131,7 @@ class EmployeeController extends Controller
          'employee' => $employee,
          'departments' => $departments,
          'designations' => $designations,
+         'positions' => $positions,
          'roles' => $roles,
          'shifts' => $shifts,
          'units' => $units,
