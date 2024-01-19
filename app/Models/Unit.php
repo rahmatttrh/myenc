@@ -15,4 +15,17 @@ class Unit extends Model
     {
         return $this->hasMany(Department::class);
     }
+
+    public function totalSubDept($unitId = 2)
+    {
+        // Memanggil ModelA dan salah satu metodenya
+        $ModelDepartments = new Department();
+        $departments = $ModelDepartments->where('unit_id', $unitId)->get();
+        $totalSubDept = 0;
+
+        foreach ($departments as $key => $dept) {
+            $totalSubDept += $dept->sub_depts->count();
+        }
+        return $totalSubDept;
+    }
 }

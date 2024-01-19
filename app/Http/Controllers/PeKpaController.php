@@ -9,6 +9,7 @@ use App\Models\PeKpa;
 use App\Models\PekpaDetail;
 use App\Models\PeKpi;
 use App\Models\PekpiDetail;
+use App\Models\Unit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -517,6 +518,64 @@ class PeKpaController extends Controller
 
         return view('pages.kpa.kpa-summary', [
             'designations' => $designations,
+            'departements' => $departements,
+            'kpis' => $kpis,
+            'kpas' => $kpas,
+            'employes' => $employes
+        ])->with('i');
+    }
+
+    public function monitoring()
+    {
+        $employee = auth()->user()->getEmployee();
+
+        if (auth()->user()->hasRole('Administrator|HRD')) {
+            $kpas = PeKpa::orderBy('date', 'desc')
+                ->orderBy('employe_id')
+                ->get();
+
+
+            $employes = Employee::where('status', '1')
+                ->whereNotNull('kpi_id')
+                ->get();
+            // 
+        } else if (auth()->user()->hasRole('Leader|Manager')) {
+
+            $kpas = DB::table('pe_kpas')
+                ->join('pe_kpis', 'pe_kpas.kpi_id', '=', 'pe_kpis.id')
+                ->where('pe_kpis.departement_id', $employee->department_id)
+                ->get();
+
+            // Convert the query builder result to Order model instances
+            $kpas = PeKpa::hydrate($kpas->toArray());
+
+            // dd($kpas);
+
+
+
+            $employes = Employee::where('department_id', $employee->department_id)
+                ->where('status', '1')
+                ->whereNotNull('kpi_id')
+                ->get();
+
+            // 
+        }
+
+
+        $kpis = PeKpi::get();
+
+        $designations = Designation::orderBy('name')->get();
+
+        $departements = Department::orderBy('name')->get();
+
+        $units = Unit::get();
+
+
+        $modelSubDept = new \App\Models\SubDept();
+
+        return view('pages.kpa.kpa-monitoring', [
+            'designations' => $designations,
+            'units' => $units,
             'departements' => $departements,
             'kpis' => $kpis,
             'kpas' => $kpas,

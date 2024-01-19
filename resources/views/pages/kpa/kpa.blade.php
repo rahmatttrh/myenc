@@ -123,6 +123,9 @@ KPA
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('kpa.summary')}}">Summary</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route('kpa.monitoring')}}">Monitoring</a>
+                        </li>
                     </ul>
                 </div>
                 <div class="card-header d-flex">
