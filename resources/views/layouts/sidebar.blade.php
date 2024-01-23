@@ -108,6 +108,11 @@
                            <span class="sub-item">Component</span>
                         </a>
                      </li>
+                     <li>
+                        <a href="{{route('discipline')}}">
+                           <span class="sub-item">Discipline</span>
+                        </a>
+                     </li>
                      @endif
                      <li>
                         <a href="{{route('kpi')}}">

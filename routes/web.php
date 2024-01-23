@@ -12,6 +12,7 @@ use App\Http\Controllers\EmergencyController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PeComponentController;
+use App\Http\Controllers\PeDisciplineController;
 use App\Http\Controllers\PeKpaController;
 use App\Http\Controllers\PeKpiController;
 use App\Http\Controllers\PekpiDetailController;
@@ -219,6 +220,13 @@ Route::middleware(["auth"])->group(function () {
 
          Route::post('addtional/{id}', [PeKpaController::class, 'storeAddtional'])->name('kpa.addtional.store');
          Route::get('addtional-delete/{id}', [PeKpaController::class, 'deleteAddtional'])->name('kpa.addtional.delete');
+      });
+
+      // Discipline
+      Route::prefix('discipline')->group(function () {
+         Route::get('/', [PeDisciplineController::class, 'index'])->name('discipline');
+         Route::get('import', [PeDisciplineController::class, 'formImport'])->name('discipline.import');
+         Route::post('import', [PeDisciplineController::class, 'import'])->name('discipline.import');
       });
    });
 });

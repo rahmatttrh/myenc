@@ -24,7 +24,7 @@ class PeComponentGroupSeeder extends Seeder
 
         PeComponent::create([
             'name' => 'Discipline',
-            'weight' => 10,
+            'weight' => 15,
             'group_id' => $group1->id,
             'created_at' => NOW(),
             'updated_at' => NOW()
@@ -40,7 +40,7 @@ class PeComponentGroupSeeder extends Seeder
 
         PeComponent::create([
             'name' => 'Behavior',
-            'weight' => 20,
+            'weight' => 15,
             'group_id' => $group1->id,
             'created_at' => NOW(),
             'updated_at' => NOW()
@@ -62,7 +62,7 @@ class PeComponentGroupSeeder extends Seeder
 
         PeComponent::create([
             'name' => 'KPI',
-            'weight' => 50,
+            'weight' => 70,
             'group_id' => $group2->id,
             'created_at' => NOW(),
             'updated_at' => NOW()
@@ -70,7 +70,7 @@ class PeComponentGroupSeeder extends Seeder
 
         PeComponent::create([
             'name' => 'Behavior',
-            'weight' => 40,
+            'weight' => 20,
             'group_id' => $group2->id,
             'created_at' => NOW(),
             'updated_at' => NOW()
