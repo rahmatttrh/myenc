@@ -227,6 +227,14 @@ Route::middleware(["auth"])->group(function () {
          Route::get('/', [PeDisciplineController::class, 'index'])->name('discipline');
          Route::get('import', [PeDisciplineController::class, 'formImport'])->name('discipline.import');
          Route::post('import', [PeDisciplineController::class, 'import'])->name('discipline.import');
+
+         Route::get('delete/{discipline:id}', [PeDisciplineController::class, 'delete'])->name('discipline.delete');
+
+         Route::post('apply-many', [PeDisciplineController::class, 'applyMany'])->name('discipline.apply');
+         // Route::put('delete-many', [PeDisciplineController::class, 'deleteMany'])->name('discipline.delete.many');
+
+         Route::get('draft', [PeDisciplineController::class, 'draft'])->name('discipline.draft');
+         Route::get('monitoring', [PeDisciplineController::class, 'formImport'])->name('discipline.monitoring');
       });
    });
 });

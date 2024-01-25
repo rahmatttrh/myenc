@@ -9,4 +9,9 @@ class TempDiscipline extends Model
 {
     use HasFactory;
     protected $guarded = [];
+
+    public function employe()
+    {
+        return $this->belongsTo(Employee::class);
+    }
 }

@@ -15,20 +15,7 @@ Discipline
         <div class="col-md-12">
             <div class="card shadow-none border">
                 <div class="card-header">
-                    <ul class="nav nav-tabs card-header-tabs">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{route('discipline.import')}}">Import</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" href="#">Monthly</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{route('kpa.summary')}}">Summary</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{route('kpa.monitoring')}}">Monitoring</a>
-                        </li>
-                    </ul>
+                    <x-tab-discipline :activeTab="request()->route()->getName()" />
                 </div>
                 <div class="card-header d-flex">
                     <div class="d-flex  align-items-center">
@@ -51,16 +38,44 @@ Discipline
                             <thead>
                                 <tr>
                                     <th>No</th>
+                                    <th>Bulan</th>
                                     <th>Employe</th>
-                                    <th>Date</th>
+                                    <th>Alpa</th>
+                                    <th>Ijin</th>
+                                    <th>Terlambat</th>
                                     <th>Achievement</th>
-                                    <th>Status</th>
                                     <th class="text-right">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
+
+                                @foreach ($datas as $data)
+                                <tr>
+                                    <td>{{++$i}}</td>
+                                    <td>{{dateToMonth($data->date)}}</td>
+                                    <td>{{$data->employe->biodata->fullName()}}</td>
+                                    <td>{{$data->alpa}}</td>
+                                    <td>{{$data->ijin}}</td>
+                                    <td>{{$data->terlambat}}</td>
+                                    <td>
+                                        <?php
+                                        if ($data->achievement > 2) {
+                                            # code...
+                                            echo "<span class='badge badge-success'>";
+                                        } else {
+                                            # code...
+                                            echo "<span class='badge badge-danger'>";
+                                        }
+
+                                        ?>
+
+                                        {{$data->achievement}}</span>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                @endforeach
                                 {{--
-                                @foreach ($kpas as $kpa)
+                                @foreach ($datas as $data)
                                 <tr>
                                     <td>{{++$i}}</td>
                                 <td><a href="{{route('kpa.edit', enkripRambo($kpa->id))}}"> {{$kpa->employe->biodata->fullName()}} </a></td>
@@ -87,21 +102,6 @@ Discipline
                                 <x-modal.submit :id="$kpa->id" :body="'KPI ' . $kpa->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($kpa->date))   " url="{{route('kpa.submit', enkripRambo($kpa->id))}}" />
                                 <x-modal.delete :id="$kpa->id" :body="'KPI ' . $kpa->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($kpa->date))   " url="{{route('kpa.delete', enkripRambo($kpa->id))}}" />
                                 @endforeach
-                                <!-- <tr>
-                                    <td>
-                                        Outstanding Assessment
-                                    </td>
-                                </tr>
-                                @foreach ($outAssesments as $datas)
-                                @foreach($datas as $data)
-                                <tr>
-                                    <td></td>
-                                    <td>{{$data['employe']}}</td>
-                                    <td>{{$data['bulan']}}</td>
-                                    <td colspan="3">{{$data['status']}}</td>
-                                </tr>
-                                @endforeach
-                                @endforeach -->
 
                                 --}}
                             </tbody>

@@ -15,20 +15,7 @@ Discipline
         <div class="col-md-12">
             <div class="card shadow-none border">
                 <div class="card-header">
-                    <ul class="nav nav-tabs card-header-tabs">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="{{route('kpa.summary')}}">Import</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link " href="#">Monthly</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{route('kpa.summary')}}">Summary</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{route('kpa.monitoring')}}">Monitoring</a>
-                        </li>
-                    </ul>
+                    <x-tab-discipline :activeTab="request()->route()->getName()" />
                 </div>
                 <div class="card-body">
                     <div class="row">

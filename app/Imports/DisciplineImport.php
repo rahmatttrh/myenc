@@ -45,18 +45,22 @@ class DisciplineImport implements ToCollection, WithHeadingRow
 
                     $achievment = 1;
 
-                    if (($row['alpa'] == null || $row['alpa'] == 0) && ($row['ijin'] == null || $row['ijin'] == 0) && ($row['terlambat'] == null || $row['terlambat'] == 0)) {
+                    if ($row['alpa'] >= 2 || $row['ijin'] >= 3 || $row['terlambat'] > 5) {
                         # code...
-                        $achievment = 4;
-                    } else if (($row['alpa'] == null || $row['alpa'] == 0) && ($row['ijin'] == 1 ||  $row['terlambat'] == [1, 2, 3])) {
-                        # code...
-                        $achievment = 3;
-                    } else if ($row['alpa'] == 1 || $row['ijin'] == 2 ||  $row['terlambat'] == [4, 5]) {
-                        # code...
-                        $achievment = 2;
-                    } else {
                         $achievment = 1;
-                    }
+                        // 
+                    } else if ($row['alpa'] == 1 || $row['ijin'] == 2 || in_array($row['terlambat'], [4, 5])) {
+                        // 
+                        $achievment = 2;
+                        // 
+                    } else if (($row['alpa'] == null || $row['alpa'] == 0) && ($row['ijin'] == 1 || in_array($row['terlambat'], [1, 2, 3]))) {
+                        $achievment = 3;
+                        // 
+                    } else if (($row['alpa'] == null || $row['alpa'] == 0) && ($row['ijin'] == null || $row['ijin'] == 0) && ($row['terlambat'] == null || $row['terlambat'] == 0)) {
+                        $achievment = 4;
+                    } 
+              
+                    // dd($achievment);
 
                     $create = TempDiscipline::create([
                         'date' =>  $this->date,
