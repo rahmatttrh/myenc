@@ -26,6 +26,8 @@ class PeKpiController extends Controller
             $kpis = PeKpi::where('departement_id', $employee->department_id)->get();
         }
 
+      //   dd($kpis);
+
         // Data Unit
         if (auth()->user()->hasRole('Administrator|HRD')) {
             $units = Unit::orderBy('name')->get();

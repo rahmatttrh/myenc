@@ -100,7 +100,7 @@ Designation
                                     <td>{{++$i}}</td>
                                     <td><a href="{{'kpi/'. enkripRambo($kpi->id)}}"> {{$kpi->title}} </a></td>
                                     <td>{{$kpi->departement->name}}</td>
-                                    <td>{{$kpi->position->name}}</td>
+                                    <td>{{$kpi->position->name ?? '-'}}</td>
                                     <td class="text-right">
                                         {{--<a href="{{route('kpi.edit', enkripRambo($kpi->id) )}}">Edit</a>--}}
                                         <a href="#" data-toggle="modal" data-target="#modal-delete-{{$kpi->id}}">Delete</a>

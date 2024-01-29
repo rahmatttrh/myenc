@@ -10,6 +10,7 @@ use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\EmergencyController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\ExportController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PeComponentController;
 use App\Http\Controllers\PeDisciplineController;
@@ -241,6 +242,13 @@ Route::middleware(["auth"])->group(function () {
          Route::get('monitoring', [PeDisciplineController::class, 'formImport'])->name('discipline.monitoring');
       });
    });
+
+   Route::prefix('export')->group(function(){
+      Route::get('kpa/employee/{id}', [ExportController::class, 'kpaEmployee'])->name('export.kpa.employee');
+      Route::get('kpa/summary/{employee}/{semester}/{tahun}', [ExportController::class, 'kpaSummary'])->name('export.kpa.summary');
+   });
+
+
 });
 
 
