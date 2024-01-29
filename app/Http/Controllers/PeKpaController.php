@@ -396,12 +396,15 @@ class PeKpaController extends Controller
             'id' => 'required'
         ]);
 
+        $employee = auth()->user()->getEmployee()->biodata;
+
         $kpa = PeKpa::where('id', $request->id)->first();
 
         if ($kpa->status == '0') {
             # code...
             $result = $kpa->update([
                 'status' => '1',
+                'created_by' => $employee->fullName(),
                 'release_at' => NOW()
             ]);
         } else {
@@ -449,9 +452,14 @@ class PeKpaController extends Controller
 
     public function doneValidasi(Request $request, $id)
     {
+        $employee = auth()->user()->getEmployee()->biodata;
 
         $result = PeKpa::where('id', $request->id)
-            ->update(['status' => '3']);
+            ->update([
+                'status' => '3',
+                'validasi_by' => $employee->fullName(),
+                'validasi_at' => NOW()
+            ]);
 
         if ($result) {
             return redirect('kpa')->with('success', 'Data successfully Validasi');
@@ -462,9 +470,12 @@ class PeKpaController extends Controller
 
     public function doneVerifikasi(Request $request, $id)
     {
+        $employee = auth()->user()->getEmployee()->biodata;
+
         $result = PeKpa::where('id', $request->id)
             ->update([
                 'status' => '2',
+                'verifikasi_by' => $employee->fullName(),
                 'verifikasi_at' => NOW()
             ]);
 
@@ -639,7 +650,7 @@ class PeKpaController extends Controller
     {
         $employee = auth()->user()->getEmployee();
 
-        if (auth()->user()->hasRole('Administrator')) {
+        if (auth()->user()->hasRole('Administrator|HRD|BOD')) {
 
             $employes = Employee::where('status', '1')
                 ->whereNotNull('kpi_id')

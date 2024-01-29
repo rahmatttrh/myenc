@@ -60,7 +60,6 @@ KPA
                     </form>
                 </div>
                 <div class="card-footer">
-                  <a href="{{route('export.kpa.employee', enkripRambo($kpa->id))}}" class="btn btn-primary btn-sm">Export PDF</a>
                 </div>
             </div>
         </div>

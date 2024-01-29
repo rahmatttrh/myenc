@@ -58,8 +58,8 @@ KPA
                             
                         </div> --}}
                         <button type="submit" class="btn btn-primary btn-sm ml-auto"><i class="fas fa-check"></i> Cek</button>
-                        <a target="_blank" href="{{route('export.kpa.summary', [enkripRambo($karyawan->id), enkripRambo($semester), enkripRambo($tahun)])}}" class="btn btn-primary btn-sm">Export PDF</a>
-                    </div> 
+                        <a target="_blank" href="{{route('export.kpa.summary', [enkripRambo($karyawan->id), enkripRambo($semester), enkripRambo($tahun)])}}" class="btn btn-danger btn-sm"><i class="fas fa-file-pdf"></i> Export PDF</a>
+                    </div>
                 </form>
             </div>
         </div>
