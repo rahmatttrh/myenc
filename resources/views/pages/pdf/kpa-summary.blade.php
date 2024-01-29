@@ -1,6 +1,6 @@
 @extends('layouts.app-doc')
 @section('title')
-   KPA Summary
+   KPA {{$karyawan->biodata->fullName()}}-{{$semester}}-{{$tahun}}
 @endsection
 @section('content')
 <div class="container-xl">
@@ -9,7 +9,7 @@
      <div class="row align-items-center">
        <div class="col">
          <h2 class="page-title">
-           KPA SUMMARY
+           KPA  {{$karyawan->biodata->fullName()}} {{$semester}} {{$tahun}}
          </h2>
        </div>
        <!-- Page title actions -->
