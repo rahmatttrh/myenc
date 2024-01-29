@@ -20,6 +20,14 @@ class CreatePeKpasTable extends Migration
             $table->date('date');
             $table->integer('achievement')->default(0);
             $table->string('status', 3)->default('0');
+            $table->text('alasan_reject')->nullable();  // Alasan Reject dari manager
+            $table->dateTime('release_at')->nullable();
+            $table->dateTime('resend_at')->nullable(); // Untuk merevisi dan mengirim kembali
+            $table->dateTime('verifikasi_at')->nullable();
+            $table->dateTime('validasi_at')->nullable();
+            $table->string('created_by')->nullable();
+            $table->string('verifikasi_by')->nullable(); // Manager & Asmen
+            $table->string('validasi_by')->nullable();  // HRD
             $table->timestamps();
         });
     }

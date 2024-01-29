@@ -38,10 +38,18 @@ KPA
                             @if($kpa->status == 0)
                             <td><span class="badge badge-dark badge-lg"><b>Draft</b></span></td>
                             @elseif($kpa->status == '1')
-                            <td><span class="badge badge-warning badge-lg"><b>Validasi HRD</b></span></td>
+                            <td>
+                                @if (auth()->user()->hasRole('Manager'))
+                                <span class="badge badge-warning badge-lg"><b>Verifikasi Manager</b></span>
+                                @else
+                                <span class="badge badge-warning badge-lg"><b>Verifikasi Manager</b></span>
+                                @endif
+                            </td>
                             @elseif($kpa->status == '2')
+                            <td><span class="badge badge-primary badge-lg"><b>Validasi HRD</b></span></td>
+                            @elseif($kpa->status == '3')
                             <td><span class="badge badge-success badge-lg"><b>Done</b></span></td>
-                            @elseif($kpa->status == '101')
+                            @elseif($kpa->status == '202')
                             <td><span class="badge badge-danger badge-lg"><b>Di Reject</b></span></td>
                             @endif
                         </div>
@@ -76,9 +84,17 @@ KPA
                     @endif
                     @endif
 
+                    @if (auth()->user()->hasRole('Manager') && $kpa->status == '1' )
+                    <div class="button-group ml-auto">
+                        <button onclick="doneVerifikasi({{$kpa->id}})" class=" btn btn-sm btn-primary  "><i class="fa fa-check"></i> Done</button>
+                        <button data-target="#modalReject" data-toggle="modal" class="btn btn-sm btn-danger "><i class="fa fa-reply"></i> Reject</button>
+
+                        <form id="done-validasi" action="{{route('kpa.done.verifikasi', $kpa->id)}}" method="POST"> @csrf @method('patch')</form>
+                    </div>
+                    @endif
 
                     <!-- Resubmit -->
-                    @if($kpa->status == '101')
+                    @if($kpa->status == '202')
                     <button onclick="resendingValidasi({{$kpa->id}})" class=" btn btn-sm btn-primary ml-auto"><i class="fa fa-rocket"></i> Resending</button>
                     <form id="resending-validasi" action="{{route('kpa.resending.validasi', $kpa->id)}}" method="POST"> @csrf @method('patch')</form>
                     @endif
@@ -97,7 +113,7 @@ KPA
                                     <th>Target</th>
                                     <th>Value</th>
                                     <th>Achievement</th>
-                                    @if($kpa->status == '1' || $kpa->status == '101')
+                                    @if($kpa->status == '2' || $kpa->status == '202')
                                     <th>Status</th>
                                     <th>Keterangan</th>
                                     @endif
@@ -119,13 +135,13 @@ KPA
                                     <td> {{$data->kpidetail->target}}</td>
                                     <td> {{$data->value}}</td>
                                     <td class="text-right"> <b>{{$data->achievement}}</b></td>
-                                    @if($kpa->status == '1' || $kpa->status == '101')
+                                    @if($kpa->status == '2' || $kpa->status == '202')
                                     <td>
                                         @if($data->status == '0')
                                         <span class="badge badge-default">Open</span>
                                         @elseif($data->status == '1')
                                         <span class="badge badge-success">Valid</span>
-                                        @elseif($data->status == '101')
+                                        @elseif($data->status == '202')
                                         <span class="badge badge-danger">Invalid</span>
                                         @endif
                                     </td>
@@ -187,7 +203,7 @@ KPA
                                                                         <label for="achievement">Achievement:</label>
                                                                         <input type="text" class="form-control" id="achievement-{{$data->id}}" name="achievement" value="{{ $data->achievement }}" readonly>
                                                                     </div>
-                                                                    @if($kpa->status == '0' || $kpa->status == '101')
+                                                                    @if($kpa->status == '0' || $kpa->status == '202')
                                                                     <div class="form-group">
                                                                         <label for="attachment">Evidence</label>
                                                                         <input type="file" class="form-control-file attachment" id="attachment" data-key="{{ $data->id }}" name="attachment" accept=".pdf">
@@ -204,8 +220,9 @@ KPA
 
                                                             </form>
                                                         </div>
+                                                        @if($kpa->status == 2)
+                                                        @if (auth()->user()->hasRole('Administrator|HRD'))
                                                         <!-- Form Validasi HRD -->
-                                                        @if($kpa->status == '1')
                                                         <div class="card shadow-none border">
                                                             <form method="POST" action="{{route('kpa.item.validasi',$kpa->id)}}">
                                                                 @csrf
@@ -221,6 +238,8 @@ KPA
                                                                     <label for="form-control">Alasan Penolakan </label>
                                                                     <textarea name="alasan_penolakan" id="alasan_penolakan" class="form-control alasan_penolakan" rows="4" placeholder="Tuliskan alasan penolakan disini!"></textarea>
                                                                 </div>
+                                                                <!-- Disini KHusus HRD  -->
+
                                                                 <div class="card-footer ">
                                                                     <div class="float-right">
                                                                         <button class="btn btn-success validBtn"><i class="fa fa-check"></i> Valid</button>
@@ -229,10 +248,12 @@ KPA
                                                                         <button type="button" class="btn btn-default cancelBtn"><i class="fa fa-window-close"></i> Cancel</button>
                                                                     </div>
                                                                 </div>
+
                                                             </form>
                                                         </div>
                                                         @endif
                                                         <!-- End Form Validasi HRD -->
+                                                        @endif
                                                     </div>
                                                     <div class="col-md-8">
                                                         <div class="card shadow-none border">
@@ -285,6 +306,20 @@ KPA
                                     <td>{{$addtional->addtional_target}}</td>
                                     <td>{{$addtional->value}}</td>
                                     <td class="text-right"><b>{{$addtional->achievement}}</b></td>
+                                    @if($kpa->status == '2' || $kpa->status == '202')
+                                    <td>
+                                        @if($addtional->status == '0')
+                                        <span class="badge badge-default">Open</span>
+                                        @elseif($addtional->status == '1')
+                                        <span class="badge badge-success">Valid</span>
+                                        @elseif($addtional->status == '202')
+                                        <span class="badge badge-danger">Invalid</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <br>{{$addtional->reason_rejection}}
+                                    </td>
+                                    @endif
                                 </tr>
 
                                 <div class="modal fade" id="modalEditAddtional" data-bs-backdrop="static">
@@ -297,18 +332,18 @@ KPA
                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                             </div>
 
-                                            <form method="POST" action="{{route('kpa.addtional.update',$kpa->id) }}" enctype="multipart/form-data">
-                                                @csrf
-                                                @method('PUT')
+                                            <!-- Bagian konten modal -->
+                                            <div class="modal-body">
 
-                                                <input type="hidden" name="id" value="{{$addtional->id}}">
-                                                <input type="hidden" name="kpa_id" value="{{$addtional->kpa_id}}">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <form method="POST" action="{{route('kpa.addtional.update',$kpa->id) }}" enctype="multipart/form-data">
+                                                            @csrf
+                                                            @method('PUT')
 
-                                                <!-- Bagian konten modal -->
-                                                <div class="modal-body">
+                                                            <input type="hidden" name="id" value="{{$addtional->id}}">
+                                                            <input type="hidden" name="kpa_id" value="{{$addtional->kpa_id}}">
 
-                                                    <div class="row">
-                                                        <div class="col-md-4">
                                                             <div class="card shadow-none border">
                                                                 <div class="card-header d-flex">
                                                                     <div class="d-flex  align-items-center">
@@ -350,41 +385,78 @@ KPA
                                                                     @endif
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="col-md-8">
-                                                            <div class="card shadow-none border">
+                                                            @if($kpa->status == '0')
+                                                            <a href="/kpa/addtional-delete/{{enkripRambo($addtional->id)}}" onclick="return confirm('Apakah Anda yakin ingin menghapus item ini?')"><button type="button" class="btn btn-danger"> <i class="fa fa-trash "></i> Delete</button></a>
+                                                            <button type="submit" class="btn btn-warning">Update</button>
+                                                            @endif
+                                                        </form>
+
+
+                                                        @if($kpa->status == 2)
+                                                        @if (auth()->user()->hasRole('Administrator|HRD'))
+                                                        <!-- Form Validasi HRD -->
+                                                        <div class="card shadow-none border">
+                                                            <form method="POST" action="{{route('kpa.item.validasi',$kpa->id)}}">
+                                                                @csrf
+                                                                @method('patch')
+                                                                <input type="hidden" name="id" value="{{$addtional->id}}">
+                                                                <input type="hidden" name="act" class="act" value="valid">
                                                                 <div class="card-header d-flex">
                                                                     <div class="d-flex  align-items-center">
-                                                                        <div class="card-title">Evidence</div>
+                                                                        <div class="card-title">Validasi</div>
                                                                     </div>
-
                                                                 </div>
-                                                                <div class="card-body">
-                                                                    @if ($data->evidence)
-                                                                    <iframe src="{{ Storage::url($addtional->evidence) }}" id="pdfPreview-{{$addtional->id}}" width=" 100%" height="575px"></iframe>
-                                                                    @else
-                                                                    <p>No attachment available.</p>
-                                                                    @endif
-
+                                                                <div class="card-body boxPerbaikan">
+                                                                    <label for="form-control">Alasan Penolakan </label>
+                                                                    <textarea name="alasan_penolakan" id="alasan_penolakan" class="form-control alasan_penolakan" rows="4" placeholder="Tuliskan alasan penolakan disini!"></textarea>
                                                                 </div>
+                                                                <!-- Disini KHusus HRD  -->
+
+                                                                <div class="card-footer ">
+                                                                    <div class="float-right">
+                                                                        <button class="btn btn-success validBtn"><i class="fa fa-check"></i> Valid</button>
+                                                                        <button type="button" class="btn btn-danger invalidBtn" id="invalidBtn"><i class="fa fa-window-close"></i> Invalid</button>
+                                                                        <button class="btn btn-danger confirmBtn"><i class="fa fa-check"></i> Confirm</button>
+                                                                        <button type="button" class="btn btn-default cancelBtn"><i class="fa fa-window-close"></i> Cancel</button>
+                                                                    </div>
+                                                                </div>
+
+                                                            </form>
+                                                        </div>
+                                                        @endif
+                                                        <!-- End Form Validasi HRD -->
+                                                        @endif
+
+                                                    </div>
+
+                                                    <div class="col-md-8">
+                                                        <div class="card shadow-none border">
+                                                            <div class="card-header d-flex">
+                                                                <div class="d-flex  align-items-center">
+                                                                    <div class="card-title">Evidence</div>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="card-body">
+                                                                @if ($addtional->evidence)
+                                                                <iframe src="{{ Storage::url($addtional->evidence) }}" id="pdfPreview-{{$addtional->id}}" width=" 100%" height="575px"></iframe>
+                                                                @else
+                                                                <p>No attachment available.</p>
+                                                                @endif
+
                                                             </div>
                                                         </div>
                                                     </div>
-
-
-
                                                 </div>
 
-                                                <!-- Bagian footer modal -->
-                                                <div class="modal-footer">
-                                                    @if($kpa->status == '0')
-                                                    <a href="/kpa/addtional-delete/{{enkripRambo($addtional->id)}}" onclick="return confirm('Apakah Anda yakin ingin menghapus item ini?')"><button type="button" class="btn btn-danger"> <i class="fa fa-trash "></i> Delete</button></a>
-                                                    <button type="submit" class="btn btn-warning">Update</button>
-                                                    @endif
-                                                    <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
-                                                </div>
-                                            </form>
 
+
+                                            </div>
+
+                                            <!-- Bagian footer modal -->
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -395,7 +467,7 @@ KPA
                                 </tr>
                             </tfoot>
                         </table>
-                        @if($kpa->status == '0'|| $kpa->status == '101')
+                        @if($kpa->status == '0'|| $kpa->status == '202')
                         <small class="text-danger">* Jika anda ingin mengupdate nilai value, silahkan klik objective</small>
                         @endif
                     </div>
@@ -414,7 +486,6 @@ KPA
                 <h3 class="modal-title"> </h3>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
-            }
             <form method="POST" action="{{route('kpa.addtional.store',$kpa->id) }}" enctype="multipart/form-data">
                 @csrf
 
@@ -484,6 +555,55 @@ KPA
     </div>
 </div>
 
+
+<!-- Modal Reject  -->
+<div class="modal fade" id="modalReject" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <!-- Bagian header modal -->
+            <div class="modal-header">
+                <h3 class="modal-title"> </h3>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <form method="POST" action="{{route('kpa.verifikasi.reject',$kpa->id) }}" enctype="multipart/form-data">
+                @csrf
+
+                <input type="hidden" name="kpa_id" value="{{$kpa->id}}">
+
+                <!-- Bagian konten modal -->
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card shadow-none border">
+                                <div class="card-header d-flex">
+                                    <div class="d-flex  align-items-center">
+                                        <div class="card-title">Konfirmasi Reject</div>
+                                    </div>
+
+                                </div>
+                                <div class="card-body">
+                                    <label for="" class="label-control">Alasan Penolakan</label>
+                                    <textarea name="alasan_reject" class="form-control" id="" cols="30" rows="10" placeholder="Isikan alasan penolakan disini"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bagian footer modal -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Reject</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<!-- End Modal Reject  -->
 @endsection
 
 @push('js_footer')
@@ -705,6 +825,21 @@ KPA
                 icon: "info",
                 buttons: true,
                 dangerMode: true,
+            })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $('#done-validasi').submit();
+                }
+            });
+    }
+
+    function doneVerifikasi(id, pesan = 'Konfirmasi') {
+        swal({
+                title: "Konfirmasi",
+                text: " Anda yakin ingin menyelesaikan verifikasi ini ?",
+                icon: "info",
+                buttons: true,
+                dangerMode: false,
             })
             .then((willDelete) => {
                 if (willDelete) {
