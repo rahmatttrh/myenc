@@ -36,7 +36,7 @@
                <div class="col-6">
                   <p class="h3">DETAIL</p>
                   <dl class="row">
-                     <dd class="col-3">Name</dd>
+                     <dd class="col-3">Nama</dd>
                      <dd class="col-9">: {{$karyawan->biodata->first_name}} {{$karyawan->biodata->last_name}}</dd>
                      <dd class="col-3">Jabatan</dd>
                      <dd class="col-9">:  {{$karyawan->contract->designation->name ?? ''}} {{$karyawan->contract->department->name ?? ''}}</dd>
