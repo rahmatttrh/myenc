@@ -49,8 +49,12 @@ KPA
                             <td><span class="badge badge-primary badge-lg"><b>Validasi HRD</b></span></td>
                             @elseif($kpa->status == '3')
                             <td><span class="badge badge-success badge-lg"><b>Done</b></span></td>
+                            @elseif($kpa->status == '101')
+                            <td><span class="badge badge-danger badge-lg"><b>Di Reject Manager</b></span></td>
+                            <label class="mt-3">Alasan Penolakan</label>
+                            <td><span class="badge badge-warning badge-lg"><b>{{$kpa->alasan_reject}}</b></span></td>
                             @elseif($kpa->status == '202')
-                            <td><span class="badge badge-danger badge-lg"><b>Di Reject</b></span></td>
+                            <td><span class="badge badge-danger badge-lg"><b>Di Reject HRD</b></span></td>
                             @endif
                         </div>
                     </form>
@@ -63,8 +67,13 @@ KPA
                     <div class="d-flex  align-items-center">
                         <div class="card-title">Objective KPI</div>
                     </div>
-                    @if($kpa->status == '0')
+                    @if($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202')
                     <div class="btn-group btn-group-page-header ml-auto">
+                        <div class="button-group">
+                            <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-submit-{{$kpa->id}}"><i class="fas fa-rocket"></i> Submit </button>
+                            <x-modal.submit :id="$kpa->id" :body="'KPI ' . $kpa->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($kpa->date))   " url="{{route('kpa.submit', enkripRambo($kpa->id))}}" />
+                        </div>
+
                         <button type="button" class="btn btn-light btn-round btn-page-header-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-ellipsis-h"></i>
                         </button>
@@ -196,14 +205,14 @@ KPA
 
                                                                     <div class="form-group">
                                                                         <label for="value">Value:</label>
-                                                                        <input type="text" class="form-control value" {{ in_array($kpa->status, ['1', '2']) ? 'readonly' : '' }} id="value" name="value" data-key="{{ $data->id }}" data-target="{{ $data->kpidetail->target }}" data-weight="{{ $data->kpidetail->weight }}" value="{{ old('value', $data->value) }}" autocomplete="off">
+                                                                        <input type="text" class="form-control value" {{ in_array($kpa->status, ['1', '2', '3', '4']) ? 'readonly' : '' }} id="value" name="value" data-key="{{ $data->id }}" data-target="{{ $data->kpidetail->target }}" data-weight="{{ $data->kpidetail->weight }}" value="{{ old('value', $data->value) }}" autocomplete="off">
                                                                     </div>
 
                                                                     <div class="form-group">
                                                                         <label for="achievement">Achievement:</label>
                                                                         <input type="text" class="form-control" id="achievement-{{$data->id}}" name="achievement" value="{{ $data->achievement }}" readonly>
                                                                     </div>
-                                                                    @if($kpa->status == '0' || $kpa->status == '202')
+                                                                    @if($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202' )
                                                                     <div class="form-group">
                                                                         <label for="attachment">Evidence</label>
                                                                         <input type="file" class="form-control-file attachment" id="attachment" data-key="{{ $data->id }}" name="attachment" accept=".pdf">
@@ -376,7 +385,7 @@ KPA
                                                                         <label for="achievement">Achievement:</label>
                                                                         <input type="text" class="form-control" id="achievement-edit" name="achievement" value="{{ $addtional->achievement }}" readonly>
                                                                     </div>
-                                                                    @if($kpa->status == '0')
+                                                                    @if($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202')
                                                                     <div class="form-group">
                                                                         <label for="attachment">Evidence</label>
                                                                         <input type="file" class="form-control-file attachment" id="attachment" data-key="{{ $addtional->id }}" name="attachment" accept=".pdf">
@@ -385,7 +394,7 @@ KPA
                                                                     @endif
                                                                 </div>
                                                             </div>
-                                                            @if($kpa->status == '0')
+                                                            @if($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202')
                                                             <a href="/kpa/addtional-delete/{{enkripRambo($addtional->id)}}" onclick="return confirm('Apakah Anda yakin ingin menghapus item ini?')"><button type="button" class="btn btn-danger"> <i class="fa fa-trash "></i> Delete</button></a>
                                                             <button type="submit" class="btn btn-warning">Update</button>
                                                             @endif
@@ -467,7 +476,7 @@ KPA
                                 </tr>
                             </tfoot>
                         </table>
-                        @if($kpa->status == '0'|| $kpa->status == '202')
+                        @if($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202' )
                         <small class="text-danger">* Jika anda ingin mengupdate nilai value, silahkan klik objective</small>
                         @endif
                     </div>
@@ -529,7 +538,7 @@ KPA
                                         <label for="achievement">Achievement:</label>
                                         <input type="text" class="form-control" id="achievement-addtional" name="achievement" value="20" readonly>
                                     </div>
-                                    @if($kpa->status == '0')
+                                    @if($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202')
                                     <div class="form-group">
                                         <label for="attachment">Evidence</label>
                                         <input type="file" class="form-control-file attachment" id="attachment" name="attachment" accept=".pdf" required>
@@ -545,7 +554,7 @@ KPA
                 <!-- Bagian footer modal -->
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Tutup</button>
-                    @if($kpa->status == '0')
+                    @if($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202')
                     <button type="submit" class="btn btn-primary">Simpan</button>
                     @endif
                 </div>

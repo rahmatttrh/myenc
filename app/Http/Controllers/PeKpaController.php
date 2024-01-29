@@ -396,8 +396,21 @@ class PeKpaController extends Controller
             'id' => 'required'
         ]);
 
-        $result = PeKpa::where('id', $request->id)
-            ->update(['status' => '1']);
+        $kpa = PeKpa::where('id', $request->id)->first();
+
+        if ($kpa->status == '0') {
+            # code...
+            $result = $kpa->update([
+                'status' => '1',
+                'release_at' => NOW()
+            ]);
+        } else {
+            # code...
+            $result = $kpa->update([
+                'status' => '1',
+                'resend_at' => NOW()
+            ]);
+        }
 
         if ($result) {
             return redirect()->back()->with('success', 'Data successfully Submit');
