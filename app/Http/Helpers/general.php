@@ -59,3 +59,9 @@ function dateToMonth($date)
    return getMonthNameIndonesian($bulan) . ' ' . $tahun;
    // return $bulan;
 }
+
+function formatMonthName($data)
+{
+   $date = \Carbon\Carbon::parse($data)->format('F');
+   return $date;
+}

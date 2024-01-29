@@ -25,7 +25,7 @@ KPA
                     <div class="card-body">
 
                         <div class="form-group form-group-default">
-                            <label>Employee</label>
+                            <label>Employee {{$karyawan->id}}</label>
                             <select class="form-control" name="employe_id" id="employe_id" required>
                                 <option value="">--- Choose Employe ---</option>
                                 @foreach ($employes as $employe)
@@ -53,10 +53,12 @@ KPA
                         </div>
                     </div>
                     <div class="card-footer">
-                        <div class="d-flex justify-content-between">
-                            <button type="submit" class="btn btn-primary ml-auto"><i class="fas fa-check"></i> Cek</button>
-                        </div>
-                    </div>
+                        {{-- <div class="d-flex justify-content-between">
+                            
+                        </div> --}}
+                        <button type="submit" class="btn btn-primary btn-sm ml-auto"><i class="fas fa-check"></i> Cek</button>
+                        <a target="_blank" href="{{route('export.kpa.summary', [enkripRambo($karyawan->id), enkripRambo($semester), enkripRambo($tahun)])}}" class="btn btn-primary btn-sm">Export PDF</a>
+                    </div> 
                 </form>
             </div>
         </div>

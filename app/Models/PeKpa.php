@@ -19,4 +19,19 @@ class PeKpa extends Model
     {
         return $this->hasMany(PekpaDetail::class);
     }
+
+    public function datas(){
+      $datas = PekpaDetail::where('kpa_id', $this->id)->where('addtional', '0')->get();
+      return $datas;
+    }
+
+    public function additional(){
+      $data = PekpaDetail::where('kpa_id', $this->id)->where('addtional', '1')->first();
+      return $data;
+    }
+
+   //  public function additional()
+   //  {
+   //      return $this->hasMany(PekpaDetail::class);
+   //  }
 }
