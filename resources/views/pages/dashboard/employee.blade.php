@@ -77,9 +77,7 @@ Dashboard
                </div>
                <hr>
                <div class="card-desc">
-                  Lorem, ipsum dolor sit amet consectetur adipisicing elit. Incidunt provident ipsum
-                  similique dignissimos! <br>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim et, voluptatibus possimus doloribus, nisi magnam voluptas dolore debitis, eligendi laboriosam commodi ea fugiat!
+                  Tanggal 8 & 9 Februari Libur Nasional dan Cuti Bersama
                </div>
                {{-- <div class="card-detail">
                      <div class="btn btn-light btn-rounded">Download Template</div>
