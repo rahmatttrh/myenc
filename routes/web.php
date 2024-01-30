@@ -213,6 +213,10 @@ Route::middleware(["auth"])->group(function () {
 
          // Validasi
          Route::patch('item-validasi/{id}', [PeKpaController::class, 'itemValidasi'])->name('kpa.item.validasi');
+         Route::post('verifikasi/{id}', [PeKpaController::class, 'rejectVerifikasi'])->name('kpa.verifikasi.reject');
+
+         // Verifikasi
+         Route::patch('done-verifikasi/{id}', [PeKpaController::class, 'doneVerifikasi'])->name('kpa.done.verifikasi');
 
          Route::get('/summary', [PeKpaController::class, 'summary'])->name('kpa.summary');
          Route::get('/monitoring', [PeKpaController::class, 'monitoring'])->name('kpa.monitoring');

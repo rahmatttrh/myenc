@@ -8,7 +8,8 @@ KPA
     <nav aria-label="breadcrumb ">
         <ol class="breadcrumb  ">
             <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
-            <li class="breadcrumb-item active" aria-current="page">KPA</li>
+            <li class="breadcrumb-item " aria-current="page"><a href="{{route('kpa') }}"> KPA </a></li>
+            <li class="breadcrumb-item active" aria-current="page"> Summary KPI </li>
         </ol>
     </nav>
     <div class="row" id="boxCreate">
@@ -38,8 +39,8 @@ KPA
                             <div class="row">
                                 <div class="col">
                                     <select class="form-control form-select date" id="bulan" name="semester">
-                                        <option value="I" {{ date('m') < '07' ? 'selected' : '' }}  >I</option>
-                                        <option value="II" {{ date('m') > '06' ? 'selected' : '' }}  >II</option>
+                                        <option value="I" {{ date('m') < '07' ? 'selected' : '' }}>I</option>
+                                        <option value="II" {{ date('m') > '06' ? 'selected' : '' }}>II</option>
                                     </select>
                                 </div>
                                 <div class="col">

@@ -123,9 +123,12 @@ KPA
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('kpa.summary')}}">Summary</a>
                         </li>
+                        @if (auth()->user()->hasRole('Administrator|HRD'))
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('kpa.monitoring')}}">Monitoring</a>
                         </li>
+                        @endif
+
                     </ul>
                 </div>
                 <div class="card-header d-flex">
@@ -166,18 +169,30 @@ KPA
                                     @if($kpa->status == 0)
                                     <td><span class="badge badge-dark badge-lg"><b>Draft</b></span></td>
                                     @elseif($kpa->status == '1')
-                                    <td><span class="badge badge-warning badge-lg"><b>Validasi HRD</b></span></td>
+                                    <td>
+                                        @if (auth()->user()->hasRole('Manager'))
+                                        <span class="badge badge-warning badge-lg"><b>Perlu Diverifikasi</b></span>
+                                        @else
+                                        <span class="badge badge-warning badge-lg"><b>Verifikasi Manager</b></span>
+                                        @endif
+                                    </td>
                                     @elseif($kpa->status == '2')
+                                    <td><span class="badge badge-primary badge-lg"><b>Validasi HRD</b></span></td>
+                                    @elseif($kpa->status == '3')
                                     <td><span class="badge badge-success badge-lg"><b>Done</b></span></td>
                                     @elseif($kpa->status == '101')
-                                    <td><span class="badge badge-danger badge-lg"><b>Di Reject</b></span></td>
+                                    <td><span class="badge badge-danger badge-lg"><b>Di Reject Manager</b></span></td>
+                                    @elseif($kpa->status == '202')
+                                    <td><span class="badge badge-danger badge-lg"><b>Di Reject HRD</b></span></td>
                                     @endif
                                     <td class="text-right">
                                         @if($kpa->status == 0)
                                         <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-submit-{{$kpa->id}}"><i class="fas fa-rocket"></i> Submit</button>
                                         <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-delete-{{$kpa->id}}"><i class="fas fa-trash"></i> Delete</button>
-                                        @else ($kpa->status == '1' || $kpa->status == '2')
+                                        @elseif($kpa->status == '1' || $kpa->status == '2')
                                         -
+                                        @elseif($kpa->status == 101 || $kpa->status == 202)
+                                        <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-submit-{{$kpa->id}}"><i class="fas fa-rocket"></i> Submit</button>
                                         @endif
                                     </td>
                                 </tr>

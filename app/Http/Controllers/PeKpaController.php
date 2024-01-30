@@ -146,12 +146,12 @@ class PeKpaController extends Controller
         $isDone = false;
         $isReject = false;
 
-        if ($kpa->status == '1') {
+        if ($kpa->status == '2') {
             # code...
 
             $dataOpen = PekpaDetail::where('kpa_id', $kpa->id)->where('status', '0')->get();
             if ($dataOpen->count() == 0) {
-                $dataReject = PekpaDetail::where('kpa_id', $kpa->id)->where('status', '101')->get();
+                $dataReject = PekpaDetail::where('kpa_id', $kpa->id)->where('status', '202')->get();
 
                 if ($dataReject->count() == 0) {
                     // Valid Semua
@@ -396,8 +396,24 @@ class PeKpaController extends Controller
             'id' => 'required'
         ]);
 
-        $result = PeKpa::where('id', $request->id)
-            ->update(['status' => '1']);
+        $employee = auth()->user()->getEmployee()->biodata;
+
+        $kpa = PeKpa::where('id', $request->id)->first();
+
+        if ($kpa->status == '0') {
+            # code...
+            $result = $kpa->update([
+                'status' => '1',
+                'created_by' => $employee->fullName(),
+                'release_at' => NOW()
+            ]);
+        } else {
+            # code...
+            $result = $kpa->update([
+                'status' => '1',
+                'resend_at' => NOW()
+            ]);
+        }
 
         if ($result) {
             return redirect()->back()->with('success', 'Data successfully Submit');
@@ -414,7 +430,7 @@ class PeKpaController extends Controller
             $status = '1';
             $reasonRejection = null;
         } else {
-            $status = '101';
+            $status = '202';
             $reasonRejection = $request->alasan_penolakan;
         }
 
@@ -436,12 +452,51 @@ class PeKpaController extends Controller
 
     public function doneValidasi(Request $request, $id)
     {
+        $employee = auth()->user()->getEmployee()->biodata;
 
         $result = PeKpa::where('id', $request->id)
-            ->update(['status' => '2']);
+            ->update([
+                'status' => '3',
+                'validasi_by' => $employee->fullName(),
+                'validasi_at' => NOW()
+            ]);
 
         if ($result) {
-            return redirect()->back()->with('success', 'Data successfully Submit');
+            return redirect('kpa')->with('success', 'Data successfully Validasi');
+        } else {
+            return redirect()->back()->with('danger', 'Failed');
+        }
+    }
+
+    public function doneVerifikasi(Request $request, $id)
+    {
+        $employee = auth()->user()->getEmployee()->biodata;
+
+        $result = PeKpa::where('id', $request->id)
+            ->update([
+                'status' => '2',
+                'verifikasi_by' => $employee->fullName(),
+                'verifikasi_at' => NOW()
+            ]);
+
+        if ($result) {
+            return redirect('kpa')->with('success', 'Data successfully Verifikasi');
+        } else {
+            return redirect()->back()->with('danger', 'Failed');
+        }
+    }
+
+    public function  rejectVerifikasi(Request $request, $id)
+    {
+        $result = PeKpa::where('id', $id)
+            ->update([
+                'status' => '101',
+                'alasan_reject' => $request->alasan_reject,
+                'verifikasi_at' => NOW()
+            ]);
+
+        if ($result) {
+            return redirect('kpa')->with('success', 'KPI Appraisal Berhasil di Reject !');
         } else {
             return redirect()->back()->with('danger', 'Failed');
         }
@@ -451,7 +506,10 @@ class PeKpaController extends Controller
     {
 
         $result = PeKpa::where('id', $request->id)
-            ->update(['status' => '101']);
+            ->update([
+                'status' => '202',
+                'validasi_at' => NOW()
+            ]);
 
         if ($result) {
             return redirect()->back()->with('success', 'Data successfully Reject');
@@ -592,7 +650,7 @@ class PeKpaController extends Controller
     {
         $employee = auth()->user()->getEmployee();
 
-        if (auth()->user()->hasRole('Administrator')) {
+        if (auth()->user()->hasRole('Administrator|HRD|BOD')) {
 
             $employes = Employee::where('status', '1')
                 ->whereNotNull('kpi_id')

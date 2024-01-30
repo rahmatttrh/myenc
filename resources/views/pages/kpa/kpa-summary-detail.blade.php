@@ -8,7 +8,8 @@ KPA
     <nav aria-label="breadcrumb ">
         <ol class="breadcrumb  ">
             <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
-            <li class="breadcrumb-item active" aria-current="page">KPA</li>
+            <li class="breadcrumb-item " aria-current="page"><a href="{{route('kpa') }}"> KPA </a></li>
+            <li class="breadcrumb-item active" aria-current="page"> Summary KPI </li>
         </ol>
     </nav>
     <div class="row" id="boxCreate">
@@ -57,8 +58,8 @@ KPA
                             
                         </div> --}}
                         <button type="submit" class="btn btn-primary btn-sm ml-auto"><i class="fas fa-check"></i> Cek</button>
-                        <a target="_blank" href="{{route('export.kpa.summary', [enkripRambo($karyawan->id), enkripRambo($semester), enkripRambo($tahun)])}}" class="btn btn-primary btn-sm">Export PDF</a>
-                    </div> 
+                        <a target="_blank" href="{{route('export.kpa.summary', [enkripRambo($karyawan->id), enkripRambo($semester), enkripRambo($tahun)])}}" class="btn btn-danger btn-sm"><i class="fas fa-file-pdf"></i> Export PDF</a>
+                    </div>
                 </form>
             </div>
         </div>
