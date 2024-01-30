@@ -94,7 +94,7 @@
                </div>
                <div class="col-9">
                   <h4 class="">Grafik</h4>
-                  <div class="chart-container">
+                  <div class="chart-container" style="max-width: 100%">
                      <canvas id="barChart"></canvas>
                   </div>
                </div>
