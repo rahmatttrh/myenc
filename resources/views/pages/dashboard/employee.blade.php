@@ -47,7 +47,7 @@ Dashboard
                </div>
             </div>
             <div class="card-footer">
-               <div class="row user-stats text-center">
+               {{-- <div class="row user-stats text-center">
                   <div class="col">
                      <div class="number">2</div>
                      <div class="title">Sisa Cuti</div>
@@ -60,7 +60,7 @@ Dashboard
                      <div class="number">1</div>
                      <div class="title">Absen</div>
                   </div>
-               </div>
+               </div> --}}
             </div>
          </div>
       </div>
