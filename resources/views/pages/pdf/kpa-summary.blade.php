@@ -73,8 +73,8 @@
                            <tr>
                                  {{-- <th>No</th> --}}
                                  {{-- <th>Name</th> --}}
-                                 <th>Date</th>
-                                 <th>Achievement</th>
+                                 <th>Month</th>
+                                 <th class="text-center">Achievement</th>
                            </tr>
                         </thead>
                         <tbody>
@@ -83,7 +83,7 @@
                                  {{-- <td>{{++$i}}</td> --}}
                                  {{-- <td> {{$kpa->employe->biodata->fullName()}} </td> --}}
                                  <td>{{date('F', strtotime($kpa->date))  }}</td>
-                                 <td><span class="badge badge-primary badge-lg"><b>{{$kpa->achievement}}</b></span></td>
+                                 <td class="text-center"><span class="badge badge-primary badge-lg"><b>{{$kpa->achievement}}</b></span></td>
                            </tr>
                            <x-modal.submit :id="$kpa->id" :body="'KPI ' . $kpa->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($kpa->date))   " url="{{route('kpa.submit', enkripRambo($kpa->id))}}" />
                            <x-modal.delete :id="$kpa->id" :body="'KPI ' . $kpa->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($kpa->date))   " url="{{route('kpa.delete', enkripRambo($kpa->id))}}" />
