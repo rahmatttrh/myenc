@@ -86,7 +86,7 @@ Dashboard
                   </div> --}}
             </div>
          </div>
-         <table class="table table-bordered table-head-bg-info table-bordered-bd-info mt-4">
+         {{-- <table class="table table-bordered table-head-bg-info table-bordered-bd-info mt-4">
             <thead>
                <tr>
                   <th scope="col">#</th>
@@ -114,7 +114,7 @@ Dashboard
                   <td>@twitter</td>
                </tr>
             </tbody>
-         </table>
+         </table> --}}
          <div class="card shadow-none border">
             <div class="card-header">
                <div class="card-title">Feed Activity</div>
