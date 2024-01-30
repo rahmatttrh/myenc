@@ -186,13 +186,16 @@ KPA
                                     <td><span class="badge badge-danger badge-lg"><b>Di Reject HRD</b></span></td>
                                     @endif
                                     <td class="text-right">
-                                        @if($kpa->status == 0 && auth()->user()->hasRole('Leader'))
+                                        @if($kpa->status == 0 )
                                         <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-submit-{{$kpa->id}}"><i class="fas fa-rocket"></i> Submit</button>
                                         <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-delete-{{$kpa->id}}"><i class="fas fa-trash"></i> Delete</button>
                                         @elseif($kpa->status == '1' || $kpa->status == '2')
                                         -
                                         @elseif($kpa->status == 101 || $kpa->status == 202)
-                                        <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-submit-{{$kpa->id}}"><i class="fas fa-rocket"></i> Submit</button>
+                                          @if (auth()->user()->hasRole('Leader'))
+                                          <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-submit-{{$kpa->id}}"><i class="fas fa-rocket"></i> Submit</button>  
+                                          @endif
+                                        
                                         @endif
                                     </td>
                                 </tr>
