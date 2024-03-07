@@ -21,6 +21,7 @@ class PeKpaController extends Controller
         // Data KPI
         if (auth()->user()->hasRole('Administrator|HRD')) {
             $kpas = PeKpa::orderBy('date', 'desc')
+                ->where('status', '!=', '0')
                 ->orderBy('employe_id')
                 ->get();
 

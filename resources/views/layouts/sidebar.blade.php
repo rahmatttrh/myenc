@@ -125,6 +125,11 @@
                         </a>
                      </li>
                      <li>
+                        <a href="{{route('kpi')}}">
+                           <span class="sub-item">Behavior</span>
+                        </a>
+                     </li>
+                     <li>
                         <a href="#">
                            <span class="sub-item">...</span>
                         </a>
