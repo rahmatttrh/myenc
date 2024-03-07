@@ -65,25 +65,25 @@
             </div>
 
             <div class="row">
-               <div class="col-4">
+               <div class="col-3">
                   <h4 class="">KPI</h4>
                   <div class="table-responsive">
                      <table id="basic-datatables" class="display basic-datatables table table-striped ">
                         <thead>
                            <tr>
-                                 <th>No</th>
+                                 {{-- <th>No</th> --}}
                                  {{-- <th>Name</th> --}}
-                                 <th>Date</th>
-                                 <th>Achievement</th>
+                                 <th>Month</th>
+                                 <th class="text-center">Achievement</th>
                            </tr>
                         </thead>
                         <tbody>
                            @foreach ($kpas as $kpa)
                            <tr>
-                                 <td>{{++$i}}</td>
+                                 {{-- <td>{{++$i}}</td> --}}
                                  {{-- <td> {{$kpa->employe->biodata->fullName()}} </td> --}}
-                                 <td>{{date('F Y', strtotime($kpa->date))  }}</td>
-                                 <td><span class="badge badge-primary badge-lg"><b>{{$kpa->achievement}}</b></span></td>
+                                 <td>{{date('F', strtotime($kpa->date))  }}</td>
+                                 <td class="text-center"><span class="badge badge-primary badge-lg"><b>{{$kpa->achievement}}</b></span></td>
                            </tr>
                            <x-modal.submit :id="$kpa->id" :body="'KPI ' . $kpa->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($kpa->date))   " url="{{route('kpa.submit', enkripRambo($kpa->id))}}" />
                            <x-modal.delete :id="$kpa->id" :body="'KPI ' . $kpa->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($kpa->date))   " url="{{route('kpa.delete', enkripRambo($kpa->id))}}" />
@@ -92,9 +92,9 @@
                      </table>
                   </div>
                </div>
-               <div class="col-8">
+               <div class="col-9">
                   <h4 class="">Grafik</h4>
-                  <div class="chart-container">
+                  <div class="chart-container" style="max-width: 100%">
                      <canvas id="barChart"></canvas>
                   </div>
                </div>

@@ -47,7 +47,7 @@ Dashboard
                </div>
             </div>
             <div class="card-footer">
-               <div class="row user-stats text-center">
+               {{-- <div class="row user-stats text-center">
                   <div class="col">
                      <div class="number">2</div>
                      <div class="title">Sisa Cuti</div>
@@ -60,7 +60,7 @@ Dashboard
                      <div class="number">1</div>
                      <div class="title">Absen</div>
                   </div>
-               </div>
+               </div> --}}
             </div>
          </div>
       </div>
@@ -77,16 +77,14 @@ Dashboard
                </div>
                <hr>
                <div class="card-desc">
-                  Lorem, ipsum dolor sit amet consectetur adipisicing elit. Incidunt provident ipsum
-                  similique dignissimos! <br>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim et, voluptatibus possimus doloribus, nisi magnam voluptas dolore debitis, eligendi laboriosam commodi ea fugiat!
+                  Tanggal 8 & 9 Februari Libur Nasional dan Cuti Bersama
                </div>
                {{-- <div class="card-detail">
                      <div class="btn btn-light btn-rounded">Download Template</div>
                   </div> --}}
             </div>
          </div>
-         <table class="table table-bordered table-head-bg-info table-bordered-bd-info mt-4">
+         {{-- <table class="table table-bordered table-head-bg-info table-bordered-bd-info mt-4">
             <thead>
                <tr>
                   <th scope="col">#</th>
@@ -114,38 +112,47 @@ Dashboard
                   <td>@twitter</td>
                </tr>
             </tbody>
-         </table>
+         </table> --}}
          <div class="card shadow-none border">
             <div class="card-header">
                <div class="card-title">Feed Activity</div>
             </div>
             <div class="card-body">
                <ol class="activity-feed">
-                  <li class="feed-item feed-item-secondary">
+                  {{-- <li class="feed-item feed-item-secondary">
                      <time class="date" datetime="9-25">Sep 25</time>
                      <span class="text">Responded to need <a href="#">"Volunteer opportunity"</a></span>
-                  </li>
+                  </li> --}}
                   <li class="feed-item feed-item-success">
-                     <time class="date" datetime="9-24">Sep 24</time>
-                     <span class="text">Added an interest <a href="#">"Volunteer Activities"</a></span>
+                     <time class="date" datetime="9-24">Jan 30 09:20</time>
+                     <span class="text">Login from System
+                        {{-- <a href="#">"Volunteer Opportunity"</a> --}}
+                     </span>
                   </li>
                   <li class="feed-item feed-item-info">
-                     <time class="date" datetime="9-23">Sep 23</time>
-                     <span class="text">Joined the group <a href="single-group.php">"Boardsmanship
-                           Forum"</a></span>
+                     <time class="date" datetime="9-23">Jan 29 14:20</time>
+                     <span class="text">Logout from System
+                        {{-- <a href="#">"Volunteer Opportunity"</a> --}}
+                     </span>
                   </li>
                   <li class="feed-item feed-item-warning">
-                     <time class="date" datetime="9-21">Sep 21</time>
-                     <span class="text">Responded to need <a href="#">"In-Kind Opportunity"</a></span>
+                     <time class="date" datetime="9-21">Jan 29 11:05</time>
+                     <span class="text">Login into System
+                        {{-- <a href="#">"Volunteer Opportunity"</a> --}}
+                     </span>
                   </li>
                   <li class="feed-item feed-item-danger">
-                     <time class="date" datetime="9-18">Sep 18</time>
-                     <span class="text">Created need <a href="#">"Volunteer Opportunity"</a></span>
+                     <time class="date" datetime="9-18">Jan 29 09:15</time>
+                     <span class="text">Logout from System
+                        {{-- <a href="#">"Volunteer Opportunity"</a> --}}
+                     </span>
                   </li>
                   <li class="feed-item">
-                     <time class="date" datetime="9-17">Sep 17</time>
-                     <span class="text">Attending the event <a href="single-event.php">"Some New
-                           Event"</a></span>
+                     <time class="date" datetime="9-17">Jan 29 08:05</time>
+                     <span class="text">Login into System
+                        {{-- <a href="single-event.php">"Some New
+                           Event"</a> --}}
+                        </span>
                   </li>
                </ol>
             </div>
