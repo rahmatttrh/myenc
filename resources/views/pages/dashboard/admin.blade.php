@@ -96,12 +96,15 @@
       </div>
       <div class="row">
          <div class="col-md-7">
-            <table class="table table-bordered table-head-bg-info table-bordered-bd-info">
+            {{-- <div class="table-responsive"> --}}
+               {{-- table table-bordered table-sm table-head-bg-info table-bordered-bd-info --}}
+               
+            <table class=" table table-bordered  table-head-bg-info table-bordered-bd-info">
                <thead>
                   <tr>
-                     <th scope="col">Status</th>
-                     <th scope="col" class="text-center">Jumlah</th>
-                     <th scope="col" class="text-center">Habis Kontrak</th>
+                     <th scope="">Status</th>
+                     <th scope="" class="text-center">Jumlah</th>
+                     <th scope="" class="text-center">Habis Kontrak</th>
                   </tr>
                </thead>
                <tbody>
@@ -122,6 +125,7 @@
                   </tr>
                </tbody>
             </table>
+             {{-- </div> --}}
             <div class="card">
                <div class="card-header">
                   <div class="badge badge-primary">
@@ -215,6 +219,37 @@
             
          </div>
          <div class="col-md-5">
+            <div class="card">
+               <div class="card-header">
+                  <div class="badge badge-danger">
+                     Today's Not Sign In
+                  </div>
+               </div>
+               <div class="card-body">
+                  <div class="d-flex">
+                     <!-- <div class="avatar avatar-online">
+                        {{-- <span class="avatar-title rounded-circle border border-white bg-info">J</span> --}}
+                        <img src="{{asset('img/jm_denis.jpg')}}" alt="..." class="avatar-img rounded-circle">
+                     </div> -->
+                     <div class="flex-1 ml-3 ">
+                        {{-- <h5 class="text-uppercase fw-bold mb-1">9 Januari 1995</h5> --}}
+                        <span class="text-muted">Rahmat Hidayat</span>
+                     </div>
+                  </div>
+                  <div class="separator-dashed"></div>
+                  <div class="d-flex">
+                     <!-- <div class="avatar avatar-online">
+                        {{-- <span class="avatar-title rounded-circle border border-white bg-secondary">P</span> --}}
+                        <img src="{{asset('img/chadengle.jpg')}}" alt="..." class="avatar-img rounded-circle">
+                     </div> -->
+                     <div class="flex-1 ml-3">
+                        {{-- <h5 class="text-uppercase fw-bold mb-1">11 Januari 1965</h5> --}}
+                        <span class="text-muted">Ahmad Juantoro</span>
+                     </div>
+                     
+                  </div>
+               </div>
+            </div>
             <div class="card">
                <div class="card-header">
                   <div class="badge badge-warning">

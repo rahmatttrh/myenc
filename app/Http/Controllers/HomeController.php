@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Biodata;
 use App\Models\Employee;
+use App\Models\Presence;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -26,6 +28,20 @@ class HomeController extends Controller
    public function index()
    {
 
+      $now = Carbon::now();
+      // dd($now->format('Y-m-d'));
+      $yearMonth = $now->format('Y-m');
+      // dd($yearMonth);
+      $start = Carbon::parse($yearMonth)->startOfMonth();
+      $end = Carbon::parse($yearMonth)->endOfMonth();
+
+      $dates = [];
+      while ($start->lte($end)) {
+         $dates[] = $start->copy();
+         $start->addDay();
+      }
+
+      // dd($dates);
 
       if (auth()->user()->hasRole('Administrator')) {
          $employees = Employee::get();
@@ -37,10 +53,16 @@ class HomeController extends Controller
             'female' => $female
          ]);
       } else {
+         $employee = Employee::where('nik', auth()->user()->username)->first();
          $biodata = Biodata::where('email', auth()->user()->email)->first();
+         $presences = Presence::where('employee_id', $employee->id)->orderBy('created_at', 'desc')->get();
+         $pending = Presence::where('employee_id', $employee->id)->where('out', null)->first();
          // dd($biodata->employee->id);
          return view('pages.dashboard.employee', [
-            'employee' => $biodata->employee
+            'employee' => $biodata->employee,
+            'dates' => $dates,
+            'presences' => $presences,
+            'pending' => $pending
          ]);
       }
    }

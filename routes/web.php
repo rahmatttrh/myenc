@@ -8,16 +8,19 @@ use App\Http\Controllers\ContractController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\DutyController;
 use App\Http\Controllers\EmergencyController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\OvertimeController;
 use App\Http\Controllers\PeComponentController;
 use App\Http\Controllers\PeDisciplineController;
 use App\Http\Controllers\PeKpaController;
 use App\Http\Controllers\PeKpiController;
 use App\Http\Controllers\PekpiDetailController;
 use App\Http\Controllers\PositionController;
+use App\Http\Controllers\PresenceController;
 use App\Http\Controllers\SocialAccountController;
 use App\Http\Controllers\SoController;
 use App\Http\Controllers\SubDeptController;
@@ -246,6 +249,37 @@ Route::middleware(["auth"])->group(function () {
    Route::prefix('export')->group(function(){
       Route::get('kpa/employee/{id}', [ExportController::class, 'kpaEmployee'])->name('export.kpa.employee');
       Route::get('kpa/summary/{employee}/{semester}/{tahun}', [ExportController::class, 'kpaSummary'])->name('export.kpa.summary');
+   });
+
+
+
+
+   // Role Karyawan
+   Route::group(['middleware' => ['role:Karyawan']], function () {
+      // kpi
+      Route::prefix('employee')->group(function () {
+
+         Route::prefix('spkl')->group(function () {
+            Route::get('/index', [OvertimeController::class, 'index'])->name('employee.spkl');
+            Route::get('/detail', [OvertimeController::class, 'detail'])->name('spkl.detail');
+         });
+
+         Route::prefix('spt')->group(function () {
+            Route::get('/index', [DutyController::class, 'index'])->name('employee.spt');
+            Route::get('/detail', [OvertimeController::class, 'detail'])->name('spkl.detail');
+         });
+
+         Route::prefix('presence')->group(function () {
+            Route::post('/in', [PresenceController::class, 'in'])->name('employee.presence.in');
+            Route::put('/out', [PresenceController::class, 'out'])->name('employee.presence.out');
+         });
+         Route::get('/', [PeKpiController::class, 'index'])->name('kpi');
+         Route::post('', [PeKpiController::class, 'store'])->name('kpi.store');
+         Route::get('{id}', [PeKpiController::class, 'edit'])->name('kpi.edit');
+         Route::get('delete/{id}', [PeKpiController::class, 'delete'])->name('kpi.delete');  // Belum selesai semua
+         Route::get('delete-objective/{id}', [PeKpiController::class, 'deleteObjective'])->name('kpi.objective.delete');  // Belum selesai semua
+      });
+
    });
 
 

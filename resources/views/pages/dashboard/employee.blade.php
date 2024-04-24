@@ -4,9 +4,9 @@ Dashboard
 @endsection
 @section('content')
 <div class="page-inner mt--5">
-   <div class="page-header">
+   {{-- <div class="page-header">
       <h4 class="page-title">Dashboard</h4>
-   </div>
+   </div> --}}
    <div class="row">
       <div class="col-md-4">
          <div class="card card-profile card-secondary ">
@@ -17,63 +17,55 @@ Dashboard
                      <img src="{{asset('storage/' . $employee->picture)}}" alt="..." class="avatar-img rounded-circle">
                      @else
                      <img src="{{asset('img/user.png')}}" alt="..." class="avatar-img rounded-circle">
-                     @endif
-                     {{-- <img src="{{asset('img/profile.jpg')}}" alt="..." class="avatar-img rounded-circle"> --}}
-                  </div>
+                     @endif</div>
                </div>
             </div>
             <div class="card-body">
                <div class="user-profile text-center">
                   <div class="name">{{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</div>
                   <div class="job">{{$employee->position->name}}</div>
-                  <div class="desc">{{$employee->bio ?? 'Bio..'}}</div>
-                  <div class="social-media">
-                     <a class="btn btn-info btn-twitter btn-sm btn-link" href="#">
-                        <span class="btn-label just-icon"><i class="flaticon-twitter"></i> </span>
-                     </a>
-                     <a class="btn btn-danger btn-sm btn-link" rel="publisher" href="#">
-                        <span class="btn-label just-icon"><i class="flaticon-google-plus"></i> </span>
-                     </a>
-                     <a class="btn btn-primary btn-sm btn-link" rel="publisher" href="#">
-                        <span class="btn-label just-icon"><i class="flaticon-facebook"></i> </span>
-                     </a>
-                     <a class="btn btn-danger btn-sm btn-link" rel="publisher" href="#">
-                        <span class="btn-label just-icon"><i class="flaticon-dribbble"></i> </span>
-                     </a>
-                  </div>
-                  <div class="view-profile">
-                     <a href="{{route('employee.detail', [enkripRambo($employee->id), enkripRambo('contract')])}}" class="btn btn-secondary btn-block">View Full Profile</a>
-                  </div>
+                  <div class="desc">15/08/2023 - 15/08/24</div>
+                  
                </div>
+               @if ($pending != null)
+               <a href="" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modal-out">Out</a>
+               @else
+               <a href="" class="btn btn-danger btn-block" data-toggle="modal" data-target="#modal-in">In</a>
+               @endif
+               
             </div>
-            <div class="card-footer">
-               {{-- <div class="row user-stats text-center">
-                  <div class="col">
-                     <div class="number">2</div>
-                     <div class="title">Sisa Cuti</div>
-                  </div>
-                  <div class="col">
-                     <div class="number">5</div>
-                     <div class="title">Terlambat</div>
-                  </div>
-                  <div class="col">
-                     <div class="number">1</div>
-                     <div class="title">Absen</div>
-                  </div>
-               </div> --}}
-            </div>
+            
          </div>
+         
+         {{-- <div class="badge badge-info">Absensi</div> --}}
+         <ol class="activity-feed">
+            @foreach ($presences as $presence)
+            <li class="feed-item feed-item-info">
+               <time class="date" datetime="9-23">{{formatDate($presence->date)}}</time>
+               <span class="text">In {{formatTime($presence->in)}} - Out 
+                  @if ($presence->out)
+                  {{formatTime($presence->out) ?? '-'}}
+                  @else
+                  -
+                  @endif
+                  
+                  {{-- <a href="#">"Volunteer Opportunity"</a> --}}
+               </span>
+            </li>
+            @endforeach
+            
+         </ol>
       </div>
       <div class="col-md-8">
-         <div class="alert alert-info">You have 2 Notification !</div>
-         <div class="card card-light">
+         {{-- <div class="alert alert-info">You have 2 Notification !</div> --}}
+         <div class="alert alert-info shadow-sm">
 
-            <div class="card-body">
+            {{-- <div class="card-body"> --}}
                <div class="card-opening">
-                  <h2>
-                     <img src="{{asset('img/flaticon/promote.png')}}" height="40" alt="" class="mr-1">
+                  <h4>
+                     <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1">
                      <b>Announcement</b>
-                  </h2>
+                  </h4>
                </div>
                <hr>
                <div class="card-desc">
@@ -82,8 +74,44 @@ Dashboard
                {{-- <div class="card-detail">
                      <div class="btn btn-light btn-rounded">Download Template</div>
                   </div> --}}
-            </div>
+            {{-- </div> --}}
          </div>
+         <hr>
+         <span class="badge badge-info mb-2">APRIL 2024</span> <span class="badge badge-info mb-2">LEMBUR 5 JAM</span> <br>
+         
+         @foreach ($dates as $date)
+         <div class="btn btn-primary mb-1">{{$date->format('d')}}</div>
+         @endforeach
+
+         
+         <table class="table table-bordered table-head-bg-info table-bordered-bd-info mt-4">
+            <thead>
+               <tr>
+                  <th colspan="3">Recent Request</th>
+               </tr>
+               <tr>
+                  {{-- <th scope="col">#</th> --}}
+                  <th scope="col">Type</th>
+                  <th scope="col">Date</th>
+                  <th scope="col">Status</th>
+               </tr>
+            </thead>
+            <tbody>
+               <tr>
+                  {{-- <td>1</td> --}}
+                  <td>SPKL</td>
+                  <td>12/03/24</td>
+                  <td>Pending</td>
+               </tr>
+               <tr>
+                  {{-- <td>2</td> --}}
+                  <td>Cuti</td>
+                  <td>09/03/24</td>
+                  <td>Approved</td>
+               </tr>
+               
+            </tbody>
+         </table>
          {{-- <table class="table table-bordered table-head-bg-info table-bordered-bd-info mt-4">
             <thead>
                <tr>
@@ -113,53 +141,79 @@ Dashboard
                </tr>
             </tbody>
          </table> --}}
-         <div class="card shadow-none border">
-            <div class="card-header">
-               <div class="card-title">Feed Activity</div>
-            </div>
-            <div class="card-body">
-               <ol class="activity-feed">
-                  {{-- <li class="feed-item feed-item-secondary">
-                     <time class="date" datetime="9-25">Sep 25</time>
-                     <span class="text">Responded to need <a href="#">"Volunteer opportunity"</a></span>
-                  </li> --}}
-                  <li class="feed-item feed-item-success">
-                     <time class="date" datetime="9-24">Jan 30 09:20</time>
-                     <span class="text">Login from System
-                        {{-- <a href="#">"Volunteer Opportunity"</a> --}}
-                     </span>
-                  </li>
-                  <li class="feed-item feed-item-info">
-                     <time class="date" datetime="9-23">Jan 29 14:20</time>
-                     <span class="text">Logout from System
-                        {{-- <a href="#">"Volunteer Opportunity"</a> --}}
-                     </span>
-                  </li>
-                  <li class="feed-item feed-item-warning">
-                     <time class="date" datetime="9-21">Jan 29 11:05</time>
-                     <span class="text">Login into System
-                        {{-- <a href="#">"Volunteer Opportunity"</a> --}}
-                     </span>
-                  </li>
-                  <li class="feed-item feed-item-danger">
-                     <time class="date" datetime="9-18">Jan 29 09:15</time>
-                     <span class="text">Logout from System
-                        {{-- <a href="#">"Volunteer Opportunity"</a> --}}
-                     </span>
-                  </li>
-                  <li class="feed-item">
-                     <time class="date" datetime="9-17">Jan 29 08:05</time>
-                     <span class="text">Login into System
-                        {{-- <a href="single-event.php">"Some New
-                           Event"</a> --}}
-                        </span>
-                  </li>
-               </ol>
-            </div>
-         </div>
+         
       </div>
    </div>
 </div>
+
+<div class="modal fade" id="modal-in" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Kamu sudah tiba dikantor?</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <form action="{{route('employee.presence.in')}}" method="POST">
+         @csrf
+         <div class="modal-body">
+            <div class="form-group form-group-default">
+               <label>Select Location</label>
+               <select class="form-control" name="loc" id="loc">
+                  <option value="HW">HW</option>
+                  <option value="JGC">JGC</option>
+                  <option value="KJ">KJ</option>
+                  <option value="GS">GS</option>
+               </select>
+               {{-- <input id="Name" type="text" class="form-control" > --}}
+            </div>
+         </div>
+         <div class="modal-footer">
+            {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
+            <button type="submit" class="btn btn-primary">Submit</button>
+         </div>
+         </form>
+      </div>
+   </div>
+</div>
+
+@if ($pending != null)
+<div class="modal fade" id="modal-out" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Kamu sudah selesai bekerja?</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <form action="{{route('employee.presence.out')}}" method="POST">
+         @csrf
+         @method('PUT')
+
+         <input type="number" id="presence" name="presence" value="{{$pending->id}}" hidden>
+         <div class="modal-body">
+            <div class="form-group form-group-default">
+               <label>Select Location</label>
+               <select class="form-control" name="loc" id="loc">
+                  <option value="HW">HW</option>
+                  <option value="JGC">JGC</option>
+                  <option value="KJ">KJ</option>
+                  <option value="GS">GS</option>
+               </select>
+               {{-- <input id="Name" type="text" class="form-control" > --}}
+            </div>
+         </div>
+         <div class="modal-footer">
+            {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
+            <button type="submit" class="btn btn-primary">Submit</button>
+         </div>
+         </form>
+      </div>
+   </div>
+</div>
+@endif
 
 @push('chart-dashboard')
 <script>

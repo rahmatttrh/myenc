@@ -91,6 +91,10 @@ class Employee extends Model
       return $this->hasMany(PeKpa::class);
    }
 
+   public function presences(){
+      return $this->hasMany(Presence::class);
+   }
+
    // public function shift()
    // {
    //    return $this->belongsTo(Shift::class);
