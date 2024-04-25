@@ -25,13 +25,13 @@
                      <div class="col-md-6">
                         <div class="form-group form-group-default">
                            <label>ID Employee</label>
-                           <input type="text" class="form-control" name="id" id="id" value="{{$employee->contract->id_no}}">
+                           <input type="text" class="form-control" <?= auth()->user()->hasRole('Administrator|HRD') ? '' : 'readonly' ?> name="id" id="id" value="{{$employee->contract->id_no}}">
                         </div>
                      </div>
                      <div class="col-md-6">
                         <div class="form-group form-group-default">
                            <label>Office Shift</label>
-                           <select class="form-control" id="shift" name="shift">
+                           <select class="form-control" id="shift" <?= auth()->user()->hasRole('Administrator|HRD') ? '' : 'readonly' ?> name="shift">
                               @foreach ($shifts as $shift)
                               <option {{$employee->contract->shift_id == $shift->id ? 'selected' : ''}} value="{{$shift->id}}">{{$shift->name}}</option>
                               @endforeach
@@ -43,7 +43,7 @@
                      <div class="col-md-6">
                         <div class="form-group form-group-default">
                            <label>Department</label>
-                           <select class="form-control" id="department" name="department">
+                           <select class="form-control" id="department" name="department" <?= auth()->user()->hasRole('Administrator|HRD') ? '' : 'readonly' ?>>
                               @foreach ($departments as $department)
                               <option {{$employee->contract->department_id == $department->id ? 'selected' : ''}} value="{{$department->id}}">{{$department->name}}</option>
                               @endforeach
@@ -56,7 +56,7 @@
                      <div class="col-md-6">
                         <div class="form-group form-group-default">
                            <label>Level</label>
-                           <select class="form-control" id="designation" name="designation">
+                           <select class="form-control" id="designation" name="designation" <?= auth()->user()->hasRole('Administrator|HRD') ? '' : 'readonly' ?> >
                               @foreach ($designations as $designation)
                               <option {{$employee->contract->designation_id == $designation->id ? 'selected' : ''}} value="{{$designation->id}}">{{$designation->name}}</option>
                               @endforeach
@@ -72,7 +72,7 @@
                      <div class="col-md-12">
                         <div class="form-group form-group-default">
                            <label>Jabatan</label>
-                           <select class="form-control" id="position" name="position">
+                           <select class="form-control" id="position" name="position" <?= auth()->user()->hasRole('Administrator|HRD') ? '' : 'readonly' ?>>
                               @foreach ($positions as $position)
                               {{--<option {{$employee->contract->designation_id == $designation->id ? 'selected' : ''}} value="{{$designation->id}}">{{$designation->name}}</option>--}}
                               <option {{$employee->position_id == $position->id ? 'selected' : ''}} value="{{$position->id}}">{{$position->name}} </option>
@@ -131,19 +131,21 @@
    <div class="col-md-6">
       <div class="form-group form-group-default">
          <label>Contract End</label>
-         <input type="date" class="form-control" id="end" name="end" value="{{$employee->contract->end}}">
+         <input type="date" class="form-control" <?= auth()->user()->hasRole('Administrator|HRD') ? '' : 'readonly' ?>  id="end" name="end" value="{{$employee->contract->end}}">
       </div>
    </div>
 </div>
 --}}
 <div class="form-group form-group-default">
    <label>Role Description</label>
-   <textarea type="text" class="form-control" id="desc" name="desc">{{$employee->contract->desc}}</textarea>
+   <textarea type="text" class="form-control" id="desc" <?= auth()->user()->hasRole('Administrator|HRD') ? '' : 'readonly' ?>   name="desc">{{$employee->contract->desc}}</textarea>
 </div>
 
 
 <div class="text-right mt-3 mb-3">
-   <button type="submit" class="btn btn-dark" {{$employee->status == 0 ? 'disabled' : ''}}>Update Contract</button>
+@if(auth()->user()->hasRole('Administrator|HRD'))
+   <button type="submit" class="btn btn-dark" {{$employee->status == 0 ? 'disabled' : ''}}>Update </button>
+@endif  
 </div>
 </form>
 </div>

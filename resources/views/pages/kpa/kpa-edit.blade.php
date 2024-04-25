@@ -69,7 +69,7 @@ KPA
                     <div class="d-flex  align-items-center">
                         <div class="card-title">Objective KPI</div>
                     </div>
-                    @if($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202')
+                    @if(($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202') && auth()->user()->hasRole('Leader'))
                     <div class="btn-group btn-group-page-header ml-auto">
                         <div class="button-group">
                             <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-submit-{{$kpa->id}}"><i class="fas fa-rocket"></i> Submit </button>
