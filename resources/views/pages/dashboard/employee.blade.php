@@ -66,7 +66,7 @@ Dashboard
             <div class="card-footer d-flex justify-content-between">
 
                <div>
-                  {{$employee->contract->shift->name}} <br>
+                  {{$employee->contract->shift->name ?? '-'}} <br>
                   Sisa Cuti <br>
                   Overtime <br>
                   Absen <br>
