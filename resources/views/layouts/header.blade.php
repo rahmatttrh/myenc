@@ -1,5 +1,5 @@
 {{-- <div class="main-header bg-primary"> --}}
-   <div class="main-header" data-background-color="purple">
+   <div class="main-header" data-background-color="blue">
       <!-- Logo Header -->
       <div class="logo-header  " >
          <a href="/" class="logo " >

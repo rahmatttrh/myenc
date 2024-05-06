@@ -23,6 +23,7 @@ use App\Http\Controllers\PositionController;
 use App\Http\Controllers\PresenceController;
 use App\Http\Controllers\SocialAccountController;
 use App\Http\Controllers\SoController;
+use App\Http\Controllers\SpklController;
 use App\Http\Controllers\SubDeptController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\VerificationController;
@@ -253,20 +254,23 @@ Route::middleware(["auth"])->group(function () {
 
 
 
-
+   Route::prefix('spkl')->group(function () {
+      Route::get('/detail/{id}', [SpklController::class, 'detail'])->name('spkl.detail');
+   });
    // Role Karyawan
    Route::group(['middleware' => ['role:Karyawan']], function () {
       // kpi
       Route::prefix('employee')->group(function () {
 
          Route::prefix('spkl')->group(function () {
-            Route::get('/index', [OvertimeController::class, 'index'])->name('employee.spkl');
-            Route::get('/detail', [OvertimeController::class, 'detail'])->name('spkl.detail');
+            Route::get('/index', [SpklController::class, 'index'])->name('employee.spkl');
+            Route::post('/store', [SpklController::class, 'store'])->name('employee.spkl.store');
+            Route::get('/send/{id}', [SpklController::class, 'send'])->name('employee.spkl.send');
          });
 
          Route::prefix('spt')->group(function () {
             Route::get('/index', [DutyController::class, 'index'])->name('employee.spt');
-            Route::get('/detail', [OvertimeController::class, 'detail'])->name('spkl.detail');
+            // Route::get('/detail', [OvertimeController::class, 'detail'])->name('spkl.detail');
          });
 
          Route::prefix('presence')->group(function () {

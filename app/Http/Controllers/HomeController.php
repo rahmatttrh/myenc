@@ -56,7 +56,7 @@ class HomeController extends Controller
          $employee = Employee::where('nik', auth()->user()->username)->first();
          $biodata = Biodata::where('email', auth()->user()->email)->first();
          $presences = Presence::where('employee_id', $employee->id)->orderBy('created_at', 'desc')->get();
-         $pending = Presence::where('employee_id', $employee->id)->where('out', null)->first();
+         $pending = Presence::where('employee_id', $employee->id)->where('out_time', null)->first();
          // dd($biodata->employee->id);
          return view('pages.dashboard.employee', [
             'employee' => $biodata->employee,

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSpklsTable extends Migration
+class CreateAnnouncementsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,8 @@ class CreateSpklsTable extends Migration
      */
     public function up()
     {
-        Schema::create('spkls', function (Blueprint $table) {
+        Schema::create('announcements', function (Blueprint $table) {
             $table->id();
-            $table->integer('status');
-            $table->integer('employee_id');
-            $table->date('date');
-            $table->time('start');
-            $table->time('end');
-            $table->string('desc');
             $table->timestamps();
         });
     }
@@ -32,6 +26,6 @@ class CreateSpklsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('spkls');
+        Schema::dropIfExists('announcements');
     }
 }

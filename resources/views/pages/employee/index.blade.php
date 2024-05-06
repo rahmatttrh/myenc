@@ -63,7 +63,7 @@ Employee
                      <thead>
                         <tr>
                            <th class="">No</th>
-                           <th>Namee</th>
+                           <th>Name</th>
                            <th>ID</th>
                            <th>Phone</th>
                            <th>Bisnis Unit</th>

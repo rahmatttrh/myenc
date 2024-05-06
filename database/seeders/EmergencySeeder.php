@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Emergency;
 use Illuminate\Database\Seeder;
 
 class EmergencySeeder extends Seeder
@@ -13,6 +14,11 @@ class EmergencySeeder extends Seeder
      */
     public function run()
     {
-        //
+      Emergency::create([
+         'name' => 'Sujana',
+         'phone' => '0869696969',
+         'created_at' => NOW(),
+         'updated_at' => NOW()
+      ]);
     }
 }

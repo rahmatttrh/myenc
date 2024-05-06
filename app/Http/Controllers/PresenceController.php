@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee;
 use App\Models\Presence;
+use App\Models\Shift;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -16,9 +17,10 @@ class PresenceController extends Controller
 
       Presence::create([
          'employee_id' => $employee->id,
-         'loc' => $req->loc,
-         'date' => Carbon::now(),
-         'in' => Carbon::now(),
+         'in_loc' => $req->loc,
+         'in_date' => $req->date,
+         'in_time' => $req->time
+         // 'in' => Carbon::now(),
 
       ]);
 
@@ -28,12 +30,30 @@ class PresenceController extends Controller
    public function out(Request $req){
       $presence = Presence::find($req->presence);
       // dd($presence->in);
+      // 20*15
+
+      $shift = Shift::find($presence->employee->contract->shift_id);
+      $shiftOut = strtotime($shift->out) + 60*60;
+      $overtimeStart = date('H:i', $shiftOut);
+      // dd($overtimeStart);
+      if ($req->time > $overtimeStart) {
+         dd('lemburrrr');
+      } else {
+         dd('tidak');
+      }
       
       $presence->update([
-         'out' => Carbon::now()
+         'out_loc' => $req->loc,
+         'out_date' => $req->date,
+         'out_time' => $req->time
       ]);
 
-      $totalDuration = $presence->out->diffInSeconds($presence->in);
+
+
+
+      // dd($presence->out);
+      $out = Carbon::make($req->time);
+      $totalDuration = $out->diffInSeconds($presence->in_time);
       // dd(gmdate('H:i', $totalDuration));
 
       $presence->update([

@@ -16,11 +16,15 @@ class CreatePresencesTable extends Migration
         Schema::create('presences', function (Blueprint $table) {
             $table->id();
             $table->integer('employee_id');
-            $table->string('loc')->nullable();
-            $table->date('date')->nullable();
-            $table->time('in')->nullable();
-            $table->time('out')->nullable();
-            $table->integer('total')->nullable();
+            $table->string('in_loc')->nullable();
+            $table->date('in_date')->nullable();
+            $table->time('in_time')->nullable();
+
+            $table->string('out_loc')->nullable();
+            $table->date('out_date')->nullable();
+            $table->time('out_time')->nullable();
+
+            $table->time('total')->nullable();
             $table->string('pic')->nullable();
             $table->timestamps();
         });
