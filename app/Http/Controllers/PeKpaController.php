@@ -40,6 +40,8 @@ class PeKpaController extends Controller
                 ->join('pe_kpis', 'pe_kpas.kpi_id', '=', 'pe_kpis.id')
                 ->where('pe_kpis.departement_id', $employee->department_id)
                 ->select('pe_kpas.*')
+                ->orderBy('pe_kpas.date', 'desc')
+                ->orderBy('pe_kpas.status', 'asc')
                 ->get();
 
             // Convert the query builder result to Order model instances

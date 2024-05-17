@@ -46,13 +46,13 @@ KPA
                                 @endif
                             </td>
                             @elseif($kpa->status == '2')
-                            <td><span class="badge badge-primary badge-lg"><b>Validasi HRD</b></span></td>
+                            <td><span class="badge badge-primary badge-lg"><b>Validasi HRD</span></b></span></td>
                             @elseif($kpa->status == '3')
                             <td><span class="badge badge-success badge-lg"><b>Done</b></span></td>
                             @elseif($kpa->status == '101')
                             <td><span class="badge badge-danger badge-lg"><b>Di Reject Manager</b></span></td>
                             <label class="mt-3">Alasan Penolakan</label>
-                            <td><span class="badge badge-warning badge-lg"><b>{{$kpa->alasan_reject}}</b></span></td>
+                            <td > <span class="text-danger"> {{$kpa->alasan_reject}} </td>
                             @elseif($kpa->status == '202')
                             <td><span class="badge badge-danger badge-lg"><b>Di Reject HRD</b></span></td>
                             @endif

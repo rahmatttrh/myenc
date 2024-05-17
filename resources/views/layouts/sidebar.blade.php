@@ -205,6 +205,12 @@
                   </ul>
                </div>
             </li>
+            <li class="nav-item">
+               <a  href="{{route('qpe')}}">
+                  <i class="fas fa-bullseye"></i>
+                  <p>Quick PE</p> 
+               </a> 
+            </li>
             <li class="nav-item {{ (request()->is('employee/*')) ? 'active' : '' }}">
                <a href="{{route('employee', enkripRambo('active'))}}">
                   <i class="fas fa-users"></i>
