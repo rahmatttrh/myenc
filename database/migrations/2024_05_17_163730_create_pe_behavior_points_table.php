@@ -17,7 +17,7 @@ class CreatePeBehaviorPointsTable extends Migration
             $table->tinyIncrements('id');
             $table->bigInteger('behavior_id');
             $table->integer('point');
-            $table->string('keterangan')->nullable();
+            $table->text('keterangan')->nullable();
             $table->timestamps();
         });
     }
