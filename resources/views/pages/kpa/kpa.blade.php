@@ -33,6 +33,14 @@ KPA
                             </select>
                         </div>
                         <div class="form-group form-group-default">
+                            <label>Period</label>
+                            <select class="form-control" name="priode" id="priode">
+                                <option value="monthly">Monthly</option>
+                                <option value="quarterly">Quarterly</option>
+                                <option value="semester">Semester</option>
+                            </select>
+                        </div>
+                        <div class="form-group form-group-default">
                             <label>Month</label>
                             <div class="row">
                                 <div class="col">
@@ -186,16 +194,12 @@ KPA
                                     <td><span class="badge badge-danger badge-lg"><b>Di Reject HRD</b></span></td>
                                     @endif
                                     <td class="text-right">
-                                        @if($kpa->status == 0 )
-                                        <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-submit-{{$kpa->id}}"><i class="fas fa-rocket"></i> Submit</button>
+                                        @if($kpa->status == 0) 
                                         <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-delete-{{$kpa->id}}"><i class="fas fa-trash"></i> Delete</button>
                                         @elseif($kpa->status == '1' || $kpa->status == '2')
                                         -
-                                        @elseif($kpa->status == 101 || $kpa->status == 202)
-                                          @if (auth()->user()->hasRole('Leader'))
-                                          <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-submit-{{$kpa->id}}"><i class="fas fa-rocket"></i> Submit</button>  
-                                          @endif
-                                        
+                                        @elseif(($kpa->status == 0 || $kpa->status == 101 || $kpa->status == 202) && auth()->user()->hasRole('Leader'))
+                                        <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-submit-{{$kpa->id}}"><i class="fas fa-rocket"></i> Submit</button>
                                         @endif
                                     </td>
                                 </tr>

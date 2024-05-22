@@ -27,7 +27,16 @@ class DatabaseSeeder extends Seeder
          PeComponentSeeder::class,
          PeComponentForSeeder::class,
          PeKpiSeeder::class,
-         PekpiDetailSeeder::class
+         PekpiDetailSeeder::class,
+
+         EmployeeSeeder::class,
+         PositionSeeder::class,
+         SubDeptSeeder::class,
+         BiodataSeeder::class,
+         ContractSeeder::class,
+         EmergencySeeder::class
+
+
          // VesselStatusSeeder::class
       ]);
    }

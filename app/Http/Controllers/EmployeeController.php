@@ -40,7 +40,8 @@ class EmployeeController extends Controller
       return view('pages.employee.index', [
          'employees' => $employees,
          'draftEmployees' => $draftEmployees,
-         'tab' => $tab
+         'tab' => $tab,
+         'departments' => Department::get()
       ])->with('i');
    }
 

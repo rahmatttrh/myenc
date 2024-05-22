@@ -15,10 +15,14 @@ class CreatePeKpasTable extends Migration
     {
         Schema::create('pe_kpas', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('pe_id');
             $table->integer('kpi_id');
             $table->bigInteger('employe_id');
-            $table->date('date');
             $table->integer('achievement')->default(0);
+            $table->date('date');
+            $table->string('is_semester', 1)->default('0');
+            $table->string('semester', 1)->nullable();
+            $table->string('tahun', 4)->nullable();
             $table->string('status', 3)->default('0');
             $table->text('alasan_reject')->nullable();  // Alasan Reject dari manager
             $table->dateTime('release_at')->nullable();

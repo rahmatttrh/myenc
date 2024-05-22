@@ -65,3 +65,27 @@ function formatMonthName($data)
    $date = \Carbon\Carbon::parse($data)->format('F');
    return $date;
 }
+
+function formatDate($data)
+{
+   $date = \Carbon\Carbon::parse($data)->format('d/m/Y');
+   return $date;
+}
+
+function formatDateB($data)
+{
+   $date = \Carbon\Carbon::parse($data)->format('d F Y');
+   return $date;
+}
+
+function formatTime($data)
+{
+   $date = \Carbon\Carbon::parse($data)->format('H:i');
+   return $date;
+}
+
+function formatDayDate($data)
+{
+   $date = \Carbon\Carbon::parse($data)->format('l, d/m/Y');
+   return $date;
+}

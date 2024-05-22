@@ -46,13 +46,13 @@ KPA
                                 @endif
                             </td>
                             @elseif($kpa->status == '2')
-                            <td><span class="badge badge-primary badge-lg"><b>Validasi HRD</b></span></td>
+                            <td><span class="badge badge-primary badge-lg"><b>Validasi HRD</span></b></span></td>
                             @elseif($kpa->status == '3')
                             <td><span class="badge badge-success badge-lg"><b>Done</b></span></td>
                             @elseif($kpa->status == '101')
                             <td><span class="badge badge-danger badge-lg"><b>Di Reject Manager</b></span></td>
                             <label class="mt-3">Alasan Penolakan</label>
-                            <td><span class="badge badge-warning badge-lg"><b>{{$kpa->alasan_reject}}</b></span></td>
+                            <td > <span class="text-danger"> {{$kpa->alasan_reject}} </td>
                             @elseif($kpa->status == '202')
                             <td><span class="badge badge-danger badge-lg"><b>Di Reject HRD</b></span></td>
                             @endif
@@ -69,7 +69,7 @@ KPA
                     <div class="d-flex  align-items-center">
                         <div class="card-title">Objective KPI</div>
                     </div>
-                    @if($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202')
+                    @if(($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202') && auth()->user()->hasRole('Leader'))
                     <div class="btn-group btn-group-page-header ml-auto">
                         <div class="button-group">
                             <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-submit-{{$kpa->id}}"><i class="fas fa-rocket"></i> Submit </button>

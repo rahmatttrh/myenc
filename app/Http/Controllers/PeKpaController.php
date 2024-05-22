@@ -21,6 +21,7 @@ class PeKpaController extends Controller
         // Data KPI
         if (auth()->user()->hasRole('Administrator|HRD')) {
             $kpas = PeKpa::orderBy('date', 'desc')
+                ->where('status', '!=', '0')
                 ->orderBy('employe_id')
                 ->get();
 
@@ -39,6 +40,8 @@ class PeKpaController extends Controller
                 ->join('pe_kpis', 'pe_kpas.kpi_id', '=', 'pe_kpis.id')
                 ->where('pe_kpis.departement_id', $employee->department_id)
                 ->select('pe_kpas.*')
+                ->orderBy('pe_kpas.date', 'desc')
+                ->orderBy('pe_kpas.status', 'asc')
                 ->get();
 
             // Convert the query builder result to Order model instances
@@ -72,13 +75,24 @@ class PeKpaController extends Controller
         $req->validate([
             'kpi_id' => 'required',
             'employe_id' => 'required',
+            'semester' => 'required',
+            'tahun' => 'required',
             'date' => 'required'
         ]);
 
-        // Validasi KPA
+        // dd($req);
+
+        // Validasi KPA OLD
+        // $cek = PeKpa::where([
+        //     'employe_id' => $req->employe_id,
+        //     'date' => $req->date
+        // ])->first();
+
+        // Validasi New
         $cek = PeKpa::where([
             'employe_id' => $req->employe_id,
-            'date' => $req->date
+            'semester' => $req->semester,
+            'tahun' => $req->tahun
         ])->first();
 
 
@@ -91,7 +105,13 @@ class PeKpaController extends Controller
             'kpi_id' => $req->kpi_id,
             'employe_id' => $req->employe_id,
             'date' => $req->date,
+            'is_semester' => '1',
+            'semester' => $req->semester,
+            'tahun' => $req->tahun
         ]);
+
+
+        $kpaId = enkripRambo($kpa->id);
 
         $acvTotal = 0;
 
@@ -126,7 +146,8 @@ class PeKpaController extends Controller
                 'achievement' => $acvTotal
             ]);
 
-        return redirect()->back()->with('success', 'KPI successfully added');
+
+        return redirect('/kpa/edit/' . $kpaId)->with('success', 'KPI successfully added');
     }
 
     public function edit($id)

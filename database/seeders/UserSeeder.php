@@ -36,5 +36,15 @@ class UserSeeder extends Seeder
          'updated_at' => NOW()
       ]);
       $developer->assignRole('Administrator');
+
+      $dareza = User::create([
+         'name' => 'Dareza Arvian',
+         'email' => 'dareza@example.com',
+         'username' => 'EN-4-047',
+         'password' => Hash::make('12345678'),
+         'created_at' => NOW(),
+         'updated_at' => NOW()
+      ]);
+      $dareza->assignRole('Karyawan');
    }
 }

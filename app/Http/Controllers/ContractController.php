@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Contract;
 use App\Models\Employee;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -19,6 +20,8 @@ class ContractController extends Controller
       $contract = Contract::find($req->contract);
       $employee = Employee::where('nik', $contract->id_no)->first();
       // dd($req->position);
+
+      // dd($req->designation);
       $employee->update([
          'position_id' => $req->position
       ]);
@@ -32,10 +35,23 @@ class ContractController extends Controller
          'hourly_rate' => $req->hourly_rate,
          'payslip' => $req->payslip,
          'shift_id' => $req->shift,
+         'start' => $req->start,
          'end' => $req->end,
-         'desc' => $req->desc
+         'desc' => $req->desc,
+         'cuti' => $req->cuti
       ]);
       // });
+
+      $user = User::where('username', $employee->nik)->first();
+      if($req->designation == 3) {
+         $user->assignRole('Leader');
+      } elseif($req->designation == 4) {
+         $user->assignRole('Supervisor');
+      } elseif($req->designation == 6) {
+         $user->assignRole('Manager');
+      } else {
+         $user->assignRole('Karyawan');
+      }
 
       return redirect()->route('employee.detail', [enkripRambo($req->employee), enkripRambo('contract')])->with('success', 'Contract successfully updated');
       // } catch (\Exception $e) {

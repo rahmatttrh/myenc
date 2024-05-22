@@ -3,12 +3,40 @@
 Dashboard
 @endsection
 @section('content')
+
+<style>
+   table th {
+      background-color: white;
+      color: rgb(78, 77, 77);
+   }
+</style>
 <div class="page-inner mt--5">
-   <div class="page-header">
+   {{-- <div class="page-header">
       <h4 class="page-title">Dashboard</h4>
-   </div>
+   </div> --}}
    <div class="row">
       <div class="col-md-4">
+         <div class="d-block d-sm-none">
+            <div class="alert alert-info shadow-sm">
+
+               {{-- <div class="card-body"> --}}
+                  <div class="card-opening">
+                     <h4>
+                        <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1">
+                        <b>Announcement</b>
+                     </h4>
+                  </div>
+                  <hr>
+                  <div class="card-desc">
+                     Tanggal 8 & 9 Februari Libur Nasional dan Cuti Bersama
+                  </div>
+                  {{-- <div class="card-detail">
+                        <div class="btn btn-light btn-rounded">Download Template</div>
+                     </div> --}}
+               {{-- </div> --}}
+            </div>
+            <hr>
+         </div>
          <div class="card card-profile card-secondary ">
             <div class="card-header" style="background-image: url({{asset('img/blogpost.jpg')}})">
                <div class="profile-picture">
@@ -17,73 +45,141 @@ Dashboard
                      <img src="{{asset('storage/' . $employee->picture)}}" alt="..." class="avatar-img rounded-circle">
                      @else
                      <img src="{{asset('img/user.png')}}" alt="..." class="avatar-img rounded-circle">
-                     @endif
-                     {{-- <img src="{{asset('img/profile.jpg')}}" alt="..." class="avatar-img rounded-circle"> --}}
-                  </div>
+                     @endif</div>
                </div>
             </div>
             <div class="card-body">
                <div class="user-profile text-center">
                   <div class="name">{{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</div>
                   <div class="job">{{$employee->position->name}}</div>
-                  <div class="desc">{{$employee->bio ?? 'Bio..'}}</div>
-                  <div class="social-media">
-                     <a class="btn btn-info btn-twitter btn-sm btn-link" href="#">
-                        <span class="btn-label just-icon"><i class="flaticon-twitter"></i> </span>
-                     </a>
-                     <a class="btn btn-danger btn-sm btn-link" rel="publisher" href="#">
-                        <span class="btn-label just-icon"><i class="flaticon-google-plus"></i> </span>
-                     </a>
-                     <a class="btn btn-primary btn-sm btn-link" rel="publisher" href="#">
-                        <span class="btn-label just-icon"><i class="flaticon-facebook"></i> </span>
-                     </a>
-                     <a class="btn btn-danger btn-sm btn-link" rel="publisher" href="#">
-                        <span class="btn-label just-icon"><i class="flaticon-dribbble"></i> </span>
-                     </a>
-                  </div>
-                  <div class="view-profile">
-                     <a href="{{route('employee.detail', [enkripRambo($employee->id), enkripRambo('contract')])}}" class="btn btn-secondary btn-block">View Full Profile</a>
-                  </div>
+                  <div class="desc">15/08/2023 - 15/08/24</div>
+                  
+               </div>
+               @if ($pending != null)
+               <a href="" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modal-out">Out</a>
+               @else
+               <a href="" class="btn btn-danger btn-block" data-toggle="modal" data-target="#modal-in">In</a>
+               @endif
+               
+            </div>
+            <hr>
+            <div class="card-footer d-flex justify-content-between">
+
+               <div>
+                  {{$employee->contract->shift->name ?? '-'}} <br>
+                  Sisa Cuti <br>
+                  Overtime <br>
+                  Absen <br>
+               </div>
+               <div class="text-right">
+                  {{formatTime($employee->contract->shift->in)}} - {{formatTime($employee->contract->shift->out)}} <br>
+                  2 <br>
+                  4 Hours
                </div>
             </div>
-            <div class="card-footer">
-               {{-- <div class="row user-stats text-center">
-                  <div class="col">
-                     <div class="number">2</div>
-                     <div class="title">Sisa Cuti</div>
-                  </div>
-                  <div class="col">
-                     <div class="number">5</div>
-                     <div class="title">Terlambat</div>
-                  </div>
-                  <div class="col">
-                     <div class="number">1</div>
-                     <div class="title">Absen</div>
-                  </div>
-               </div> --}}
-            </div>
+            
          </div>
+
+         {{-- <div class="card">
+            <div class="card-header">Sisa Cuti Tahunan</div>
+            <div class="card-body">
+               <h2>4</h2>
+            </div>
+         </div> --}}
+         
+         {{-- <div class="badge badge-info">Absensi</div> --}}
+         {{-- <ol class="activity-feed">
+            @foreach ($presences as $presence)
+            <li class="feed-item feed-item-info">
+               <time class="date" datetime="9-23">{{formatDate($presence->date)}}</time>
+               <span class="text">In {{formatTime($presence->in)}} - Out 
+                  @if ($presence->out)
+                  {{formatTime($presence->out) ?? '-'}}
+                  @else
+                  -
+                  @endif
+               </span>
+            </li>
+            @endforeach
+            
+         </ol> --}}
       </div>
       <div class="col-md-8">
-         <div class="alert alert-info">You have 2 Notification !</div>
-         <div class="card card-light">
+         {{-- <div class="alert alert-info">You have 2 Notification !</div> --}}
+         <div class="d-none d-sm-block">
+            <div class="alert alert-info shadow-sm">
 
-            <div class="card-body">
-               <div class="card-opening">
-                  <h2>
-                     <img src="{{asset('img/flaticon/promote.png')}}" height="40" alt="" class="mr-1">
-                     <b>Announcement</b>
-                  </h2>
-               </div>
-               <hr>
-               <div class="card-desc">
-                  Tanggal 8 & 9 Februari Libur Nasional dan Cuti Bersama
-               </div>
-               {{-- <div class="card-detail">
-                     <div class="btn btn-light btn-rounded">Download Template</div>
-                  </div> --}}
+               {{-- <div class="card-body"> --}}
+                  <div class="card-opening">
+                     <h4>
+                        <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1">
+                        <b>Announcement</b>
+                     </h4>
+                  </div>
+                  <hr>
+                  <div class="card-desc">
+                     Tanggal 8 & 9 Februari Libur Nasional dan Cuti Bersama
+                  </div>
+                  {{-- <div class="card-detail">
+                        <div class="btn btn-light btn-rounded">Download Template</div>
+                     </div> --}}
+               {{-- </div> --}}
             </div>
+            <hr>
          </div>
+         <span class="badge badge-info mb-2">APRIL 2024</span>  <br>
+         
+         @foreach ($dates as $date)
+            @if ($presences->where('in_date', $date->format('Y-m-d'))->first() != null)
+               @if ($presences->where('in_date', $date->format('Y-m-d'))->first()->out_time != null)
+               <div class="btn btn-primary mb-1" data-toggle="modal" data-target="#modal-presence-{{$presences->where('in_date', $date->format('Y-m-d'))->first()->id}}">{{$date->format('d')}}</div>
+               @else
+               <div class="btn btn-info mb-1" data-toggle="modal" data-target="#modal-presence-{{$presences->where('in_date', $date->format('Y-m-d'))->first()->id}}">{{$date->format('d')}}</div>
+               @endif
+            
+            @else
+               <div class="btn btn-light mb-1">{{$date->format('d')}} </div>
+            @endif
+            
+            {{-- @foreach ($presences as $presence)
+                @if ($presence->date == $date->format('Y-m-d'))
+                  @if ($presence->out != null)
+                  <div class="btn btn-primary mb-1">{{$date->format('d')}}</div>
+                  @else
+                  <div class="btn btn-info mb-1">{{$date->format('d')}}</div>
+                  @endif
+                
+                @else
+                <div class="btn btn-light mb-1">{{$date->format('d')}} </div>
+                @endif
+            @endforeach --}}
+
+            {{-- <div class="btn btn-light mb-1">{{$date->format('d')}}</div> --}}
+         
+         @endforeach
+
+         <hr>
+         <div class="badge badge-light">Recent Request</div>
+         <table class=" mt-1">
+            <thead>
+               
+               <tr>
+                  {{-- <th scope="col">#</th> --}}
+                  <th scope="col">Type</th>
+                  <th scope="col">Date</th>
+                  <th scope="col">Status</th>
+               </tr>
+            </thead>
+            <tbody>
+               <tr>
+                  {{-- <td>1</td> --}}
+                  <td>SPKL</td>
+                  <td>12/03/24</td>
+                  <td>Pending</td>
+               </tr>
+               
+            </tbody>
+         </table>
          {{-- <table class="table table-bordered table-head-bg-info table-bordered-bd-info mt-4">
             <thead>
                <tr>
@@ -113,53 +209,236 @@ Dashboard
                </tr>
             </tbody>
          </table> --}}
-         <div class="card shadow-none border">
-            <div class="card-header">
-               <div class="card-title">Feed Activity</div>
-            </div>
-            <div class="card-body">
-               <ol class="activity-feed">
-                  {{-- <li class="feed-item feed-item-secondary">
-                     <time class="date" datetime="9-25">Sep 25</time>
-                     <span class="text">Responded to need <a href="#">"Volunteer opportunity"</a></span>
-                  </li> --}}
-                  <li class="feed-item feed-item-success">
-                     <time class="date" datetime="9-24">Jan 30 09:20</time>
-                     <span class="text">Login from System
-                        {{-- <a href="#">"Volunteer Opportunity"</a> --}}
-                     </span>
-                  </li>
-                  <li class="feed-item feed-item-info">
-                     <time class="date" datetime="9-23">Jan 29 14:20</time>
-                     <span class="text">Logout from System
-                        {{-- <a href="#">"Volunteer Opportunity"</a> --}}
-                     </span>
-                  </li>
-                  <li class="feed-item feed-item-warning">
-                     <time class="date" datetime="9-21">Jan 29 11:05</time>
-                     <span class="text">Login into System
-                        {{-- <a href="#">"Volunteer Opportunity"</a> --}}
-                     </span>
-                  </li>
-                  <li class="feed-item feed-item-danger">
-                     <time class="date" datetime="9-18">Jan 29 09:15</time>
-                     <span class="text">Logout from System
-                        {{-- <a href="#">"Volunteer Opportunity"</a> --}}
-                     </span>
-                  </li>
-                  <li class="feed-item">
-                     <time class="date" datetime="9-17">Jan 29 08:05</time>
-                     <span class="text">Login into System
-                        {{-- <a href="single-event.php">"Some New
-                           Event"</a> --}}
-                        </span>
-                  </li>
-               </ol>
-            </div>
-         </div>
+         <hr>
+         <div class="badge badge-light">Overtime</div>
+         <table class=" mt-1">
+            <thead>
+               
+               <tr>
+                  {{-- <th scope="col">#</th> --}}
+                  <th scope="col">Date</th>
+                  <th>Desc</th>
+                  <th scope="col">Tap Out</th>
+                  <th scope="col">Hours</th>
+               </tr>
+            </thead>
+            <tbody>
+               <tr>
+                  {{-- <td>1</td> --}}
+                  <td>12/03/24</td>
+                  <td style="max-width: 250px" class="text-truncate">Lorem ipsum dolor sit amet  vero incidunt cupiditate.</td>
+                  <td>21.00</td>
+                  <td>4 Hour</td>
+               </tr>
+               <tr>
+                  {{-- <td>1</td> --}}
+                  <td>15/04/24</td>
+                  <td style="max-width: 250px" class="text-truncate">Lorem ipsum dolor, sit amet consectetur adipisicing.</td>
+                  <td>20.00</td>
+                  <td>3 Hour</td>
+               </tr>
+               
+            </tbody>
+         </table>
       </div>
    </div>
 </div>
+
+@foreach ($presences as $presence)
+<div class="modal fade" id="modal-presence-{{$presence->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog " role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Detail Presence</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <form action="{{route('employee.presence.in')}}" method="POST">
+         @csrf
+         <div class="modal-body">
+
+            <div class="row">
+               <div class="col-md-6">
+                  <div class="badge badge-info mb-2">In</div>
+                  {{-- <hr> --}}
+                  <div class="form-group form-group-default">
+                     <label>Date</label>
+                     <input type="date" class="form-control"  name="date" id="date" value="{{$presence->in_date}}">
+                  </div>
+                  <div class="row">
+                     <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                           <label>Location</label>
+                           <select class="form-control" name="loc" id="loc">
+                              <option {{$presence->in_loc == 'HW' ?  'selected' : ''}} value="HW">HW</option>
+                              <option {{$presence->in_loc == 'JGC' ?  'selected' : ''}} value="JGC">JGC</option>
+                              <option {{$presence->in_loc == 'KJ' ?  'selected' : ''}} value="KJ">KJ</option>
+                              <option {{$presence->in_loc == 'GS' ?  'selected' : ''}} value="GS">GS</option>
+                           </select>
+                           {{-- <input id="Name" type="text" class="form-control" > --}}
+                        </div>
+                     </div>
+                     <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                           <label>Time</label>
+                           <input type="time" class="form-control"  name="time" id="time" value="{{$presence->in_time}}" >
+                        </div>
+                     </div>
+                  </div>
+                  
+               </div>
+               <div class="col-md-6">
+                  <div class="badge badge-info mb-2">Out</div>
+                  {{-- <hr> --}}
+                  <div class="form-group form-group-default">
+                     <label>Date</label>
+                     <input type="date" class="form-control"  name="date" id="date" value="{{$presence->out_date}}">
+                  </div>
+                  <div class="row">
+                     <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                           <label>Location</label>
+                           <select class="form-control" name="loc" id="loc">
+                              <option {{$presence->out_loc == 'HW' ?  'selected' : ''}} value="HW">HW</option>
+                              <option {{$presence->out_loc == 'JGC' ?  'selected' : ''}} value="JGC">JGC</option>
+                              <option {{$presence->out_loc == 'KJ' ?  'selected' : ''}} value="KJ">KJ</option>
+                              <option {{$presence->out_loc == 'GS' ?  'selected' : ''}} value="GS">GS</option>
+                           </select>
+                           {{-- <input id="Name" type="text" class="form-control" > --}}
+                        </div>
+                     </div>
+                     <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                           <label>Time</label>
+                           <input type="time" class="form-control"  name="time" id="time" value="{{$presence->out_time}}" >
+                        </div>
+                     </div>
+                  </div>
+                  
+               </div>
+            </div>
+            <hr>
+            <div class="row">
+               <div class="col-3">
+                  Work Hours <br>
+                  Overtime <br>
+               </div>
+               <div class="col-9">
+                  : <b>{{$presence->total}}</b> <br>
+                  : <b>0</b>
+               </div>
+            </div>
+            
+         </div>
+         <div class="modal-footer">
+            {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
+            {{-- <button type="submit" class="btn btn-primary">Submit</button> --}}
+         </div>
+         </form>
+      </div>
+   </div>
+</div>
+@endforeach
+
+<div class="modal fade" id="modal-in" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Kamu sudah tiba dikantor?</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <form action="{{route('employee.presence.in')}}" method="POST">
+         @csrf
+         <div class="modal-body">
+            <div class="form-group form-group-default">
+               <label>Date</label>
+               <input type="date" class="form-control"  name="date" id="date" >
+            </div>
+            <div class="row">
+               <div class="col-md-6">
+                  <div class="form-group form-group-default">
+                     <label>Location</label>
+                     <select class="form-control" name="loc" id="loc">
+                        <option value="HW">HW</option>
+                        <option value="JGC">JGC</option>
+                        <option value="KJ">KJ</option>
+                        <option value="GS">GS</option>
+                     </select>
+                     {{-- <input id="Name" type="text" class="form-control" > --}}
+                  </div>
+               </div>
+               <div class="col-md-6">
+                  <div class="form-group form-group-default">
+                     <label>Time</label>
+                     <input type="time" class="form-control"  name="time" id="time" >
+                  </div>
+               </div>
+            </div>
+            
+         </div>
+         <div class="modal-footer">
+            {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
+            <button type="submit" class="btn btn-primary">Submit</button>
+         </div>
+         </form>
+      </div>
+   </div>
+</div>
+
+@if ($pending != null)
+<div class="modal fade" id="modal-out" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Kamu sudah selesai bekerja?</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <form action="{{route('employee.presence.out')}}" method="POST">
+         @csrf
+         @method('PUT')
+
+         <input type="number" id="presence" name="presence" value="{{$pending->id}}" hidden>
+         <div class="modal-body">
+            <div class="form-group form-group-default">
+               <label>Date</label>
+               <input type="date" class="form-control"  name="date" id="date" >
+            </div>
+            <div class="row">
+               <div class="col-md-6">
+                  <div class="form-group form-group-default">
+                     <label>Select Location</label>
+                     <select class="form-control" name="loc" id="loc">
+                        <option value="HW">HW</option>
+                        <option value="JGC">JGC</option>
+                        <option value="KJ">KJ</option>
+                        <option value="GS">GS</option>
+                     </select>
+                     {{-- <input id="Name" type="text" class="form-control" > --}}
+                  </div>
+               </div>
+               <div class="col-md-6">
+                  <div class="form-group form-group-default">
+                     <label>Time</label>
+                     <input type="time" class="form-control"  name="time" id="time" >
+                  </div>
+               </div>
+            </div>
+           
+         </div>
+         <div class="modal-footer">
+            {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
+            <button type="submit" class="btn btn-primary">Submit</button>
+         </div>
+         </form>
+      </div>
+   </div>
+</div>
+@endif
 
 @push('chart-dashboard')
 <script>

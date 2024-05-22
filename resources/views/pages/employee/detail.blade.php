@@ -85,6 +85,10 @@ Detail Employee
                   <i class="fas fa-address-book mr-1"></i>
                   Basic
                </a>
+               {{-- <a class="nav-link {{$panel == 'basic' ? 'active' : ''}} text-left pl-3" id="v-pills-basic-tab" data-toggle="pill" href="#v-pills-basic" role="tab" aria-controls="v-pills-basic" aria-selected="true">
+                  <i class="fas fa-address-book mr-1"></i>
+                  Work
+               </a> --}}
 
                {{-- <a class="nav-link {{$panel == 'personal' ? 'active' : ''}} text-left pl-3" id="v-pills-personal-tab" data-toggle="pill" href="#v-pills-personal" role="tab" aria-controls="v-pills-personal" aria-selected="false">
                <i class="fas fa-user mr-1"></i>
@@ -102,13 +106,15 @@ Detail Employee
             </div>
 
          </div>
-         <div class="card-footer">
+         <div class="card-footer d-flex justify-content-between">
+            <div>Sisa Cuti</div>
+            <div>3</div>
             {{-- <small>Lorem ipsum dolor sit amet consectetur adipisicing elit.</small> --}}
             {{-- <small>Completeness 25%</small>
                <div class="progress">
                   <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                 </div> --}}
-            <small>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste unde beatae inventore.</small>
+            {{-- <small>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste unde beatae inventore.</small> --}}
          </div>
       </div>
    </div>

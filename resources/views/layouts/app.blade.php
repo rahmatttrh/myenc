@@ -55,6 +55,55 @@
             padding-bottom: 30px; /* Atur padding sesuai kebutuhan Anda */
             /* Atur properti lain jika diperlukan */
          }
+
+         table {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+table td, table th {
+  border: 1px solid #ddd;
+  padding: 4px;
+}
+
+table tr:nth-child(even){background-color: #f2f2f2;}
+
+table tr:hover {background-color: #ddd;}
+
+table th {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-align: left;
+  background-color: #478091;
+  color: white;
+}
+      </style>
+
+      <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+      <script>
+
+      document.addEventListener('DOMContentLoaded', function() {
+         var calendarEl = document.getElementById('calendar');
+         var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth'
+         });
+         calendar.render();
+      });
+
+      </script>
+
+      <style>
+         table {
+            font-family: Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+            }
+
+            table td, table th {
+            border: 1px solid #ddd;
+            padding: 4px;
+            }
       </style>
    </head>
    <body>
