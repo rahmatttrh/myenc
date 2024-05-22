@@ -12,8 +12,8 @@ class DepartmentSeeder extends Seeder
     *
     * @return void
     */
-   // public function run()
-   // {
+   public function run()
+   {
    //    Department::create([
    //       'name' => 'HRD',
    //       'created_at' => NOW(),
@@ -56,5 +56,5 @@ class DepartmentSeeder extends Seeder
    //       'created_at' => NOW(),
    //       'updated_at' => NOW()
    //    ]);
-   // }
+   }
 }
