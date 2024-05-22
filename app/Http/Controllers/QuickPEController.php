@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Department;
 use App\Models\Designation;
 use App\Models\Employee;
+use App\Models\Pe;
+use App\Models\PeBehavior;
 use App\Models\PeKpa;
 use App\Models\PekpaDetail;
 use App\Models\PeKpi;
@@ -74,15 +76,82 @@ class QuickPEController extends Controller
         ])->with('i');
     }
 
+    public function create()
+    {
+        $employee = auth()->user()->getEmployee();
+
+        // Menggunakan request() helper
+        $fullUrl = request()->fullUrl();
+
+        $empId  = NULL;
+
+        if (isset($_GET['empId'])) {
+            # code...
+            $empId = $_GET['empId'];
+        }
+
+        // Data KPI
+        if (auth()->user()->hasRole('Administrator|HRD')) {
+            $kpas = PeKpa::orderBy('date', 'desc')
+                ->where('status', '!=', '0')
+                ->orderBy('employe_id')
+                ->get();
+
+
+            $employes = Employee::where('status', '1')
+                ->whereNotNull('kpi_id')
+                ->get();
+            // 
+
+            $outAssesments = $this->outstandingAssessment();
+
+            // 
+        } else if (auth()->user()->hasRole('Leader|Manager')) {
+
+            $kpas = DB::table('pe_kpas')
+                ->join('pe_kpis', 'pe_kpas.kpi_id', '=', 'pe_kpis.id')
+                ->where('pe_kpis.departement_id', $employee->department_id)
+                ->select('pe_kpas.*')
+                ->orderBy('pe_kpas.date', 'desc')
+                ->orderBy('pe_kpas.status', 'asc')
+                ->get();
+
+            // Convert the query builder result to Order model instances
+            $kpas = PeKpa::hydrate($kpas->toArray());
+
+            $employes = Employee::where('department_id', $employee->department_id)
+                ->where('status', '1')
+                ->whereNotNull('kpi_id')
+                ->get();
+            // 
+            $outAssesments = $this->outstandingAssessment($employee->department_id);
+            // 
+        }
+
+        // Berikut Behavior  Staff
+        $behaviors = PeBehavior::where('level', 's')->get();
+
+        $designations = Designation::orderBy('name')->get();
+        $departements = Department::orderBy('name')->get();
+
+
+        return view('pages.qpe.qpe-create', [
+            'designations' => $designations,
+            'departements' => $departements,
+            'kpas' => $kpas,
+            'employes' => $employes,
+            'behaviors' => $behaviors,
+            'empId' => 'empId',
+            'outAssesments' =>  $outAssesments
+        ])->with('i');
+    }
+
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -90,11 +159,172 @@ class QuickPEController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    // Store Apprasial
+    public function store(Request $req)
     {
-        //
+        $req->validate([
+            'kpi_id' => 'required',
+            'employe_id' => 'required',
+            'semester' => 'required',
+            'tahun' => 'required',
+            'date' => 'required'
+        ]);
+
+        // dd($req);
+
+        // Validasi KPA OLD
+        // $cek = PeKpa::where([
+        //     'employe_id' => $req->employe_id,
+        //     'date' => $req->date
+        // ])->first();
+
+        // Validasi New
+        $cek = PeKpa::where([
+            'employe_id' => $req->employe_id,
+            'semester' => $req->semester,
+            'tahun' => $req->tahun
+        ])->first();
+
+
+
+        if ($cek) {
+            return redirect()->back()->with('danger', 'KPA Karyawan di bulan tersebut sudah ada');
+        }
+
+
+        // Insert PE
+
+        $pe = Pe::create([
+            'employe_id' => $req->employe_id,
+            'date' => $req->date,
+            'created_at' => NOW(),
+            'updated_at' => NOW()
+        ]);
+
+
+
+        // Insert KPA
+        $kpa = PeKpa::create([
+            'pe_id' => $pe->id,
+            'kpi_id' => $req->kpi_id,
+            'employe_id' => $req->employe_id,
+            'date' => $req->date,
+            'is_semester' => '1',
+            'semester' => $req->semester,
+            'tahun' => $req->tahun
+        ]);
+
+
+        $kpaId = enkripRambo($kpa->id);
+
+        $acvTotal = 0;
+
+        // Insert KPI Detail
+        $arrays = $req->qty;
+        foreach ($arrays as $kpidetail_id => $value) {
+
+            $pdfFile = $req->attachment[$kpidetail_id];
+
+            $pdfFileName = time() . '_' . $kpidetail_id . '.pdf';
+            $pdfFile->storeAs('kpa-evidence', $pdfFileName, 'public');
+
+            // Cek KPI Detail
+            $kpiDetail = PekpiDetail::find($kpidetail_id);
+
+            // dd($kpiDetail);
+
+            $achievement = round(($value / $kpiDetail->target) * $kpiDetail->weight);
+
+            $kpaDetail = PekpaDetail::create([
+                'kpa_id' => $kpa->id,
+                'kpidetail_id' => $kpidetail_id,
+                'value' => $value,
+                'achievement' => $achievement,
+                'evidence' => 'kpa-evidence/' . $pdfFileName
+            ]);
+
+            $acvTotal += $achievement;
+        }
+
+        $kpa = PeKpa::where('id', $kpa->id)
+            ->update([
+                'achievement' => $acvTotal
+            ]);
+
+
+        return redirect('/qpe/edit/' . $kpaId)->with('success', 'KPI successfully added');
     }
 
+    public function edit($id)
+    {
+        $kpa = PeKpa::find(dekripRambo($id));
+        // dd(dekripRambo($id));
+        $datas = PekpaDetail::where('kpa_id', $kpa->id)->where('addtional', '0')->get();
+        // Additional 
+        $addtional = PekpaDetail::where('kpa_id', $kpa->id)->where('addtional', '1')->first();
+        // dd($addtional);
+
+        $employes = Employee::where('status', '1')
+            ->whereNotNull('kpi_id')
+            ->get();
+
+        // Berikut Behavior  Staff
+        $behaviors = PeBehavior::where('level', 's')->get();
+
+
+        $isDone = false;
+        $isReject = false;
+
+        if ($kpa->status == '2') {
+            # code...
+
+            $dataOpen = PekpaDetail::where('kpa_id', $kpa->id)->where('status', '0')->get();
+            if ($dataOpen->count() == 0) {
+                $dataReject = PekpaDetail::where('kpa_id', $kpa->id)->where('status', '202')->get();
+
+                if ($dataReject->count() == 0) {
+                    // Valid Semua
+                    $isDone = true;
+                } else {
+                    // ada yang belum valid
+                    $isReject = true;
+                }
+            }
+        }
+        // dd($datas);
+
+
+        if (!isset($kpa)) {
+            return back()->with('danger', 'Id KPA Anda Salah');
+        }
+
+        return view('pages.qpe.qpe-edit', [
+            'kpa' => $kpa,
+            'employes' => $employes,
+            'addtional' => $addtional,
+            'behaviors' => $behaviors,
+            'isDone' => $isDone,
+            'isReject' => $isReject,
+            'datas' => $datas
+        ])->with('i');
+    }
+
+    public function storeBehavior(Request $req)
+    {
+        dd($req);
+
+        $req->validate([
+            'kpi_id' => 'required',
+            'employe_id' => 'required',
+            'pe_id' => 'required'
+        ]);
+
+
+        $pe = Pe::create([
+            'pe_id' => $req->pe_id,
+            'created_by' => 'System'
+        ]);
+    }
     /**
      * Display the specified resource.
      *
@@ -112,10 +342,7 @@ class QuickPEController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
-    }
+
 
     /**
      * Update the specified resource in storage.
@@ -196,5 +423,5 @@ class QuickPEController extends Controller
         }
 
         return $outAssesment;
-    } 
+    }
 }

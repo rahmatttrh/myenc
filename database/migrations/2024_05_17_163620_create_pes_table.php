@@ -27,6 +27,7 @@ class CreatePesTable extends Migration
             $table->string('created_by')->nullable();
             $table->string('verifikasi_by')->nullable(); // Manager & Asmen
             $table->string('validasi_by')->nullable();  // HRD
+            $table->timestamps();
         });
     }
 

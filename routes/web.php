@@ -235,8 +235,12 @@ Route::middleware(["auth"])->group(function () {
       // Quick PE
       Route::prefix('qpe')->group(function () {
          Route::get('/', [QuickPEController::class, 'index'])->name('qpe');
-         // Route::post('/', [QuickPEController::class, 'store'])->name('qpe.store');
-         // Route::get('edit/{id}', [QuickPEController::class, 'edit'])->name('qpe.edit');
+         Route::get('/create', [QuickPEController::class, 'create'])->name('qpe.create');
+         Route::post('/', [QuickPEController::class, 'store'])->name('qpe.store');
+         Route::get('edit/{id}', [QuickPEController::class, 'edit'])->name('qpe.edit');
+
+         Route::post('/behavior', [QuickPEController::class, 'storeBehavior'])->name('qpe.behavior.store');
+
          // Route::put('update/{id}', [QuickPEController::class, 'update'])->name('qpe.update');
          // // ADDTIONAL
          // Route::put('addtional-update/{id}', [QuickPEController::class, 'updateAddtional'])->name('qpe.addtional.update');
@@ -280,7 +284,7 @@ Route::middleware(["auth"])->group(function () {
       });
    });
 
-   Route::prefix('export')->group(function(){
+   Route::prefix('export')->group(function () {
       Route::get('kpa/employee/{id}', [ExportController::class, 'kpaEmployee'])->name('export.kpa.employee');
       Route::get('kpa/summary/{employee}/{semester}/{tahun}', [ExportController::class, 'kpaSummary'])->name('export.kpa.summary');
    });
@@ -310,12 +314,8 @@ Route::middleware(["auth"])->group(function () {
             Route::post('/in', [PresenceController::class, 'in'])->name('employee.presence.in');
             Route::put('/out', [PresenceController::class, 'out'])->name('employee.presence.out');
          });
-         
       });
-
    });
-
-
 });
 
 
