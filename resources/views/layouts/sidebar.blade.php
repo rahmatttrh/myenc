@@ -205,11 +205,35 @@
                   </ul>
                </div>
             </li>
-            <li class="nav-item {{ (request()->is('employee/*')) ? 'active' : '' }}">
+            {{-- <li class="nav-item {{ (request()->is('employee/*')) ? 'active' : '' }}">
                <a href="{{route('employee', enkripRambo('active'))}}">
                   <i class="fas fa-users"></i>
                   <p>Employee</p>
                </a>
+            </li> --}}
+
+            <li class="nav-item {{ (request()->is('employee/*')) ? 'active' : '' }}">
+               <a data-toggle="collapse" href="#employee">
+                  <i class="fas fa-users"></i>
+                  <p>Employee</p>
+                  <span class="caret"></span>
+               </a>
+               <div class="collapse" id="employee">
+                  <ul class="nav nav-collapse">
+                     
+                     <li>
+                        <a href="{{route('employee', enkripRambo('active'))}}">
+                           <span class="sub-item">Active Employee</span>
+                        </a>
+                     </li>
+                     <li>
+                        <a href="{{route('employee.off')}}">
+                           <span class="sub-item">Off Employee</span>
+                        </a>
+                     </li>
+                     
+                  </ul>
+               </div>
             </li>
             @endif
          </ul>
