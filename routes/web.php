@@ -21,6 +21,7 @@ use App\Http\Controllers\PeKpiController;
 use App\Http\Controllers\PekpiDetailController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\PresenceController;
+use App\Http\Controllers\QuickPEController;
 use App\Http\Controllers\SocialAccountController;
 use App\Http\Controllers\SoController;
 use App\Http\Controllers\SpklController;
@@ -240,6 +241,42 @@ Route::middleware(["auth"])->group(function () {
          Route::get('addtional-delete/{id}', [PeKpaController::class, 'deleteAddtional'])->name('kpa.addtional.delete');
       });
 
+      // Quick PE
+      Route::prefix('qpe')->group(function () {
+         Route::get('/', [QuickPEController::class, 'index'])->name('qpe');
+         Route::get('/create', [QuickPEController::class, 'create'])->name('qpe.create');
+         Route::post('/', [QuickPEController::class, 'store'])->name('qpe.store');
+         Route::get('edit/{id}', [QuickPEController::class, 'edit'])->name('qpe.edit');
+
+         Route::post('/behavior', [QuickPEController::class, 'storeBehavior'])->name('qpe.behavior.store');
+
+         // Route::put('update/{id}', [QuickPEController::class, 'update'])->name('qpe.update');
+         // // ADDTIONAL
+         // Route::put('addtional-update/{id}', [QuickPEController::class, 'updateAddtional'])->name('qpe.addtional.update');
+
+         // Route::get('delete/{qpe:id}', [QuickPEController::class, 'delete'])->name('qpe.delete');
+         // Route::put('submit/{id}', [QuickPEController::class, 'submit'])->name('qpe.submit');
+
+         // Route::patch('done-validasi/{id}', [QuickPEController::class, 'doneValidasi'])->name('qpe.done.validasi');
+         // Route::patch('reject-validasi/{id}', [QuickPEController::class, 'rejectValidasi'])->name('qpe.reject.validasi');
+         // Route::patch('resending-validasi/{id}', [QuickPEController::class, 'resendingValidasi'])->name('qpe.resending.validasi');
+
+         // // Validasi
+         // Route::patch('item-validasi/{id}', [QuickPEController::class, 'itemValidasi'])->name('qpe.item.validasi');
+         // Route::post('verifikasi/{id}', [QuickPEController::class, 'rejectVerifikasi'])->name('qpe.verifikasi.reject');
+
+         // // Verifikasi
+         // Route::patch('done-verifikasi/{id}', [QuickPEController::class, 'doneVerifikasi'])->name('qpe.done.verifikasi');
+
+         // Route::get('/summary', [QuickPEController::class, 'summary'])->name('qpe.summary');
+         // Route::get('/monitoring', [QuickPEController::class, 'monitoring'])->name('qpe.monitoring');
+         // // Route::post('/summary/detail', [QuickPEController::class, 'summaryDetail'])->name('qpe.summary.detail');
+         // Route::get('/summary/detail', [QuickPEController::class, 'summaryDetail'])->name('qpe.summary.detail');
+
+         // Route::post('addtional/{id}', [QuickPEController::class, 'storeAddtional'])->name('qpe.addtional.store');
+         // Route::get('addtional-delete/{id}', [QuickPEController::class, 'deleteAddtional'])->name('qpe.addtional.delete');
+      });
+
       // Discipline
       Route::prefix('discipline')->group(function () {
          Route::get('/', [PeDisciplineController::class, 'index'])->name('discipline');
@@ -256,7 +293,7 @@ Route::middleware(["auth"])->group(function () {
       });
    });
 
-   Route::prefix('export')->group(function(){
+   Route::prefix('export')->group(function () {
       Route::get('kpa/employee/{id}', [ExportController::class, 'kpaEmployee'])->name('export.kpa.employee');
       Route::get('kpa/summary/{employee}/{semester}/{tahun}', [ExportController::class, 'kpaSummary'])->name('export.kpa.summary');
    });
@@ -287,16 +324,8 @@ Route::middleware(["auth"])->group(function () {
             Route::post('/in', [PresenceController::class, 'in'])->name('employee.presence.in');
             Route::put('/out', [PresenceController::class, 'out'])->name('employee.presence.out');
          });
-         Route::get('/', [PeKpiController::class, 'index'])->name('kpi');
-         Route::post('', [PeKpiController::class, 'store'])->name('kpi.store');
-         Route::get('{id}', [PeKpiController::class, 'edit'])->name('kpi.edit');
-         Route::get('delete/{id}', [PeKpiController::class, 'delete'])->name('kpi.delete');  // Belum selesai semua
-         Route::get('delete-objective/{id}', [PeKpiController::class, 'deleteObjective'])->name('kpi.objective.delete');  // Belum selesai semua
       });
-
    });
-
-
 });
 
 

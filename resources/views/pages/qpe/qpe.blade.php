@@ -34,29 +34,17 @@ KPA
                         </div>
                         <div class="form-group form-group-default">
                             <label>Period</label>
-                            <select class="form-control" name="priode" id="priode">
-                                <option value="monthly">Monthly</option>
-                                <option value="quarterly">Quarterly</option>
-                                <option value="semester">Semester</option>
+                            <select class="form-control" name="priode" id="priode" readonly> 
+                                <option value="semester" selected>Semester</option>
                             </select>
                         </div>
                         <div class="form-group form-group-default">
-                            <label>Month</label>
+                            <label>Semester</label>
                             <div class="row">
                                 <div class="col">
-                                    <select class="form-control form-select date" id="bulan" name="bulan">
-                                        <option value="01" {{ date('m') == '02' ? 'selected' : '' }}>Januari</option>
-                                        <option value="02" {{ date('m') == '03' ? 'selected' : '' }}>Februari</option>
-                                        <option value="03" {{ date('m') == '04' ? 'selected' : '' }}>Maret</option>
-                                        <option value="04" {{ date('m') == '05' ? 'selected' : '' }}>April</option>
-                                        <option value="05" {{ date('m') == '06' ? 'selected' : '' }}>Mei</option>
-                                        <option value="06" {{ date('m') == '07' ? 'selected' : '' }}>Juni</option>
-                                        <option value="07" {{ date('m') == '08' ? 'selected' : '' }}>Juli</option>
-                                        <option value="08" {{ date('m') == '09' ? 'selected' : '' }}>Agustus</option>
-                                        <option value="09" {{ date('m') == '10' ? 'selected' : '' }}>September</option>
-                                        <option value="10" {{ date('m') == '11' ? 'selected' : '' }}>Oktober</option>
-                                        <option value="11" {{ date('m') == '12' ? 'selected' : '' }}>November</option>
-                                        <option value="12" {{ date('m') == '01' ? 'selected' : '' }}>Desember</option>
+                                    <select class="form-control form-select date" id="semester" name="semester">
+                                        <option value="1"  >I</option>
+                                        <option value="2" >II</option> 
                                     </select>
                                 </div>
                                 <div class="col">
@@ -106,6 +94,7 @@ KPA
                                     <tr>
                                         <th colspan="5" class="text-right">Achievement</th>
                                         <th id="totalAchievement"></th>
+                                        <th></th>
                                     </tr>
                                 </tfoot>
                             </table>

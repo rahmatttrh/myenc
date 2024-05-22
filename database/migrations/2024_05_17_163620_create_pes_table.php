@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePeKpasTable extends Migration
+class CreatePesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,11 @@ class CreatePeKpasTable extends Migration
      */
     public function up()
     {
-        Schema::create('pe_kpas', function (Blueprint $table) {
+        Schema::create('pes', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('pe_id');
-            $table->integer('kpi_id');
             $table->bigInteger('employe_id');
+            $table->date('date')->default('2024-01-01');
             $table->integer('achievement')->default(0);
-            $table->date('date');
-            $table->string('is_semester', 1)->default('0');
-            $table->string('semester', 1)->nullable();
-            $table->string('tahun', 4)->nullable();
             $table->string('status', 3)->default('0');
             $table->text('alasan_reject')->nullable();  // Alasan Reject dari manager
             $table->dateTime('release_at')->nullable();
@@ -43,6 +38,6 @@ class CreatePeKpasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pe_kpas');
+        Schema::dropIfExists('pes');
     }
 }

@@ -52,7 +52,7 @@ KPA
                             @elseif($kpa->status == '101')
                             <td><span class="badge badge-danger badge-lg"><b>Di Reject Manager</b></span></td>
                             <label class="mt-3">Alasan Penolakan</label>
-                            <td > <span class="text-danger"> {{$kpa->alasan_reject}} </td>
+                            <td> <span class="text-danger"> {{$kpa->alasan_reject}} </td>
                             @elseif($kpa->status == '202')
                             <td><span class="badge badge-danger badge-lg"><b>Di Reject HRD</b></span></td>
                             @endif
@@ -486,6 +486,111 @@ KPA
             </div>
         </div>
     </div>
+
+    <div class="row" id="boxDetail">
+        <div class="col-md-3">
+            <div class="card shadow-none border">
+                <div class="card-header d-flex bg-primary">
+                    <div class="d-flex  align-items-center">
+                        <div class="card-title text-white">Discipline</div>
+                    </div>
+
+                </div>
+                <div class="card-body">
+                    <form>
+                        @csrf
+                        <div class="form-group form-group-default">
+                            <label>Alpa</label>
+                            <label for="" class="float-right">0</label>
+                        </div>
+                        <div class="form-group form-group-default">
+                            <label>Ijin</label>
+                            <label for="" class="float-right">0</label>
+                        </div>
+                        <div class="form-group form-group-default">
+                            <label>Terlambat</label>
+                            <label for="" class="float-right">0</label>
+                        </div>
+                        <div class="form-group form-group-default bg-success">
+                            <label>Value</label>
+                            <label for="" class="float-right">4</label>
+                        </div>
+                        <div class="form-group form-group-default bg-warning">
+                            <label>Bobot</label>
+                            <label for="" class="float-right">15</label>
+                        </div>
+                        <div class="form-group form-group-default bg-success">
+                            <label> <b>Achievement</b></label>
+                            <label for="" class="float-right">
+                                <h3>15</h3>
+                            </label>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="card shadow-none border">
+                <div class="card-header bg-primary">
+                    <div class="card-title text-white">Behavior</div>
+                </div>
+                <form action="{{route('qpe.behavior.store')}}" name="formBehavior" method="POST" enctype="multipart/form-data" accept=".jpg, .jpeg, .png, .pdf">
+                    @csrf
+                    <input type="hidden" name="employe_id" value="{{$kpa->employe_id}}">
+                    <input type="hidden" name="kpa_id" value="{{$kpa->id}}">
+                    <input type="hidden" name="pe_id" value="{{$kpa->pe_id}}">
+                    <input type="hidden" name="date">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="displays table table-striped ">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Objective</th>
+                                        <th>Description</th>
+                                        <th>Bobot</th>
+                                        <th>Value</th>
+                                        <th>Achievement</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($behaviors as $behavior)
+                                    <tr>
+                                        <td>{{ ++$i }}</td>
+                                        <td>{{ $behavior->objective }}</td>
+                                        <td>{{ $behavior->description }}</td>
+                                        <td>{{ $behavior->bobot }}</td>
+                                        <td>
+                                            <input type="text" name="valBehavior[{{ $behavior->id }}]" value="0" min="0.01" max="4" step="0.01">
+                                            <br><span><small>*Max 4 point</small></span>
+                                        </td>
+                                        <td>
+                                            <input type="text" name="acvBehavior[{{ $behavior->id }}]" readonly>
+                                            <br><span>-</span>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th colspan="5" class="text-right">Achievement</th>
+                                        <th><span id="totalAcvBehavior" name="totalAcvBehavior"></span></th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="col-md-3 float-right mb-3">
+                            <button type="submit" class="btn btn-block btn-primary ">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
 </div>
 
 <div class="modal fade" id="modalAddtional" data-bs-backdrop="static">
@@ -658,6 +763,75 @@ KPA
 
             $('.act').val('valid');
         });
+
+        // Baru
+        // Function to validate the input value
+        function validateInputNew(input) {
+            var value = parseFloat($(input).val());
+            var regex = /^\d+(\.\d{1,2})?$/;
+
+            if (isNaN(value) || value < 0.01 || value > 4) {
+                if (value > 4) {
+                    value = 4;
+                } else {
+                    value = 1;
+                }
+                alert("Value must be between 0.01 and 4.");
+            } else if (!regex.test(value.toFixed(2))) {
+                alert("Value cannot have more than two decimal places.");
+                value = value.toFixed(2);
+            } else {
+                value = value.toFixed(2);
+            }
+
+            $(input).val(value);
+
+            return value;
+        }
+
+        // Function to update the total of acvBehavior values
+        function updateTotalAcvBehavior() {
+            var total = 0;
+            $('input[name^="acvBehavior"]').each(function() {
+                var value = parseFloat($(this).val());
+                if (!isNaN(value)) {
+                    total += value;
+                }
+            });
+            $('#totalAcvBehavior').text(total.toFixed(2));
+        }
+
+        // Event listener for input change
+        $('input[name^="valBehavior"]').on('change', function() {
+            var value = validateInputNew(this);
+            var inputName = $(this).attr('name');
+            var id = inputName.match(/\[([0-9]+)\]/)[1]; // Extract ID from name
+
+            var acv = ((value / 4) * 5).toFixed(2);
+
+            $('input[name="acvBehavior[' + id + ']"]').val(acv);
+
+            // Update totalAcvBehavior whenever valBehavior changes
+            updateTotalAcvBehavior();
+        });
+
+        // Optional: Add validation on form submit
+        $('form[name="formBehavior"]').on('submit', function(event) {
+            var isValid = true;
+            $('input[name^="valBehavior"]').each(function() {
+                var value = parseFloat($(this).val());
+                if (isNaN(value) || value < 0.01 || value > 4) {
+                    alert("Value must be between 0.01 and 4.");
+                    $(this).val("0");
+                    isValid = false;
+                }
+            });
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
+
+        // end Baru
 
 
         $('.attachment').on('change', function() {
