@@ -36,11 +36,11 @@ class PresenceController extends Controller
       $shiftOut = strtotime($shift->out) + 60*60;
       $overtimeStart = date('H:i', $shiftOut);
       // dd($overtimeStart);
-      if ($req->time > $overtimeStart) {
-         dd('lemburrrr');
-      } else {
-         dd('tidak');
-      }
+      // if ($req->time > $overtimeStart) {
+      //    dd('lemburrrr');
+      // } else {
+      //    dd('tidak');
+      // }
       
       $presence->update([
          'out_loc' => $req->loc,

@@ -63,6 +63,7 @@ Route::middleware(["auth"])->group(function () {
    Route::group(['middleware' => ['role:Administrator|HRD']], function () {
       Route::prefix('employee')->group(function () {
          Route::get('tab/{tab}', [EmployeeController::class, 'index'])->name('employee');
+         Route::get('off', [EmployeeController::class, 'off'])->name('employee.off');
 
          Route::get('create', [EmployeeController::class, 'create'])->name('employee.create');
          Route::post('store', [EmployeeController::class, 'store'])->name('employee.store');
@@ -170,6 +171,14 @@ Route::middleware(["auth"])->group(function () {
       // KPA
       Route::prefix('generate')->group(function () {
          Route::get('/komposisi', [CompositionController::class, 'komposisi'])->name('komposisi');
+      });
+   });
+
+
+   Route::group(['middleware' => ['role:Supervisor|Manager']], function () {
+      Route::prefix('spkl')->group(function () {
+         Route::get('/approve/supervisor/{id}', [SpklController::class, 'approveSupervisor'])->name('spkl.approve.supervisor');
+         Route::get('/approve/manager/{id}', [SpklController::class, 'approveManager'])->name('spkl.approve.manager');
       });
    });
 
@@ -285,9 +294,24 @@ Route::middleware(["auth"])->group(function () {
       });
    });
 
+
+
+   Route::group(['middleware' => ['role:Manager']], function () {
+      Route::prefix('spkl')->group(function(){
+         Route::get('manager/index', [SpklController::class, 'indexManager'])->name('manager.spkl');
+      });
+   });
+
+
+
+
+
    Route::prefix('export')->group(function () {
       Route::get('kpa/employee/{id}', [ExportController::class, 'kpaEmployee'])->name('export.kpa.employee');
       Route::get('kpa/summary/{employee}/{semester}/{tahun}', [ExportController::class, 'kpaSummary'])->name('export.kpa.summary');
+      
+      // Example PDF
+      Route::get('kpi/employee/', [ExportController::class, 'kpiExample'])->name('export.kpi');
    });
 
 
@@ -304,6 +328,7 @@ Route::middleware(["auth"])->group(function () {
             Route::get('/index', [SpklController::class, 'index'])->name('employee.spkl');
             Route::post('/store', [SpklController::class, 'store'])->name('employee.spkl.store');
             Route::get('/send/{id}', [SpklController::class, 'send'])->name('employee.spkl.send');
+            Route::get('/delete/{id}', [SpklController::class, 'delete'])->name('employee.spkl.delete');
          });
 
          Route::prefix('spt')->group(function () {

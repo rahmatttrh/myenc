@@ -30,7 +30,7 @@
                      <span class="navbar-toggler-icon"></span>
                   </button>
                   {{-- navbar-brand-autodark  --}}
-                  <h4>Preview PDF</h4>
+                  <h2 class="font-weight-bold font-italic text-primary">MY ENC</h2>
                   
                </div>
             </header>

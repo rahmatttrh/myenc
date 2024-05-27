@@ -115,6 +115,7 @@ Detail Employee
                   <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                 </div> --}}
             {{-- <small>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste unde beatae inventore.</small> --}}
+            {{-- <a href="{{route('export.kpi')}}">Export PDF KPI</a> --}}
          </div>
       </div>
    </div>

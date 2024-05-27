@@ -53,6 +53,8 @@ Employee
 
    <div class="row">
       <div class="col-md-3">
+         <h4>Form Create</h4>
+         <hr>
          <form action="{{route('employee.spkl.store')}}" method="POST">
             @csrf
             <div class="row">
@@ -62,6 +64,12 @@ Employee
                      <input id="date" name="date" type="date" class="form-control" >
                   </div>
                </div>
+               {{-- <div class="col-md-">
+                  <div class="form-group form-group-default">
+                     <label>End</label>
+                     <input id="end" name="end" type="time" class="form-control" >
+                  </div>
+               </div> --}}
             </div>
             <div class="row">
                {{-- <div class="col-md-6">
@@ -89,17 +97,26 @@ Employee
             </div>
             <div class="form-group form-group-default">
                <label>Desc</label>
-               <input id="desc" name="desc" type="text" class="form-control" placeholder="Deskripsi pekerjaan" >
+               <textarea id="desc" name="desc" type="text" class="form-control" placeholder="Deskripsi pekerjaan"  rows="3"></textarea>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
          </form>
       </div>
       <div class="col-md-9">
-         <div class="table-responsive p--0">
-            <table id="basic-datatables" class="basic-datatables " >
+         {{-- <div class="row">
+            <div class="col-md-4">
+               <div class="card">
+                  <div class="card-body">
+                     April 12 Hours
+                  </div>
+               </div>
+            </div>
+         </div> --}}
+         <div class="table-responsive p-0">
+            <table id="" class="basic-datatables " >
                <thead>
                   <tr>
-                     <th>Code</th>
+                     <th>ID</th>
                      <th>Date</th>
                      <th>Out</th>
                      <th>Loc</th>
@@ -119,7 +136,7 @@ Employee
                      <td>{{formatDate($spkl->date)}}</td>
                      <td> {{formatTime($spkl->end)}}</td>
                      <td>{{$spkl->loc}}</td>
-                     <td style="max-width: 300px" class="text-truncate">{{$spkl->desc}}</td>
+                     <td style="max-width: 250px" class="text-truncate">{{$spkl->desc}}</td>
                      <td>
                         <x-status.spkl :spkl="$spkl" />
                      </td>
@@ -135,6 +152,25 @@ Employee
                </tbody>
             </table>
          </div>
+         <hr>
+
+         <div class="row">
+            <div class="col-md-7 ">
+               <div class="table-responsive pl-3">
+                  <table>
+                     <tbody>
+                        <tr>
+                           <td>April</td>
+                           <td>8 Hours</td>
+                           <td>Mei</td>
+                           <td>2 Hours</td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+         </div>
+         
       </div>
    </div>
    
