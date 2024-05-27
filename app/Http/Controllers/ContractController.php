@@ -43,6 +43,7 @@ class ContractController extends Controller
       // });
 
       $user = User::where('username', $employee->nik)->first();
+      $user->roles()->detach();
       if($req->designation == 3) {
          $user->assignRole('Leader');
       } elseif($req->designation == 4) {

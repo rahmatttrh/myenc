@@ -58,6 +58,10 @@ Create PE
                             </div>
                         </div>
                     </form>
+                    
+                </div>
+                <div class="card-footer">
+                  <a href="{{route('export.kpi')}}">Export PDF</a>
                 </div>
             </div>
         </div>

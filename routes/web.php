@@ -293,9 +293,24 @@ Route::middleware(["auth"])->group(function () {
       });
    });
 
+
+
+   Route::group(['middleware' => ['role:Manager']], function () {
+      Route::prefix('spkl')->group(function(){
+         Route::get('manager/index', [SpklController::class, 'indexManager'])->name('manager.spkl');
+      });
+   });
+
+
+
+
+
    Route::prefix('export')->group(function () {
       Route::get('kpa/employee/{id}', [ExportController::class, 'kpaEmployee'])->name('export.kpa.employee');
       Route::get('kpa/summary/{employee}/{semester}/{tahun}', [ExportController::class, 'kpaSummary'])->name('export.kpa.summary');
+      
+      // Example PDF
+      Route::get('kpi/employee/', [ExportController::class, 'kpiExample'])->name('export.kpi');
    });
 
 

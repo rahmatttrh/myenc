@@ -97,4 +97,16 @@ class ExportController extends Controller
          'achievementData' => $achievementData
       ])->with('i');
    }
+
+
+
+   public function kpiExample(){
+      
+      // dd($kpa->employe->biodata->fullName());
+      return view('pages.pdf.kpi-example', [
+         // 'kpa' => $kpa,
+         // 'datas' => $datas,
+         // 'addtional' => $addtional
+      ])->with('i');
+   }
 }

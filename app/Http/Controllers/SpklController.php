@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Models\Overtime;
 use App\Models\Position;
 use App\Models\Spkl;
 use Carbon\Carbon;
@@ -18,6 +19,14 @@ class SpklController extends Controller
          'spkls' => $spkls
       ]);
    }
+
+   public function indexManager(){
+      
+   }
+
+
+
+
 
    public function detail($id){
       $dekripId = dekripRambo($id);
@@ -98,6 +107,31 @@ class SpklController extends Controller
 
       $spkl->update([
          'status' => 2
+      ]);
+
+      return redirect()->to('/')->with('success', 'SPKL Approved');
+   }
+
+   public function approveManager($id){
+      // dd('approved spv');
+      $dekripId = dekripRambo($id);
+      $spkl = Spkl::find($dekripId);
+      $employee = Employee::find($spkl->employee_id);
+
+      // Overtime::create([
+      //    'employee_id' => $employee->id,
+      //    'spkl_id' => $spkl->id,
+      //    'date' => $spkl->date,
+      //    'start'
+      // ]);
+      // dd($spkl->code);
+
+
+
+
+      // dd('approve_manager');
+      $spkl->update([
+         'status' => 3
       ]);
 
       return redirect()->to('/')->with('success', 'SPKL Approved');
