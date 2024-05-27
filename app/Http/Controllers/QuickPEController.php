@@ -7,6 +7,8 @@ use App\Models\Designation;
 use App\Models\Employee;
 use App\Models\Pe;
 use App\Models\PeBehavior;
+use App\Models\PeBehaviorApprasial;
+use App\Models\PeBehaviorApprasialDetail;
 use App\Models\PeKpa;
 use App\Models\PekpaDetail;
 use App\Models\PeKpi;
@@ -298,6 +300,16 @@ class QuickPEController extends Controller
             return back()->with('danger', 'Id KPA Anda Salah');
         }
 
+        $pba = PeBehaviorApprasial::where('pe_id', $kpa->pe_id)->first();
+
+        if (isset($pba)) {
+            $pbads = PeBehaviorApprasialDetail::where('pba_id', $pba->id)->get();
+        } else {
+            $pbads = null;
+        }
+
+        // dd($pba);
+
         return view('pages.qpe.qpe-edit', [
             'kpa' => $kpa,
             'employes' => $employes,
@@ -305,25 +317,68 @@ class QuickPEController extends Controller
             'behaviors' => $behaviors,
             'isDone' => $isDone,
             'isReject' => $isReject,
+            'pba' => $pba,
+            'pbads' => $pbads,
+            'kpaAchievement' => 0,
+            'pbaAchievement' => 0,
             'datas' => $datas
         ])->with('i');
     }
 
     public function storeBehavior(Request $req)
     {
-        dd($req);
+        // dd($req);
 
         $req->validate([
-            'kpi_id' => 'required',
+            'kpa_id' => 'required',
             'employe_id' => 'required',
             'pe_id' => 'required'
         ]);
 
+        // Validasi New
+        $cek = PeBehaviorApprasial::where([
+            'pe_id' => $req->pe_id
+        ])->first();
 
-        $pe = Pe::create([
-            'pe_id' => $req->pe_id,
-            'created_by' => 'System'
+
+
+        if ($cek) {
+            return redirect()->back()->with('danger', 'Behavior Karyawan dengan PE tersebut sudah ada');
+        }
+
+        // DB::beginTransaction(); // Mulai transaksi database
+
+        // try {
+
+        $pba = PeBehaviorApprasial::create([
+            'pe_id' => $req->pe_id
         ]);
+
+        $achievement = 0;
+
+        foreach ($req->valBehavior as $behavior_id => $value) {
+
+            PeBehaviorApprasialDetail::create([
+                'pba_id' => $pba->id,
+                'behavior_id' => $behavior_id,
+                'value' => $value,
+                'achievement' => $req->acvBehavior[$behavior_id]
+            ]);
+
+            $achievement += $req->acvBehavior[$behavior_id];
+        }
+
+        $updatePba = $pba->update([
+            'achievement' => $achievement
+        ]);
+
+        return back()->with('success', 'Behavior berhasil di Create');
+        // } catch (\Exception $e) {
+        //     DB::rollback(); // Rollback transaksi jika terjadi kesalahan
+
+        //     // Tangani kesalahan, bisa redirect ke halaman sebelumnya atau tampilkan pesan error
+        //     return redirect()->back()->with('error', 'Error occurred: ' . $e->getMessage());
+        // }
     }
     /**
      * Display the specified resource.
