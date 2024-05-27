@@ -240,6 +240,7 @@ Route::middleware(["auth"])->group(function () {
          Route::get('edit/{id}', [QuickPEController::class, 'edit'])->name('qpe.edit');
 
          Route::post('/behavior', [QuickPEController::class, 'storeBehavior'])->name('qpe.behavior.store');
+         Route::patch('/behavior/{id}', [QuickPEController::class, 'updateBehavior'])->name('qpe.behavior.update');
 
          // Route::put('update/{id}', [QuickPEController::class, 'update'])->name('qpe.update');
          // // ADDTIONAL

@@ -380,6 +380,24 @@ class QuickPEController extends Controller
         //     return redirect()->back()->with('error', 'Error occurred: ' . $e->getMessage());
         // }
     }
+
+    public function updateBehavior(Request $request, $id)
+    {
+        $pbda = PeBehaviorApprasialDetail::find($id);
+
+        $update = $pbda->update([
+            'value' => $request->valBv,
+            'achievement' => $request->achievement
+        ]);
+
+        $totalAchievement = PeBehaviorApprasialDetail::where('pba_id', $request->pba_id)->sum('achievement');
+
+        PeBehaviorApprasial::where('id', $request->pba_id)->update([
+            'achievement' => $totalAchievement
+        ]);
+
+        return redirect()->back()->with('success', 'Behavior Karyawan Berhasil di Update');
+    }
     /**
      * Display the specified resource.
      *

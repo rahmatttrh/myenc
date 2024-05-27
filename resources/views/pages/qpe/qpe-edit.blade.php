@@ -477,7 +477,7 @@ KPA
                                     <th class="text-right" id="totalAchievement">{{$kpa->achievement}}</th>
                                 </tr>
                                 @php
-                                $kpaAchievement = $kpa->achievement * 0.7;
+                                $kpaAchievement = round($kpa->achievement * 0.7);
                                 @endphp
                                 <tr>
                                     <th colspan="5" class="text-right">Achievement Final
@@ -584,15 +584,74 @@ KPA
                                     @foreach($pbads as $key => $pbda)
                                     <tr>
                                         <td>{{ ++$key }}</td>
-                                        <td>{{ $pbda->behavior->objective }}</td>
+                                        <td>
+                                            <a href="#" data-target="#modalBehavior-{{$pbda->id}}" data-toggle="modal">{{ $pbda->behavior->objective }}</a>
+                                        </td>
                                         <td>{{ $pbda->behavior->description }}</td>
                                         <td>{{ $pbda->behavior->bobot }}</td>
                                         <td>{{ $pbda->value }}</td>
                                         <td>{{ $pbda->achievement }}</td>
                                     </tr>
+
+                                    <div class="modal fade" id="modalBehavior-{{$pbda->id}}" data-bs-backdrop="static">
+                                        <div class="modal-dialog" style="max-width: 50%;">
+                                            <div class="modal-content">
+                                                <form method="POST" action="{{route('qpe.behavior.update',$pbda->id) }}" enctype="multipart/form-data">
+                                                    @csrf
+                                                    @method('PATCH')
+
+                                                    <input type="hidden" name="id" value="{{$pbda->id}}">
+                                                    <input type="hidden" name="kpa_id" value="{{$kpa->id}}">
+                                                    <input type="hidden" name="pba_id" value="{{$pbda->pba_id}}">
+                                                    <!-- Bagian header modal -->
+                                                    <div class="modal-header bg-primary">
+                                                        <h3 class="modal-title text-white">{{$pbda->behavior->objective}} </h3>
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    </div>
+                                                    <!-- Bagian konten modal -->
+                                                    <div class="modal-body">
+                                                        <div class="card-body">
+
+                                                            <div class="form-group">
+                                                                <label for="objective">Objective :</label>
+                                                                <input type="text" class="form-control" id="objective" name="objective" value="{{ $pbda->behavior->objective }}" readonly>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="objective">Description :</label>
+                                                                <textarea type="text" rows="5" class="form-control" id="objective" name="objective" readonly>{{ $pbda->behavior->description }}</textarea>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="weight">Weight :</label>
+                                                                <input type="text" class="form-control" id="weight" name="weight" value="{{ $pbda->behavior->bobot }}" readonly>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label for="value">Value :</label>
+                                                                <input type="text" class="form-control value" id="value" name="valBv" data-key="{{ $pbda->id }}" data-target="{{ $pbda->behavior->target }}" data-weight="{{ $pbda->behavior->weight }}" value="{{ old('value', $pbda->value) }}" autocomplete="off">
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label for="achievement">Achievement :</label>
+                                                                <input type="text" class="form-control" id="achievementBv-{{$pbda->id}}" name="achievement" value="{{ $pbda->achievement }}" readonly>
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                    <!-- Bagian footer modal -->
+                                                    <div class="modal-footer">
+                                                        <button type="submit" class="btn btn-warning">Update</button>
+                                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Tutup</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     @endforeach
 
-                                    {{ $pbaAchievement = $pba->achievement ;}}
+                                    @php $pbaAchievement = $pba->achievement @endphp
 
                                     @endif
                                 </tbody>
@@ -617,6 +676,7 @@ KPA
         </div>
     </div>
 
+    <!-- rangkuman nilai -->
     <div class="row">
         <div class="col-md-12">
             <div class="card shadow-none border">
@@ -913,6 +973,24 @@ KPA
             $('.alasan_penolakan').removeAttr('required');
 
             $('.act').val('valid');
+        });
+
+        // Update Behavior Value
+        // Event listener for input change
+        $('input[name^="valBv"]').on('change', function() {
+            var value = validateInputNew(this);
+            // var inputName = $(this).attr('name');
+            // var id = inputName.match(/\[([0-9]+)\]/)[1]; // Extract ID from name
+
+            var acv = Math.round(((value / 4) * 5));
+
+            var key = parseFloat($(this).data('key'));
+
+            $('#achievementBv-' + key).val(acv);
+
+
+            // $('input[name="acvBehavior[' + id + ']"]').val(acv);
+
         });
 
         // Baru Behavior
