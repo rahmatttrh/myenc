@@ -27,6 +27,8 @@ class QuickPEController extends Controller
     public function index()
     {
         $employee = auth()->user()->getEmployee();
+
+        
         // Data KPI
         if (auth()->user()->hasRole('Administrator|HRD')) {
             $kpas = PeKpa::where('status', '!=', '0')
