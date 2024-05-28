@@ -57,27 +57,27 @@
          }
 
          table {
-  font-family: Arial, Helvetica, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
+            font-family: Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+         }
 
-table td, table th {
-  border: 1px solid #ddd;
-  padding: 4px;
-}
+         table td, table th {
+            border: 1px solid #ddd;
+            padding: 4px;
+         }
 
-table tr:nth-child(even){background-color: #f2f2f2;}
+         table tr:nth-child(even){background-color: #f2f2f2;}
 
-table tr:hover {background-color: #ddd;}
+         table tr:hover {background-color: #ddd;}
 
-table th {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  text-align: left;
-  background-color: #478091;
-  color: white;
-}
+         table th {
+            padding-top: 8px;
+            padding-bottom: 8px;
+            text-align: left;
+            background-color: #478091;
+            color: white;
+         }
       </style>
 
       <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
@@ -188,6 +188,7 @@ table th {
             $('.basic-datatables').DataTable( {
                "lengthMenu": [[5, 10, 15, 25, 50, 100 , -1], [5, 10, 15, 25, 50, 100, "All"]],
                "pageLength": 10,
+               "ordering": false,
                initComplete: function () {
                      this.api().columns().every( function () {
                         var column = this;

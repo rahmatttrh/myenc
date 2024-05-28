@@ -6,7 +6,7 @@
 @section('content')
    <div class="page-inner mt--5">
       <div class="page-header">
-         <h4 class="page-title">Dashboard</h4>
+         <h4 class="page-title">Dashboardddd</h4>
       </div>
       <div class="row">
          <div class="col-sm-6 col-md-3">

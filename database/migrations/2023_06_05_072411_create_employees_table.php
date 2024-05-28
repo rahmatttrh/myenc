@@ -33,6 +33,7 @@ class CreateEmployeesTable extends Migration
 
          $table->integer('contract_id')->nullable();
          $table->integer('emergency_id')->nullable();
+         $table->integer('direct_leader_id')->nullable();
          $table->string('picture')->nullable();
          $table->string('bio')->nullable();
          $table->string('experience')->nullable();

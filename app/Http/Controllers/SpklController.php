@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Models\Overtime;
 use App\Models\Position;
 use App\Models\Spkl;
 use Carbon\Carbon;
@@ -11,12 +12,21 @@ use Illuminate\Http\Request;
 class SpklController extends Controller
 {
    public function index(){
-
-      $spkls = Spkl::get();
+      // dd('ok');
+      $employee = Employee::where('nik', auth()->user()->username)->first();
+      $spkls = Spkl::where('employee_id', $employee->id)->orderBy('updated_at', 'desc')->get();
       return view('pages.spkl.index', [
          'spkls' => $spkls
       ]);
    }
+
+   public function indexManager(){
+      
+   }
+
+
+
+
 
    public function detail($id){
       $dekripId = dekripRambo($id);
@@ -56,6 +66,7 @@ class SpklController extends Controller
       Spkl::create([
          'code' => $code,
          'status' => 0,
+         'department_id' => $employee->department_id,
          'date' => $req->date,
          'employee_id' => $employee->id,
          'loc' => $req->loc,
@@ -77,5 +88,52 @@ class SpklController extends Controller
       ]);
 
       return redirect()->back()->with('success', 'SPKL Form successfully sent to SPV/Manager');
+   }
+
+   public function delete($id){
+      $dekripId = dekripRambo($id);
+      $spkl = Spkl::find($dekripId);
+
+      $spkl->delete();
+
+      return redirect()->route('employee.spkl')->with('SPKL deleted');
+   }
+
+   public function approveSupervisor($id){
+      // dd('approved spv');
+      $dekripId = dekripRambo($id);
+      $spkl = Spkl::find($dekripId);
+      // dd($spkl->code);
+
+      $spkl->update([
+         'status' => 2
+      ]);
+
+      return redirect()->to('/')->with('success', 'SPKL Approved');
+   }
+
+   public function approveManager($id){
+      // dd('approved spv');
+      $dekripId = dekripRambo($id);
+      $spkl = Spkl::find($dekripId);
+      $employee = Employee::find($spkl->employee_id);
+
+      // Overtime::create([
+      //    'employee_id' => $employee->id,
+      //    'spkl_id' => $spkl->id,
+      //    'date' => $spkl->date,
+      //    'start'
+      // ]);
+      // dd($spkl->code);
+
+
+
+
+      // dd('approve_manager');
+      $spkl->update([
+         'status' => 3
+      ]);
+
+      return redirect()->to('/')->with('success', 'SPKL Approved');
    }
 }

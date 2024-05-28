@@ -32,7 +32,13 @@ SPKL Detail
                   @if ($spkl->status == 0)
                      Draft
                      @elseif($spkl->status == 1)
-                     Approval SPV/Manager
+                     Approval SPV
+                     @elseif($spkl->status == 2)
+                     Approval Manager
+                     @elseif($spkl->status == 3)
+                     Verifikasi HRD
+                     @elseif($spkl->status == 4)
+                     Complete
                    @endif
                </h6>
                <h5 class="page-title">{{$spkl->code}}</h5>
@@ -44,12 +50,34 @@ SPKL Detail
                </a> --}}
                @if (auth()->user()->hasRole('Karyawan'))
                    @if ($spkl->status == 0)
-                     <a href="#" class="btn btn-primary ml-2" data-toggle="modal" data-target="#modal-spkl-send">
+                     <a href="#" class="btn btn-primary " data-toggle="modal" data-target="#modal-spkl-send">
+                        <i class="fa fa-rocket"></i>
                         Send
                      </a>
-                     @elseif($spkl->status == 1)
+                     <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#modal-spkl-delete">
+                        <i class="fa fa-trash"></i>
+                        Delete
+                     </a>
                      
                    @endif
+               @endif
+
+               @if (auth()->user()->hasRole('Supervisor'))
+                  @if ($spkl->status == 1)
+                  <a href="#" class="btn btn-primary ml-2" data-toggle="modal" data-target="#modal-spkl-approve-supervisor">
+                     <i class="fa fa-check"></i>
+                     Approve Spv
+                  </a>
+                  @endif
+               @endif
+
+               @if (auth()->user()->hasRole('Manager'))
+                  @if ($spkl->status == 1 || $spkl->status == 2)
+                  <a href="#" class="btn btn-primary ml-2" data-toggle="modal" data-target="#modal-spkl-approve-manager">
+                     <i class="fa fa-check"></i>
+                     Approve Manager
+                  </a>
+                  @endif
                @endif
                
                <button type="button" class="btn btn-light border" onclick="javascript:window.print();">
@@ -265,7 +293,7 @@ SPKL Detail
 </div>
 
 <div class="modal fade" id="modal-spkl-send" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-   <div class="modal-dialog " role="document">
+   <div class="modal-dialog modal-sm" role="document">
       <div class="modal-content">
          <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
@@ -280,6 +308,70 @@ SPKL Detail
          <div class="modal-footer">
             {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
             <a href="{{route('employee.spkl.send', enkripRambo($spkl->id))}}" class="btn btn-primary">Send</a>
+         </div>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="modal-spkl-delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         
+         <div class="modal-body">
+            Delete this SPKL Form ?
+         </div>
+         <div class="modal-footer">
+            {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
+            <a href="{{route('employee.spkl.delete', enkripRambo($spkl->id))}}" class="btn btn-danger">Delete</a>
+         </div>
+      </div>
+   </div>
+</div>
+
+
+<div class="modal fade" id="modal-spkl-approve-supervisor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         
+         <div class="modal-body">
+            Approve this SPKL ?
+         </div>
+         <div class="modal-footer">
+            {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
+            <a href="{{route('spkl.approve.supervisor', enkripRambo($spkl->id))}}" class="btn btn-primary">Approve</a>
+         </div>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="modal-spkl-approve-manager" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         
+         <div class="modal-body">
+            Approve this SPKL ?
+         </div>
+         <div class="modal-footer">
+            {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
+            <a href="{{route('spkl.approve.manager', enkripRambo($spkl->id))}}" class="btn btn-primary">Approve</a>
          </div>
       </div>
    </div>

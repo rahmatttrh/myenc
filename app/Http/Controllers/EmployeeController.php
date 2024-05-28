@@ -45,6 +45,16 @@ class EmployeeController extends Controller
       ])->with('i');
    }
 
+   public function off()
+   {
+      
+      $draftEmployees = Employee::where('status', 0)->get();
+      return view('pages.employee.off', [
+         'draftEmployees' => $draftEmployees,
+         'departments' => Department::get()
+      ])->with('i');
+   }
+
    public function draft()
    {
       $employees = Employee::where('status', 0)->get();
