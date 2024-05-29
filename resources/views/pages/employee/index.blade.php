@@ -21,30 +21,30 @@ Employee
             <a href="#">Employee</a>
          </li>
       </ul>
-      {{-- <div class="ml-auto">
+      <div class="ml-auto">
          <button class="btn btn-light border btn-round " data-toggle="dropdown">
             <i class="fa fa-ellipsis-h"></i>
          </button>
          <div class="dropdown-menu">
 
 
-            <a class="dropdown-item" style="text-decoration: none" href="{{route('employee.create')}}">Create</a>
-            <a class="dropdown-item" style="text-decoration: none" href="{{route('employee.import')}}">Import</a>
+            {{-- <a class="dropdown-item" style="text-decoration: none" href="{{route('employee.create')}}">Create</a> --}}
+            <a class="dropdown-item" style="text-decoration: none"  data-toggle="modal" data-target="#modal-export">Export</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" style="text-decoration: none" href="" target="_blank">Print Preview</a>
          </div>
-      </div> --}}
+      </div>
    </div>
 
    <div class="table-responsive">
-      <table id="multi-filter-select" class="display basic-datatables table-sm table-bordered  table-striped ">
+      <table id="" class="display basic-datatables table-sm table-bordered  table-striped ">
          <thead>
             <tr>
-               <th class="">No</th>
+               <th class="text-center">No</th>
                <th>Name</th>
                <th>ID</th>
                <th>Phone</th>
-               <th>Bisnis Unit</th>
+               <th class="text-truncate">Bisnis Unit</th>
                <th>Department</th>
                <th>Level</th>
                <th>Jabatan</th>
@@ -58,11 +58,11 @@ Employee
                <td @disabled(true)></td>
                <th></th>
                <th></th>
-               <th>Bisnis Unit</th>
-               <th>Department</th>
-               <th>Level</th>
-               <th>Jabatan</th>
-               <th>Status</th>
+               <th></th>
+               <th></th>
+               <th></th>
+               <th></th>
+               <th></th>
                {{-- <th class="text-right">Action</th> --}}
             </tr>
          </tfoot>
@@ -71,7 +71,7 @@ Employee
             <tr>
                <td class="text-center">{{++$i}}</td>
                {{-- <td><a href="{{route('employee.detail', enkripRambo($employee->id))}}">{{$employee->name}}</a> </td> --}}
-               <td class="">
+               <td class="text-truncate">
                   <div>
                      <a href="{{route('employee.detail', [enkripRambo($employee->id), enkripRambo('contract')])}}">{{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</a>
                      {{-- <small class="text-muted">{{$employee->biodata->email}}</small> --}}
@@ -94,7 +94,7 @@ Employee
                         <small class="text-muted">{{$employee->biodata->email}}</small>
                      </div> --}}
                </td>
-               <td>{{$employee->contract->id_no}}</td>
+               <td class="text-truncate">{{$employee->contract->id_no}}</td>
                <td>{{$employee->biodata->phone}}</td>
                <td>{{$employee->contract->department->unit->name ?? ''}}</td>
                <td>{{$employee->contract->department->name ?? ''}}</td>
@@ -113,6 +113,30 @@ Employee
          </tbody>
          
       </table>
+   </div>
+</div>
+
+<div class="modal fade" id="modal-export" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Export Excel</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         
+         <div class="modal-body">
+
+           
+            
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">SIMPLE DATA</button>
+            {{-- <button type="submit" class="btn btn-primary">Submit</button> --}}
+            <a  href="{{route('employee.export')}}" class="btn btn-primary">FULL DATA</a>
+         </div>
+      </div>
    </div>
 </div>
 
