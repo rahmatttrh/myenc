@@ -58,10 +58,10 @@ Create PE
                             </div>
                         </div>
                     </form>
-                    
+
                 </div>
                 <div class="card-footer">
-                  <a href="{{route('export.kpi')}}" target="_blank">Export PDF</a>
+                    <a href="{{route('export.kpi')}}" target="_blank">Preview</a>
                 </div>
             </div>
         </div>
@@ -381,14 +381,22 @@ Create PE
                             "type": "text",
                             "class": "form-control",
                             "name": `qty[${rowData.id}]`, // Menggunakan ID sebagai bagian dari array name
-                            "value": 0,
-                            "min": 0.01,
-                            "max": rowData.target,
+                            "value": 1,
+                            "min": 1,
+                            "max": 4,
                             "step": "0.01" // Step untuk 2 digit desimal
-                        }).on('input', function() {
-                            // Menghapus angka nol di depan input jika ada
+                        }).on('keyup', function() {
                             var inputValue = $(this).val();
+
+                            // Menghapus angka nol di depan input jika ada
                             inputValue = inputValue.replace(/^0+/, '');
+
+                            if (inputValue > 4) {
+                                inputValue = 4;
+                            } else if (inputValue < 1 && inputValue != '') {
+                                inputValue = 1;
+                            }
+
                             $(this).val(inputValue);
 
                             calculateAchievement(rowData.id, rowData.target);
@@ -400,6 +408,7 @@ Create PE
                             "type": "text",
                             "class": "form-control text-bold",
                             "name": "achievement_" + rowData.id,
+                            "value": Math.round(1 / 4 * rowData.weight),
                             "placeholder": "0",
                             "readonly": true
                         }).css("font-weight", "bold"); // Menambahkan style font-weight: bold
@@ -410,7 +419,7 @@ Create PE
                             "type": "file",
                             "class": "form-control",
                             "name": `attachment[${rowData.id}]`, // Menggunakan ID sebagai bagian dari array name
-                            "required": true, // Tambahkan atribut readonly
+                            // "required": true, // Tambahkan atribut readonly
                             "accept": ".pdf" // Hanya izinkan file PDF
                         });
 

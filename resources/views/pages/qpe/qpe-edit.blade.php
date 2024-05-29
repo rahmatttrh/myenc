@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-KPA
+PE
 @endsection
 @section('content')
 
@@ -8,7 +8,7 @@ KPA
     <nav aria-label="breadcrumb ">
         <ol class="breadcrumb  ">
             <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
-            <li class="breadcrumb-item " aria-current="page"><a href="{{route('kpa')}}">KPA</a></li>
+            <li class="breadcrumb-item " aria-current="page"><a href="{{route('qpe')}}">PE</a></li>
             <li class="breadcrumb-item active" aria-current="page">Detail</li>
         </ol>
     </nav>
@@ -555,9 +555,9 @@ KPA
                 @if($pba == null)
 
                 <form action="{{route('qpe.behavior.store')}}" name="formBehavior" method="POST" enctype="multipart/form-data" accept=".jpg, .jpeg, .png, .pdf">
-                
-                @endif
-                
+
+                    @endif
+
                     @csrf
                     <input type="hidden" name="employe_id" value="{{$kpa->employe_id}}">
                     <input type="hidden" name="kpa_id" value="{{$kpa->id}}">
@@ -685,7 +685,7 @@ KPA
                             @endif
                         </div>
                     </div>
-                @if($pba == null)
+                    @if($pba == null)
                 </form>
                 @endif
             </div>
@@ -875,7 +875,7 @@ KPA
                                     @if($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202')
                                     <div class="form-group">
                                         <label for="attachment">Evidence</label>
-                                        <input type="file" class="form-control-file attachment" id="attachment" name="attachment" accept=".pdf" required>
+                                        <input type="file" class="form-control-file attachment" id="attachment" name="attachment" accept=".pdf">
                                         <label for="attachment">*opsional jika evidence ingin di rubah</label>
                                     </div>
                                     @endif

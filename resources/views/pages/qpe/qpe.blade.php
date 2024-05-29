@@ -11,111 +11,13 @@ KPA
             <li class="breadcrumb-item active" aria-current="page">KPA</li>
         </ol>
     </nav>
-    <div class="row" id="boxCreate">
-        <div class="col-md-3">
-            <div class="card shadow-none border">
-                <div class="card-header d-flex">
-                    <div class="d-flex  align-items-center">
-                        <div class="card-title">Give Performance Apprasial</div>
-                    </div>
-
-                </div>
-                <div class="card-body">
-                    <form>
-                        @csrf
-                        <div class="form-group form-group-default">
-                            <label>Employee</label>
-                            <select class="form-control" name="employe_id" id="employe_id">
-                                <option value="">--- Choose Employe ---</option>
-                                @foreach ($employes as $employe)
-                                <option value="{{$employe->id}}">{{$employe->biodata->first_name}} {{$employe->biodata->last_name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group form-group-default">
-                            <label>Period</label>
-                            <select class="form-control" name="priode" id="priode" readonly> 
-                                <option value="semester" selected>Semester</option>
-                            </select>
-                        </div>
-                        <div class="form-group form-group-default">
-                            <label>Semester</label>
-                            <div class="row">
-                                <div class="col">
-                                    <select class="form-control form-select date" id="semester" name="semester">
-                                        <option value="1"  >I</option>
-                                        <option value="2" >II</option> 
-                                    </select>
-                                </div>
-                                <div class="col">
-                                    <select class="form-control form-select date" id="tahun" name="tahun">
-                                        <option value="{{ date('Y') }}">{{ date('Y') }}</option>
-                                        <option value="{{ date('Y') -1 }}">{{ date('Y') -1 }}</option>
-                                        <!-- Tambahkan opsi tahun sesuai kebutuhan -->
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-9">
-            <div class="card shadow-none border">
-                <div class="card-header">
-                    <div class="col-md-1 float-right mb-3">
-                        <button type="button" id="hide" class="btn btn-block btn-danger"><i class="fa fa-minus"></i> Hide </button>
-                    </div>
-                    <div class="card-title">Objective KPI</div>
-                </div>
-                <form action="{{route('kpa.store')}}" method="POST" enctype="multipart/form-data" accept=".jpg, .jpeg, .png, .pdf">
-                    @csrf
-                    <input type="hidden" id="kpi_id" name="kpi_id">
-                    <input type="hidden" id="employee_id" name="employe_id">
-                    <input type="hidden" id="date" name="date">
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table id="tableCreate" class="displays table table-striped ">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Objective</th>
-                                        <th>Weight</th>
-                                        <th>Target</th>
-                                        <th>Value</th>
-                                        <th>Achievement</th>
-                                        <th>Attachment (PDF)</th> <!-- Kolom Attachment -->
-                                    </tr>
-                                </thead>
-                                <tbody>
-
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th colspan="5" class="text-right">Achievement</th>
-                                        <th id="totalAchievement"></th>
-                                        <th></th>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <div class="col-md-3 float-right mb-3">
-                            <button type="submit" class="btn btn-block btn-primary ">Save</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
     <div class="row">
         <div class="col-md-12">
             <div class="card shadow-none border">
                 <div class="card-header">
                     <ul class="nav nav-tabs card-header-tabs">
                         <li class="nav-item">
-                            <a class="nav-link active" href="#">Monthly</a>
+                            <a class="nav-link active" href="#">Semester</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('kpa.summary')}}">Summary</a>
@@ -130,7 +32,7 @@ KPA
                 </div>
                 <div class="card-header d-flex">
                     <div class="d-flex  align-items-center">
-                        <div class="card-title">List All Performance Apprasial</div>
+                        <div class="card-title">List All Performance Evaluation</div>
                     </div>
                     <div class="btn-group btn-group-page-header ml-auto">
                         <button type="button" class="btn btn-light btn-round btn-page-header-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -148,24 +50,24 @@ KPA
                         <table id="basic-datatables" class="display basic-datatables table table-striped ">
                             <thead>
                                 <tr>
-                                    <th>No</th>
-                                    <th>Employe</th>
-                                    <th>Date</th>
-                                    <th>Achievement</th>
-                                    <th>Status</th>
-                                    <th class="text-right">Action</th>
+                                    <th class="text-white">No</th>
+                                    <th class="text-white">Employe</th>
+                                    <th class="text-white">Semester / Tahun</th>
+                                    <th class="text-white">Achievement</th>
+                                    <th class="text-white">Status</th>
+                                    <th class="text-right text-white">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($kpas as $kpa)
+                                @foreach ($pes as $pe)
                                 <tr>
                                     <td>{{++$i}}</td>
-                                    <td><a href="{{route('kpa.edit', enkripRambo($kpa->id))}}"> {{$kpa->employe->biodata->fullName()}} </a></td>
-                                    <td>{{date('F Y', strtotime($kpa->date))  }}</td>
-                                    <td><span class="badge badge-primary badge-lg"><b>{{$kpa->achievement}}</b></span></td>
-                                    @if($kpa->status == 0)
+                                    <td><a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->biodata->fullName()}} </a></td>
+                                    <td>{{$pe->semester}} / {{$pe->tahun}}</td>
+                                    <td><span class="badge badge-primary badge-lg"><b>{{$pe->achievement}}</b></span></td>
+                                    @if($pe->status == 0)
                                     <td><span class="badge badge-dark badge-lg"><b>Draft</b></span></td>
-                                    @elseif($kpa->status == '1')
+                                    @elseif($pe->status == '1')
                                     <td>
                                         @if (auth()->user()->hasRole('Manager'))
                                         <span class="badge badge-warning badge-lg"><b>Perlu Diverifikasi</b></span>
@@ -173,27 +75,27 @@ KPA
                                         <span class="badge badge-warning badge-lg"><b>Verifikasi Manager</b></span>
                                         @endif
                                     </td>
-                                    @elseif($kpa->status == '2')
+                                    @elseif($pe->status == '2')
                                     <td><span class="badge badge-primary badge-lg"><b>Validasi HRD</b></span></td>
-                                    @elseif($kpa->status == '3')
+                                    @elseif($pe->status == '3')
                                     <td><span class="badge badge-success badge-lg"><b>Done</b></span></td>
-                                    @elseif($kpa->status == '101')
+                                    @elseif($pe->status == '101')
                                     <td><span class="badge badge-danger badge-lg"><b>Di Reject Manager</b></span></td>
-                                    @elseif($kpa->status == '202')
+                                    @elseif($pe->status == '202')
                                     <td><span class="badge badge-danger badge-lg"><b>Di Reject HRD</b></span></td>
                                     @endif
                                     <td class="text-right">
-                                        @if($kpa->status == 0) 
-                                        <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-delete-{{$kpa->id}}"><i class="fas fa-trash"></i> Delete</button>
-                                        @elseif($kpa->status == '1' || $kpa->status == '2')
+                                        @if($pe->status == 0)
+                                        <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-delete-{{$pe->id}}"><i class="fas fa-trash"></i> Delete</button>
+                                        @elseif($pe->status == '1' || $pe->status == '2')
                                         -
-                                        @elseif(($kpa->status == 0 || $kpa->status == 101 || $kpa->status == 202) && auth()->user()->hasRole('Leader'))
-                                        <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-submit-{{$kpa->id}}"><i class="fas fa-rocket"></i> Submit</button>
+                                        @elseif(($pe->status == 0 || $pe->status == 101 || $pe->status == 202) && auth()->user()->hasRole('Leader'))
+                                        <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-submit-{{$pe->id}}"><i class="fas fa-rocket"></i> Submit</button>
                                         @endif
                                     </td>
                                 </tr>
-                                <x-modal.submit :id="$kpa->id" :body="'KPI ' . $kpa->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($kpa->date))   " url="{{route('kpa.submit', enkripRambo($kpa->id))}}" />
-                                <x-modal.delete :id="$kpa->id" :body="'KPI ' . $kpa->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($kpa->date))   " url="{{route('kpa.delete', enkripRambo($kpa->id))}}" />
+                                <x-modal.submit :id="$pe->id" :body="'KPI ' . $pe->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($pe->date))   " url="" />
+                                <x-modal.delete :id="$pe->id" :body="'KPI ' . $pe->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($pe->date))   " url="" />
                                 @endforeach
                                 <!-- <tr>
                                     <td>
