@@ -67,9 +67,7 @@ Route::middleware(["auth"])->group(function () {
 
          Route::get('create', [EmployeeController::class, 'create'])->name('employee.create');
          Route::post('store', [EmployeeController::class, 'store'])->name('employee.store');
-         Route::put('update', [EmployeeController::class, 'update'])->name('employee.update');
-         Route::put('update/bio', [EmployeeController::class, 'updateBio'])->name('employee.update.bio');
-         Route::put('update/picture', [EmployeeController::class, 'updatePicture'])->name('employee.update.picture');
+         
          Route::get('export', [EmployeeController::class, 'export'])->name('employee.export');
          Route::get('export/simple', [EmployeeController::class, 'exportSimple'])->name('employee.export.simple');
          Route::get('import', [EmployeeController::class, 'formImport'])->name('employee.import');
@@ -175,6 +173,11 @@ Route::middleware(["auth"])->group(function () {
       });
    });
 
+   Route::group(['middleware' => ['role:Administrator|HRD|Karyawan']], function () {
+      Route::put('update', [EmployeeController::class, 'update'])->name('employee.update');
+      Route::put('update/bio', [EmployeeController::class, 'updateBio'])->name('employee.update.bio');
+      Route::put('update/picture', [EmployeeController::class, 'updatePicture'])->name('employee.update.picture');
+   });
 
    Route::group(['middleware' => ['role:Supervisor|Manager']], function () {
       Route::prefix('spkl')->group(function () {
