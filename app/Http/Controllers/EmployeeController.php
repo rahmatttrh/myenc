@@ -319,6 +319,6 @@ class EmployeeController extends Controller
 
 
 
-      return redirect()->route('employee', enkripRambo('draft'))->with('success', 'Employee Data successfully imported');
+      return redirect()->route('employee.draft')->with('success', 'Employee Data successfully imported');
    }
 }
