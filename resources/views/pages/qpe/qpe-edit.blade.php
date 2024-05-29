@@ -26,12 +26,20 @@ KPA
                     <form>
                         @csrf
                         <div class="form-group form-group-default">
-                            <label><b>Employee</b></label>
+                            <label><b>NIK</b></label>
+                            {{$kpa->employe->nik}}
+                        </div>
+                        <div class="form-group form-group-default">
+                            <label><b>Name</b></label>
                             {{$kpa->employe->biodata->fullName()}}
                         </div>
                         <div class="form-group form-group-default">
-                            <label>Month</label>
-                            {{ date('M Y', strtotime($kpa->date))}}
+                            <label><b>Divisi</b></label>
+                            {{$kpa->employe->department->name}}
+                        </div>
+                        <div class="form-group form-group-default">
+                            <label>Semester / Tahun</label>
+                            {{ $kpa->semester}} / {{ $kpa->tahun}}
                         </div>
                         <div class="form-group form-group-default">
                             <label>Status</label>
@@ -60,23 +68,24 @@ KPA
                     </form>
                 </div>
                 <div class="card-footer">
+                    <a href="{{route('export.kpi')}}" target="_blank">Export PDF</a>
                 </div>
             </div>
         </div>
         <div class="col-md-9">
             <div class="card shadow-none border">
-                <div class="card-header d-flex">
+                <div class="card-header d-flex bg-primary">
                     <div class="d-flex  align-items-center">
-                        <div class="card-title">Objective KPI</div>
+                        <div class="card-title text-white">KPI</div>
                     </div>
-                    @if(($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202') && auth()->user()->hasRole('Leader'))
+                    @if(($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202') && (auth()->user()->hasRole('Leader') || auth()->user()->hasRole('Administrator') ) )
                     <div class="btn-group btn-group-page-header ml-auto">
                         <div class="button-group">
-                            <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-submit-{{$kpa->id}}"><i class="fas fa-rocket"></i> Submit </button>
-                            <x-modal.submit :id="$kpa->id" :body="'KPI ' . $kpa->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($kpa->date))   " url="{{route('kpa.submit', enkripRambo($kpa->id))}}" />
+                            <button class="btn btn-xs btn-warning" data-toggle="modal" data-target="#modal-submit-{{$kpa->id}}"><i class="fas fa-rocket"></i> Submit </button>
+                            <x-modal.submit :id="$kpa->id" :body="'KPI ' . $kpa->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($kpa->date)) " url="{{route('kpa.submit', enkripRambo($kpa->id))}}" />
                         </div>
-
-                        <button type="button" class="btn btn-light btn-round btn-page-header-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        &nbsp;
+                        <button type="button" class="btn btn-light btn-xs btn-round btn-page-header-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-ellipsis-h"></i>
                         </button>
                         <div class="dropdown-menu">
@@ -473,8 +482,17 @@ KPA
                                 </div>
                                 @endif
                                 <tr>
-                                    <th colspan="5" class="text-right">Achievement Final</th>
+                                    <th colspan="5" class="text-right">Achievement </th>
                                     <th class="text-right" id="totalAchievement">{{$kpa->achievement}}</th>
+                                </tr>
+                                @php
+                                $kpaAchievement = round($kpa->achievement * 0.7);
+                                @endphp
+                                <tr>
+                                    <th colspan="5" class="text-right">Achievement Final
+                                        <br><small>Bobot 70%</small>
+                                    </th>
+                                    <th class="text-right" id="totalAchievement">{{$kpaAchievement}}</th>
                                 </tr>
                             </tfoot>
                         </table>
@@ -515,7 +533,7 @@ KPA
                             <label>Value</label>
                             <label for="" class="float-right">4</label>
                         </div>
-                        <div class="form-group form-group-default bg-warning">
+                        <div class="form-group form-group-default ">
                             <label>Bobot</label>
                             <label for="" class="float-right">15</label>
                         </div>
@@ -534,12 +552,16 @@ KPA
                 <div class="card-header bg-primary">
                     <div class="card-title text-white">Behavior</div>
                 </div>
+                @if($pba == null)
+
                 <form action="{{route('qpe.behavior.store')}}" name="formBehavior" method="POST" enctype="multipart/form-data" accept=".jpg, .jpeg, .png, .pdf">
+                
+                @endif
+                
                     @csrf
                     <input type="hidden" name="employe_id" value="{{$kpa->employe_id}}">
                     <input type="hidden" name="kpa_id" value="{{$kpa->id}}">
                     <input type="hidden" name="pe_id" value="{{$kpa->pe_id}}">
-                    <input type="hidden" name="date">
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="displays table table-striped ">
@@ -554,9 +576,10 @@ KPA
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($behaviors as $behavior)
+                                    @if($pba == null)
+                                    @foreach($behaviors as $key => $behavior)
                                     <tr>
-                                        <td>{{ ++$i }}</td>
+                                        <td>{{ ++$key }}</td>
                                         <td>{{ $behavior->objective }}</td>
                                         <td>{{ $behavior->description }}</td>
                                         <td>{{ $behavior->bobot }}</td>
@@ -570,11 +593,86 @@ KPA
                                         </td>
                                     </tr>
                                     @endforeach
+                                    @else
+
+                                    @foreach($pbads as $key => $pbda)
+                                    <tr>
+                                        <td>{{ ++$key }}</td>
+                                        <td>
+                                            <a href="#" data-target="#modalBehavior-{{$pbda->id}}" data-toggle="modal">{{ $pbda->behavior->objective }}</a>
+                                        </td>
+                                        <td>{{ $pbda->behavior->description }}</td>
+                                        <td>{{ $pbda->behavior->bobot }}</td>
+                                        <td>{{ $pbda->value }}</td>
+                                        <td>{{ $pbda->achievement }}</td>
+                                    </tr>
+
+                                    <div class="modal fade" id="modalBehavior-{{$pbda->id}}" data-bs-backdrop="static">
+                                        <div class="modal-dialog" style="max-width: 50%;">
+                                            <div class="modal-content">
+                                                <form method="POST" action="{{route('qpe.behavior.update',$pbda->id) }}" enctype="multipart/form-data">
+                                                    @csrf
+                                                    @method('patch')
+
+                                                    <input type="hidden" name="id" value="{{$pbda->id}}">
+                                                    <input type="hidden" name="kpa_id" value="{{$kpa->id}}">
+                                                    <input type="hidden" name="pba_id" value="{{$pbda->pba_id}}">
+                                                    <!-- Bagian header modal -->
+                                                    <div class="modal-header bg-primary">
+                                                        <h3 class="modal-title text-white">{{$pbda->behavior->objective}} </h3>
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    </div>
+                                                    <!-- Bagian konten modal -->
+                                                    <div class="modal-body">
+                                                        <div class="card-body">
+
+                                                            <div class="form-group">
+                                                                <label for="objective">Objective :</label>
+                                                                <input type="text" class="form-control" id="objective" name="objective" value="{{ $pbda->behavior->objective }}" readonly>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="objective">Description :</label>
+                                                                <textarea type="text" rows="5" class="form-control" id="objective" name="objective" readonly>{{ $pbda->behavior->description }}</textarea>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="weight">Weight :</label>
+                                                                <input type="text" class="form-control" id="weight" name="weight" value="{{ $pbda->behavior->bobot }}" readonly>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label for="value">Value :</label>
+                                                                <input type="text" class="form-control value" id="value" name="valBv" data-key="{{ $pbda->id }}" data-target="{{ $pbda->behavior->target }}" data-weight="{{ $pbda->behavior->weight }}" value="{{ old('value', $pbda->value) }}" autocomplete="off">
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label for="achievement">Achievement :</label>
+                                                                <input type="text" class="form-control" id="achievementBv-{{$pbda->id}}" name="achievement" value="{{ $pbda->achievement }}" readonly>
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                    <!-- Bagian footer modal -->
+                                                    <div class="modal-footer">
+                                                        <button type="submit" class="btn btn-warning">Update</button>
+                                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Tutup</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @endforeach
+
+                                    @php $pbaAchievement = $pba->achievement @endphp
+
+                                    @endif
                                 </tbody>
                                 <tfoot>
                                     <tr>
                                         <th colspan="5" class="text-right">Achievement</th>
-                                        <th><span id="totalAcvBehavior" name="totalAcvBehavior"></span></th>
+                                        <th><span id="totalAcvBehavior" name="totalAcvBehavior">{{$pbaAchievement}}</span></th>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -582,10 +680,139 @@ KPA
                     </div>
                     <div class="card-footer">
                         <div class="col-md-3 float-right mb-3">
+                            @if($pba == null)
                             <button type="submit" class="btn btn-block btn-primary ">Save</button>
+                            @endif
                         </div>
                     </div>
+                @if($pba == null)
                 </form>
+                @endif
+            </div>
+        </div>
+    </div>
+
+    <!-- rangkuman nilai -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card shadow-none border">
+                <div class="card-header bg-primary">
+                    <div class="card-title text-white text-center">RANGKUMAN HASIL PENILAIAN AKHIR </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="displays table table-striped ">
+                            <thead>
+                                <tr>
+                                    <th rowspan="2" colspan="2" class="text-white text-center">Indikator</th>
+                                    <th rowspan="2" class="text-white text-center">Total Indikator</th>
+                                    <th rowspan="2" class="text-white text-center">Jabatan Nilai</th>
+                                    <th class="text-white text-center">MGR</th>
+                                    <th class="text-white text-center">KDR</th>
+                                    <th class="text-white text-center">SPV</th>
+                                    <th class="text-white text-center">S</th>
+                                </tr>
+                                <tr>
+                                    <th colspan="4" class="text-white text-center">Total Nilai / Total Indikator</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td class="text-center">DISIPLIN</td>
+                                    <td class="text-center">3</td>
+                                    <td class="text-center text-bold"><b>15</b></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td class="text-center">KPI</td>
+                                    <td class="text-center">{{$datas->count()}}</td>
+                                    <td class="text-center text-bold"><b>{{$kpaAchievement}}</b></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td class="text-center">BEHAVIOR</td>
+                                    <td class="text-center">{{$behaviors->count()}}</td>
+                                    <td class="text-center text-bold"><b>{{$pbaAchievement}}</b></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                    <td class="text-center"></td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th colspan="3" class="text-right">
+                                        <h3> Total Nilai </h3>
+                                    </th>
+                                    <th class="text-center"><span id="totalAcvBehavior" name="totalAcvBehavior"><b>
+                                                <h3> {{15 + $kpaAchievement + $pbaAchievement}} </h3>
+                                            </b></span></th>
+                                    <th colspan="4"></th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="table-responsive mt-3">
+                        <table class="displays table table-striped ">
+                            <tr>
+                                <td colspan="2">Note : </td>
+                                <td colspan="2">Pengurang</td>
+                                <td colspan="4">Bobot Pencapaian</td>
+                            </tr>
+                            <tbody>
+                                <tr>
+                                    <td>MGR</td>
+                                    <td>: Manager</td>
+                                    <td>SP</td>
+                                    <td>0</td>
+                                    <td colspan="2">100 - 91</td>
+                                    <td colspan="2">Memuaskan</td>
+                                </tr>
+                                <tr>
+                                    <td>SPV</td>
+                                    <td>: Supervisor</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td colspan="2">90 - 76</td>
+                                    <td colspan="2">Baik</td>
+                                </tr>
+                                <tr>
+                                    <td>KDR</td>
+                                    <td>: Koordinator</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td colspan="2">75 - 61</td>
+                                    <td colspan="2">Cukup</td>
+                                </tr>
+                                <tr>
+                                    <td>S</td>
+                                    <td>: Staff</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td colspan="2">60 - 51</td>
+                                    <td colspan="2">Kurang</td>
+                                </tr>
+                                <tr>
+                                    <td> </td>
+                                    <td> </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td colspan="2">50 - 0</td>
+                                    <td colspan="2">Sangat Kurang</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -764,7 +991,25 @@ KPA
             $('.act').val('valid');
         });
 
-        // Baru
+        // Update Behavior Value
+        // Event listener for input change
+        $('input[name^="valBv"]').on('change', function() {
+            var value = validateInputNew(this);
+            // var inputName = $(this).attr('name');
+            // var id = inputName.match(/\[([0-9]+)\]/)[1]; // Extract ID from name
+
+            var acv = Math.round(((value / 4) * 5));
+
+            var key = parseFloat($(this).data('key'));
+
+            $('#achievementBv-' + key).val(acv);
+
+
+            // $('input[name="acvBehavior[' + id + ']"]').val(acv);
+
+        });
+
+        // Baru Behavior
         // Function to validate the input value
         function validateInputNew(input) {
             var value = parseFloat($(input).val());
@@ -807,7 +1052,7 @@ KPA
             var inputName = $(this).attr('name');
             var id = inputName.match(/\[([0-9]+)\]/)[1]; // Extract ID from name
 
-            var acv = ((value / 4) * 5).toFixed(2);
+            var acv = Math.round(((value / 4) * 5));
 
             $('input[name="acvBehavior[' + id + ']"]').val(acv);
 

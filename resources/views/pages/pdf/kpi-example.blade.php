@@ -341,6 +341,7 @@ table {
                      <td colspan="2"></td>
                      <td colspan="3">Alasan :</td>
                   </tr>
+                   
                   <tr>
                      <td class="text-center">3</td>
                      <td colspan="2"></td>
