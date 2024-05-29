@@ -259,14 +259,24 @@ class PeKpaController extends Controller
             'objective' => 'required',
             'weight' => 'required',
             'target' => 'required',
-            'value' => 'required',
-            'achievement' => 'required'
+            'value' => 'required'
         ]);
 
-        $pdfFile = $request->attachment;
+        if (isset($request->attachment)) {
+            # code...
+            $pdfFile = $request->attachment;
 
-        $pdfFileName = time() . '_addtional_' . $request->kpa_id . '.pdf';
-        $pdfFile->storeAs('kpa-evidence', $pdfFileName, 'public');
+            $pdfFileName = time() . '_addtional_' . $request->kpa_id . '.pdf';
+            $pdfFile->storeAs('kpa-evidence', $pdfFileName, 'public');
+
+            $evidence = 'kpa-evidence/' . $pdfFileName;
+        } else {
+            # code...
+            $evidence =  null;
+        }
+
+
+
 
         // KPI Utama
         $acv = PekpaDetail::where('kpa_id', $request->kpa_id)
@@ -306,7 +316,7 @@ class PeKpaController extends Controller
             'addtional_objective' => $request->objective,
             'addtional_target' => $request->target,
             'addtional_weight' => $request->weight,
-            'evidence' => 'kpa-evidence/' . $pdfFileName
+            'evidence' => $evidence
         ]);
 
 

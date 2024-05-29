@@ -19,6 +19,11 @@ class CreatePesTable extends Migration
             $table->date('date')->default('2024-01-01');
             $table->integer('achievement')->default(0);
             $table->string('status', 3)->default('0');
+
+            $table->string('is_semester', 1)->default('0');
+            $table->string('semester', 1)->nullable();
+            $table->string('tahun', 4)->nullable();
+
             $table->text('alasan_reject')->nullable();  // Alasan Reject dari manager
             $table->dateTime('release_at')->nullable();
             $table->dateTime('resend_at')->nullable(); // Untuk merevisi dan mengirim kembali

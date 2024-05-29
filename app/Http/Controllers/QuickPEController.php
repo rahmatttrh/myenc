@@ -28,7 +28,8 @@ class QuickPEController extends Controller
     {
         $employee = auth()->user()->getEmployee();
 
-        
+        $pes = Pe::get();
+
         // Data KPI
         if (auth()->user()->hasRole('Administrator|HRD')) {
             $kpas = PeKpa::where('status', '!=', '0')
@@ -36,9 +37,6 @@ class QuickPEController extends Controller
                 ->get();
 
 
-            $employes = Employee::where('status', '1')
-                ->whereNotNull('kpi_id')
-                ->get();
             // 
 
             $outAssesments = $this->outstandingAssessment();
@@ -49,17 +47,13 @@ class QuickPEController extends Controller
             $kpas = DB::table('pe_kpas')
                 ->join('pe_kpis', 'pe_kpas.kpi_id', '=', 'pe_kpis.id')
                 ->where('pe_kpis.departement_id', $employee->department_id)
-                ->select('pe_kpas.*') 
+                ->select('pe_kpas.*')
                 ->orderBy('pe_kpas.status', 'asc')
                 ->get();
 
             // Convert the query builder result to Order model instances
             $kpas = PeKpa::hydrate($kpas->toArray());
 
-            $employes = Employee::where('department_id', $employee->department_id)
-                ->where('status', '1')
-                ->whereNotNull('kpi_id')
-                ->get();
             // 
             $outAssesments = $this->outstandingAssessment($employee->department_id);
             // 
@@ -73,7 +67,7 @@ class QuickPEController extends Controller
             'designations' => $designations,
             'departements' => $departements,
             'kpas' => $kpas,
-            'employes' => $employes,
+            'pes' => $pes,
             'outAssesments' =>  $outAssesments
         ])->with('i');
     }
@@ -172,8 +166,6 @@ class QuickPEController extends Controller
             'date' => 'required'
         ]);
 
-        // dd($req);
-
         // Validasi KPA OLD
         // $cek = PeKpa::where([
         //     'employe_id' => $req->employe_id,
@@ -199,6 +191,9 @@ class QuickPEController extends Controller
         $pe = Pe::create([
             'employe_id' => $req->employe_id,
             'date' => $req->date,
+            'is_semester' => '1',
+            'semester' => $req->semester,
+            'tahun' => $req->tahun,
             'created_at' => NOW(),
             'updated_at' => NOW()
         ]);
@@ -225,10 +220,20 @@ class QuickPEController extends Controller
         $arrays = $req->qty;
         foreach ($arrays as $kpidetail_id => $value) {
 
-            $pdfFile = $req->attachment[$kpidetail_id];
 
-            $pdfFileName = time() . '_' . $kpidetail_id . '.pdf';
-            $pdfFile->storeAs('kpa-evidence', $pdfFileName, 'public');
+
+            if (isset($req->attachment[$kpidetail_id])) {
+                # code...
+                $pdfFile = $req->attachment[$kpidetail_id];
+
+                $pdfFileName = time() . '_' . $kpidetail_id . '.pdf';
+                $pdfFile->storeAs('kpa-evidence', $pdfFileName, 'public');
+
+                $evidence = 'kpa-evidence/' . $pdfFileName;
+            } else {
+                # code...
+                $evidence = null;
+            }
 
             // Cek KPI Detail
             $kpiDetail = PekpiDetail::find($kpidetail_id);
@@ -242,7 +247,7 @@ class QuickPEController extends Controller
                 'kpidetail_id' => $kpidetail_id,
                 'value' => $value,
                 'achievement' => $achievement,
-                'evidence' => 'kpa-evidence/' . $pdfFileName
+                'evidence' => $evidence
             ]);
 
             $acvTotal += $achievement;
