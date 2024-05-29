@@ -52,6 +52,20 @@ Employee
                {{-- <th class="text-right">Action</th> --}}
             </tr>
          </thead>
+         <tfoot>
+            <tr>
+               <th class=""></th>
+               <td @disabled(true)></td>
+               <th></th>
+               <th></th>
+               <th>Bisnis Unit</th>
+               <th>Department</th>
+               <th>Level</th>
+               <th>Jabatan</th>
+               <th>Status</th>
+               {{-- <th class="text-right">Action</th> --}}
+            </tr>
+         </tfoot>
          <tbody>
             @foreach ($employees as $employee)
             <tr>
