@@ -31,7 +31,7 @@ Employee
             {{-- <a class="dropdown-item" style="text-decoration: none" href="{{route('employee.create')}}">Create</a> --}}
             <a class="dropdown-item" style="text-decoration: none"  data-toggle="modal" data-target="#modal-export">Export</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" style="text-decoration: none" href="" target="_blank">Print Preview</a>
+            {{-- <a class="dropdown-item" style="text-decoration: none" href="" target="_blank">Print Preview</a> --}}
          </div>
       </div>
    </div>
@@ -132,8 +132,9 @@ Employee
             
          </div>
          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">SIMPLE DATA</button>
+            {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">SIMPLE DATA</button> --}}
             {{-- <button type="submit" class="btn btn-primary">Submit</button> --}}
+            <a  href="{{route('employee.export.simple')}}" class="btn btn-info">SIMPLE DATA</a>
             <a  href="{{route('employee.export')}}" class="btn btn-primary">FULL DATA</a>
          </div>
       </div>

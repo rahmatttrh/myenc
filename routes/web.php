@@ -71,6 +71,7 @@ Route::middleware(["auth"])->group(function () {
          Route::put('update/bio', [EmployeeController::class, 'updateBio'])->name('employee.update.bio');
          Route::put('update/picture', [EmployeeController::class, 'updatePicture'])->name('employee.update.picture');
          Route::get('export', [EmployeeController::class, 'export'])->name('employee.export');
+         Route::get('export/simple', [EmployeeController::class, 'exportSimple'])->name('employee.export.simple');
          Route::get('import', [EmployeeController::class, 'formImport'])->name('employee.import');
          Route::post('import', [EmployeeController::class, 'import'])->name('employee.import');
 
