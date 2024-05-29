@@ -71,7 +71,7 @@
 
          table tr:hover {background-color: #ddd;}
 
-         table th {
+         table thead th {
             padding-top: 8px;
             padding-bottom: 8px;
             text-align: left;
