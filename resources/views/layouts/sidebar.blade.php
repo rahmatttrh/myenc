@@ -199,7 +199,7 @@
          </li>
          <li class="nav-item">
             <a data-toggle="collapse" href="#kpi">
-               <i class="fas fa-bullseye"></i>
+               <i class="fas fa-file-contract"></i>
                <p>Performance</p>
                <span class="caret"></span>
             </a>
@@ -243,7 +243,7 @@
          <li class="nav-item">
             <a data-toggle="collapse" href="#qpe">
                <!-- <a  href="{{route('qpe')}}"> -->
-               <i class="fas fa-bullseye"></i>
+               <i class="fas fa-file"></i>
                <p>Quick PE</p>
                <span class="caret"></span>
             </a>
@@ -262,11 +262,38 @@
                </ul>
             </div>
          </li>
-         <li class="nav-item {{ (request()->is('employee/*')) ? 'active' : '' }}">
+         {{-- <li class="nav-item {{ (request()->is('employee/*')) ? 'active' : '' }}">
             <a href="{{route('employee', enkripRambo('active'))}}">
                <i class="fas fa-users"></i>
                <p>Employee</p>
             </a>
+         </li> --}}
+
+         <li class="nav-item">
+            <a data-toggle="collapse" href="#employee">
+               <i class="fas fa-users"></i>
+               <p>Employee</p>
+               <span class="caret"></span>
+            </a>
+            <div class="collapse" id="employee">
+               <ul class="nav nav-collapse">
+                  <li>
+                     <a href="{{route('employee', enkripRambo('active'))}}">
+                        <span class="sub-item">Active</span>
+                     </a>
+                  </li>
+                  <li>
+                     <a href="{{route('employee.draft')}}">
+                        <span class="sub-item">Import</span>
+                     </a>
+                  </li>
+                  {{-- <li>
+                     <a href="{{route('employee.import')}}">
+                        <span class="sub-item">Import</span>
+                     </a>
+                  </li> --}}
+               </ul>
+            </div>
          </li>
          @endif
       </ul>
