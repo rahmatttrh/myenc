@@ -17,6 +17,8 @@ class CreatePeBehaviorApprasialsTable extends Migration
             $table->id();
             $table->bigInteger('pe_id');
             $table->integer('achievement')->default(0);
+            $table->integer('weight')->default(0);
+            $table->integer('contribute_to_pe')->default(0);
             $table->string('status', 3)->default('0');
             $table->string('created_by')->nullable();
             $table->timestamps();
