@@ -5,6 +5,7 @@
 @section('content')
 
 <style>
+   html { -webkit-print-color-adjust: exact; }
    table, th, td {
   border: 1px solid black;
   border-collapse: collapse;
@@ -15,7 +16,11 @@
 }
 
 table td {
-  font-size: 10px
+  font-size: 10px;
+  /* padding-top: 5px;
+  padding-bottom: 5px; */
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
 
@@ -24,9 +29,6 @@ table {
    width: 100%;
 }
 
-table td {
-  font-size: 10px
-}
 
    .border-none {
       border: none;
@@ -60,911 +62,323 @@ table td {
             <table>
                <tbody>
                   <tr>
-                     <td class="px-4 pt-4" rowspan="4" style="border-bottom: none">
-                        <div class="d-flex justify-content-between">
-                           <img src="{{asset('img/logo/enc1.png')}}" alt="" width="150"><h2>FORM.B</h2>
-                        </div>
-                        
+                     <td class="text-center" colspan="2">
+                        <img src="{{asset('img/logo/enc1.png')}}" alt="" width="100">
                      </td>
-                     {{-- <td><h2>FORM.B</h2></td> --}}
-                     <td class="px-2">-</td>
-                  </tr>
-                  <tr>
-                     <td class="px-2" style="border-top: none"><b>No. Dokumen :</b></td>
-                     {{-- <td></td> --}}
-                  </tr>
-                  
-                  <tr>
-                     <td class="px-2" style="border-top: none"><b>FM.PS.HRD.11</b></td>
-                     {{-- <td></td> --}}
-                  </tr>
-                  <tr>
-                     <td class="px-2" style="border-top: none"><b>Revisi : 2</b></td>
-                     {{-- <td></td> --}}
-                  </tr>
-                  <tr>
-                     <td class="px-4" style="border-top: none; border-bottom: none"><b><h4>PT. EKANURI</h4></b></td>
-                     <td class="px-2"><b>Tgl. Mulai Efektif : 1 Juli 2021 </b></td>
-                  </tr>
-
-                  <tr>
-                     <td class="px-4 text-center" style="border-top: none; border-bottom: none"><b><h4>DIVISI IT</h4></b></td>
-                     <td class="px-2">-</td>
-                  </tr>
-                  <tr>
-                     <td colspan="2">-</td>
-                  </tr>
-                  <tr>
-                     <td colspan="2" class="text-center pt-2"><h3>PERIHAL : PENILAIAN KARYAWAN</h3></td>
-                  </tr>
-
-
-                  <tr>
-                     <td colspan="2" style="height: 140px">-</td>
-                  </tr>
-
-
-                  <tr>
-                     <td class="text-center pt-2"><h3>PERIODE</h3></td>
-                     <td class="text-center pt-2"><h3>JAN - JUN 2023</h3></td>
-                  </tr>
-                  <tr>
-                     <td class="text-center pt-2"><h3>NAMA</h3></td>
-                     <td class="text-center pt-2"><h3>ABDUL FIKRI</h3></td>
-                  </tr>
-                  <tr>
-                     <td class="text-center pt-2"><h3>POSISI</h3></td>
-                     <td class="text-center pt-2"><h3>STAFF</h3></td>
-                  </tr>
-                  <tr>
-                     <td class="text-center pt-2"><h3>N.I.K</h3></td>
-                     <td class="text-center pt-2"><h3>EN-4-086</h3></td>
-                  </tr>
-                  <tr>
-                     <td class="text-center pt-2"><h3>DIVISI / DEPARTEMEN</h3></td>
-                     <td class="text-center pt-2"><h3>IT</h3></td>
-                  </tr>
-
-
-                  <tr>
-                     <td colspan="2" style="height: 140px">-</td>
-                  </tr>
-
-
-                  <tr>
-                     <td class="text-center pt-2"><h3>EVALUATOR</h3></td>
-                     <td class="text-center pt-2"><h3>ABDUL ROZAK</h3></td>
-                  </tr>
-                  <tr>
-                     <td class="text-center pt-2"><h3>JABATAN</h3></td>
-                     <td class="text-center pt-2"><h3>MANAGER IT</h3></td>
-                  </tr>
-                  <tr>
-                     <td class="text-center pt-2" style="height: 100px"><h3>TANDA TANGAN</h3></td>
-                     <td class="text-center pt-2"></td>
-                  </tr>
-
-               </tbody>
-            </table>
-            <div class="text-center mt-4">
-               <h3>SANGAT RAHASIA</h3>
-            </div>
-            <hr>
-            <table>
-               <tbody>
-                  
-
-                  <tr>
-                     <td class="px-4 pt-4" colspan="2" rowspan="4" style="border-bottom: none">
-                        <div class="d-flex justify-content-between">
-                           <img src="{{asset('img/logo/enc1.png')}}" alt="" width="150"><h2>FORM.B</h2>
-                        </div>
-                        
+                     <td class="text-center" colspan="2">
+                        <h2>PENILAIAN KARYAWAN</h2>
                      </td>
-                     {{-- <td><h2>FORM.B</h2></td> --}}
-                     <td class="px-2" colspan="10">-</td>
-                  </tr>
-                  <tr>
-                     <td class="px-2" style="border-top: none" colspan="10"><b>No. Dokumen :</b></td>
-                     {{-- <td></td> --}}
-                  </tr>
-                  
-                  <tr>
-                     <td class="px-2" style="border-top: none" colspan="10"><b>FM.PS.HRD.11</b></td>
-                     {{-- <td></td> --}}
-                  </tr>
-                  <tr>
-                     <td class="px-2" style="border-top: none" colspan="10"><b>Revisi : 2</b></td>
-                     {{-- <td></td> --}}
-                  </tr>
-                  <tr>
-                     <td class="px-4" colspan="2" style="border-top: none; border-bottom: none"><b><h4>PT. EKANURI</h4></b></td>
-                     <td class="px-2" colspan="10"><b>Tgl. Mulai Efektif : 1 Juli 2021 </b></td>
-                  </tr>
-
-                  <tr>
-                     <td class="px-4 text-center" colspan="2" style="border-top: none; border-bottom: none"><b><h4>DIVISI IT</h4></b></td>
-                     <td class="px-2" colspan="10">-</td>
-                  </tr>
-                  <tr>
-                     <td colspan="12">-</td>
-                  </tr>
-                  <tr>
-                     <td colspan="12" class="text-center"><b>SKALA PENILAIAN / PREDIKAT</b></td>
-                  </tr>
-                  <tr>
-                     <td colspan="2" class="px-2" style="border-right: none; border-bottom: none">M : Memuaskan</td>
-                     <td colspan="10" style="border-left: none; border-bottom: none">B : Baik</td>
-                  </tr>
-                  <tr>
-                     <td colspan="2" class="px-2" style="border-right: none; border-top: none; border-bottom: none">M : Memuaskan</td>
-                     <td colspan="10" style="border-left: none; border-top: none; border-bottom: none">SK : Sangat Kurang</td>
-                  </tr>
-                  <tr>
-                     <td colspan="12" class="px-2" style="border-top: none;">C : Cukup</td>
-                     {{-- <td colspan="9"></td> --}}
-                  </tr>
-                  <tr>
-                     <td class="text-center " rowspan="2" style="width: 40px"><b>No.</b></td>
-                     <td class="text-center " rowspan="2"><b>Kriteria</b></td>
-                     <td class="text-center "><b>Predikat</b></td>
-                     <td class="text-center "><b>M</b></td>
-                     <td class="text-center "><b>B</b></td>
-                     <td class="text-center "><b>C</b></td>
-                     <td class="text-center "><b>K</b></td>
-                     <td class="text-center "><b>SK</b></td>
-                     <td class="text-center " rowspan="2" colspan="2"><b>Total Nilai</b></td>
-                     <td class="text-center " rowspan="2"><b>EVR</b></td>
-                     <td class="text-center " rowspan="2"><b>Prosentase</b></td>
-                  </tr>
-                  <tr>
-                     <td colspan="" class="text-center "><b>Nilai</b></td>
-                     <td class="text-center "><b>5</b></td>
-                     <td class="text-center "><b>4</b></td>
-                     <td class="text-center "><b>3</b></td>
-                     <td class="text-center "><b>2</b></td>
-                     <td class="text-center "><b>1</b></td>
-                  </tr>
-                  <tr>
-                     <td colspan="12"></td>
-                  </tr>
-                  
-
-                  <tr>
-                     <td class="text-center "><b>1</b></td>
-                     <td class="text-center "><b>DISIPLIN</b></td>
-                     <td class="text-center "><b>20</b></td>
-                     <td colspan="5"></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                  </tr>
-
-                  <tr>
-                     <td colspan="2" class="px-2">Indikator :</td>
-                  </tr>
-                  <tr>
-                     <td class="text-center">I.1</td>
-                     <td>Alpha</td>
-                     <td>:</td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td class="text-end px-2"> %</td>
-                  </tr>
-                  <tr>
-                     <td class="text-center">I.2</td>
-                     <td>Izin</td>
-                     <td>:</td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td class="text-end px-2"> %</td>
-                  </tr>
-                  <tr>
-                     <td class="text-center">I.3</td>
-                     <td>Terlambat</td>
-                     <td>:</td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td class="text-end px-2"> %</td>
-                  </tr>
-                  <tr>
-                     <td></td>
-                  </tr>
-                  <tr>
-                     <td class="text-center "><b>2</b></td>
-                     <td class="text-center "><b>KINERJA / PRODUKTIFITAS</b></td>
-                     <td class="text-center "><b>25</b></td>
-                     <td colspan="5"></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                  </tr>
-                  <tr>
-                     <td colspan="2" class="px-2">Indikator :</td>
-                  </tr>
-                  <tr>
-                     <td class="text-center">II.1</td>
-                     <td>Memahami, Menguasai dan Mampu meng-Implementasikan Tugas / Pekerjaannya</td>
-                     <td>:</td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td class="text-end px-2"> %</td>
-                  </tr>
-                  <tr>
-                     <td class="text-center">II.2</td>
-                     <td>Efisiensi dan Efektifitas Hasil Kerja</td>
-                     <td>:</td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td class="text-end px-2"> %</td>
-                  </tr>
-                  <tr>
-                     <td class="text-center">II.3</td>
-                     <td>Kualitas dan Kuantitas Pekerjaan yang dapat diselesaikan dalam Target waktu yang ditentukan</td>
-                     <td>:</td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td class="text-end px-2"> %</td>
-                  </tr>
-                  <tr>
-                     <td class="text-center">II.4</td>
-                     <td>Kemampuan Melaksanakan Tugas Secara Individu</td>
-                     <td>:</td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td class="text-end px-2"> %</td>
-                  </tr>
-                  <tr>
-                     <td class="text-center">II.5</td>
-                     <td>Kemampuan Melaksanakan Tugas Secara Kelompok </td>
-                     <td>:</td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td class="text-end px-2"> %</td>
-                  </tr>
-                  <tr>
-                     <td></td>
-                  </tr>
-                  <tr>
-                     <td class="text-center "><b>3</b></td>
-                     <td class="text-center "><b>LOYALITAS</b></td>
-                     <td class="text-center "><b>25</b></td>
-                     <td colspan="5"></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                  </tr>
-                  <tr>
-                     <td colspan="2" class="px-2">Indikator :</td>
-                  </tr>
-                  <tr>
-                     <td class="text-center">III.1</td>
-                     <td>Jujur & dapat dipercaya</td>
-                     <td>:</td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td class="text-end px-2"> %</td>
-                  </tr>
-                  <tr>
-                     <td class="text-center">III.2</td>
-                     <td>Kemampuan bekerja tanpa pengawasan</td>
-                     <td>:</td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td class="text-end px-2"> %</td>
-                  </tr>
-                  <tr>
-                     <td class="text-center">III.3</td>
-                     <td>Menjaga Nama Baik Perusahaan dan Pimpinan</td>
-                     <td>:</td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td class="text-end px-2"> %</td>
-                  </tr>
-                  <tr>
-                     <td class="text-center">III.4</td>
-                     <td>Kepatuhan terhadap Perintah Atasan</td>
-                     <td>:</td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td class="text-end px-2"> %</td>
-                  </tr>
-                  <tr>
-                     <td class="text-center">III.5</td>
-                     <td>Saling Menghargai antar Rekan Kerja </td>
-                     <td>:</td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td class="text-end px-2"> %</td>
-                  </tr>
-                  <tr>
-                     <td></td>
-                  </tr>
-
-                  <tr>
-                     <td class="text-center "><b>4</b></td>
-                     <td class="text-center "><b>PRESTASI KERJA</b></td>
-                     <td class="text-center "><b>25</b></td>
-                     <td colspan="5"></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                  </tr>
-                  <tr>
-                     <td colspan="2" class="px-2">Indikator :</td>
-                  </tr>
-                  <tr>
-                     <td class="text-center">IV.1</td>
-                     <td>Kreatifitas dan Inovasi</td>
-                     <td>:</td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td class="text-end px-2"> %</td>
-                  </tr>
-                  <tr>
-                     <td class="text-center">IV.2</td>
-                     <td>Peningkatan Kemampuan Kualitas Individu</td>
-                     <td>:</td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td class="text-end px-2"> %</td>
-                  </tr>
-                  <tr>
-                     <td></td>
-                  </tr>
-                  <tr>
-                     <td colspan="2" class="text-center pt-1"><b><h4>TOTAL NILAI</h4></b></td>
-                     <td class="text-center"><b>80</b></td>
-                     <td colspan="7"></td>
-                     <td></td>
-                     <td></td>
-                  </tr>
-                  <tr>
-                     <td></td>
-                  </tr>
-
-                  <tr>
-                     <td class="text-center "><b>5</b></td>
-                     <td class="text-center "><b>LEADERSHIP * </b></td>
-                     <td class="text-center "><b>20</b></td>
-                     <td colspan="5"></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                  </tr>
-                  <tr>
-                     <td colspan="2" class="px-2">Indikator :</td>
-                  </tr>
-                  <tr>
-                     <td class="text-center">V.1</td>
-                     <td>Dapat diandalkan</td>
-                     <td>:</td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td class="text-end px-2"> %</td>
-                  </tr>
-                  <tr>
-                     <td class="text-center">V.2</td>
-                     <td>Dapat menciptakan motivasi kerja</td>
-                     <td>:</td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td class="text-end px-2"> %</td>
-                  </tr>
-                  <tr>
-                     <td class="text-center">V.3</td>
-                     <td>Dapat membuat perencanaan kerja</td>
-                     <td>:</td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td class="text-end px-2"> %</td>
-                  </tr>
-                  <tr>
-                     <td class="text-center">V.4</td>
-                     <td>Mampu Menyelesaikan Permasalahan (Solusi)</td>
-                     <td>:</td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td class="text-end px-2"> %</td>
-                  </tr>
-                  <tr>
-                     <td></td>
-                  </tr>
-                  <tr>
-                     <td colspan="2" class="text-center pt-1"><b><h4>TOTAL NILAI</h4></b></td>
-                     <td class="text-center"><b>20</b></td>
-                     <td colspan="7"></td>
-                     <td></td>
-                     <td></td>
-                  </tr>
-                  <tr>
-                     <td></td>
-                  </tr>
-
-                  <tr>
-                     <td colspan="12" class="text-center"><b>NILAI PENGURANG</b></td>
-                  </tr>
-
-
-               </tbody>
-            </table>
-            <table>
-               <tbody>
-                  <tr>
-                     <td class="px-2 text-center" style="width: 130px"><b>BOBOT</b></td>
-                     <td class="px-2 text-center"><b>KETERANGAN</b></td>
-                  </tr>
-                  <tr>
-                     <td class="px-2 text-center">0</td>
-                     <td class="px-2">SP</td>
-                  </tr>
-                  <tr>
-                     <td class="px-2">-</td>
-                     <td class="px-2">-</td>
-                  </tr>
-                  <tr>
-                     <td class="px-2">-</td>
-                     <td class="px-2">-</td>
-                  </tr>
-               </tbody>
-            </table>
-
-            <hr>
-            <table>
-               <tbody>
-
-                  <tr>
-                     <td class="px-4 pt-4" colspan="2" rowspan="4" style="border-bottom: none">
-                        <div class="d-flex justify-content-between">
-                           <img src="{{asset('img/logo/enc1.png')}}" alt="" width="150"><h2>FORM.B</h2>
-                        </div>
-                        
+                     <td class="text-center" colspan="2">
+                        <img src="{{asset('img/logo/ekanuri.png')}}" alt="" width="100"><br>
+                        <span>PT Ekanuri</span>
                      </td>
-                     {{-- <td><h2>FORM.B</h2></td> --}}
-                     <td class="px-2" colspan="6">-</td>
                   </tr>
                   <tr>
-                     <td class="px-2" style="border-top: none" colspan="6"><b>No. Dokumen :</b></td>
-                     {{-- <td></td> --}}
-                  </tr>
-                  
-                  <tr>
-                     <td class="px-2" style="border-top: none" colspan="6"><b>FM.PS.HRD.11</b></td>
-                     {{-- <td></td> --}}
+                     <td colspan="2">No. Dok : FM.PS.HRD.11</td>
+                     <td colspan="2">Rev: 3</td>
+                     <td colspan="2">Hal : 1 dari 2</td>
                   </tr>
                   <tr>
-                     <td class="px-2" style="border-top: none" colspan="6"><b>Revisi : 2</b></td>
-                     {{-- <td></td> --}}
+                     <td colspan="2">Periode</td>
+                     <td>:</td>
+                     <td></td>
+                     <td colspan="2" class="text-center" style="background-color: rgb(227, 243, 149)"><b>Level : Staf</b></td>
                   </tr>
                   <tr>
-                     <td class="px-4" colspan="2" style="border-top: none; border-bottom: none"><b><h4>PT. EKANURI</h4></b></td>
-                     <td class="px-2" colspan="6"><b>Tgl. Mulai Efektif : 1 Juli 2021 </b></td>
+                     <td colspan="2">Nama</td>
+                     <td>:</td>
+                     <td></td>
+                     <td></td>
+                     <td></td>
+                  </tr>
+                  <tr>
+                     <td colspan="2">Nik</td>
+                     <td>:</td>
+                     <td></td>
+                     <td></td>
+                     <td></td>
+                  </tr>
+                  <tr>
+                     <td colspan="2">Departemen</td>
+                     <td>:</td>
+                     <td></td>
+                     <td></td>
+                     <td></td>
+                  </tr>
+                  <tr>
+                     <td colspan="2">Jabatan</td>
+                     <td>:</td>
+                     <td></td>
+                     <td></td>
+                     <td></td>
+                  </tr>
+                  <tr>
+                     <td colspan="2">Lokasi Kerja</td>
+                     <td>:</td>
+                     <td></td>
+                     <td></td>
+                     <td></td>
                   </tr>
 
-                  <tr>
-                     <td class="px-4 text-center" colspan="2" style="border-top: none; border-bottom: none"><b><h4>DIVISI IT</h4></b></td>
-                     <td class="px-2" colspan="6">-</td>
-                  </tr>
-                  {{-- <tr>
-                     <td colspan="8"></td>
-                  </tr> --}}
-
-                  
-                  <tr>
-                     <td colspan="8" class="text-center"><b>RANGKUMAN HASIL PENILAIAN AKHIR</b></td>
-                  </tr>
-                  <tr>
-                     <td colspan="2" class="text-center">-</td>
-                     <td class="text-center">Total</td>
-                     <td class="text-center">Jabatan</td>
-                     <td class="text-center">MGR</td>
-                     <td class="text-center">KDR</td>
-                     <td class="text-center">SPV</td>
-                     <td class="text-center">S</td>
-                  </tr>
-                  <tr>
-                     <td colspan="2" class="text-center">Indikator</td>
-                     <td class="text-center">Indikator</td>
-                     <td class="text-center">Nilai</td>
-                     <td colspan="4" class="text-center">Total Nilai / Total Indikator</td>
+                  <tr style="background-color: rgb(21, 21, 80); color:aqua">
+                     <td style="width: 50px" class="text-center"><b>NO</b></td>
+                     <td style="width: 100px"></td>
+                     <td><b>ASPEK PENILAIAN</b></td>
+                     <td style="width: 100px" class="text-center"><b>BOBOT</b></td>
+                     <td style="width: 100px" class="text-center"><b>NILAI</b></td>
+                     <td style="width: 100px" class="text-center"><b>POIN BOBOT x NILAI</b></td>
                   </tr>
 
+                  <tr style="background-color: rgb(121, 168, 250);">
+                     <td class="text-center"><b>1</b></td>
+                     <td colspan="2"><b>DISIPLIN</b></td>
+                     {{-- <td></td> --}}
+                     <td colspan="" class="text-center"><b>15</b></td>
+                     <td></td>
+                     <td></td>
+                  </tr>
                   <tr>
-                     <td class="text-center" style="width: 40px">1</td>
-                     <td class="px-2">DISIPLIN</td>
+                     <td colspan="2" class="text-end">a</td>
+                     <td>Tingkat kehadiran dan kepatuhan waktu kerja</td>
+                     <td></td>
                      <td class="text-center">4</td>
-                     <td class="text-center">20</td>
+                     <td style="background-color: yellow" class="text-end">15,0</td>
+                  </tr>
+                  <tr style="background-color: rgb(121, 168, 250);"">
+                     <td class="text-center"><b>2</b></td>
+                     <td colspan="2"><b>KPI</b></td>
+                     {{-- <td></td> --}}
+                     <td colspan="" class="text-center"><b>70</b></td>
                      <td></td>
                      <td></td>
-                     <td></td>
-                     <td class="text-center">0</td>
+                  </tr>
+
+                  <tr>
+                     <td colspan="3" class="text-center"><b>Objektif</b></td>
+                     <td class="text-center"><b>Hasil</b></td>
+                     <td colspan="2"></td>
                   </tr>
                   <tr>
-                     <td class="text-center" style="width: 40px">2</td>
-                     <td class="px-2">KINERJA / PRODUKTIFITAS</td>
-                     <td class="text-center">5</td>
-                     <td class="text-center">25</td>
+                     <td colspan="2" class="text-end">a</td>
                      <td></td>
-                     <td></td>
-                     <td></td>
-                     <td class="text-center">0</td>
+                     <td class="text-center">40</td>
+                     <td class="text-center">4</td>
+                     <td style="" class="text-end">40</td>
                   </tr>
                   <tr>
-                     <td class="text-center" style="width: 40px">3</td>
-                     <td class="px-2">LOYALITAS</td>
-                     <td class="text-center">5</td>
-                     <td class="text-center">25</td>
+                     <td colspan="2" class="text-end">b</td>
                      <td></td>
-                     <td></td>
-                     <td></td>
-                     <td class="text-center">0</td>
-                  </tr>
-                  <tr>
-                     <td class="text-center" style="width: 40px">4</td>
-                     <td class="px-2">PRESTASI KERJA</td>
-                     <td class="text-center">2</td>
                      <td class="text-center">10</td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td class="text-center">0</td>
-                  </tr>
-                  <tr>
-                     <td colspan="2" class="text-end"><b>Jumlah Nilai I :</b></td>
-                     <td class="text-center"><b>16</b></td>
-                     <td class="text-center"><b>80</b></td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td class="text-center">0</td>
-                  </tr>
-                  <tr>
-                     <td></td>
-                  </tr>
-                  <tr>
-                     <td class="text-center" style="width: 40px">5</td>
-                     <td class="px-2">LEADERSHIP *</td>
                      <td class="text-center">4</td>
-                     <td class="text-center">20</td>
-                     <td></td>
-                     <td></td>
-                     <td></td>
-                     <td class="text-center">0</td>
+                     <td style="" class="text-end">10</td>
                   </tr>
                   <tr>
-                     <td colspan="2" class="text-end"><b>Jumlah Nilai II :</b></td>
+                     <td colspan="2" class="text-end">c</td>
+                     <td></td>
+                     <td class="text-center">50</td>
+                     <td class="text-center">4</td>
+                     <td style="" class="text-end">50</td>
+                  </tr>
+                  <tr>
+                     <td colspan="2" class="text-end">d</td>
+                     <td>Additional</td>
+                     <td class="text-center"></td>
+                     <td class="text-center"></td>
+                     <td style="" class="text-end">0</td>
+                  </tr>
+                  <tr>
+                     <td colspan="2" class="text-end"></td>
+                     <td>Sub Total</td>
+                     <td class="text-center"></td>
+                     <td class="text-center"></td>
+                     <td style="" class="text-end">100</td>
+                  </tr>
+                  <tr>
+                     <td colspan="3" class="text-center"><b>Total Hasil</b></td>
+                     <td></td>
+                     <td></td>
+                     <td style="background-color: yellow" class="text-center">70</td>
+                  </tr>
+
+                  <tr style="background-color: rgb(121, 168, 250);"">
+                     <td class="text-center"><b>3</b></td>
+                     <td colspan="2"><b>BEHAVIOR</b></td>
+                     {{-- <td></td> --}}
+                     <td colspan="" class="text-center"><b>15</b></td>
+                     <td></td>
+                     <td></td>
+                  </tr>
+                  <tr>
+                     <td colspan="2" class="text-end">a</td>
+                     <td>Kreatifitas dan Inovasi</td>
+                     <td class="text-center">5</td>
+                     <td class="text-center">4</td>
+                     <td style="" class="text-end">5,0</td>
+                  </tr>
+                  <tr>
+                     <td colspan="2" class="text-end">b</td>
+                     <td>Kerjasama</td>
+                     <td class="text-center">5</td>
+                     <td class="text-center">4</td>
+                     <td style="" class="text-end">5,0</td>
+                  </tr>
+                  <tr>
+                     <td colspan="2" class="text-end">b</td>
+                     <td>Inisiatif</td>
+                     <td class="text-center">5</td>
+                     <td class="text-center">4</td>
+                     <td style="" class="text-end">5,0</td>
+                  </tr>
+
+                  <tr>
+                     <td colspan="2" class="text-end"></td>
+                     <td>Sub Total</td>
+                     <td class="text-center"></td>
+                     <td class="text-center"></td>
+                     <td style="background-color: yellow" class="text-end">15,0</td>
+                  </tr>
+
+                  <tr style="background-color: rgb(21, 21, 80); color:aqua">
+                     <td colspan="3" class="text-center">TOTAL NILAI</td>
+                     <td class="text-center">100</td>
+                     <td></td>
+                     <td class="text-end">100,0</td>
+                  </tr>
+
+                  <tr style="background-color: rgb(121, 168, 250);"">
                      <td class="text-center"><b>4</b></td>
-                     <td class="text-center"><b>20</b></td>
+                     <td colspan="2"><b>NILAI PENGURANG</b></td>
+                     {{-- <td></td> --}}
+                     <td colspan="" class="text-center"><b>3</b></td>
                      <td></td>
                      <td></td>
-                     <td></td>
-                     <td class="text-center">0</td>
                   </tr>
 
                   <tr>
-                     <td></td>
-                     <td><b>Note : </b></td>
-                     <td></td>
-                     <td></td>
+                     <td colspan="2" class="text-end"></td>
+                     <td>Terbit Surat Peringatan : </td>
+                     <td class="text-center"></td>
+                     <td class="text-center"></td>
+                     <td style="" class="text-end"></td>
                   </tr>
-               </tbody>
-            </table>
+                  <tr>
+                     <td colspan="2" class="text-end">a</td>
+                     <td>SP </td>
+                     <td class="text-center"></td>
+                     <td class="text-center"></td>
+                     <td style="" class="text-end"></td>
+                  </tr>
+                  <tr>
+                     <td colspan="2" class="text-end">b</td>
+                     <td></td>
+                     <td class="text-center"></td>
+                     <td class="text-center"></td>
+                     <td style="" class="text-end"></td>
+                  </tr>
 
-            <table class="table-border-none" >
-               <tbody>
-                  <tr>
-                     <td class="border-none"></td>
-                     <td class="border-none"><b>Note : </b></td>
-                     <td class="border-none"></td>
-                     <td class="border-none"></td>
-                     <td class="border-none"><b>Pengurang</b></td>
-                     <td class="border-none"></td>
-                     <td class="border-none" colspan="4">Bobot Pencapaian</td>
+                  <tr style="background-color: rgb(121, 168, 250);"">
+                     {{-- <td class="text-center"><b>4</b></td> --}}
+                     <td colspan="3" class="text-center"><b>TOTAL PENGURANG</b></td>
+                     {{-- <td></td> --}}
+                     <td colspan="" class="text-center"><b>1</b></td>
+                     <td></td>
+                     <td style="background-color: yellow" class="text-end">5,0</td>
                   </tr>
-                  <tr>
-                     <td class="border-none"></td>
-                     <td class="border-none">MGR</td>
-                     <td class="border-none">: Manager</td>
-                     <td class="border-none"></td>
-                     <td class="border-none">SP :</td>
-                     <td class="border-none">5</td>
-                     <td class="border-none">100</td>
-                     <td class="border-none">-</td>
-                     <td class="border-none">91</td>
-                     <td class="border-none">Memuaskan</td>
-                  </tr>
-                  <tr>
-                     <td class="border-none"></td>
-                     <td class="border-none">SPV</td>
-                     <td class="border-none">: Supervisor</td>
-                     <td class="border-none"></td>
-                     <td class="border-none"></td>
-                     <td class="border-none"></td>
-                     <td class="border-none">90</td>
-                     <td class="border-none">-</td>
-                     <td class="border-none">76</td>
-                     <td class="border-none">Baik</td>
-                  </tr>
-                  <tr>
-                     <td class="border-none"></td>
-                     <td class="border-none">KDR</td>
-                     <td class="border-none">: Koordinator</td>
-                     <td class="border-none"></td>
-                     <td class="border-none"></td>
-                     <td class="border-none"></td>
-                     <td class="border-none">75</td>
-                     <td class="border-none">-</td>
-                     <td class="border-none">61</td>
-                     <td class="border-none">Cukup</td>
-                  </tr>
-                  <tr>
-                     <td class="border-none"></td>
-                     <td class="border-none">S</td>
-                     <td class="border-none">: Staff</td>
-                     <td class="border-none"></td>
-                     <td class="border-none"></td>
-                     <td class="border-none"></td>
-                     <td class="border-none">60</td>
-                     <td class="border-none">-</td>
-                     <td class="border-none">51</td>
-                     <td class="border-none">Kurang</td>
-                  </tr>
-                  <tr>
-                     <td class="border-none"></td>
-                     <td class="border-none"></td>
-                     <td class="border-none"></td>
-                     <td class="border-none"></td>
-                     <td class="border-none"></td>
-                     <td class="border-none"></td>
-                     <td class="border-none">50</td>
-                     <td class="border-none">-</td>
-                     <td class="border-none">0</td>
-                     <td class="border-none">Sangat Kurang</td>
-                  </tr>
-                  <tr>
-                     <td class="border-none"></td>
-                     <td class="border-none"></td>
-                     <td colspan="3" class="text-center"><b>Nilai Akhir - (Nilai SP)</b></td>
-                     <td colspan="2" ></td>
-                     <td >0</td>
-                     <td >0</td>
-                  </tr>
-                  <tr>
-                     <td class="border-none" style="height: 10px"></td>
-                  </tr>
-                  <tr>
-                     <td class="border-none"></td>
-                     <td class="border-none"></td>
-                     <td colspan="4" class="text-center"><b>Predikat : Memuaskan / Baik / Cukup / Kurang / Sangat Kurang</b></td>
+
+                  <tr style="background-color: rgb(21, 21, 80); color:aqua">
+                     <td colspan="5" class="text-center">NILAI AKHIR (Total Nilai - Total Pengurang)</td>
                      
-                     <td ></td>
-                  </tr>
-                  <tr>
-                     <td class="border-none" style="height: 10px"></td>
+                     <td class="text-end" >95,0</td>
                   </tr>
 
-                  <tr>
-                     <td class="" style="border-bottom: none" colspan="10">Komentar Karyawan :</td>
-                  </tr>
-                  <tr>
-                     <td class="border-none" style="height: 10px"></td>
-                  </tr>
-                  <tr>
-                     <td class="border-none" style="height: 10px"></td>
-                  </tr>
+
+
 
                   <tr>
-                     <td class="" style="border-bottom: none" colspan="10">Komentar Evaluator (Untuk motivasi dan pengembangan) :</td>
+                     <td></td>
+                     <td class="text-center">Range Nilai</td>
+                     <td colspan="4"></td>
                   </tr>
                   <tr>
-                     <td class="border-none" style="height: 10px">1.</td>
+                     <td class="text-center">A</td>
+                     <td class="text-center">91 - 100</td>
+                     <td colspan="4">: Baik sekali (Diatas ekspektasi, mencapai hasil lebih dari yang diharapkan)</td>
                   </tr>
                   <tr>
-                     <td class="border-none" style="height: 10px">2.</td>
+                     <td class="text-center">B</td>
+                     <td class="text-center">76 - 90</td>
+                     <td colspan="4">: Baik (Memenuhi ekspektasi, mencapai hasil yang diharapkan)</td>
                   </tr>
                   <tr>
-                     <td class="text-center" colspan="10"><b>Karyawan yang dinilai</b></td>
+                     <td class="text-center">C</td>
+                     <td class="text-center">61 - 75</td>
+                     <td colspan="4">: Cukup (Dibawah ekspekasi, sebagian mencapai hasil yang diharapkan)</td>
                   </tr>
                   <tr>
-                     <td class="border-none" style="height: 10px"></td>
+                     <td class="text-center">D</td>
+                     <td class="text-center">0 - 60</td>
+                     <td colspan="4">: Kurang (Perlu evaluasi perbaikan, tidak mencapai hasil yang diharapkan)</td>
+                  </tr>
+
+                  <tr style="background-color: rgb(121, 168, 250);"">
+                     {{-- <td class="text-center"><b>4</b></td> --}}
+                     <td colspan="6" class="text-center"><b>TRAINING DEVELOPMENT</b></td>
+                     
                   </tr>
                   <tr>
-                     <td class="border-none"></td>
-                     <td class="border-none" colspan="2"><b>Nama</b></td>
-                     <td class="border-none"><b>: Abdul Fikri</b></td>
+                     <td colspan="6">
+                        (Meningkatkan kompetensi yang belum terpenuhi sesuai dengan kebutuhan karyawan seperti : 
+                        program pelatihan/pengembangan, coaching, mentoring)
+                     </td>
                   </tr>
                   <tr>
-                     <td class="border-none" style="height: 10px"></td>
+                     <td class="text-center">1</td>
+                     <td colspan="2"></td>
+                     <td colspan="3">Alasan :</td>
                   </tr>
                   <tr>
-                     <td class="border-none"></td>
-                     <td class="border-none" colspan="2"><b>Jabatan</b></td>
-                     <td class="border-none"><b>: Staff</b></td>
+                     <td class="text-center">2</td>
+                     <td colspan="2"></td>
+                     <td colspan="3">Alasan :</td>
                   </tr>
                   <tr>
-                     <td class="border-none" style="height: 10px"></td>
+                     <td class="text-center">3</td>
+                     <td colspan="2"></td>
+                     <td colspan="3">Alasan :</td>
+                  </tr>
+
+                  <tr style="background-color: rgb(121, 168, 250);"">
+                     {{-- <td class="text-center"><b>4</b></td> --}}
+                     <td colspan="6" class="text-center"><b>KOMENTAR EVALUATOR</b></td>
+                     
                   </tr>
                   <tr>
-                     <td class="border-none"></td>
-                     <td class="border-none" colspan="2"><b>NIK</b></td>
-                     <td class="border-none"><b></b></td>
+                     <td colspan="6" style="height: 60px"></td>
+                  </tr>
+
+
+                  <tr style="background-color: black; color: white">
+                     <td colspan="2" class="text-center">Evaluator</td>
+                     <td class="text-center">Menyetujui</td>
                   </tr>
                   <tr>
-                     <td class="border-none" style="height: 10px"></td>
+                     <td colspan="2">Atasan Langsung</td>
+                     <td>Manager</td>
                   </tr>
                   <tr>
-                     <td class="text-center" colspan="10"><b>Evaluator</b></td>
+                     <td colspan="2" style="height: 50px"></td>
+                     <td></td>
                   </tr>
                   <tr>
-                     <td class="border-none" style="height: 10px"></td>
+                     <td colspan="2">Nama :</td>
+                     <td>Nama :</td>
                   </tr>
                   <tr>
-                     <td class="border-none"></td>
-                     <td class="border-none" colspan="2"><b>Nama</b></td>
-                     <td class="border-none"><b>: Nurdiansah</b></td>
-                  </tr>
-                  <tr>
-                     <td class="border-none" style="height: 10px"></td>
-                  </tr>
-                  <tr>
-                     <td class="border-none"></td>
-                     <td class="border-none" colspan="2"><b>Jabatan</b></td>
-                     <td class="border-none"><b>: SPV IT</b></td>
-                  </tr>
-                  <tr>
-                     <td class="border-none" style="height: 10px"></td>
-                  </tr>
-                  <tr>
-                     <td class="border-none"></td>
-                     <td class="border-none" colspan="2"><b>Divisi</b></td>
-                     <td class="border-none"><b></b></td>
-                  </tr>
-                  <tr>
-                     <td class="border-none" style="height: 10px"></td>
+                     <td colspan="2">Tanggal :</td>
+                     <td>Tanggal :</td>
                   </tr>
                </tbody>
             </table>
-            <div class="text-end px-4 mt-4">
-               <span>Jakarta, 23 Juli 2023</span>
-            </div>
          </div>
       </div>
    </div>
