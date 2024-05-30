@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\EmployeeExport;
+use App\Exports\EmployeeSimpleExport;
 use App\Imports\BiodataImport;
 use App\Imports\EmployeeImport;
 use App\Models\Bank;
@@ -292,6 +293,11 @@ class EmployeeController extends Controller
    public function export()
    {
       return Excel::download(new EmployeeExport, 'employee.xlsx');
+   }
+
+   public function exportSimple()
+   {
+      return Excel::download(new EmployeeSimpleExport, 'employee.xlsx');
    }
 
    public function formImport()

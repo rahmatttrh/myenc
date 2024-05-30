@@ -14,7 +14,7 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class EmployeeExport implements FromQuery, WithMapping, ShouldAutoSize, WithHeadings, WithStyles
+class EmployeeSimpleExport implements FromQuery, WithMapping, ShouldAutoSize, WithHeadings, WithStyles
 {
     /**
     * @return \Illuminate\Support\Collection
@@ -39,36 +39,19 @@ class EmployeeExport implements FromQuery, WithMapping, ShouldAutoSize, WithHead
                 'Department',
                 'Level',
                 'Jabatan',
-                'Shift',
-                'Salary',
-                'Payslip',
-                'Start',
-                'End',
+                
 
 
                 'Phone',
                 'Email',
-                'No. KTP',
-                'No. KK',
-                'No. NPWP',
-                'Status Pajak',
-                'No. Jamsostek',
-                'No. BPJS Kesehatan',
-                'Gender',
-                'Religion',
+                
                 'Tanggal Lahir',
                 'Tempat Lahir',
-                'Marital',
-                'Post Code',
-                'Blood',
-                'Nationality',
-                'Citizenship',
+               
                 'State',
                 'City',
                 'Alamat',
-                'Last Education',
-                'Vocational',
-                'Institution Name'
+                
 
             ]
         ];
@@ -84,35 +67,18 @@ class EmployeeExport implements FromQuery, WithMapping, ShouldAutoSize, WithHead
             $employee->contract->department->name ?? '',
             $employee->contract->designation->name,
             $employee->position->name ,
-            $employee->contract->shift->name ?? '',
-            $employee->contract->salary ?? '',
-            $employee->contract->payslip ?? '',
-            formatDate($employee->contract->start) ?? '',
-            formatDate($employee->contract->end) ?? '',
+            
 
             $employee->biodata->phone,
             $employee->biodata->email,
-            $employee->biodata->no_ktp,
-            $employee->biodata->no_kk,
-            $employee->biodata->no_npwp,
-            $employee->biodata->status_pajak,
-            $employee->biodata->no_jamsostek,
-            $employee->biodata->no_bpjs_kesehatan,
-            $employee->biodata->gender,
-            $employee->biodata->religion,
+            
             $employee->biodata->birth_date,
             $employee->biodata->birth_place,
-            $employee->biodata->marital,
-            $employee->biodata->post_code,
-            $employee->biodata->blood,
-            $employee->biodata->nationality,
-            $employee->biodata->citizenship,
+            
             $employee->biodata->state,
             $employee->biodata->city,
             $employee->biodata->address,
-            $employee->biodata->last_education,
-            $employee->biodata->vocational,
-            $employee->biodata->institution_name,
+            
         ];
     }
 

@@ -35,14 +35,24 @@
                <li class="nav-item dropdown hidden-caret">
                   <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false">
                      <div class="avatar-sm">
+                        {{-- <img src="{{asset('img/businessman.png')}}" alt="..." class="avatar-img bg-light rounded"> --}}
+                        @if (auth()->user()->getEmployee()->picture == null)
                         <img src="{{asset('img/businessman.png')}}" alt="..." class="avatar-img bg-light rounded">
+                        @else
+                        <img src="{{asset('storage/' . auth()->user()->getEmployee()->picture)}}" alt="..." class="avatar-img bg-light rounded">
+                        @endif
                      </div>
                   </a>
                   <ul class="dropdown-menu dropdown-user animated fadeIn">
                         <li>
                            <div class="user-box">
                               <div class="avatar-lg border rounded">
-                                 <img src="{{asset('img/businessman.png')}}" alt="image profile" class="avatar-img bg-muted">
+                                 {{-- <img src="{{asset('img/businessman.png')}}" alt="image profile" class="avatar-img bg-muted"> --}}
+                                 @if (auth()->user()->getEmployee()->picture == null)
+                                 <img src="{{asset('img/businessman.png')}}" alt="..." class="avatar-img bg-muted  ">
+                                 @else
+                                 <img src="{{asset('storage/' . auth()->user()->getEmployee()->picture)}}" alt="..." class="avatar-img bg-muted  ">
+                                 @endif
                               </div>
                               
                               <div class="u-text">
@@ -57,9 +67,11 @@
                            <div class="dropdown-divider"></div>
                            
                            {{-- <div class="dropdown-divider"></div> --}}
-                           <a class="dropdown-item" href="">
+                           @if (auth()->user()->hasRole('Karyawan'))
+                           <a class="dropdown-item" href="{{route('employee.detail', [enkripRambo(auth()->user()->employee->id), enkripRambo('contract')])}}">
                               My Profile
                            </a>
+                           @endif
                            
                            
                            @if (Route::has('password.request'))

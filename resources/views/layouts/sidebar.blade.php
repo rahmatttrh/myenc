@@ -5,7 +5,12 @@
       <div class="sidebar-content">
          <div class="user">
             <div class="avatar-sm border rounded float-left mr-2">
+               @if (auth()->user()->getEmployee()->picture == null)
                <img src="{{asset('img/businessman.png')}}" alt="..." class="avatar-img bg-muted  ">
+               @else
+               <img src="{{asset('storage/' . auth()->user()->getEmployee()->picture)}}" alt="..." class="avatar-img bg-muted  ">
+               @endif
+               
             </div>
             <div class="info">
                <a href="/" aria-expanded="true">
@@ -91,12 +96,12 @@
          </li>
 
          @if (auth()->user()->hasRole('Karyawan'))
-            <li class="nav-item {{ (request()->is('employee/detail/*')) ? 'active' : '' }}">
+            {{-- <li class="nav-item {{ (request()->is('employee/detail/*')) ? 'active' : '' }}">
                <a href="{{route('employee.detail', [enkripRambo(auth()->user()->employee->id), enkripRambo('contract')])}}">
                   <i class="fas fa-user"></i>
                   <p>My Profile</p>
                </a>
-            </li>
+            </li> --}}
             <li class="nav-item {{ (request()->is('employee/spkl/*')) ? 'active' : '' }}">
                <a href="{{route('employee.spkl')}}">
                   <i class="fas fa-clock"></i>
