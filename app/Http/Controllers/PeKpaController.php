@@ -80,8 +80,6 @@ class PeKpaController extends Controller
             'date' => 'required'
         ]);
 
-        // dd($req);
-
         // Validasi KPA OLD
         // $cek = PeKpa::where([
         //     'employe_id' => $req->employe_id,
@@ -208,6 +206,8 @@ class PeKpaController extends Controller
             'achievement' => 'required'
         ]);
 
+        $kpad = PekpaDetail::find($request->id);
+
 
         if ($request->attachment) {
             # code...
@@ -216,34 +216,29 @@ class PeKpaController extends Controller
             $pdfFileName = time() . '_' . $request->id . '.pdf';
             $pdfFile->storeAs('kpa-evidence', $pdfFileName, 'public');
 
-            $return = PekpaDetail::where('id', $request->id)
-                ->update([
-                    'value' => $request->value,
-                    'achievement' => $request->achievement,
-                    'evidence' => 'kpa-evidence/' . $pdfFileName
-                ]);
+            $return = $kpad->update([
+                'value' => $request->value,
+                'achievement' => $request->achievement,
+                'evidence' => 'kpa-evidence/' . $pdfFileName
+            ]);
         } else {
 
-            $return = PekpaDetail::where('id', $request->id)
-                ->update([
-                    'value' => $request->value,
-                    'achievement' => $request->achievement
-                ]);
-        }
-
-        $acvTotal = PekpaDetail::where('kpa_id', $request->kpa_id)->sum('achievement');
-
-        // Untuk mengakomodir jika semua achievment di tambah lebih dari 100
-        if ($acvTotal > 100) {
-            $acvTotal = 100;
-        }
-
-        $updateKpa = PeKpa::where('id', $request->kpa_id)
-            ->update([
-                'achievement' => $acvTotal
+            $return = $kpad->update([
+                'value' => $request->value,
+                'achievement' => $request->achievement
             ]);
+        }
 
-        if ($updateKpa) {
+
+        $qpc = new QuickPEController();
+
+        // Kalkulasi ACV KPA
+        $qpc->calculateAcvKpa($kpad->kpa_id);
+
+        // Kalkulasi PE
+        $qpc->calculatePe($kpad->kpa->pe->id);
+
+        if ($return) {
             return redirect()->back()->with('success', 'Data successfully Updated');
         } else {
             return redirect()->back()->with('danger', 'Failed');
@@ -276,37 +271,6 @@ class PeKpaController extends Controller
         }
 
 
-
-
-        // KPI Utama
-        $acv = PekpaDetail::where('kpa_id', $request->kpa_id)
-            ->where('addtional', '0')
-            ->sum('achievement');
-
-        // Bobot
-        $totalWeight = 100 + $request->weight;
-
-        // 
-
-        // Jika Achivemnet main kurang dari 100
-        if ($acv < 100) {
-            // Lakukan penambahan dengan request achievement
-            $acvTotal = round($acv + $request->achievement);
-
-            // Jika achievment total lebih dari >100
-            if ($acvTotal > 100) {
-
-                // Jadikan nilai nya menjadi 100
-                $acvTotal = 100;
-            }
-
-            // dd($acvTotal);  
-            # code...
-        } else {
-            $acvTotal = 100;
-        }
-
-
         $insert = PekpaDetail::create([
             'kpa_id' => $request->kpa_id,
             'kpidetail_id' => NULL,
@@ -320,14 +284,19 @@ class PeKpaController extends Controller
         ]);
 
 
-
-        $update = PeKpa::where('id', $request->kpa_id)
-            ->update([
-                'achievement' => $acvTotal
-            ]);
+        $kpa = PeKpa::find($request->kpa_id);
 
 
-        if ($insert && $update) {
+        $qpc = new QuickPEController();
+
+        // Kalkulasi ACV KPA
+        $qpc->calculateAcvKpa($kpa->id);
+
+        // Kalkulasi PE
+        $qpc->calculatePe($kpa->pe->id);
+
+
+        if ($insert) {
             return back()->with('success', 'Data successfully Created');
         } else {
             return back()->with('danger', 'Failed');
@@ -378,33 +347,20 @@ class PeKpaController extends Controller
                 ]);
         }
 
-        $acv = PekpaDetail::where('kpa_id', $request->kpa_id)
-            ->where('addtional', '0')
-            ->sum('achievement');
-        // Jika Achivemnet main kurang dari 100
-        if ($acv < 100) {
-            // Lakukan penambahan dengan request achievement
-            $acvTotal = round($acv + $request->achievement);
 
-            // Jika achievment total lebih dari >100
-            if ($acvTotal > 100) {
 
-                // Jadikan nilai nya menjadi 100
-                $acvTotal = 100;
-            }
+        $kpa = PeKpa::find($request->kpa_id);
 
-            // dd($acvTotal);  
-            # code...
-        } else {
-            $acvTotal = 100;
-        }
 
-        $updateKpa = PeKpa::where('id', $request->kpa_id)
-            ->update([
-                'achievement' => $acvTotal
-            ]);
+        $qpc = new QuickPEController();
 
-        if ($update && $updateKpa) {
+        // Kalkulasi ACV KPA
+        $qpc->calculateAcvKpa($kpa->id);
+
+        // Kalkulasi PE
+        $qpc->calculatePe($kpa->pe->id);
+
+        if ($update) {
             return redirect()->back()->with('success', 'Data successfully Updated');
         } else {
             return redirect()->back()->with('danger', 'Failed');
@@ -789,17 +745,25 @@ class PeKpaController extends Controller
     {
         $dekripId = dekripRambo($id);
         $kpadetail = PekpaDetail::find($dekripId);
-        // dd($kpadetail->kpa_id);
-        $acvTotal = PekpaDetail::where('kpa_id', $kpadetail->kpa_id)->where('addtional', '0')->sum('achievement');
 
-        $update = PeKpa::where('id', $kpadetail->kpa_id)->update([
-            'achievement' => $acvTotal
-        ]);
+
+
+        $kpa = PeKpa::find($kpadetail->kpa_id);
+
+
+        $qpc = new QuickPEController();
+
+        // Kalkulasi ACV KPA
+        $qpc->calculateAcvKpa($kpa->id);
+
+        // Kalkulasi PE
+        $qpc->calculatePe($kpa->pe->id);
+
 
         $delete = $kpadetail->delete();
 
 
-        if ($update && $delete) {
+        if ($delete) {
             return back()->with('success', 'Addtional successfully deleted');
         } else {
             return back()->with('danger', 'Addtional fail deleted!');

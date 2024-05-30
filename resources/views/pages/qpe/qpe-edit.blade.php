@@ -485,14 +485,11 @@ PE
                                     <th colspan="5" class="text-right">Achievement </th>
                                     <th class="text-right" id="totalAchievement">{{$kpa->achievement}}</th>
                                 </tr>
-                                @php
-                                $kpaAchievement = round($kpa->achievement * 0.7);
-                                @endphp
                                 <tr>
                                     <th colspan="5" class="text-right">Achievement Final
                                         <br><small>Bobot 70%</small>
                                     </th>
-                                    <th class="text-right" id="totalAchievement">{{$kpaAchievement}}</th>
+                                    <th class="text-right" id="totalAchievement">{{$kpa->contribute_to_pe}}</th>
                                 </tr>
                             </tfoot>
                         </table>
@@ -665,14 +662,13 @@ PE
 
                                     @endforeach
 
-                                    @php $pbaAchievement = $pba->achievement @endphp
 
                                     @endif
                                 </tbody>
                                 <tfoot>
                                     <tr>
                                         <th colspan="5" class="text-right">Achievement</th>
-                                        <th><span id="totalAcvBehavior" name="totalAcvBehavior">{{$pbaAchievement}}</span></th>
+                                        <th><span id="totalAcvBehavior" name="totalAcvBehavior">{{$pba->achievement}}</span></th>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -706,14 +702,10 @@ PE
                                 <tr>
                                     <th rowspan="2" colspan="2" class="text-white text-center">Indikator</th>
                                     <th rowspan="2" class="text-white text-center">Total Indikator</th>
-                                    <th rowspan="2" class="text-white text-center">Jabatan Nilai</th>
-                                    <th class="text-white text-center">MGR</th>
-                                    <th class="text-white text-center">KDR</th>
-                                    <th class="text-white text-center">SPV</th>
-                                    <th class="text-white text-center">S</th>
-                                </tr>
-                                <tr>
-                                    <th colspan="4" class="text-white text-center">Total Nilai / Total Indikator</th>
+                                    <th rowspan="2" class="text-white text-center">Bobot</th>
+                                    <th rowspan="2" class="text-white text-center"> Nilai</th>
+                                    <!-- <th rowspan="2" class="text-white text-center"> Nilai 4</th> -->
+                                    <th rowspan="2" class="text-white text-center"> (Bobot/100)xNilai</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -721,42 +713,38 @@ PE
                                     <td>1</td>
                                     <td class="text-center">DISIPLIN</td>
                                     <td class="text-center">3</td>
+                                    <td class="text-center">15</td>
+                                    <td class="text-center"><b>{{(15/15)*100}}</b></td>
+                                    <!-- <td class="">{{round((4.00/4)* 4 , 2)}}</td> -->
                                     <td class="text-center text-bold"><b>15</b></td>
-                                    <td class="text-center"></td>
-                                    <td class="text-center"></td>
-                                    <td class="text-center"></td>
-                                    <td class="text-center"></td>
                                 </tr>
                                 <tr>
                                     <td>2</td>
                                     <td class="text-center">KPI</td>
                                     <td class="text-center">{{$datas->count()}}</td>
-                                    <td class="text-center text-bold"><b>{{$kpaAchievement}}</b></td>
-                                    <td class="text-center"></td>
-                                    <td class="text-center"></td>
-                                    <td class="text-center"></td>
-                                    <td class="text-center"></td>
+                                    <td class="text-center">{{$kpa->weight}}</td>
+                                    <td class="text-center text-bold"><b>{{$kpa->achievement }}</b></td>
+                                    <!-- <td class="  text-bold"><b>{{ ($kpa->achievement/100) * 4 }}</b></td> -->
+                                    <td class="text-center text-bold"><b>{{$kpa->contribute_to_pe}}</b></td>
                                 </tr>
                                 <tr>
                                     <td>3</td>
                                     <td class="text-center">BEHAVIOR</td>
                                     <td class="text-center">{{$behaviors->count()}}</td>
-                                    <td class="text-center text-bold"><b>{{$pbaAchievement}}</b></td>
-                                    <td class="text-center"></td>
-                                    <td class="text-center"></td>
-                                    <td class="text-center"></td>
-                                    <td class="text-center"></td>
+                                    <td class="text-center">{{$pba->weight}}</td>
+                                    <td class="text-center text-bold"><b>{{round(($pba->achievement / $pba->weight) * 100)}}</b></td>
+                                    <!-- <td class=" text-bold"><b>{{round(($pba->achievement / $pba->weight) * 4, 2)}}</b></td> -->
+                                    <td class="text-center text-bold"><b>{{$pba->contribute_to_pe}}</b></td>
                                 </tr>
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th colspan="3" class="text-right">
-                                        <h3> Total Nilai </h3>
+                                    <th colspan="5" class="text-right">
+                                        <h3><b> Total Nilai </b></h3>
                                     </th>
                                     <th class="text-center"><span id="totalAcvBehavior" name="totalAcvBehavior"><b>
-                                                <h3> {{15 + $kpaAchievement + $pbaAchievement}} </h3>
+                                                <h3> <b> {{15 + $kpa->contribute_to_pe + $pba->contribute_to_pe}} </b> </h3>
                                             </b></span></th>
-                                    <th colspan="4"></th>
                                 </tr>
                             </tfoot>
                         </table>

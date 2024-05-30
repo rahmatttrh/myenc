@@ -21,6 +21,8 @@ class CreatePeDisciplinesTable extends Migration
             $table->unsignedTinyInteger('ijin')->default(0);
             $table->unsignedTinyInteger('terlambat')->default(0);
             $table->unsignedTinyInteger('achievement')->default(1);
+            $table->integer('weight')->default(0);
+            $table->integer('contribute_to_pe')->default(0);
             $table->string('status', 3)->default('0');
             $table->timestamps();
         });

@@ -18,6 +18,8 @@ class CreatePesTable extends Migration
             $table->bigInteger('employe_id');
             $table->date('date')->default('2024-01-01');
             $table->integer('achievement')->default(0);
+            $table->integer('weight')->default(0);
+            $table->integer('contribute_to_pe')->default(0);
             $table->string('status', 3)->default('0');
 
             $table->string('is_semester', 1)->default('0');
