@@ -44,4 +44,17 @@ class PeComponentController extends Controller
 
         return $pc->weight;
     }
+
+    public function getWeightBehavior($designationId)
+    {
+
+        $pcf = PeComponentFor::where('designation_id', $designationId)->first();
+
+        $pc = PeComponent::select('weight')
+            ->where('group_id', $pcf->group_id)
+            ->where('name', 'Behavior')
+            ->first();
+
+        return $pc->weight;
+    }
 }

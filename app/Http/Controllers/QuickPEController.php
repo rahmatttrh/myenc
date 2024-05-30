@@ -324,7 +324,6 @@ class QuickPEController extends Controller
 
         return view('pages.qpe.qpe-edit', [
             'kpa' => $kpa,
-            // 'employes' => $employes,
             'addtional' => $addtional,
             'behaviors' => $behaviors,
             'isDone' => $isDone,
@@ -339,7 +338,6 @@ class QuickPEController extends Controller
 
     public function storeBehavior(Request $req)
     {
-        // dd($req);
 
         $req->validate([
             'kpa_id' => 'required',
@@ -358,12 +356,18 @@ class QuickPEController extends Controller
             return redirect()->back()->with('danger', 'Behavior Karyawan dengan PE tersebut sudah ada');
         }
 
+        $employe = Employee::find($req->employe_id);
+
+        $pcc = new PeComponentController();
+        $weight = $pcc->getWeightBehavior($employe->contract->designation->id);
+
         // DB::beginTransaction(); // Mulai transaksi database
 
         // try {
 
         $pba = PeBehaviorApprasial::create([
-            'pe_id' => $req->pe_id
+            'pe_id' => $req->pe_id,
+            'weight' => $weight
         ]);
 
         $achievement = 0;
@@ -380,9 +384,9 @@ class QuickPEController extends Controller
             $achievement += $req->acvBehavior[$behavior_id];
         }
 
-        $updatePba = $pba->update([
-            'achievement' => $achievement
-        ]);
+        $this->calculateAcvBehavior($pba->id);
+
+        $this->calculatePe($pba->pe_id);
 
         return back()->with('success', 'Behavior berhasil di Create');
         // } catch (\Exception $e) {
@@ -402,11 +406,11 @@ class QuickPEController extends Controller
             'achievement' => $request->achievement
         ]);
 
-        $totalAchievement = PeBehaviorApprasialDetail::where('pba_id', $request->pba_id)->sum('achievement');
+        $pba = PeBehaviorApprasial::find($pbda->pba_id);
 
-        PeBehaviorApprasial::where('id', $request->pba_id)->update([
-            'achievement' => $totalAchievement
-        ]);
+        $this->calculateAcvBehavior($pba->id);
+
+        $this->calculatePe($pba->pe_id);
 
         return redirect()->back()->with('success', 'Behavior Karyawan Berhasil di Update');
     }
@@ -529,6 +533,31 @@ class QuickPEController extends Controller
 
         Pe::where('id', $kpa->pe_id)->update([
             'kpi' => $contribute
+        ]);
+    }
+
+    public function calculateAcvBehavior($pbaId)
+    {
+        $pba = PeBehaviorApprasial::find($pbaId);
+
+        $totalAchievement = PeBehaviorApprasialDetail::where('pba_id', $pba->id)->sum('achievement');
+
+        // Untuk mengakomodir jika semua achievment di tambah lebih dari 100
+        if ($totalAchievement > $pba->weight) {
+            $totalAchievement = $pba->weight;
+        }
+
+        // $contribute = round(($pba->weight / 100) * $totalAchievement);
+
+        $contribute =   $totalAchievement;
+
+        $pba->update([
+            'achievement' => $totalAchievement,
+            'contribute_to_pe' => $contribute
+        ]);
+
+        Pe::where('id', $pba->pe_id)->update([
+            'behavior' => $contribute
         ]);
     }
 
