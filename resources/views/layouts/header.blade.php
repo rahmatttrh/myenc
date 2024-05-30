@@ -35,24 +35,35 @@
                <li class="nav-item dropdown hidden-caret">
                   <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false">
                      <div class="avatar-sm">
-                        {{-- <img src="{{asset('img/businessman.png')}}" alt="..." class="avatar-img bg-light rounded"> --}}
-                        @if (auth()->user()->getEmployee()->picture == null)
-                        <img src="{{asset('img/businessman.png')}}" alt="..." class="avatar-img bg-light rounded">
+                        
+
+                        @if (auth()->user()->hasRole('Administrator'))
+                           <img src="{{asset('img/businessman.png')}}" alt="..." class="avatar-img bg-light rounded">
                         @else
-                        <img src="{{asset('storage/' . auth()->user()->getEmployee()->picture)}}" alt="..." class="avatar-img bg-light rounded">
+                           @if (auth()->user()->getEmployee()->picture == null)
+                           <img src="{{asset('img/businessman.png')}}" alt="..." class="avatar-img bg-light rounded">
+                           @else
+                           <img src="{{asset('storage/' . auth()->user()->getEmployee()->picture)}}" alt="..." class="avatar-img bg-light rounded">
+                           @endif
                         @endif
+                        
                      </div>
                   </a>
                   <ul class="dropdown-menu dropdown-user animated fadeIn">
                         <li>
                            <div class="user-box">
                               <div class="avatar-lg border rounded">
-                                 {{-- <img src="{{asset('img/businessman.png')}}" alt="image profile" class="avatar-img bg-muted"> --}}
-                                 @if (auth()->user()->getEmployee()->picture == null)
-                                 <img src="{{asset('img/businessman.png')}}" alt="..." class="avatar-img bg-muted  ">
-                                 @else
-                                 <img src="{{asset('storage/' . auth()->user()->getEmployee()->picture)}}" alt="..." class="avatar-img bg-muted  ">
+                                 
+                                 @if (auth()->user()->hasRole('Administrator'))
+                                    <img src="{{asset('img/businessman.png')}}" alt="image profile" class="avatar-img bg-muted">
+                                    @else
+                                    @if (auth()->user()->getEmployee()->picture == null)
+                                    <img src="{{asset('img/businessman.png')}}" alt="..." class="avatar-img bg-muted  ">
+                                    @else
+                                    <img src="{{asset('storage/' . auth()->user()->getEmployee()->picture)}}" alt="..." class="avatar-img bg-muted  ">
+                                    @endif
                                  @endif
+                                 
                               </div>
                               
                               <div class="u-text">
