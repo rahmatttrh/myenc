@@ -191,6 +191,7 @@ Route::middleware(["auth"])->group(function () {
    Route::prefix('sp')->group(function () {
       Route::get('/', [SpController::class, 'index'])->name('sp');
       Route::post('store', [SpController::class, 'store'])->name('sp.store');
+      Route::get('detail/{id}', [SpController::class, 'detail'])->name('sp.detail');
    });
 
    // Role Campuran  

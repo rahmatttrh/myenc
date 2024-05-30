@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee;
 use App\Models\Sp;
+use App\Models\Spkl;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -39,5 +40,14 @@ class SpController extends Controller
       ]);
 
       return redirect()->back()->with('success', 'SP submited');
+   }
+
+   public function detail($id){
+      $spkl = Spkl::get()->first();
+      $sp = Sp::find(dekripRambo($id));
+      return view('pages.sp.detail', [
+         'spkl' => $spkl,
+         'sp' => $sp
+      ]);
    }
 }
