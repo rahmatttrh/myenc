@@ -26,6 +26,7 @@ class DisciplineImport implements ToCollection, WithHeadingRow
         // // // Insert
         // try {
 
+
         foreach ($rows as $key => $row) {
 
 
@@ -33,42 +34,37 @@ class DisciplineImport implements ToCollection, WithHeadingRow
 
             // Cek dulu apakah nemu karyawannya dengan nik
 
-            if ($employee) {
+            // Memeriksa apakah employee ada dan apakah bulan berada dalam rentang 1-12 serta tahun berada dalam rentang 2024-2030
+            if ($employee && ($row['bulan'] >= 1 && $row['bulan'] <= 12) && ($row['tahun'] >= 2024 && $row['tahun'] <= 2030)) {
 
-                if (
-                    (is_numeric($row['alpa']) || is_null($row['alpa'])) &&
-                    (is_numeric($row['ijin']) || is_null($row['ijin'])) &&
-                    (is_numeric($row['terlambat']) || is_null($row['terlambat']))
-                ) {
-                    // Kode yang dijalankan jika kondisi terpenuhi
-                    # code...
-
+                // Memeriksa apakah semua nilai dari kolom 'alpa', 'ijin', dan 'terlambat' adalah angka atau null
+                if (collect(['alpa', 'ijin', 'terlambat'])->every(fn ($key) => is_numeric($row[$key]) || is_null($row[$key]))) {
+                    // Menginisialisasi variabel achievement dengan nilai default 1
                     $achievment = 1;
 
+                    // Jika alpa >= 2 atau ijin >= 3 atau terlambat > 5, maka achievement tetap 1
                     if ($row['alpa'] >= 2 || $row['ijin'] >= 3 || $row['terlambat'] > 5) {
-                        # code...
                         $achievment = 1;
-                        // 
-                    } else if ($row['alpa'] == 1 || $row['ijin'] == 2 || in_array($row['terlambat'], [4, 5])) {
-                        // 
+                        // Jika alpa == 1 atau ijin == 2 atau terlambat di antara [4, 5], maka achievement menjadi 2
+                    } elseif ($row['alpa'] == 1 || $row['ijin'] == 2 || in_array($row['terlambat'], [4, 5])) {
                         $achievment = 2;
-                        // 
-                    } else if (($row['alpa'] == null || $row['alpa'] == 0) && ($row['ijin'] == 1 || in_array($row['terlambat'], [1, 2, 3]))) {
+                        // Jika alpa == null atau 0 dan ijin == 1 atau terlambat di antara [1, 2, 3], maka achievement menjadi 3
+                    } elseif (($row['alpa'] === null || $row['alpa'] == 0) && ($row['ijin'] == 1 || in_array($row['terlambat'], [1, 2, 3]))) {
                         $achievment = 3;
-                        // 
-                    } else if (($row['alpa'] == null || $row['alpa'] == 0) && ($row['ijin'] == null || $row['ijin'] == 0) && ($row['terlambat'] == null || $row['terlambat'] == 0)) {
+                        // Jika alpa == null atau 0, ijin == null atau 0, dan terlambat == null atau 0, maka achievement menjadi 4
+                    } elseif (($row['alpa'] === null || $row['alpa'] == 0) && ($row['ijin'] === null || $row['ijin'] == 0) && ($row['terlambat'] === null || $row['terlambat'] == 0)) {
                         $achievment = 4;
-                    } 
-              
-                    // dd($achievment);
+                    }
 
-                    $create = TempDiscipline::create([
-                        'date' =>  $this->date,
+                    // Membuat entri baru di tabel TempDiscipline dengan data yang diberikan
+                    TempDiscipline::create([
                         'employe_id' => $employee->id,
+                        'bulan' => $row['bulan'],
+                        'tahun' => $row['tahun'],
                         'alpa' => $row['alpa'],
                         'ijin' => $row['ijin'],
                         'terlambat' => $row['terlambat'],
-                        'achievement' => $achievment
+                        'achievement' => $achievment,
                     ]);
                 }
             }

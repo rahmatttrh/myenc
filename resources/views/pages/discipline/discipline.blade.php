@@ -52,7 +52,7 @@ Discipline
                                 @foreach ($datas as $data)
                                 <tr>
                                     <td>{{++$i}}</td>
-                                    <td>{{dateToMonth($data->date)}}</td>
+                                    <td>{{getMonthNameIndonesian($data->bulan)}}</td>
                                     <td>{{$data->employe->biodata->fullName()}}</td>
                                     <td>{{$data->alpa}}</td>
                                     <td>{{$data->ijin}}</td>

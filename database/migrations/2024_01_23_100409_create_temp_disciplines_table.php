@@ -17,6 +17,8 @@ class CreateTempDisciplinesTable extends Migration
             $table->id();
             $table->bigInteger('employe_id');
             $table->date('date'); // tanggal untuk bulan 
+            $table->string('bulan', 2)->nullable();
+            $table->string('tahun', 4)->nullable();
             $table->unsignedTinyInteger('alpa')->default(0);
             $table->unsignedTinyInteger('ijin')->default(0);
             $table->unsignedTinyInteger('terlambat')->default(0);

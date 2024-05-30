@@ -42,6 +42,7 @@ Discipline
                                         <th><input type="checkbox" name="" id="checkboxAll"></th>
                                         <th>No</th>
                                         <th>Bulan</th>
+                                        <th>Tahun</th>
                                         <th>Employe</th>
                                         <th>Alpa</th>
                                         <th>Ijin</th>
@@ -62,7 +63,8 @@ Discipline
                                     <tr>
                                         <td><input type="checkbox" name="check[]" value="{{$data->id}}" id="check-{{$data->id}}"></td>
                                         <td class="text-center">{{++$i}}</td>
-                                        <td>{{dateToMonth($data->date)}}</td>
+                                        <td>{{getMonthNameIndonesian($data->bulan)}} </td>
+                                        <td>{{$data->tahun}}</td>
                                         <td>{{$data->first_name}} {{$data->last_name}}</td>
                                         <td>{{$data->alpa}}</td>
                                         <td>{{$data->ijin}}</td>

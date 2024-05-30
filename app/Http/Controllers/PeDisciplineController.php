@@ -48,9 +48,9 @@ class PeDisciplineController extends Controller
                                 SELECT DISTINCT temp.*, subquery.employe_count, emp.nik, bio.first_name, bio.last_name
                                     FROM temp_disciplines temp
                                     JOIN (
-                                        SELECT employe_id, COUNT(employe_id) AS employe_count, YEAR(date) AS year, MONTH(date) AS month
+                                        SELECT employe_id, COUNT(employe_id) AS employe_count, bulan, tahun
                                         FROM temp_disciplines
-                                        GROUP BY employe_id, YEAR(date), MONTH(date)
+                                        GROUP BY employe_id, bulan, tahun
                                     ) subquery ON temp.employe_id = subquery.employe_id
                                     JOIN employees emp ON temp.employe_id = emp.id
                                     JOIN biodatas bio ON emp.biodata_id = bio.id
@@ -83,9 +83,8 @@ class PeDisciplineController extends Controller
             'excel' => 'required'
         ]);
 
-        $bulan = str_pad($req->bulan, 2, '0', STR_PAD_LEFT);
 
-        $date =  $req->tahun . '-' . $bulan . '-01';
+        $date =  '';
 
         $file = $req->file('excel');
         $fileName = $file->getClientOriginalName();
@@ -123,25 +122,33 @@ class PeDisciplineController extends Controller
         try {
             DB::beginTransaction();
 
+            // Memeriksa apakah permintaan untuk menerapkan data (apply) adalah '1'
             if ($req->apply == '1') {
 
-                $apply = 0;
-                $duplikat = 0;
-                # code...
+                $apply = 0; // Inisialisasi penghitung untuk data yang berhasil diterapkan
+                $duplikat = 0; // Inisialisasi penghitung untuk data yang sudah ada (duplikat)
+
+                // Melakukan iterasi melalui setiap ID yang diperiksa dalam permintaan
                 foreach ($req->check as $key => $id) {
 
+                    // Mencari data sementara (TempDiscipline) berdasarkan ID
                     $temp = TempDiscipline::find($id);
 
+                    // Memeriksa apakah sudah ada data di PeDiscipline untuk karyawan dan tanggal yang sama
                     $cek  = PeDiscipline::where('employe_id', $temp->employe_id)
-                        ->whereDate('date', $temp->date)
-                        // ->whereMonth('')
+                        ->where('bulan', $temp->bulan)
+                        ->where('tahun', $temp->tahun)
                         ->first();
 
-                    // var_dump($cek );
+                    // Jika tidak ada data yang ditemukan (tidak ada duplikat)
                     if (!$cek) {
-                        # code...]
+
+
+
+                        // Membuat entri baru di PeDiscipline dengan data dari TempDiscipline
                         $create = PeDiscipline::create([
-                            'date' =>  $temp->date,
+                            'bulan' =>  $temp->bulan,
+                            'tahun' =>  $temp->tahun,
                             'employe_id' => $temp->employe_id,
                             'alpa' => $temp->alpa,
                             'ijin' => $temp->ijin,
@@ -151,46 +158,46 @@ class PeDisciplineController extends Controller
                             'updated_at' => NOW()
                         ]);
 
+                        // Menghapus entri dari TempDiscipline setelah dipindahkan ke PeDiscipline
                         $delete = $temp->delete();
 
-                        $apply++;
+                        $apply++; // Menambahkan penghitung untuk data yang berhasil diterapkan
                     } else {
-                        $duplikat++;
+                        $duplikat++; // Menambahkan penghitung untuk data yang duplikat
                     }
                 }
 
+                $pesan1 = ''; // Pesan untuk data yang berhasil diterapkan
+                $pesan2 = ''; // Pesan untuk data yang duplikat
 
-                $pesan1 = '';
-                $pesan2 = '';
-
+                // Membuat pesan jika ada data yang berhasil diterapkan
                 if ($apply > 0) {
-                    # code...
                     $pesan1 = $apply . ' Data successfully apply ';
                 }
+
+                // Membuat pesan jika ada data yang duplikat
                 if ($duplikat > 0) {
-                    # code...
                     $pesan2 = $duplikat . ' Data already available ';
                 }
 
-                // 
-                // Validasi jika data sudah ada di table PeDiscipline
-
+                // Membuat array pesan untuk dikembalikan sebagai tanggapan
                 $message = [
                     'success' => $pesan1,
                     'danger' => $pesan2,
                 ];
-                // 
-            } else if ($req->delete == '1') {
-                # code...
+            }
+            // Memeriksa apakah permintaan untuk menghapus data (delete) adalah '1'
+            else if ($req->delete == '1') {
 
+                // Melakukan iterasi melalui setiap ID yang diperiksa dalam permintaan
                 foreach ($req->check as $key => $id) {
-                    # code...
-                    // Hapus Data
+                    // Menghapus data dari TempDiscipline berdasarkan ID
                     $delete = TempDiscipline::destroy($id);
                 }
 
-                $message = 'Data successfully deleted';
+                $message = 'Data successfully deleted'; // Pesan untuk data yang berhasil dihapus
             }
+
 
 
             // Commit transaksi jika semua operasi berhasil
