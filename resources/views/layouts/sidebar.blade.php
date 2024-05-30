@@ -5,11 +5,16 @@
       <div class="sidebar-content">
          <div class="user">
             <div class="avatar-sm border rounded float-left mr-2">
-               @if (auth()->user()->getEmployee()->picture == null)
-               <img src="{{asset('img/businessman.png')}}" alt="..." class="avatar-img bg-muted  ">
-               @else
-               <img src="{{asset('storage/' . auth()->user()->getEmployee()->picture)}}" alt="..." class="avatar-img bg-muted  ">
+               @if (auth()->user()->hasRole('Administrator'))
+                  <img src="{{asset('img/businessman.png')}}" alt="..." class="avatar-img bg-muted  ">
+                  @else
+                  @if (auth()->user()->getEmployee()->picture == null)
+                  <img src="{{asset('img/businessman.png')}}" alt="..." class="avatar-img bg-muted  ">
+                  @else
+                  <img src="{{asset('storage/' . auth()->user()->getEmployee()->picture)}}" alt="..." class="avatar-img bg-muted  ">
+                  @endif
                @endif
+               
                
             </div>
             <div class="info">
@@ -299,6 +304,13 @@
                   </li> --}}
                </ul>
             </div>
+         </li>
+
+         <li class="nav-item {{ (request()->is('employee/*')) ? 'active' : '' }}">
+            <a href="{{route('sp')}}">
+               <i class="fas fa-file-code"></i>
+               <p>SP</p>
+            </a>
          </li>
          @endif
       </ul>

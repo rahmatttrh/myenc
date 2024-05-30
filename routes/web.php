@@ -24,6 +24,7 @@ use App\Http\Controllers\PresenceController;
 use App\Http\Controllers\QuickPEController;
 use App\Http\Controllers\SocialAccountController;
 use App\Http\Controllers\SoController;
+use App\Http\Controllers\SpController;
 use App\Http\Controllers\SpklController;
 use App\Http\Controllers\SubDeptController;
 use App\Http\Controllers\UnitController;
@@ -186,6 +187,11 @@ Route::middleware(["auth"])->group(function () {
       });
    });
 
+
+   Route::prefix('sp')->group(function () {
+      Route::get('/', [SpController::class, 'index'])->name('sp');
+      Route::post('store', [SpController::class, 'store'])->name('sp.store');
+   });
 
    // Role Campuran  
 

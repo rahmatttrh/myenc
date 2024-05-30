@@ -99,6 +99,10 @@ class Employee extends Model
       return $this->hasMany(Spkl::class);
    }
 
+   public function sps(){
+      return $this->hasMany(Sp::class);
+   }
+
    // public function shift()
    // {
    //    return $this->belongsTo(Shift::class);
