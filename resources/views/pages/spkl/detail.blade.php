@@ -104,7 +104,7 @@ SPKL Detail
                         Fax 621113
                      </div>
                   </div> --}}
-                  <div class="card-body">
+                  <div class="card-body pt-4 px-4">
                      <div class="d-flex justify-content-between">
                         <div>
                            <img src="{{asset('img/logo/enc2.jpg')}}"  alt="company logo"><br>
@@ -234,32 +234,26 @@ SPKL Detail
                         </div>	
                      </div> --}}
                      <div class="page-divider"></div>
-                     <div class="row">
-                        <div class="col-md-4">
-                           <p>Request by : <br>
-                           Atasan Langsung
-                           </p>
-                           <br><br><br>
+                     <table>
+                        <tbody>
+                           <tr>
+                              <th>Request by : <br> Atasan Langsung</th>
+                              <th>Approved by : <br> GM/Manager</th>
+                              <th>Employee</th>
+                           </tr>
+                           <tr>
+                              <td style="height: 80px"></td>
+                              <td></td>
+                              <td></td>
+                           </tr>
+                           <tr>
+                              <td>Nama : {{$spv->biodata->first_name}} {{$spv->biodata->last_name}}</td>
+                              <td>Nama : {{$manager->biodata->first_name}} {{$manager->biodata->last_name}}</td>
+                              <td>Nama : {{$spkl->employee->biodata->first_name}} {{$spkl->employee->biodata->last_name}}</td>
+                           </tr>
+                        </tbody>
+                     </table>
 
-                           <p>Nama : {{$spv->biodata->first_name}} {{$spv->biodata->last_name}}</p>
-                        </div>
-                        <div class="col-md-4">
-                           <p>Approved by : <br>
-                           GM/Manager
-                           </p>
-                           <br><br><br>
-
-                           <p>Nama : {{$manager->biodata->first_name}} {{$manager->biodata->last_name}}</p>
-                        </div>
-                        <div class="col-md-4">
-                           <p>Employee <br>
-                              -
-                           </p>
-                           <br><br><br>
-
-                           <p>Nama : {{$spkl->employee->biodata->first_name}} {{$spkl->employee->biodata->last_name}}</p>
-                        </div>
-                     </div>
                   </div>
                   <div class="card-footer">
                      {{-- <div class="row">

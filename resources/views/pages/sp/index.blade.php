@@ -59,12 +59,12 @@ SP
                      <input type="date" class="form-control"  name="date_from" id="date_from">
                   </div>
                </div>
-               <div class="col-md-6">
+               {{-- <div class="col-md-6">
                   <div class="form-group form-group-default">
                      <label>Berlaku sampai</label>
                      <input type="date" class="form-control"  name="date_to" id="date_to">
                   </div>
-               </div>
+               </div> --}}
             </div>
             
             <div class="form-group form-group-default">
@@ -93,7 +93,7 @@ SP
                   @foreach ($sps as $sp)
                       <tr>
                         <td class="text-center">{{++$i}}</td>
-                        <td><a href="{{}}">{{$sp->code}}</a> </td>
+                        <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->code}}</a> </td>
                            <td>{{$sp->employee->biodata->first_name}} {{$sp->employee->biodata->last_name}}</td>
                            {{-- <td>{{formatDate($sp->date)}}</td> --}}
                            <td class="text-truncate" style="max-width: 180px">{{$sp->desc}}</td>

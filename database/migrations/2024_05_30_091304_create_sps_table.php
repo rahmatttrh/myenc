@@ -15,8 +15,11 @@ class CreateSpsTable extends Migration
     {
         Schema::create('sps', function (Blueprint $table) {
             $table->id();
+            $table->integer('status');
             $table->integer('employee_id');
-            $table->date('date');
+            $table->date('date_from');
+            $table->date('date_to');
+            $table->string('level');
             $table->string('desc');
             $table->timestamps();
         });

@@ -5,7 +5,10 @@ SPKL Detail
 @section('content')
 
 <style>
+
+html { -webkit-print-color-adjust: exact; }
    @media print {
+
    header, footer, nav, aside, .sidebar, .main-header, .hide {
       display: none;
    }
@@ -41,44 +44,14 @@ SPKL Detail
                      Complete
                    @endif
                </h6>
-               <h5 class="page-title">{{$spkl->code}}</h5>
+               <h5 class="page-title">{{$sp->code}}</h5>
                
             </div>
             <div class="col-auto">
                {{-- <a href="#" class="btn btn-light btn-border">
                   Download
                </a> --}}
-               @if (auth()->user()->hasRole('Karyawan'))
-                   @if ($spkl->status == 0)
-                     <a href="#" class="btn btn-primary " data-toggle="modal" data-target="#modal-spkl-send">
-                        <i class="fa fa-rocket"></i>
-                        Send
-                     </a>
-                     <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#modal-spkl-delete">
-                        <i class="fa fa-trash"></i>
-                        Delete
-                     </a>
-                     
-                   @endif
-               @endif
-
-               @if (auth()->user()->hasRole('Supervisor'))
-                  @if ($spkl->status == 1)
-                  <a href="#" class="btn btn-primary ml-2" data-toggle="modal" data-target="#modal-spkl-approve-supervisor">
-                     <i class="fa fa-check"></i>
-                     Approve Spv
-                  </a>
-                  @endif
-               @endif
-
-               @if (auth()->user()->hasRole('Manager'))
-                  @if ($spkl->status == 1 || $spkl->status == 2)
-                  <a href="#" class="btn btn-primary ml-2" data-toggle="modal" data-target="#modal-spkl-approve-manager">
-                     <i class="fa fa-check"></i>
-                     Approve Manager
-                  </a>
-                  @endif
-               @endif
+               
                
                <button type="button" class="btn btn-light border" onclick="javascript:window.print();">
                   <!-- Download SVG icon from http://tabler-icons.io/i/printer -->
@@ -104,25 +77,19 @@ SPKL Detail
                         Fax 621113
                      </div>
                   </div> --}}
-                  <div class="card-body">
-                     <div class="d-flex justify-content-between">
-                        <div>
-                           <img src="{{asset('img/logo/enc2.jpg')}}"  alt="company logo"><br>
-                           <p>FM.PS.HRD.12</p>
-                           
-                        </div>
-                        <div class="text-right">
-                           <h3>FORMULIR</h3>
-                           <h3>SURAT PERINTAH KERJA LEMBUR</h3>
-                        </div>
+                  <div class="card-body pt-4 px-4">
+                     
+                     <div class="text-center mt-2">
+                        <h3>SURAT PERINGATAN I</h3>
+                        <span>{{$sp->code}}</span>
                      </div>
                     
                      {{-- <div class="separator-solid"></div> --}}
                      <hr>
-                     <p>Dengan ini kami memberikan tugas kerja lembur kepada :</p>
+                     <p>Kepada Yth.</p>
 
                      <div class="row">
-                        <div class="col-6">
+                        <div class="col-12">
                            <div class="row">
                               <div class="col-md-3">Nama</div>
                               <div class="col-md-9">: {{$spkl->employee->biodata->first_name}} {{$spkl->employee->biodata->last_name}}</div>
@@ -136,32 +103,19 @@ SPKL Detail
                               <div class="col-md-9">: {{$spkl->employee->position->name}}</div>
                            </div>
                            <div class="row">
-                              <div class="col-md-3">Departmen</div>
+                              <div class="col-md-3">Departmen/Divisi</div>
                               <div class="col-md-9">: {{$spkl->employee->department->name}}</div>
                            </div>
                            <div class="row">
-                              <div class="col-md-3">Pekerjaan</div>
-                              <div class="col-md-9">: {{$spkl->desc}}</div>
+                              <div class="col-md-12">Sehubugan dengan pelanggaran yang Saudara/i lakukan, yaitu :</div>
+                              {{-- <div class="col-md-9">: {{$spkl->desc}}</div> --}}
+                           </div>
+
+                           <div class="row mb-4 mt-2">
+                              <div class="col"></div>
                            </div>
                         </div>
-                        <div class="col-6">
-                           <div class="row">
-                              <div class="col-md-4">Hari/Tanggal</div>
-                              <div class="col-md-8">: {{formatDayDate($spkl->date)}}</div>
-                           </div>
-                           <div class="row">
-                              <div class="col-md-4">Waktu</div>
-                              <div class="col-md-8">: {{formatTime($spkl->employee->contract->shift->out)}} s/d {{formatTime($spkl->end)}}</div>
-                           </div>
-                           <div class="row">
-                              <div class="col-md-4">Lama lembur</div>
-                              <div class="col-md-8">: {{formatTime($spkl->total)}} Jam</div>
-                           </div>
-                           <div class="row">
-                              <div class="col-md-4">Lokasi </div>
-                              <div class="col-md-8">: {{$spkl->loc}}</div>
-                           </div>
-                        </div>
+                        
                      </div>
                      
                      
@@ -169,122 +123,53 @@ SPKL Detail
                      
                      
                      <br>
-                     <p>Demikian untuk dilaksanakan. <br>Jakarta, {{formatDateB($spkl->date)}}</p>
+                     <p>Maka sesuai dengan peraturan yang berlaku (Peraturan Perusahaan Pasal 45 Ayat 1 Butir 1) kepada Saudari diberikan sanksi berupa  SURAT PERINGATAN I.</p>
+
+                     <p>Setelah Saudara/i menerima SURAT PERINGATAN I ini, diharapkan Saudara/i dapat merubah sikap Saudari dan kembali bekerja dengan baik.</p>
+
+                     <p>Surat peringatan ini berlaku selama 6 bulan, Efektif tanggal {{formatDate($sp->date_from)}} s/d {{formatDate($sp->date_to)}}.</p>
+
+                     <p>Apabila ternyata Saudari kembali berbuat sesuatu kesalahan atau pelanggaran yang dapat diberikan sanksi, maka kepada Saudari akan diberikan sanksi yang lebih keras dan dapat berakibat pemutusan hubungan kerja antara perusahaan dengan Saudari.</p>
+
+                     <p>Semoga dapat dimengerti dan dimaklumi.</p>
                      
-                     {{-- <div class="row">
-                        <div class="col-md-12">
-                           <div class="invoice-detail">
-                              <div class="invoice-top">
-                                 <h3 class="title"><strong>Order summary</strong></h3>
-                              </div>
-                              <div class="invoice-item">
-                                 <div class="table-responsive">
-                                    <table class="table table-striped">
-                                       <thead>
-                                          <tr>
-                                             <td><strong>Item</strong></td>
-                                             <td class="text-center"><strong>Price</strong></td>
-                                             <td class="text-center"><strong>Quantity</strong></td>
-                                             <td class="text-right"><strong>Totals</strong></td>
-                                          </tr>
-                                       </thead>
-                                       <tbody>
-                                          <tr>
-                                             <td>BS-200</td>
-                                             <td class="text-center">$10.99</td>
-                                             <td class="text-center">1</td>
-                                             <td class="text-right">$10.99</td>
-                                          </tr>
-                                          <tr>
-                                             <td>BS-400</td>
-                                             <td class="text-center">$20.00</td>
-                                             <td class="text-center">3</td>
-                                             <td class="text-right">$60.00</td>
-                                          </tr>
-                                          <tr>
-                                             <td>BS-1000</td>
-                                             <td class="text-center">$600.00</td>
-                                             <td class="text-center">1</td>
-                                             <td class="text-right">$600.00</td>
-                                          </tr>
-                                          <tr>
-                                             <td></td>
-                                             <td></td>
-                                             <td class="text-center"><strong>Subtotal</strong></td>
-                                             <td class="text-right">$670.99</td>
-                                          </tr>
-                                          <tr>
-                                             <td></td>
-                                             <td></td>
-                                             <td class="text-center"><strong>Shipping</strong></td>
-                                             <td class="text-right">$15</td>
-                                          </tr>
-                                          <tr>
-                                             <td></td>
-                                             <td></td>
-                                             <td class="text-center"><strong>Total</strong></td>
-                                             <td class="text-right">$685.99</td>
-                                          </tr>
-                                       </tbody>
-                                    </table>
-                                 </div>
-                              </div>
-                           </div>	
-                           <div class="separator-solid  mb-3"></div>
-                        </div>	
-                     </div> --}}
+                     
                      <div class="page-divider"></div>
-                     <div class="row">
-                        <div class="col-md-4">
-                           <p>Request by : <br>
-                           Atasan Langsung
-                           </p>
-                           <br><br><br>
-
-                           <p>Nama : {{$spv->biodata->first_name}} {{$spv->biodata->last_name}}</p>
-                        </div>
-                        <div class="col-md-4">
-                           <p>Approved by : <br>
-                           GM/Manager
-                           </p>
-                           <br><br><br>
-
-                           <p>Nama : {{$manager->biodata->first_name}} {{$manager->biodata->last_name}}</p>
-                        </div>
-                        <div class="col-md-4">
-                           <p>Employee <br>
-                              -
-                           </p>
-                           <br><br><br>
-
-                           <p>Nama : {{$spkl->employee->biodata->first_name}} {{$spkl->employee->biodata->last_name}}</p>
-                        </div>
-                     </div>
+                     <table>
+                        <tbody>
+                           <tr>
+                              <th>Diajukan oleh</th>
+                              <th>Disetujui oleh</th>
+                              <th>Diketahui oleh</th>
+                              <th>Diterima</th>
+                           </tr>
+                           <tr>
+                              <td style="height: 80px"></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                           </tr>
+                           <tr>
+                              <td>Nama :</td>
+                              <td>Nama :</td>
+                              <td>Nama :</td>
+                              <td>Nama :</td>
+                           </tr>
+                        </tbody>
+                     </table>
+                     
+                     
                   </div>
-                  <div class="card-footer">
-                     {{-- <div class="row">
-                        <div class="col-sm-7 col-md-5 mb-3 mb-md-0 transfer-to">
-                           <h5 class="sub">Bank Transfer</h5>
-                           <div class="account-transfer">
-                              <div><span>Account Name:</span><span>Syamsuddin</span></div>
-                              <div><span>Account Number:</span><span>1234567890934</span></div>
-                              <div><span>Code:</span><span>BARC0032UK</span></div>
-                           </div>
-                        </div>
-                        <div class="col-sm-5 col-md-7 transfer-total">
-                           <h5 class="sub">Total Amount</h5>
-                           <div class="price">$685.99</div>
-                           <span>Taxes Included</span>
-                        </div>
-                     </div> --}}
-                     {{-- <div class="separator-solid"></div> --}}
+                  {{-- <div class="page-divider"></div> --}}
+                  {{-- <div class="card-footer">
+                     
                      <h6 class="text-uppercase mt-4 mb-3 fw-bold">
                         Notes
                      </h6>
                      <p class="text-muted mb-0">
                         We really appreciate your business and if there's anything else we can do, please let us know! Also, should you need us to add VAT or anything else to this order, it's super easy since this is a template, so just ask!
                      </p>
-                  </div>
+                  </div> --}}
                </div>
             </div>
          </div>
