@@ -516,19 +516,19 @@ PE
                         @csrf
                         <div class="form-group form-group-default">
                             <label>Alpa</label>
-                            <label for="" class="float-right">0</label>
+                            <label for="" class="float-right">{{ $pd ? $pd->alpa : 0 }}</label>
                         </div>
                         <div class="form-group form-group-default">
                             <label>Ijin</label>
-                            <label for="" class="float-right">0</label>
+                            <label for="" class="float-right">{{ $pd ? $pd->ijin : 0 }}</label>
                         </div>
                         <div class="form-group form-group-default">
                             <label>Terlambat</label>
-                            <label for="" class="float-right">0</label>
+                            <label for="" class="float-right">{{ $pd ? $pd->terlambat : 0 }}</label>
                         </div>
                         <div class="form-group form-group-default bg-success">
                             <label>Value</label>
-                            <label for="" class="float-right">4</label>
+                            <label for="" class="float-right">{{ $pd ? $pd->achievement : 0 }}</label>
                         </div>
                         <div class="form-group form-group-default ">
                             <label>Bobot</label>
@@ -537,7 +537,7 @@ PE
                         <div class="form-group form-group-default bg-success">
                             <label> <b>Achievement</b></label>
                             <label for="" class="float-right">
-                                <h3>15</h3>
+                                <h3>{{ $pd ? $pd->contribute_to_pe : 0 }}</h3>
                             </label>
                         </div>
                     </form>
@@ -668,7 +668,11 @@ PE
                                 <tfoot>
                                     <tr>
                                         <th colspan="5" class="text-right">Achievement</th>
+                                        @if(isset($pba))
                                         <th><span id="totalAcvBehavior" name="totalAcvBehavior">{{$pba->achievement}}</span></th>
+                                        @else
+                                        <th><span id="totalAcvBehavior" name="totalAcvBehavior">-</span></th>
+                                        @endif
                                     </tr>
                                 </tfoot>
                             </table>
@@ -688,6 +692,28 @@ PE
         </div>
     </div>
 
+    @php
+
+    if($pd){
+
+    $pdAchievement = $pd->contribute_to_pe;
+
+    } else {
+
+    $pdAchievement = 0;
+
+    }
+
+    if($pba) {
+    $pbaAchievement = $pba->achievement;
+    }else {
+    $pbaAchievement = 0;
+    }
+
+
+
+
+    @endphp
     <!-- rangkuman nilai -->
     <div class="row">
         <div class="col-md-12">
@@ -714,9 +740,9 @@ PE
                                     <td class="text-center">DISIPLIN</td>
                                     <td class="text-center">3</td>
                                     <td class="text-center">15</td>
-                                    <td class="text-center"><b>{{(15/15)*100}}</b></td>
+                                    <td class="text-center"><b>{{round(($pdAchievement/15)*100)}}</b></td>
                                     <!-- <td class="">{{round((4.00/4)* 4 , 2)}}</td> -->
-                                    <td class="text-center text-bold"><b>15</b></td>
+                                    <td class="text-center text-bold"><b>{{ $pdAchievement }}</b></td>
                                 </tr>
                                 <tr>
                                     <td>2</td>
@@ -730,11 +756,17 @@ PE
                                 <tr>
                                     <td>3</td>
                                     <td class="text-center">BEHAVIOR</td>
+                                    @if(isset($pba))
                                     <td class="text-center">{{$behaviors->count()}}</td>
                                     <td class="text-center">{{$pba->weight}}</td>
                                     <td class="text-center text-bold"><b>{{round(($pba->achievement / $pba->weight) * 100)}}</b></td>
-                                    <!-- <td class=" text-bold"><b>{{round(($pba->achievement / $pba->weight) * 4, 2)}}</b></td> -->
                                     <td class="text-center text-bold"><b>{{$pba->contribute_to_pe}}</b></td>
+                                    @else
+                                    <td class="text-center">-</td>
+                                    <td class="text-center">-</td>
+                                    <td class="text-center text-bold"><b>-</b></td>
+                                    <td class="text-center text-bold"><b>-</b></td>
+                                    @endif
                                 </tr>
                             </tbody>
                             <tfoot>
@@ -742,9 +774,11 @@ PE
                                     <th colspan="5" class="text-right">
                                         <h3><b> Total Nilai </b></h3>
                                     </th>
-                                    <th class="text-center"><span id="totalAcvBehavior" name="totalAcvBehavior"><b>
-                                                <h3> <b> {{15 + $kpa->contribute_to_pe + $pba->contribute_to_pe}} </b> </h3>
-                                            </b></span></th>
+                                    <th class="text-center"><span id="totalAcvBehavior" name="totalAcvBehavior">
+                                            <h3>
+                                                <b> {{$pe->achievement}} </b>
+                                            </h3>
+                                        </span></th>
                                 </tr>
                             </tfoot>
                         </table>

@@ -53,7 +53,7 @@ Discipline
                                 <tr>
                                     <td>{{++$i}}</td>
                                     <td>{{getMonthNameIndonesian($data->bulan)}}</td>
-                                    <td>{{$data->employe->biodata->fullName()}}</td>
+                                    <td>{{$data->pd->employe->biodata->fullName()}}</td>
                                     <td>{{$data->alpa}}</td>
                                     <td>{{$data->ijin}}</td>
                                     <td>{{$data->terlambat}}</td>

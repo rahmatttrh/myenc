@@ -7,6 +7,7 @@ use App\Models\Department;
 use App\Models\Designation;
 use App\Models\Employee;
 use App\Models\PeDiscipline;
+use App\Models\PeDisciplineDetail;
 use App\Models\TempDiscipline;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -23,7 +24,7 @@ class PeDisciplineController extends Controller
         $designations = Designation::orderBy('name')->get();
         $departements = Department::orderBy('name')->get();
 
-        $datas = PeDiscipline::get();
+        $datas = PeDisciplineDetail::get();
 
 
         return view('pages.discipline.discipline', [
@@ -135,7 +136,7 @@ class PeDisciplineController extends Controller
                     $temp = TempDiscipline::find($id);
 
                     // Memeriksa apakah sudah ada data di PeDiscipline untuk karyawan dan tanggal yang sama
-                    $cek  = PeDiscipline::where('employe_id', $temp->employe_id)
+                    $cek  = PeDisciplineDetail::where('employe_id', $temp->employe_id)
                         ->where('bulan', $temp->bulan)
                         ->where('tahun', $temp->tahun)
                         ->first();
@@ -143,13 +144,41 @@ class PeDisciplineController extends Controller
                     // Jika tidak ada data yang ditemukan (tidak ada duplikat)
                     if (!$cek) {
 
+                        if ($temp->bulan >= 1 && $temp->bulan <= 6) {
+                            $semester =  1; // Semester 1: Januari sampai Juni
+                        } else {
+                            $semester =  2; // Semester 2: Juli sampai Desember
+                        }
+
+
+                        $pd = PeDiscipline::where('employe_id', $temp->employe_id)
+                            ->where('tahun', $temp->tahun)
+                            ->where('semester', $semester)
+                            ->first();
+
+                        if (!isset($pd)) {
+                            # code...
+                            // echo 'ga ada';
+                            $employe = Employee::find($temp->employe_id);
+
+                            $pcc = new PeComponentController();
+                            $weight = $pcc->getWeightDiscipline($employe->contract->designation->id); // Memanggi
+
+                            $pd = PeDiscipline::create([
+                                'employe_id' => $temp->employe_id,
+                                'tahun' => $temp->tahun,
+                                'semester' => $semester,
+                                'weight' => $weight
+                            ]);
+                        }
 
 
                         // Membuat entri baru di PeDiscipline dengan data dari TempDiscipline
-                        $create = PeDiscipline::create([
+                        $pdd = PeDisciplineDetail::create([
+                            'pd_id' => $pd->id,
+                            'employe_id' => $temp->employe_id,
                             'bulan' =>  $temp->bulan,
                             'tahun' =>  $temp->tahun,
-                            'employe_id' => $temp->employe_id,
                             'alpa' => $temp->alpa,
                             'ijin' => $temp->ijin,
                             'terlambat' => $temp->terlambat,
@@ -157,6 +186,15 @@ class PeDisciplineController extends Controller
                             'created_at' => NOW(),
                             'updated_at' => NOW()
                         ]);
+
+
+                        $this->updateValueDiscipline($pd);
+
+
+                        $qpc = new QuickPEController();
+                        $qpc->calculatePe($pd->pe_id);
+
+
 
                         // Menghapus entri dari TempDiscipline setelah dipindahkan ke PeDiscipline
                         $delete = $temp->delete();
@@ -212,5 +250,30 @@ class PeDisciplineController extends Controller
             // Misalnya, log pesan kesalahan atau kembalikan respons kesalahan ke pengguna
             return response()->json(['error' => $e->getMessage()], 500);
         }
+    }
+
+    public function updateValueDiscipline($pd)
+    {
+
+        // Menggunakan selectRaw untuk menjumlahkan beberapa kolom sekaligus dengan kondisi where
+        $totalAlpa = PeDisciplineDetail::where('pd_id', $pd->id)->sum('alpa');
+        $totalIjin = PeDisciplineDetail::where('pd_id', $pd->id)->sum('ijin');
+        $totalTerlambat = PeDisciplineDetail::where('pd_id', $pd->id)->sum('terlambat');
+        $totalAchievement = PeDisciplineDetail::where('pd_id', $pd->id)->sum('achievement');
+
+
+        $pdds = PeDisciplineDetail::where('pd_id', $pd->id)->get();
+
+
+        $totalAchievement = $totalAchievement / $pdds->count();
+        $contributeToPe = round(($totalAchievement / 4) * $pd->weight);
+
+        $pd->update([
+            'alpa' => $totalAlpa,
+            'ijin' => $totalIjin,
+            'terlambat' => $totalTerlambat,
+            'achievement' => $totalAchievement,
+            'contribute_to_pe' => $contributeToPe
+        ]);
     }
 }

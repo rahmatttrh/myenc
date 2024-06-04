@@ -10,6 +10,7 @@ use App\Models\PeBehavior;
 use App\Models\PeBehaviorApprasial;
 use App\Models\PeBehaviorApprasialDetail;
 use App\Models\PeComponent;
+use App\Models\PeDiscipline;
 use App\Models\PeKpa;
 use App\Models\PekpaDetail;
 use App\Models\PeKpi;
@@ -159,6 +160,7 @@ class QuickPEController extends Controller
     // Store Apprasial
     public function store(Request $req)
     {
+        // Validasi input
         $req->validate([
             'kpi_id' => 'required',
             'employe_id' => 'required',
@@ -167,97 +169,97 @@ class QuickPEController extends Controller
             'date' => 'required'
         ]);
 
-        // Validasi New
+        // Memeriksa apakah PE untuk karyawan pada semester dan tahun tertentu sudah ada
         $cek = Pe::where([
             'employe_id' => $req->employe_id,
             'semester' => $req->semester,
             'tahun' => $req->tahun
         ])->first();
 
-
-
         if ($cek) {
             return redirect()->back()->with('danger', 'PE Karyawan di semester dan tahun tersebut sudah ada');
         }
 
-        $employe = Employee::find($req->employe_id);
+        // Memulai transaksi database
+        DB::beginTransaction();
 
-        $pcc = new PeComponentController();
-        $weight = $pcc->getWeightKpi($employe->contract->designation->id); // Memanggil fungsi show dari ProfileController
+        try {
+            // Mencari data karyawan
+            $employe = Employee::find($req->employe_id);
 
-        // Insert PE
+            // Memanggil fungsi dari controller lain untuk mendapatkan weight KPI
+            $pcc = new PeComponentController();
+            $weight = $pcc->getWeightKpi($employe->contract->designation->id);
 
-        $pe = Pe::create([
-            'employe_id' => $req->employe_id,
-            'date' => $req->date,
-            'is_semester' => '1',
-            'semester' => $req->semester,
-            'tahun' => $req->tahun,
-            'created_at' => NOW(),
-            'updated_at' => NOW()
-        ]);
+            // Menyisipkan data PE baru ke database
+            $pe = Pe::create([
+                'employe_id' => $req->employe_id,
+                'date' => $req->date,
+                'is_semester' => '1',
+                'semester' => $req->semester,
+                'tahun' => $req->tahun,
+                'created_at' => NOW(),
+                'updated_at' => NOW()
+            ]);
 
+            // Menyisipkan data KPA baru ke database
+            $kpa = PeKpa::create([
+                'pe_id' => $pe->id,
+                'kpi_id' => $req->kpi_id,
+                'employe_id' => $req->employe_id,
+                'date' => $req->date,
+                'is_semester' => '1',
+                'semester' => $req->semester,
+                'tahun' => $req->tahun,
+                'weight' => $weight
+            ]);
 
-        // Insert KPA
-        $kpa = PeKpa::create([
-            'pe_id' => $pe->id,
-            'kpi_id' => $req->kpi_id,
-            'employe_id' => $req->employe_id,
-            'date' => $req->date,
-            'is_semester' => '1',
-            'semester' => $req->semester,
-            'tahun' => $req->tahun,
-            'weight' => $weight
-        ]);
+            // Mengenkripsi ID KPA untuk digunakan dalam URL
+            $kpaId = enkripRambo($kpa->id);
 
+            // Menyisipkan detail KPI ke database
+            $arrays = $req->qty;
+            foreach ($arrays as $kpidetail_id => $value) {
+                if (isset($req->attachment[$kpidetail_id])) {
+                    // Menyimpan file lampiran jika ada
+                    $pdfFile = $req->attachment[$kpidetail_id];
+                    $pdfFileName = time() . '_' . $kpidetail_id . '.pdf';
+                    $pdfFile->storeAs('kpa-evidence', $pdfFileName, 'public');
+                    $evidence = 'kpa-evidence/' . $pdfFileName;
+                } else {
+                    $evidence = null;
+                }
 
-        $kpaId = enkripRambo($kpa->id);
+                // Mendapatkan detail KPI
+                $kpiDetail = PekpiDetail::find($kpidetail_id);
+                // Menghitung pencapaian
+                $achievement = round(($value / $kpiDetail->target) * $kpiDetail->weight);
 
-        // Insert KPI Detail
-        $arrays = $req->qty;
-        foreach ($arrays as $kpidetail_id => $value) {
-
-
-
-            if (isset($req->attachment[$kpidetail_id])) {
-                # code...
-                $pdfFile = $req->attachment[$kpidetail_id];
-
-                $pdfFileName = time() . '_' . $kpidetail_id . '.pdf';
-                $pdfFile->storeAs('kpa-evidence', $pdfFileName, 'public');
-
-                $evidence = 'kpa-evidence/' . $pdfFileName;
-            } else {
-                # code...
-                $evidence = null;
+                // Menyisipkan detail KPA ke database
+                $kpaDetail = PekpaDetail::create([
+                    'kpa_id' => $kpa->id,
+                    'kpidetail_id' => $kpidetail_id,
+                    'value' => $value,
+                    'achievement' => $achievement,
+                    'evidence' => $evidence
+                ]);
             }
 
-            // Cek KPI Detail
-            $kpiDetail = PekpiDetail::find($kpidetail_id);
+            // Menghitung ulang pencapaian KPA
+            $this->calculateAcvKpa($kpa->id);
 
-            // dd($kpiDetail);
+            // Menghitung ulang pencapaian PE
+            $this->calculatePe($pe->id);
 
-            $achievement = round(($value / $kpiDetail->target) * $kpiDetail->weight);
+            // Mengonfirmasi transaksi
+            DB::commit();
 
-            $kpaDetail = PekpaDetail::create([
-                'kpa_id' => $kpa->id,
-                'kpidetail_id' => $kpidetail_id,
-                'value' => $value,
-                'achievement' => $achievement,
-                'evidence' => $evidence
-            ]);
+            return redirect('/qpe/edit/' . $kpaId)->with('success', 'KPI successfully added');
+        } catch (\Exception $e) {
+            // Membatalkan transaksi jika terjadi kesalahan
+            DB::rollBack();
+            return redirect()->back()->with('danger', 'An error occurred: ' . $e->getMessage());
         }
-
-        // Kalkulasi KPA
-        $this->calculateAcvKpa($kpa->id);
-
-        // Kalkulasi PE
-
-        $this->calculatePe($pe->id);
-
-
-
-        return redirect('/qpe/edit/' . $kpaId)->with('success', 'KPI successfully added');
     }
 
 
@@ -320,6 +322,10 @@ class QuickPEController extends Controller
             $pbads = null;
         }
 
+        $pe = Pe::find($kpa->pe_id);
+
+        $pd = PeDiscipline::where('pe_id', $kpa->pe_id)->first();
+
         // dd($employes);
 
         return view('pages.qpe.qpe-edit', [
@@ -328,8 +334,10 @@ class QuickPEController extends Controller
             'behaviors' => $behaviors,
             'isDone' => $isDone,
             'isReject' => $isReject,
+            'pd' => $pd,
             'pba' => $pba,
             'pbads' => $pbads,
+            'pe' => $pe,
             'kpaAchievement' => 0,
             'pbaAchievement' => 0,
             'datas' => $datas
@@ -566,8 +574,65 @@ class QuickPEController extends Controller
 
         $pe = Pe::find($peId);
 
+        $this->createAndUpdateDiscipline($pe);
+
         $pe->update([
             'achievement' => $pe->discipline + $pe->kpi + $pe->behavior
+        ]);
+    }
+
+    public function createAndUpdateDiscipline($pe)
+    {
+        // Pe Discipline
+        // Mencari data PeDiscipline berdasarkan pe_id
+        $pd = PeDiscipline::where([
+            'pe_id' => $pe->id
+        ])->first();
+
+        // Jika data tidak ditemukan berdasarkan pe_id
+        if (!isset($pd)) {
+            # code...
+            // Mencari data PeDiscipline berdasarkan employe_id, tahun, dan bulan
+            $pd = PeDiscipline::where([
+                'employe_id' => $pe->employe_id,
+                'tahun' => $pe->tahun,
+                'semester' => $pe->semester
+            ])->first();
+
+            // Jika data tidak ditemukan berdasarkan employe_id, tahun, dan bulan
+            if (!isset($pd)) {
+                # Create Pe Discipline 
+                // Membuat entri baru di tabel PeDiscipline
+
+                $employe = Employee::find($pe->employe_id);
+
+                $pcc = new PeComponentController();
+                $weight = $pcc->getWeightDiscipline($employe->contract->designation->id); // Memanggi
+
+
+                $pd = PeDiscipline::create([
+                    'pe_id' => $pe->id,
+                    'employe_id' => $pe->employe_id,
+                    'tahun' => $pe->tahun,
+                    'semester' => $pe->semester,
+                    'weight' => $weight
+                ]);
+            }
+        }
+
+        // Update Pe Discipline
+        // Memperbarui pe_id di entri PeDiscipline
+        $pd->update([
+            'pe_id' => $pe->id
+        ]);
+
+        if (!isset($pd->contribute_to_pe)) {
+            $pd->contribute_to_pe = 0;
+        }
+
+        // Memperbarui nilai discipline di entri PE berdasarkan nilai contribute_to_pe dari PeDiscipline
+        $pe->update([
+            'discipline' => $pd->contribute_to_pe
         ]);
     }
 }
