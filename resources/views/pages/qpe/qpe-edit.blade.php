@@ -15,62 +15,7 @@ PE
 
     <div class="row" id="boxCreate">
         <div class="col-md-3">
-            <div class="card shadow-none border">
-                <div class="card-header d-flex">
-                    <div class="d-flex  align-items-center">
-                        <div class="card-title">Give Performance Apprasial</div>
-                    </div>
-
-                </div>
-                <div class="card-body">
-                    <form>
-                        @csrf
-                        <div class="form-group form-group-default">
-                            <label><b>NIK</b></label>
-                            {{$kpa->employe->nik}}
-                        </div>
-                        <div class="form-group form-group-default">
-                            <label><b>Name</b></label>
-                            {{$kpa->employe->biodata->fullName()}}
-                        </div>
-                        <div class="form-group form-group-default">
-                            <label><b>Divisi</b></label>
-                            {{$kpa->employe->department->name}}
-                        </div>
-                        <div class="form-group form-group-default">
-                            <label>Semester / Tahun</label>
-                            {{ $kpa->semester}} / {{ $kpa->tahun}}
-                        </div>
-                        <div class="form-group form-group-default">
-                            <label>Status</label>
-                            @if($kpa->status == 0)
-                            <td><span class="badge badge-dark badge-lg"><b>Draft</b></span></td>
-                            @elseif($kpa->status == '1')
-                            <td>
-                                @if (auth()->user()->hasRole('Manager'))
-                                <span class="badge badge-warning badge-lg"><b>Verifikasi Manager</b></span>
-                                @else
-                                <span class="badge badge-warning badge-lg"><b>Verifikasi Manager</b></span>
-                                @endif
-                            </td>
-                            @elseif($kpa->status == '2')
-                            <td><span class="badge badge-primary badge-lg"><b>Validasi HRD</span></b></span></td>
-                            @elseif($kpa->status == '3')
-                            <td><span class="badge badge-success badge-lg"><b>Done</b></span></td>
-                            @elseif($kpa->status == '101')
-                            <td><span class="badge badge-danger badge-lg"><b>Di Reject Manager</b></span></td>
-                            <label class="mt-3">Alasan Penolakan</label>
-                            <td> <span class="text-danger"> {{$kpa->alasan_reject}} </td>
-                            @elseif($kpa->status == '202')
-                            <td><span class="badge badge-danger badge-lg"><b>Di Reject HRD</b></span></td>
-                            @endif
-                        </div>
-                    </form>
-                </div>
-                <div class="card-footer">
-                    <a href="{{route('export.kpi')}}" target="_blank">Export PDF</a>
-                </div>
-            </div>
+            <x-qpe.performance-appraisal :kpa="$kpa" />
         </div>
         <div class="col-md-9">
             <div class="card shadow-none border">
@@ -81,8 +26,10 @@ PE
                     @if(($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202') && (auth()->user()->hasRole('Leader') || auth()->user()->hasRole('Administrator') ) )
                     <div class="btn-group btn-group-page-header ml-auto">
                         <div class="button-group">
+                            @if(isset($pd) && isset($pba))
                             <button class="btn btn-xs btn-warning" data-toggle="modal" data-target="#modal-submit-{{$kpa->id}}"><i class="fas fa-rocket"></i> Submit </button>
-                            <x-modal.submit :id="$kpa->id" :body="'KPI ' . $kpa->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($kpa->date)) " url="{{route('kpa.submit', enkripRambo($kpa->id))}}" />
+                            <x-modal.submit :id="$pe->id" :body="'KPI ' . $kpa->employe->biodata->fullName() . ' semester '. $kpa->semester.' '. $pe->tahun " url="{{route('qpe.submit', enkripRambo($pe->id))}}" />
+                            @endif
                         </div>
                         &nbsp;
                         <button type="button" class="btn btn-light btn-xs btn-round btn-page-header-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -104,9 +51,10 @@ PE
                     @endif
                     @endif
 
-                    @if (auth()->user()->hasRole('Manager') && $kpa->status == '1' )
+                    {{-- @if (auth()->user()->hasRole('Manager') && $kpa->status == '1' ) --}}
+                    @if ( $kpa->status == '1' )
                     <div class="button-group ml-auto">
-                        <button onclick="doneVerifikasi({{$kpa->id}})" class=" btn btn-sm btn-primary  "><i class="fa fa-check"></i> Done</button>
+                        <button onclick="doneVerifikasi({{$kpa->id}})" class=" btn btn-sm btn-warning  "><i class="fa fa-check"></i> Approved</button>
                         <button data-target="#modalReject" data-toggle="modal" class="btn btn-sm btn-danger "><i class="fa fa-reply"></i> Reject</button>
 
                         <form id="done-validasi" action="{{route('kpa.done.verifikasi', $kpa->id)}}" method="POST"> @csrf @method('patch')</form>

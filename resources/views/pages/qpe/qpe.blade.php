@@ -62,7 +62,13 @@ KPA
                                 @foreach ($pes as $pe)
                                 <tr>
                                     <td>{{++$i}}</td>
-                                    <td><a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->biodata->fullName()}} </a></td>
+                                    <td>
+                                        @if($pe->status == '0')
+                                        <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->biodata->fullName()}} </a>
+                                        @elseif($pe->status == '1')
+                                        <a href="/qpe/approval/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->biodata->fullName()}} </a>
+                                        @endif
+                                    </td>
                                     <td>{{$pe->semester}} / {{$pe->tahun}}</td>
                                     <td><span class="badge badge-primary badge-lg"><b>{{$pe->achievement}}</b></span></td>
                                     @if($pe->status == 0)
