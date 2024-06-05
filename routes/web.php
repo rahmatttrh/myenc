@@ -256,8 +256,10 @@ Route::middleware(["auth"])->group(function () {
       Route::prefix('qpe')->group(function () {
          Route::get('/', [QuickPEController::class, 'index'])->name('qpe');
          Route::get('/create', [QuickPEController::class, 'create'])->name('qpe.create');
-         Route::post('/', [QuickPEController::class, 'store'])->name('qpe.store');
          Route::get('edit/{id}', [QuickPEController::class, 'edit'])->name('qpe.edit');
+         Route::get('show/{id}', [QuickPEController::class, 'show'])->name('qpe.show');
+
+         Route::post('/', [QuickPEController::class, 'store'])->name('qpe.store');
          Route::put('/submit/{id}', [QuickPEController::class, 'submit'])->name('qpe.submit');
 
          Route::get('approval/{id}', [QuickPEController::class, 'approval'])->name('qpe.approval');

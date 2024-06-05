@@ -65,8 +65,10 @@ KPA
                                     <td>
                                         @if($pe->status == '0')
                                         <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->biodata->fullName()}} </a>
-                                        @elseif($pe->status == '1' || $pe->status == '2' )
+                                        @elseif($pe->status == '1' )
                                         <a href="/qpe/approval/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->biodata->fullName()}} </a>
+                                        @else
+                                        <a href="/qpe/show/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->biodata->fullName()}} </a>
                                         @endif
                                     </td>
                                     <td>{{$pe->semester}} / {{$pe->tahun}}</td>

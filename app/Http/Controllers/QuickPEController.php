@@ -590,7 +590,61 @@ class QuickPEController extends Controller
      */
     public function show($id)
     {
-        //
+        $kpa = PeKpa::find(dekripRambo($id));
+        $datas = PekpaDetail::where('kpa_id', $kpa->id)->where('addtional', '0')->get();
+        // Additional 
+        $addtional = PekpaDetail::where('kpa_id', $kpa->id)->where('addtional', '1')->first();
+
+
+        $employes = Employee::where('status', '1')
+            ->whereNotNull('kpi_id')
+            ->get();
+
+        // Berikut Behavior  Staff
+        $behaviors = PeBehavior::where('level', 's')->get();
+
+
+
+        // $pcc = new PeComponentController();
+        // $pcs = $pcc->getComponentDesignation($kpa->employe->contract->designation->id); // Memanggil fungsi show dari ProfileController
+
+        // dd($pcs);
+
+
+        $isDone = false;
+        $isReject = false;
+
+
+        if (!isset($kpa)) {
+            return back()->with('danger', 'Id KPA Anda Salah');
+        }
+
+        $pba = PeBehaviorApprasial::where('pe_id', $kpa->pe_id)->first();
+
+        if (isset($pba)) {
+            $pbads = PeBehaviorApprasialDetail::where('pba_id', $pba->id)->get();
+        } else {
+            $pbads = null;
+        }
+
+        $pe = Pe::find($kpa->pe_id);
+
+        $pd = PeDiscipline::where('pe_id', $kpa->pe_id)->first();
+
+        return view('pages.qpe.qpe-show', [
+            'kpa' => $kpa,
+            'addtional' => $addtional,
+            'behaviors' => $behaviors,
+            'isDone' => $isDone,
+            'isReject' => $isReject,
+            'pd' => $pd,
+            'pba' => $pba,
+            'pbads' => $pbads,
+            'pe' => $pe,
+            'kpaAchievement' => 0,
+            'pbaAchievement' => 0,
+            'datas' => $datas
+        ])->with('i');
     }
 
     /**
