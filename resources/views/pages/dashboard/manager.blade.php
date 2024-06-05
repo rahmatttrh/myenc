@@ -54,7 +54,7 @@ Dashboard
                <div class="user-profile text-center">
                   <div class="name">{{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</div>
                   <div class="job">{{$employee->position->name}}</div>
-                  <div class="desc">15/08/2023 - 15/08/24</div>
+                  {{-- <div class="desc">15/08/2023 - 15/08/24</div> --}}
                   
                </div>
                
@@ -102,37 +102,50 @@ Dashboard
             </div>
             <hr>
          </div>
+
+         <div class="card">
+            <div class="card-header p-2">
+               <small>SPKL Request</small>
+            </div>
+            <div class="card-body p-0">
+               <table class=" ">
+                  <thead>
+                     
+                     <tr>
+                        {{-- <th scope="col">#</th> --}}
+                        <th scope="col">ID</th>
+                        <th scope="col">Date</th>
+                        <th>Name</th>
+                        <th>Desc</th>
+                        <th scope="col">Status</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     @if (count($spkls) > 0)
+                         @foreach ($spkls as $spkl)
+                         <tr>
+                           <td><a href="{{route('spkl.detail', enkripRambo($spkl->id))}}">{{$spkl->code}}</a></td>
+                           <td>{{formatDate($spkl->date)}}</td>
+                           <td>{{$spkl->employee->biodata->first_name}} {{$spkl->employee->biodata->last_name}}</td>
+                           <td style="max-width: 150px" class="text-truncate">{{$spkl->desc}}</td>
+                           <td>
+                              <x-status.spkl :spkl="$spkl" />
+                           </td>
+                        </tr>
+                         @endforeach
+                        @else
+                        <tr>
+                           <td colspan="5" class="text-center">Empty</td>
+                        </tr>
+                     @endif
+                     
+                     
+                  </tbody>
+               </table>
+            </div>
+         </div>
          
-         <div class="badge badge-light">SPKL Request</div>
-         <table class=" mt-2">
-            <thead>
-               
-               <tr>
-                  {{-- <th scope="col">#</th> --}}
-                  <th scope="col">ID</th>
-                  <th scope="col">Date</th>
-                  <th>Employee</th>
-                  <th>Desc</th>
-                  <th scope="col">Status</th>
-               </tr>
-            </thead>
-            <tbody>
-               @foreach ($spkls as $spkl)
-               <tr>
-                  {{-- <td>1</td> --}}
-                  <td><a href="{{route('spkl.detail', enkripRambo($spkl->id))}}">{{$spkl->code}}</a></td>
-                  <td>{{formatDate($spkl->date)}}</td>
-                  <td>{{$spkl->employee->biodata->first_name}} {{$spkl->employee->biodata->last_name}}</td>
-                  <td style="max-width: 190px" class="text-truncate">{{$spkl->desc}}</td>
-                  <td>
-                     <x-status.spkl :spkl="$spkl" />
-                  </td>
-               </tr>
-               @endforeach
-               
-               
-            </tbody>
-         </table>
+         
          
       </div>
    </div>

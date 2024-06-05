@@ -46,6 +46,25 @@ class EmployeeController extends Controller
       ])->with('i');
    }
 
+   public function indexSpv()
+   {
+      $department = Department::find(auth()->user()->getEmployee()->department_id);
+      // dd($department->id);
+      // dd($tab);
+      $employees = Employee::where('department_id', $department->id)->where('status', 1)
+         ->orderBy('department_id')
+         ->orderBy('sub_dept_id')
+         ->orderBy('designation_id')
+         ->orderBy('position_id')
+         ->get();
+
+         // dd($departmentId);
+      return view('pages.employee.indexSpv', [
+         'employees' => $employees,
+         
+      ])->with('i');
+   }
+
    public function off()
    {
       

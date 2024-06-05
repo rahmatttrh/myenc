@@ -52,57 +52,8 @@ Employee
    
 
    <div class="row">
-      <div class="col-md-3">
-         <h4>Form Create</h4>
-         <hr>
-         <form action="{{route('employee.spkl.store')}}" method="POST">
-            @csrf
-            <div class="row">
-               <div class="col-md-12">
-                  <div class="form-group form-group-default">
-                     <label>Date</label>
-                     <input id="date" name="date" type="date" class="form-control" >
-                  </div>
-               </div>
-               {{-- <div class="col-md-">
-                  <div class="form-group form-group-default">
-                     <label>End</label>
-                     <input id="end" name="end" type="time" class="form-control" >
-                  </div>
-               </div> --}}
-            </div>
-            <div class="row">
-               {{-- <div class="col-md-6">
-                  <div class="form-group form-group-default">
-                     <label>Start</label>
-                     <input id="start" name="start" type="time" class="form-control" >
-                  </div>
-               </div> --}}
-               <div class="col-md-12">
-                  <div class="form-group form-group-default">
-                     <label>Tap Out</label>
-                     <input id="end" name="end" type="time" class="form-control" >
-                  </div>
-               </div>
-            </div>
-            <div class="form-group form-group-default">
-               <label>Location</label>
-               <select class="form-control" name="loc" id="loc">
-                  <option value="HW">HW</option>
-                  <option value="JGC">JGC</option>
-                  <option value="KJ">KJ</option>
-                  <option value="GS">GS</option>
-               </select>
-               {{-- <input id="Name" type="text" class="form-control" > --}}
-            </div>
-            <div class="form-group form-group-default">
-               <label>Desc</label>
-               <textarea id="desc" name="desc" type="text" class="form-control" placeholder="Deskripsi pekerjaan"  rows="3"></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-         </form>
-      </div>
-      <div class="col-md-9">
+      
+      <div class="col-md-12">
          {{-- <div class="row">
             <div class="col-md-4">
                <div class="card">
@@ -117,6 +68,7 @@ Employee
                <thead>
                   <tr>
                      <th>ID</th>
+                     <th>Name</th>
                      <th>Date</th>
                      <th>Out</th>
                      <th>Loc</th>
@@ -128,11 +80,12 @@ Employee
                   </tr>
                </thead>
               
-               <tbody>
+               <tbody class="p-0">
 
                   @foreach ($spkls as $spkl)
                   <tr>
                      <td><a href="{{route('spkl.detail', enkripRambo($spkl->id))}}">{{$spkl->code}}</a></td>
+                     <td>{{$spkl->employee->biodata->first_name}} {{$spkl->employee->biodata->last_name}}</td>
                      <td>{{formatDate($spkl->date)}}</td>
                      <td> {{formatTime($spkl->end)}}</td>
                      <td>{{$spkl->loc}}</td>
@@ -152,6 +105,7 @@ Employee
                </tbody>
             </table>
          </div>
+         
          <hr>
 
          <div class="row">

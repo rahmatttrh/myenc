@@ -181,7 +181,12 @@ Route::middleware(["auth"])->group(function () {
    });
 
    Route::group(['middleware' => ['role:Supervisor|Manager']], function () {
+      Route::prefix('employee')->group(function () {
+         Route::get('spv', [EmployeeController::class, 'indexSpv'])->name('supervisor.employee');
+      });
+      
       Route::prefix('spkl')->group(function () {
+         Route::get('/index', [SpklController::class, 'indexSupervisor'])->name('supervisor.spkl');
          Route::get('/approve/supervisor/{id}', [SpklController::class, 'approveSupervisor'])->name('spkl.approve.supervisor');
          Route::get('/approve/manager/{id}', [SpklController::class, 'approveManager'])->name('spkl.approve.manager');
       });
@@ -192,6 +197,7 @@ Route::middleware(["auth"])->group(function () {
       Route::get('/', [SpController::class, 'index'])->name('sp');
       Route::post('store', [SpController::class, 'store'])->name('sp.store');
       Route::get('detail/{id}', [SpController::class, 'detail'])->name('sp.detail');
+      Route::get('delete/{id}', [SpController::class, 'delete'])->name('sp.delete');
    });
 
    // Role Campuran  

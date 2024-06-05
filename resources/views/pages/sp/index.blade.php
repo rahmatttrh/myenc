@@ -55,10 +55,27 @@ SP
             <div class="row">
                <div class="col-md-6">
                   <div class="form-group form-group-default">
+                     <label>Level</label>
+                     <select class="form-control" required id="level" name="level">
+                        <option value="" selected disabled>Select level</option>
+                        <option value="I">SP I</option>
+                        <option value="II">SP II</option>
+                        <option value="III">SP III</option>
+                     </select>
+                     
+                  </div>
+               </div>
+               <div class="col-md-6">
+                  <div class="form-group form-group-default">
                      <label>Berlaku dari</label>
                      <input type="date" class="form-control"  name="date_from" id="date_from">
                   </div>
                </div>
+               
+               {{-- <div class="col-md-6">
+                  <small class="text-muted">Masa berlaku SP adalah 6 bulan</small>
+                  <hr>
+               </div> --}}
                {{-- <div class="col-md-6">
                   <div class="form-group form-group-default">
                      <label>Berlaku sampai</label>
@@ -84,9 +101,12 @@ SP
                      <th class="text-center" style="width: 10px">No</th>
                      <th>ID</th>
                      <th>Name</th>
+                     <th>NIK</th>
+                     <th>Status</th>
+                     <th>Level</th>
                      {{-- <th>Date</th> --}}
-                     <th style="width: 50px">Desc</th>
-                     <th></th>
+                     {{-- <th style="width: 50px">Desc</th> --}}
+                     {{-- <th></th> --}}
                   </tr>
                </thead>
                <tbody>
@@ -95,37 +115,21 @@ SP
                         <td class="text-center">{{++$i}}</td>
                         <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->code}}</a> </td>
                            <td>{{$sp->employee->biodata->first_name}} {{$sp->employee->biodata->last_name}}</td>
+                           <td>{{$sp->employee->nik}}</td>
                            {{-- <td>{{formatDate($sp->date)}}</td> --}}
-                           <td class="text-truncate" style="max-width: 180px">{{$sp->desc}}</td>
                            <td>
-                              {{-- <div class="btn-group"> --}}
-                                 <a href="#" class="" data-toggle="modal" data-target="#modal-sp-delete">Export</a> |
-                                 <a href="#" class="" data-toggle="modal" data-target="#modal-sp-delete-{{$sp->id}}">Delete</a>
-                              {{-- </div> --}}
+                              @if ($sp->status == 1)
+                                  Active
+                                  @else
+                                  Non-Active
+                              @endif
                            </td>
+                           <td>SP {{$sp->level}}</td>
+                           {{-- <td class="text-truncate" style="max-width: 240px">{{$sp->desc}}</td> --}}
+                           
                       </tr>
 
-                      <div class="modal fade" id="modal-sp-delete-{{$sp->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-sm" role="document">
-                           <div class="modal-content">
-                              <div class="modal-header">
-                                 <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
-                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                 <span aria-hidden="true">&times;</span>
-                                 </button>
-                              </div>
-                              
-                              <div class="modal-body">
-                     
-                                Delete this SP ? <br>
-
-                                 
-                              </div>
-                              <div class="modal-footer"><a  href="{{route('employee.export')}}" class="btn btn-danger">Delete</a>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
+                      
                   @endforeach
                </tbody>
             </table>

@@ -112,8 +112,8 @@ SPKL Detail
                            
                         </div>
                         <div class="text-right">
-                           <h3>FORMULIR</h3>
-                           <h3>SURAT PERINTAH KERJA LEMBUR</h3>
+                           <h3><b>FORMULIR</b></h3>
+                           <h3><b>SURAT PERINTAH KERJA LEMBUR</b></h3>
                         </div>
                      </div>
                     
@@ -124,42 +124,42 @@ SPKL Detail
                      <div class="row">
                         <div class="col-6">
                            <div class="row">
-                              <div class="col-md-3">Nama</div>
-                              <div class="col-md-9">: {{$spkl->employee->biodata->first_name}} {{$spkl->employee->biodata->last_name}}</div>
+                              <div class="col-3">Nama</div>
+                              <div class="col-9">: {{$spkl->employee->biodata->first_name}} {{$spkl->employee->biodata->last_name}}</div>
                            </div>
                            <div class="row">
-                              <div class="col-md-3">NIK</div>
-                              <div class="col-md-9">: {{$spkl->employee->nik}}</div>
+                              <div class="col-3">NIK</div>
+                              <div class="col-9">: {{$spkl->employee->nik}}</div>
                            </div>
                            <div class="row">
-                              <div class="col-md-3">Jabatan</div>
-                              <div class="col-md-9">: {{$spkl->employee->position->name}}</div>
+                              <div class="col-3">Jabatan</div>
+                              <div class="col-9">: {{$spkl->employee->position->name}}</div>
                            </div>
                            <div class="row">
-                              <div class="col-md-3">Departmen</div>
-                              <div class="col-md-9">: {{$spkl->employee->department->name}}</div>
+                              <div class="col-3">Departmen</div>
+                              <div class="col-9">: {{$spkl->employee->department->name}}</div>
                            </div>
                            <div class="row">
-                              <div class="col-md-3">Pekerjaan</div>
-                              <div class="col-md-9">: {{$spkl->desc}}</div>
+                              <div class="col-3">Pekerjaan</div>
+                              <div class="col-9">: {{$spkl->desc}}</div>
                            </div>
                         </div>
                         <div class="col-6">
                            <div class="row">
-                              <div class="col-md-4">Hari/Tanggal</div>
-                              <div class="col-md-8">: {{formatDayDate($spkl->date)}}</div>
+                              <div class="col-4">Hari/Tanggal</div>
+                              <div class="col-8">: {{formatDayDate($spkl->date)}}</div>
                            </div>
                            <div class="row">
-                              <div class="col-md-4">Waktu</div>
-                              <div class="col-md-8">: {{formatTime($spkl->employee->contract->shift->out)}} s/d {{formatTime($spkl->end)}}</div>
+                              <div class="col-4">Waktu</div>
+                              <div class="col-8">: {{formatTime($spkl->employee->contract->shift->out)}} s/d {{formatTime($spkl->end)}}</div>
                            </div>
                            <div class="row">
-                              <div class="col-md-4">Lama lembur</div>
-                              <div class="col-md-8">: {{formatTime($spkl->total)}} Jam</div>
+                              <div class="col-4">Lama lembur</div>
+                              <div class="col-8">: {{formatTime($spkl->total)}} Jam</div>
                            </div>
                            <div class="row">
-                              <div class="col-md-4">Lokasi </div>
-                              <div class="col-md-8">: {{$spkl->loc}}</div>
+                              <div class="col-4">Lokasi </div>
+                              <div class="col-8">: {{$spkl->loc}}</div>
                            </div>
                         </div>
                      </div>
@@ -167,7 +167,7 @@ SPKL Detail
                      
                      
                      
-                     
+                     <br>
                      <br>
                      <p>Demikian untuk dilaksanakan. <br>Jakarta, {{formatDateB($spkl->date)}}</p>
                      
@@ -233,6 +233,7 @@ SPKL Detail
                            <div class="separator-solid  mb-3"></div>
                         </div>	
                      </div> --}}
+                     <br>
                      <div class="page-divider"></div>
                      <table>
                         <tbody>
@@ -242,9 +243,24 @@ SPKL Detail
                               <th>Employee</th>
                            </tr>
                            <tr>
-                              <td style="height: 80px"></td>
-                              <td></td>
-                              <td></td>
+                              <td style="height: 80px" class="text-center px-4">
+                                 @if ($spkl->status >= 2)
+                                     <span class="text-info  "><b>APPROVED</b></span><br>
+                                     <small class="text-info">{{formatDateTime($spkl->app_spv)}}</small>
+                                 @endif
+                              </td>
+                              <td class="text-center px-4">
+                                 @if ($spkl->status >= 3)
+                                     <span class="text-info "><b>APPROVED</b></span><br>
+                                     <small class="text-info">{{formatDateTime($spkl->app_man)}}</small>
+                                 @endif
+                              </td>
+                              <td class="text-center px-4">
+                                 {{-- @if ($spkl->status >= 3) --}}
+                                     <span class="text-muted ">CREATED BY</span><br>
+                                     <small class="text-muted">{{formatDateTime($spkl->created_at)}}</small>
+                                 {{-- @endif --}}
+                              </td>
                            </tr>
                            <tr>
                               <td>Nama : {{$spv->biodata->first_name}} {{$spv->biodata->last_name}}</td>
