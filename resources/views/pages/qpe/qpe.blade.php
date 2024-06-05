@@ -96,7 +96,7 @@ KPA
                                         @if($pe->status == 0)
                                         <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-delete-{{$pe->id}}"><i class="fas fa-trash"></i> Delete</button>
                                         @elseif($pe->status == '1' || $pe->status == '2')
-                                        -
+                                        <a href="{{ route('export.qpe', $pe->id) }}" target="_blank"><button class="btn btn-sm btn-success text-dark"> Preview PDF </button></a>
                                         @elseif(($pe->status == 0 || $pe->status == 101 || $pe->status == 202) && auth()->user()->hasRole('Leader'))
                                         <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-submit-{{$pe->id}}"><i class="fas fa-rocket"></i> Submit</button>
                                         @endif
