@@ -23,42 +23,7 @@ Discipline
                             <img src="{{asset('img/xls-file.png')}}" class="img mb-4" height="110" alt="">
                             <form action="{{route('discipline.import')}}" method="POST" enctype="multipart/form-data">
                                 @csrf
-                                <div class="form-group ">
-                                    <label>Bulan</label>
-                                    <select name="bulan" id="bulan" class="form-control">
-                                        <?php
-                                        $bulan_sekarang = date('n'); // Mendapatkan nomor bulan saat ini
-                                        $tahun_sekarang = date('Y'); // Mendapatkan tahun saat ini
 
-                                        $bulan = [
-                                            1 => 'Januari',
-                                            2 => 'Februari',
-                                            3 => 'Maret',
-                                            4 => 'April',
-                                            5 => 'Mei',
-                                            6 => 'Juni',
-                                            7 => 'Juli',
-                                            8 => 'Agustus',
-                                            9 => 'September',
-                                            10 => 'Oktober',
-                                            11 => 'November',
-                                            12 => 'Desember',
-                                        ];
-
-                                        foreach ($bulan as $nomor => $nama) {
-                                            $disabled = ($tahun_sekarang == 2024 && $nomor > $bulan_sekarang) ? 'disabled' : '';
-                                            $selected = ($nomor == $bulan_sekarang) ? 'selected' : '';
-
-                                            echo "<option value=\"$nomor\" $selected $disabled>$nama </option>";
-                                        }
-                                        ?>
-                                    </select>
-                                    @error('date')
-                                    <small class="text-danger"><i>{{ $message }}</i></small>
-                                    @enderror
-                                </div>
-
-                                <input type="hidden" name="tahun" value="<?= $tahun_sekarang ?>">
                                 <div class="form-group ">
                                     <label>File Excel</label>
                                     <input id="excel" name="excel" type="file" class="form-control-file">
@@ -87,6 +52,11 @@ Discipline
                             </div>
                         </div>
                     </div>
+
+                    <!-- import xls -->
+
+                    <hr>
+
                 </div>
             </div>
         </div>

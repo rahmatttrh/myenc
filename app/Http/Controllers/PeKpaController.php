@@ -753,6 +753,8 @@ class PeKpaController extends Controller
 
         $qpc = new QuickPEController();
 
+        $delete = $kpadetail->delete();
+
         // Kalkulasi ACV KPA
         $qpc->calculateAcvKpa($kpa->id);
 
@@ -760,7 +762,6 @@ class PeKpaController extends Controller
         $qpc->calculatePe($kpa->pe->id);
 
 
-        $delete = $kpadetail->delete();
 
 
         if ($delete) {

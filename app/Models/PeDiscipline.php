@@ -14,4 +14,9 @@ class PeDiscipline extends Model
     {
         return $this->belongsTo(Employee::class);
     }
+
+    public function pdds()
+    {
+        return $this->hasMany(PeDisciplineDetail::class, 'pd_id');
+    }
 }

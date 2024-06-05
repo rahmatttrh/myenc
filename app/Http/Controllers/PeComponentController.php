@@ -32,6 +32,19 @@ class PeComponentController extends Controller
         return $pcs;
     }
 
+    public function getWeightDiscipline($designationId)
+    {
+
+        $pcf = PeComponentFor::where('designation_id', $designationId)->first();
+
+        $pc = PeComponent::select('weight')
+            ->where('group_id', $pcf->group_id)
+            ->where('name', 'Discipline')
+            ->first();
+
+        return $pc->weight;
+    }
+
     public function getWeightKpi($designationId)
     {
 

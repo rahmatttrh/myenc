@@ -68,7 +68,7 @@ Route::middleware(["auth"])->group(function () {
 
          Route::get('create', [EmployeeController::class, 'create'])->name('employee.create');
          Route::post('store', [EmployeeController::class, 'store'])->name('employee.store');
-         
+
          Route::get('export', [EmployeeController::class, 'export'])->name('employee.export');
          Route::get('export/simple', [EmployeeController::class, 'exportSimple'])->name('employee.export.simple');
          Route::get('import', [EmployeeController::class, 'formImport'])->name('employee.import');
@@ -264,6 +264,10 @@ Route::middleware(["auth"])->group(function () {
          Route::get('/create', [QuickPEController::class, 'create'])->name('qpe.create');
          Route::post('/', [QuickPEController::class, 'store'])->name('qpe.store');
          Route::get('edit/{id}', [QuickPEController::class, 'edit'])->name('qpe.edit');
+         Route::put('/submit/{id}', [QuickPEController::class, 'submit'])->name('qpe.submit');
+
+         Route::get('approval/{id}', [QuickPEController::class, 'approval'])->name('qpe.approval');
+         Route::patch('approved/{id}', [QuickPEController::class, 'approved'])->name('qpe.approved');
 
          Route::post('/behavior', [QuickPEController::class, 'storeBehavior'])->name('qpe.behavior.store');
          Route::patch('/behavior/update/{id}', [QuickPEController::class, 'updateBehavior'])->name('qpe.behavior.update');
@@ -314,7 +318,7 @@ Route::middleware(["auth"])->group(function () {
 
 
    Route::group(['middleware' => ['role:Manager']], function () {
-      Route::prefix('spkl')->group(function(){
+      Route::prefix('spkl')->group(function () {
          Route::get('manager/index', [SpklController::class, 'indexManager'])->name('manager.spkl');
       });
    });
@@ -326,7 +330,7 @@ Route::middleware(["auth"])->group(function () {
    Route::prefix('export')->group(function () {
       Route::get('kpa/employee/{id}', [ExportController::class, 'kpaEmployee'])->name('export.kpa.employee');
       Route::get('kpa/summary/{employee}/{semester}/{tahun}', [ExportController::class, 'kpaSummary'])->name('export.kpa.summary');
-      
+
       // Example PDF
       Route::get('kpi/employee/', [ExportController::class, 'kpiExample'])->name('export.kpi');
    });
