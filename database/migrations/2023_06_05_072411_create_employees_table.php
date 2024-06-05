@@ -34,20 +34,14 @@ class CreateEmployeesTable extends Migration
          $table->integer('contract_id')->nullable();
          $table->integer('emergency_id')->nullable();
          $table->integer('direct_leader_id')->nullable();
+         $table->integer('manager_id')->nullable();
+         $table->string('area', 50)->nullable();
          $table->string('picture')->nullable();
          $table->string('bio')->nullable();
          $table->string('experience')->nullable();
 
-         // FIELD INI ADA DI BIODATA
-         // $table->string('name')->nullable();
-         // $table->string('phone')->nullable();
-         // $table->string('email')->nullable();
-         // $table->string('gender')->nullable();
-         // $table->string('religion')->nullable();
-         // $table->date('birth_date')->nullable();
-         // $table->string('birth_place')->nullable();
-         // $table->string('address')->nullable();
-         // $table->string('picture')->nullable();
+         $table->integer('contract_id')->nullable();
+
          $table->timestamps();
       });
    }

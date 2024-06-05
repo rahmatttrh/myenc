@@ -329,6 +329,8 @@ Route::middleware(["auth"])->group(function () {
 
       // Example PDF
       Route::get('kpi/employee/', [ExportController::class, 'kpiExample'])->name('export.kpi');
+
+      Route::get('qpe/{id}', [ExportController::class, 'qpe'])->name('export.qpe');
    });
 
 

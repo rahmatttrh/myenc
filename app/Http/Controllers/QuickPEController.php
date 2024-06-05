@@ -566,7 +566,8 @@ class QuickPEController extends Controller
             // Update status dan verifikasi pada tabel PE
             $pe->update([
                 'status' => '2',
-                'verifikasi_by' => $verifikasiBy
+                'verifikasi_by' => $verifikasiBy,
+                'verifikasi_at' => NOW()
             ]);
 
             // Commit transaksi jika semua operasi berhasil

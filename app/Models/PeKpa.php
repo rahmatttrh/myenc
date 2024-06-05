@@ -26,6 +26,11 @@ class PeKpa extends Model
     return $this->hasMany(PekpaDetail::class);
   }
 
+  public function kpadetails()
+  {
+    return $this->hasMany(PekpaDetail::class, 'kpa_id');
+  }
+
   public function datas()
   {
     $datas = PekpaDetail::where('kpa_id', $this->id)->where('addtional', '0')->get();
