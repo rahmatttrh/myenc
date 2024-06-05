@@ -64,7 +64,7 @@
 
          table td, table th {
             border: 1px solid #ddd;
-            padding: 4px;
+            /* padding: 4px; */
          }
 
          table tr:nth-child(even){background-color: #f2f2f2;}
@@ -72,8 +72,8 @@
          table tr:hover {background-color: #ddd;}
 
          table thead th {
-            padding-top: 8px;
-            padding-bottom: 8px;
+            /* padding-top: 8px;
+            padding-bottom: 8px; */
             text-align: left;
             background-color: #478091;
             color: white;

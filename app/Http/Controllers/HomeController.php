@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Biodata;
 use App\Models\Employee;
 use App\Models\Presence;
+use App\Models\Sp;
 use App\Models\Spkl;
 use App\Models\User;
 use Carbon\Carbon;
@@ -52,10 +53,12 @@ class HomeController extends Controller
          $employees = Employee::get();
          $male = Biodata::where('gender', 'Male')->count();
          $female = Biodata::where('gender', 'Female')->count();
+         $spkls = Spkl::orderBy('updated_at', 'desc')->paginate(5);
          return view('pages.dashboard.admin', [
             'employees' => $employees,
             'male' => $male,
-            'female' => $female
+            'female' => $female,
+            'spkls' => $spkls
          ]);
       } elseif (auth()->user()->hasRole('Manager')){
          $employee = Employee::where('nik', auth()->user()->username)->first();
@@ -81,7 +84,7 @@ class HomeController extends Controller
          $pending = Presence::where('employee_id', $employee->id)->where('out_time', null)->first();
          // dd($biodata->employee->id);
 
-         $spkls = Spkl::where('status', '>=', 1)->where('department_id', $employee->department_id)->paginate(10);
+         $spkls = Spkl::where('status', '>=', 1)->where('department_id', $employee->department_id)->orderBy('created_at', 'desc')->paginate(5);
          // dd($spkls);
          return view('pages.dashboard.supervisor', [
             'employee' => $biodata->employee,
@@ -93,6 +96,7 @@ class HomeController extends Controller
          ]);
       } else {
 
+         
          $employee = Employee::where('nik', auth()->user()->username)->first();
          $biodata = Biodata::where('email', auth()->user()->email)->first();
          $presences = Presence::where('employee_id', $employee->id)->orderBy('created_at', 'desc')->get();
@@ -100,13 +104,15 @@ class HomeController extends Controller
          // dd($biodata->employee->id);
 
          $spkls = Spkl::where('employee_id', $employee->id)->orderBy('updated_at', 'desc')->paginate(3);
+         $sps = Sp::where('employee_id', $employee->id)->where('status', 1)->get();
          return view('pages.dashboard.employee', [
             'now' => $now,
             'employee' => $biodata->employee,
             'dates' => $dates,
             'presences' => $presences,
             'pending' => $pending,
-            'spkls' => $spkls
+            'spkls' => $spkls,
+            'sps' => $sps
          ]);
       }
    }

@@ -20,8 +20,21 @@ class SpklController extends Controller
       ]);
    }
 
+   public function indexSupervisor(){
+      // dd('ok');
+      $employee = Employee::where('nik', auth()->user()->username)->first();
+      $spkls = Spkl::where('department_id', $employee->department_id)->orderBy('updated_at', 'desc')->get();
+      return view('pages.spkl.indexSpv', [
+         'spkls' => $spkls
+      ]);
+   }
+
    public function indexManager(){
-      
+      $employee = Employee::where('nik', auth()->user()->username)->first();
+      $spkls = Spkl::where('department_id', $employee->department_id)->orderBy('updated_at', 'desc')->get();
+      return view('pages.spkl.indexMan', [
+         'spkls' => $spkls
+      ]);
    }
 
 
@@ -106,8 +119,11 @@ class SpklController extends Controller
       // dd($spkl->code);
 
       $spkl->update([
-         'status' => 2
+         'status' => 2,
+         'app_spv' => Carbon::now()
       ]);
+
+
 
       return redirect()->to('/')->with('success', 'SPKL Approved');
    }
@@ -131,7 +147,8 @@ class SpklController extends Controller
 
       // dd('approve_manager');
       $spkl->update([
-         'status' => 3
+         'status' => 3,
+         'app_man' => Carbon::now()
       ]);
 
       return redirect()->to('/')->with('success', 'SPKL Approved');

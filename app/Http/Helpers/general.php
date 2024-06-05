@@ -72,6 +72,15 @@ function formatDate($data)
    return $date;
 }
 
+function formatDateTime($data)
+{
+   $date = \Carbon\Carbon::parse($data)->format('d/m/Y H:i');
+   return $date;
+}
+
+
+
+
 function formatDateB($data)
 {
    $date = \Carbon\Carbon::parse($data)->format('d F Y');

@@ -21,6 +21,8 @@ class CreateSpsTable extends Migration
             $table->date('date_to');
             $table->string('level');
             $table->string('desc');
+
+            $table->integer('by')->nullable();
             $table->timestamps();
         });
     }
