@@ -65,7 +65,7 @@ KPA
                                     <td>
                                         @if($pe->status == '0')
                                         <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->biodata->fullName()}} </a>
-                                        @elseif($pe->status == '1')
+                                        @elseif($pe->status == '1' || $pe->status == '2' )
                                         <a href="/qpe/approval/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->biodata->fullName()}} </a>
                                         @endif
                                     </td>
@@ -82,9 +82,9 @@ KPA
                                         @endif
                                     </td>
                                     @elseif($pe->status == '2')
-                                    <td><span class="badge badge-primary badge-lg"><b>Validasi HRD</b></span></td>
-                                    @elseif($pe->status == '3')
                                     <td><span class="badge badge-success badge-lg"><b>Done</b></span></td>
+                                    @elseif($pe->status == '3')
+                                    <td><span class="badge badge-primary badge-lg"><b>Validasi HRD</b></span></td>
                                     @elseif($pe->status == '101')
                                     <td><span class="badge badge-danger badge-lg"><b>Di Reject Manager</b></span></td>
                                     @elseif($pe->status == '202')

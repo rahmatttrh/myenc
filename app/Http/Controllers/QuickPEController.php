@@ -529,6 +529,59 @@ class QuickPEController extends Controller
 
         return redirect('qpe')->with('success', 'Perfomance Evaluation berhasil di Sumbit');
     }
+
+    public function approved(Request $request, $id)
+
+    {
+
+        $pe = Pe::find($id);
+
+        $pba = PeBehaviorApprasial::where('pe_id', $pe->id)->first();
+
+        if (!$pba) {
+            # code...
+            return back()->with('danger', 'Data Behavior Belum di isi !');
+        }
+
+        $verifikasiBy = auth()->user()->name;
+
+        if (!$verifikasiBy) {
+
+            $verifikasiBy = 'System';
+        }
+
+        // Mulai transaksi
+        DB::beginTransaction();
+
+        try {
+            // Update status pada tabel PeDiscipline
+            PeDiscipline::where('pe_id', $pe->id)->update(['status' => '2']);
+
+            // Update status pada tabel PeKpa
+            PeKpa::where('pe_id', $pe->id)->update(['status' => '2']);
+
+            // Update status pada tabel PeBehaviorApprasial
+            PeBehaviorApprasial::where('pe_id', $pe->id)->update(['status' => '2']);
+
+            // Update status dan verifikasi pada tabel PE
+            $pe->update([
+                'status' => '2',
+                'verifikasi_by' => $verifikasiBy
+            ]);
+
+            // Commit transaksi jika semua operasi berhasil
+            DB::commit();
+
+            // Redirect dengan pesan sukses
+            return redirect('qpe')->with('success', 'PE Verifikasi successfully');
+        } catch (\Exception $e) {
+            // Rollback transaksi jika terjadi kesalahan
+            DB::rollBack();
+
+            // Redirect dengan pesan error
+            return redirect('qpe')->with('danger', 'An error occurred while verifying PE');
+        }
+    }
     /**
      * Display the specified resource.
      *

@@ -261,6 +261,7 @@ Route::middleware(["auth"])->group(function () {
          Route::put('/submit/{id}', [QuickPEController::class, 'submit'])->name('qpe.submit');
 
          Route::get('approval/{id}', [QuickPEController::class, 'approval'])->name('qpe.approval');
+         Route::patch('approved/{id}', [QuickPEController::class, 'approved'])->name('qpe.approved');
 
          Route::post('/behavior', [QuickPEController::class, 'storeBehavior'])->name('qpe.behavior.store');
          Route::patch('/behavior/update/{id}', [QuickPEController::class, 'updateBehavior'])->name('qpe.behavior.update');

@@ -20,7 +20,7 @@ PE
             <button onclick="doneVerifikasi({{$kpa->id}})" class=" btn btn-sm btn-warning  "><i class="fa fa-check"></i> Approved</button>
             <button data-target="#modalReject" data-toggle="modal" class="btn btn-sm btn-danger "><i class="fa fa-reply"></i> Reject</button>
 
-            <form id="done-validasi" action="{{route('kpa.done.verifikasi', $kpa->id)}}" method="POST"> @csrf @method('patch')</form>
+            <form id="done-validasi" action="{{route('qpe.approved', $pe->id)}}" method="POST"> @csrf @method('patch')</form>
         </div>
         @endif
     </div>
@@ -135,7 +135,7 @@ PE
                                                             <div class="form-group">
                                                                 <label for="weight">Weight :</label>
                                                                 <input type="text" class="form-control" id="weight" name="weight" value="{{ $pbda->behavior->bobot }}" readonly>
-                                                            </div>
+                                                            </div>approv
                                                             @if($pba->status == '0' || $pba->status == '1')
                                                             <div class="form-group">
                                                                 <label for="value">Value :</label>
