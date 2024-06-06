@@ -273,12 +273,19 @@ class QuickPEController extends Controller
         $addtional = PekpaDetail::where('kpa_id', $kpa->id)->where('addtional', '1')->first();
 
 
-        $employes = Employee::where('status', '1')
-            ->whereNotNull('kpi_id')
-            ->get();
+        $employe = Employee::where('id', $kpa->employe_id)->first();
+
+        if ($employe->designation->golongan == '1' || $employe->designation->golongan == '2') {
+            // Staff
+            $level = 's';
+        } else {
+            // Leader
+            $level = 'l';
+        }
+
 
         // Berikut Behavior  Staff
-        $behaviors = PeBehavior::where('level', 's')->get();
+        $behaviors = PeBehavior::where('level', $level)->get();
 
 
 

@@ -46,7 +46,36 @@ PE
                     <div class="button-group">
                         @if(isset($pd) && $pd->pdds->count() == 6)
                         <button class="btn btn-xs btn-warning" data-toggle="modal" data-target="#modal-submit-{{$kpa->id}}"><i class="fas fa-rocket"></i> Submit </button>
-                        <x-modal.submit :id="$pe->id" :body="'KPI ' . $kpa->employe->biodata->fullName() . ' semester '. $kpa->semester.' '. $pe->tahun " url="{{route('qpe.submit', enkripRambo($pe->id))}}" />
+                        <!-- <x-modal.submit :id="$pe->id" :body="'KPI ' . $kpa->employe->biodata->fullName() . ' semester '. $kpa->semester.' '. $pe->tahun " url="{{route('qpe.submit', enkripRambo($pe->id))}}" /> -->
+
+                        <div class="modal fade" id="modal-submit-{{$kpa->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <form method="POST" action="{{route('qpe.submit', enkripRambo($pe->id))}}" enctype="multipart/form-data">
+                                        @csrf
+                                        @method('PUT')
+                                        <input type="hidden" name="id" value="{{$pe->id}}">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Submit KPI
+
+                                            <?php echo $kpa->employe->biodata->fullName() . ' semester ' . $kpa->semester . ' ' . $pe->tahun; ?>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-warning ">
+                                                Submit
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                         @endif
                     </div>
                     &nbsp;
