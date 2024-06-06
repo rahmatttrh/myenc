@@ -20,17 +20,17 @@ Dashboard
             <div class="alert alert-info shadow-sm">
 
                {{-- <div class="card-body"> --}}
-                  <div class="card-opening">
-                     <h4>
-                        <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1">
-                        <b>Announcement</b>
-                     </h4>
-                  </div>
-                  <hr>
-                  <div class="card-desc">
-                     Tanggal 8 & 9 Februari Libur Nasional dan Cuti Bersama
-                  </div>
-                  {{-- <div class="card-detail">
+               <div class="card-opening">
+                  <h4>
+                     <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1">
+                     <b>Announcement</b>
+                  </h4>
+               </div>
+               <hr>
+               <div class="card-desc">
+                  Tanggal 8 & 9 Februari Libur Nasional dan Cuti Bersama
+               </div>
+               {{-- <div class="card-detail">
                         <div class="btn btn-light btn-rounded">Download Template</div>
                      </div> --}}
                {{-- </div> --}}
@@ -40,15 +40,17 @@ Dashboard
 
          @if (count($sps) > 0)
          <div class="card card-danger">
-            <div class="card-header"><h3>Surat Peringatan <i class="fa fa-exclamation"></i></h3></div>
+            <div class="card-header">
+               <h3>Surat Peringatan <i class="fa fa-exclamation"></i></h3>
+            </div>
             <div class="card-body">
                @foreach ($sps as $sp)
-               {{$sp->code}} - SP {{$sp->level}}  <br>
+               {{$sp->code}} - SP {{$sp->level}} <br>
                @endforeach
             </div>
          </div>
          @endif
-         
+
          <div class="card card-profile card-secondary ">
             <div class="card-header" style="background-image: url({{asset('img/blogpost.jpg')}})">
                <div class="profile-picture">
@@ -57,7 +59,8 @@ Dashboard
                      <img src="{{asset('storage/' . $employee->picture)}}" alt="..." class="avatar-img rounded-circle">
                      @else
                      <img src="{{asset('img/user.png')}}" alt="..." class="avatar-img rounded-circle">
-                     @endif</div>
+                     @endif
+                  </div>
                </div>
             </div>
             <div class="card-body">
@@ -65,14 +68,14 @@ Dashboard
                   <div class="name">{{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</div>
                   <div class="job">{{$employee->position->name}}</div>
                   <div class="desc">15/08/2023 - 15/08/24</div>
-                  
+
                </div>
                @if ($pending != null)
                <a href="" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modal-out">Out</a>
                @else
                <a href="" class="btn btn-danger btn-block" data-toggle="modal" data-target="#modal-in">In</a>
                @endif
-               
+
             </div>
             <hr>
             <div class="card-footer d-flex justify-content-between">
@@ -84,12 +87,12 @@ Dashboard
                   Absen <br>
                </div>
                <div class="text-right">
-                  {{formatTime($employee->contract->shift->in)}} - {{formatTime($employee->contract->shift->out)}} <br>
+                  {{$employee->contract->shift ? formatTime($employee->contract->shift->in) : ''}} - {{$employee->contract->shift ? formatTime($employee->contract->shift->out) : ''}} <br>
                   2 <br>
                   4 Hours
                </div>
             </div>
-            
+
          </div>
 
          {{-- <div class="card">
@@ -98,22 +101,22 @@ Dashboard
                <h2>4</h2>
             </div>
          </div> --}}
-         
+
          {{-- <div class="badge badge-info">Absensi</div> --}}
          {{-- <ol class="activity-feed">
             @foreach ($presences as $presence)
             <li class="feed-item feed-item-info">
                <time class="date" datetime="9-23">{{formatDate($presence->date)}}</time>
-               <span class="text">In {{formatTime($presence->in)}} - Out 
-                  @if ($presence->out)
-                  {{formatTime($presence->out) ?? '-'}}
-                  @else
-                  -
-                  @endif
-               </span>
-            </li>
-            @endforeach
-            
+         <span class="text">In {{formatTime($presence->in)}} - Out
+            @if ($presence->out)
+            {{formatTime($presence->out) ?? '-'}}
+            @else
+            -
+            @endif
+         </span>
+         </li>
+         @endforeach
+
          </ol> --}}
       </div>
       <div class="col-md-8">
@@ -122,99 +125,101 @@ Dashboard
             <div class="alert alert-info shadow-sm">
 
                {{-- <div class="card-body"> --}}
-                  <div class="card-opening">
-                     <h4>
-                        <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1">
-                        <b>Announcement</b>
-                     </h4>
-                  </div>
-                  <hr>
-                  <div class="card-desc">
-                     Tanggal 8 & 9 Februari Libur Nasional dan Cuti Bersama
-                  </div>
-                  {{-- <div class="card-detail">
+               <div class="card-opening">
+                  <h4>
+                     <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1">
+                     <b>Announcement</b>
+                  </h4>
+               </div>
+               <hr>
+               <div class="card-desc">
+                  Tanggal 8 & 9 Februari Libur Nasional dan Cuti Bersama
+               </div>
+               {{-- <div class="card-detail">
                         <div class="btn btn-light btn-rounded">Download Template</div>
                      </div> --}}
                {{-- </div> --}}
             </div>
             <hr>
          </div>
-         <span class="badge badge-info mb-2">{{$now->format('F')}} 2024</span>  <br>
-         
+         <span class="badge badge-info mb-2">{{$now->format('F')}} 2024</span> <br>
+
          @foreach ($dates as $date)
-            @if ($presences->where('in_date', $date->format('Y-m-d'))->first() != null)
-               @if ($presences->where('in_date', $date->format('Y-m-d'))->first()->out_time != null)
-               <div class="btn btn-primary mb-1" data-toggle="modal" data-target="#modal-presence-{{$presences->where('in_date', $date->format('Y-m-d'))->first()->id}}">{{$date->format('d')}}</div>
-               @else
-               <div class="btn btn-info mb-1" data-toggle="modal" data-target="#modal-presence-{{$presences->where('in_date', $date->format('Y-m-d'))->first()->id}}">{{$date->format('d')}}</div>
-               @endif
-            
-            @else
-               <div class="btn btn-light mb-1">{{$date->format('d')}} </div>
-            @endif
-            
-            {{-- @foreach ($presences as $presence)
+         @if ($presences->where('in_date', $date->format('Y-m-d'))->first() != null)
+         @if ($presences->where('in_date', $date->format('Y-m-d'))->first()->out_time != null)
+         <div class="btn btn-primary mb-1" data-toggle="modal" data-target="#modal-presence-{{$presences->where('in_date', $date->format('Y-m-d'))->first()->id}}">{{$date->format('d')}}</div>
+         @else
+         <div class="btn btn-info mb-1" data-toggle="modal" data-target="#modal-presence-{{$presences->where('in_date', $date->format('Y-m-d'))->first()->id}}">{{$date->format('d')}}</div>
+         @endif
+
+         @else
+         <div class="btn btn-light mb-1">{{$date->format('d')}} </div>
+         @endif
+
+         {{-- @foreach ($presences as $presence)
                 @if ($presence->date == $date->format('Y-m-d'))
                   @if ($presence->out != null)
-                  <div class="btn btn-primary mb-1">{{$date->format('d')}}</div>
-                  @else
-                  <div class="btn btn-info mb-1">{{$date->format('d')}}</div>
-                  @endif
-                
-                @else
-                <div class="btn btn-light mb-1">{{$date->format('d')}} </div>
-                @endif
-            @endforeach --}}
+                  <div class="btn btn-primary mb-1">{{$date->format('d')}}
+      </div>
+      @else
+      <div class="btn btn-info mb-1">{{$date->format('d')}}</div>
+      @endif
 
-            {{-- <div class="btn btn-light mb-1">{{$date->format('d')}}</div> --}}
-         
-         @endforeach
+      @else
+      <div class="btn btn-light mb-1">{{$date->format('d')}} </div>
+      @endif
+      @endforeach --}}
 
-         <hr>
+      {{-- <div class="btn btn-light mb-1">{{$date->format('d')}}
+   </div> --}}
 
-         <div class="card">
-            <div class="card-header p-2">
-               <small>SPKL Request</small>
-            </div>
-            <div class="card-body p-0">
-               <table class=" ">
-                  <thead>
-                     
-                     <tr>
-                        {{-- <th scope="col">#</th> --}}
-                        <th scope="col">ID</th>
-                        <th scope="col">Date</th>
-                        {{-- <th>Name</th> --}}
-                        <th>Desc</th>
-                        <th scope="col">Status</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     @if (count($spkls) > 0)
-                         @foreach ($spkls as $spkl)
-                         <tr>
-                           <td><a href="{{route('spkl.detail', enkripRambo($spkl->id))}}">{{$spkl->code}}</a></td>
-                           <td>{{formatDate($spkl->date)}}</td>
-                           {{-- <td>{{$spkl->employee->biodata->first_name}} {{$spkl->employee->biodata->last_name}}</td> --}}
-                           <td style="max-width: 190px" class="text-truncate">{{$spkl->desc}}</td>
-                           <td>
-                              <x-status.spkl :spkl="$spkl" />
-                           </td>
-                        </tr>
-                         @endforeach
-                        @else
-                        <tr>
-                           <td colspan="5" class="text-center">Empty</td>
-                        </tr>
-                     @endif
-                     
-                     
-                  </tbody>
-               </table>
-            </div>
-         </div>
-         {{--  --}}
-         {{-- <table class="table table-bordered table-head-bg-info table-bordered-bd-info mt-4">
+   @endforeach
+
+   <hr>
+
+   <div class="card">
+      <div class="card-header p-2">
+         <small>SPKL Request</small>
+      </div>
+      <div class="card-body p-0">
+         <table class=" ">
+            <thead>
+
+               <tr>
+                  {{-- <th scope="col">#</th> --}}
+                  <th scope="col">ID</th>
+                  <th scope="col">Date</th>
+                  {{-- <th>Name</th> --}}
+                  <th>Desc</th>
+                  <th scope="col">Status</th>
+               </tr>
+            </thead>
+            <tbody>
+               @if (count($spkls) > 0)
+               @foreach ($spkls as $spkl)
+               <tr>
+                  <td><a href="{{route('spkl.detail', enkripRambo($spkl->id))}}">{{$spkl->code}}</a></td>
+                  <td>{{formatDate($spkl->date)}}</td>
+                  {{-- <td>{{$spkl->employee->biodata->first_name}} {{$spkl->employee->biodata->last_name}}</td> --}}
+                  <td style="max-width: 190px" class="text-truncate">{{$spkl->desc}}</td>
+                  <td>
+                     <x-status.spkl :spkl="$spkl" />
+                  </td>
+               </tr>
+               @endforeach
+               @else
+               <tr>
+                  <td colspan="5" class="text-center">Empty</td>
+               </tr>
+               @endif
+
+
+            </tbody>
+         </table>
+      </div>
+   </div>
+   {{-- --}}
+   {{-- <table class="table table-bordered table-head-bg-info table-bordered-bd-info mt-4">
             <thead>
                <tr>
                   <th scope="col">#</th>
@@ -243,7 +248,7 @@ Dashboard
                </tr>
             </tbody>
          </table> --}}
-         {{-- <hr>
+   {{-- <hr>
          <div class="badge badge-light">Overtime</div>
          <table class=" mt-1">
             <thead>
@@ -271,8 +276,8 @@ Dashboard
                
             </tbody>
          </table> --}}
-      </div>
-   </div>
+</div>
+</div>
 </div>
 
 @foreach ($presences as $presence)
@@ -282,90 +287,90 @@ Dashboard
          <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">Detail Presence</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
+               <span aria-hidden="true">&times;</span>
             </button>
          </div>
          <form action="{{route('employee.presence.in')}}" method="POST">
-         @csrf
-         <div class="modal-body">
+            @csrf
+            <div class="modal-body">
 
-            <div class="row">
-               <div class="col-md-6">
-                  <div class="badge badge-info mb-2">In</div>
-                  {{-- <hr> --}}
-                  <div class="form-group form-group-default">
-                     <label>Date</label>
-                     <input type="date" class="form-control"  name="date" id="date" value="{{$presence->in_date}}">
-                  </div>
-                  <div class="row">
-                     <div class="col-md-6">
-                        <div class="form-group form-group-default">
-                           <label>Location</label>
-                           <select class="form-control" name="loc" id="loc">
-                              <option {{$presence->in_loc == 'HW' ?  'selected' : ''}} value="HW">HW</option>
-                              <option {{$presence->in_loc == 'JGC' ?  'selected' : ''}} value="JGC">JGC</option>
-                              <option {{$presence->in_loc == 'KJ' ?  'selected' : ''}} value="KJ">KJ</option>
-                              <option {{$presence->in_loc == 'GS' ?  'selected' : ''}} value="GS">GS</option>
-                           </select>
-                           {{-- <input id="Name" type="text" class="form-control" > --}}
+               <div class="row">
+                  <div class="col-md-6">
+                     <div class="badge badge-info mb-2">In</div>
+                     {{-- <hr> --}}
+                     <div class="form-group form-group-default">
+                        <label>Date</label>
+                        <input type="date" class="form-control" name="date" id="date" value="{{$presence->in_date}}">
+                     </div>
+                     <div class="row">
+                        <div class="col-md-6">
+                           <div class="form-group form-group-default">
+                              <label>Location</label>
+                              <select class="form-control" name="loc" id="loc">
+                                 <option {{$presence->in_loc == 'HW' ?  'selected' : ''}} value="HW">HW</option>
+                                 <option {{$presence->in_loc == 'JGC' ?  'selected' : ''}} value="JGC">JGC</option>
+                                 <option {{$presence->in_loc == 'KJ' ?  'selected' : ''}} value="KJ">KJ</option>
+                                 <option {{$presence->in_loc == 'GS' ?  'selected' : ''}} value="GS">GS</option>
+                              </select>
+                              {{-- <input id="Name" type="text" class="form-control" > --}}
+                           </div>
+                        </div>
+                        <div class="col-md-6">
+                           <div class="form-group form-group-default">
+                              <label>Time</label>
+                              <input type="time" class="form-control" name="time" id="time" value="{{$presence->in_time}}">
+                           </div>
                         </div>
                      </div>
-                     <div class="col-md-6">
-                        <div class="form-group form-group-default">
-                           <label>Time</label>
-                           <input type="time" class="form-control"  name="time" id="time" value="{{$presence->in_time}}" >
+
+                  </div>
+                  <div class="col-md-6">
+                     <div class="badge badge-info mb-2">Out</div>
+                     {{-- <hr> --}}
+                     <div class="form-group form-group-default">
+                        <label>Date</label>
+                        <input type="date" class="form-control" name="date" id="date" value="{{$presence->out_date}}">
+                     </div>
+                     <div class="row">
+                        <div class="col-md-6">
+                           <div class="form-group form-group-default">
+                              <label>Location</label>
+                              <select class="form-control" name="loc" id="loc">
+                                 <option {{$presence->out_loc == 'HW' ?  'selected' : ''}} value="HW">HW</option>
+                                 <option {{$presence->out_loc == 'JGC' ?  'selected' : ''}} value="JGC">JGC</option>
+                                 <option {{$presence->out_loc == 'KJ' ?  'selected' : ''}} value="KJ">KJ</option>
+                                 <option {{$presence->out_loc == 'GS' ?  'selected' : ''}} value="GS">GS</option>
+                              </select>
+                              {{-- <input id="Name" type="text" class="form-control" > --}}
+                           </div>
+                        </div>
+                        <div class="col-md-6">
+                           <div class="form-group form-group-default">
+                              <label>Time</label>
+                              <input type="time" class="form-control" name="time" id="time" value="{{$presence->out_time}}">
+                           </div>
                         </div>
                      </div>
+
                   </div>
-                  
                </div>
-               <div class="col-md-6">
-                  <div class="badge badge-info mb-2">Out</div>
-                  {{-- <hr> --}}
-                  <div class="form-group form-group-default">
-                     <label>Date</label>
-                     <input type="date" class="form-control"  name="date" id="date" value="{{$presence->out_date}}">
+               <hr>
+               <div class="row">
+                  <div class="col-3">
+                     Work Hours <br>
+                     Overtime <br>
                   </div>
-                  <div class="row">
-                     <div class="col-md-6">
-                        <div class="form-group form-group-default">
-                           <label>Location</label>
-                           <select class="form-control" name="loc" id="loc">
-                              <option {{$presence->out_loc == 'HW' ?  'selected' : ''}} value="HW">HW</option>
-                              <option {{$presence->out_loc == 'JGC' ?  'selected' : ''}} value="JGC">JGC</option>
-                              <option {{$presence->out_loc == 'KJ' ?  'selected' : ''}} value="KJ">KJ</option>
-                              <option {{$presence->out_loc == 'GS' ?  'selected' : ''}} value="GS">GS</option>
-                           </select>
-                           {{-- <input id="Name" type="text" class="form-control" > --}}
-                        </div>
-                     </div>
-                     <div class="col-md-6">
-                        <div class="form-group form-group-default">
-                           <label>Time</label>
-                           <input type="time" class="form-control"  name="time" id="time" value="{{$presence->out_time}}" >
-                        </div>
-                     </div>
+                  <div class="col-9">
+                     : <b>{{$presence->total}}</b> <br>
+                     : <b>0</b>
                   </div>
-                  
                </div>
+
             </div>
-            <hr>
-            <div class="row">
-               <div class="col-3">
-                  Work Hours <br>
-                  Overtime <br>
-               </div>
-               <div class="col-9">
-                  : <b>{{$presence->total}}</b> <br>
-                  : <b>0</b>
-               </div>
+            <div class="modal-footer">
+               {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
+               {{-- <button type="submit" class="btn btn-primary">Submit</button> --}}
             </div>
-            
-         </div>
-         <div class="modal-footer">
-            {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
-            {{-- <button type="submit" class="btn btn-primary">Submit</button> --}}
-         </div>
          </form>
       </div>
    </div>
@@ -378,42 +383,42 @@ Dashboard
          <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">Kamu sudah tiba dikantor?</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
+               <span aria-hidden="true">&times;</span>
             </button>
          </div>
          <form action="{{route('employee.presence.in')}}" method="POST">
-         @csrf
-         <div class="modal-body">
-            <div class="form-group form-group-default">
-               <label>Date</label>
-               <input type="date" class="form-control"  name="date" id="date" >
-            </div>
-            <div class="row">
-               <div class="col-md-6">
-                  <div class="form-group form-group-default">
-                     <label>Location</label>
-                     <select class="form-control" name="loc" id="loc">
-                        <option value="HW">HW</option>
-                        <option value="JGC">JGC</option>
-                        <option value="KJ">KJ</option>
-                        <option value="GS">GS</option>
-                     </select>
-                     {{-- <input id="Name" type="text" class="form-control" > --}}
+            @csrf
+            <div class="modal-body">
+               <div class="form-group form-group-default">
+                  <label>Date</label>
+                  <input type="date" class="form-control" name="date" id="date">
+               </div>
+               <div class="row">
+                  <div class="col-md-6">
+                     <div class="form-group form-group-default">
+                        <label>Location</label>
+                        <select class="form-control" name="loc" id="loc">
+                           <option value="HW">HW</option>
+                           <option value="JGC">JGC</option>
+                           <option value="KJ">KJ</option>
+                           <option value="GS">GS</option>
+                        </select>
+                        {{-- <input id="Name" type="text" class="form-control" > --}}
+                     </div>
+                  </div>
+                  <div class="col-md-6">
+                     <div class="form-group form-group-default">
+                        <label>Time</label>
+                        <input type="time" class="form-control" name="time" id="time">
+                     </div>
                   </div>
                </div>
-               <div class="col-md-6">
-                  <div class="form-group form-group-default">
-                     <label>Time</label>
-                     <input type="time" class="form-control"  name="time" id="time" >
-                  </div>
-               </div>
+
             </div>
-            
-         </div>
-         <div class="modal-footer">
-            {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
-            <button type="submit" class="btn btn-primary">Submit</button>
-         </div>
+            <div class="modal-footer">
+               {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
+               <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
          </form>
       </div>
    </div>
@@ -426,45 +431,45 @@ Dashboard
          <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">Kamu sudah selesai bekerja?</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
+               <span aria-hidden="true">&times;</span>
             </button>
          </div>
          <form action="{{route('employee.presence.out')}}" method="POST">
-         @csrf
-         @method('PUT')
+            @csrf
+            @method('PUT')
 
-         <input type="number" id="presence" name="presence" value="{{$pending->id}}" hidden>
-         <div class="modal-body">
-            <div class="form-group form-group-default">
-               <label>Date</label>
-               <input type="date" class="form-control"  name="date" id="date" >
-            </div>
-            <div class="row">
-               <div class="col-md-6">
-                  <div class="form-group form-group-default">
-                     <label>Select Location</label>
-                     <select class="form-control" name="loc" id="loc">
-                        <option value="HW">HW</option>
-                        <option value="JGC">JGC</option>
-                        <option value="KJ">KJ</option>
-                        <option value="GS">GS</option>
-                     </select>
-                     {{-- <input id="Name" type="text" class="form-control" > --}}
+            <input type="number" id="presence" name="presence" value="{{$pending->id}}" hidden>
+            <div class="modal-body">
+               <div class="form-group form-group-default">
+                  <label>Date</label>
+                  <input type="date" class="form-control" name="date" id="date">
+               </div>
+               <div class="row">
+                  <div class="col-md-6">
+                     <div class="form-group form-group-default">
+                        <label>Select Location</label>
+                        <select class="form-control" name="loc" id="loc">
+                           <option value="HW">HW</option>
+                           <option value="JGC">JGC</option>
+                           <option value="KJ">KJ</option>
+                           <option value="GS">GS</option>
+                        </select>
+                        {{-- <input id="Name" type="text" class="form-control" > --}}
+                     </div>
+                  </div>
+                  <div class="col-md-6">
+                     <div class="form-group form-group-default">
+                        <label>Time</label>
+                        <input type="time" class="form-control" name="time" id="time">
+                     </div>
                   </div>
                </div>
-               <div class="col-md-6">
-                  <div class="form-group form-group-default">
-                     <label>Time</label>
-                     <input type="time" class="form-control"  name="time" id="time" >
-                  </div>
-               </div>
+
             </div>
-           
-         </div>
-         <div class="modal-footer">
-            {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
-            <button type="submit" class="btn btn-primary">Submit</button>
-         </div>
+            <div class="modal-footer">
+               {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
+               <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
          </form>
       </div>
    </div>

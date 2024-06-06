@@ -184,7 +184,7 @@ Route::middleware(["auth"])->group(function () {
       Route::prefix('employee')->group(function () {
          Route::get('spv', [EmployeeController::class, 'indexSpv'])->name('supervisor.employee');
       });
-      
+
       Route::prefix('spkl')->group(function () {
          Route::get('/index', [SpklController::class, 'indexSupervisor'])->name('supervisor.spkl');
          Route::get('/approve/supervisor/{id}', [SpklController::class, 'approveSupervisor'])->name('spkl.approve.supervisor');
@@ -345,7 +345,7 @@ Route::middleware(["auth"])->group(function () {
       Route::get('/detail/{id}', [SpklController::class, 'detail'])->name('spkl.detail');
    });
    // Role Karyawan
-   Route::group(['middleware' => ['role:Karyawan']], function () {
+   Route::group(['middleware' => ['role:Karyawan|Leader']], function () {
       // kpi
       Route::prefix('employee')->group(function () {
 

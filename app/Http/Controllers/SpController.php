@@ -10,7 +10,8 @@ use Illuminate\Http\Request;
 
 class SpController extends Controller
 {
-   public function index(){
+   public function index()
+   {
       $now = Carbon::now();
 
       // dd(auth()->user()->getEmployee()->id);
@@ -18,19 +19,17 @@ class SpController extends Controller
       if (auth()->user()->hasRole('Administrator')) {
          $employees = Employee::get();
          $sps = Sp::orderBy('created_at', 'desc')->get();
-      } elseif(auth()->user()->hasRole('Manager')) {
+      } elseif (auth()->user()->hasRole('Manager')) {
          $employees = Employee::where('department_id', auth()->user()->getEmployee()->department_id)->where('designation_id', '<', 6)->get();
 
          $sps = Sp::where('department_id', auth()->user()->getEmployee()->department_id)->orderBy('created_at', 'desc')->get();
-      } elseif(auth()->user()->hasRole('Supervisor')) {
+      } elseif (auth()->user()->hasRole('Leader') || auth()->user()->hasRole('Supervisor')) {
          $employees = Employee::where('department_id', auth()->user()->getEmployee()->department_id)->where('designation_id', '<', 4)->get();
 
          $sps = Sp::where('department_id', auth()->user()->getEmployee()->department_id)->orderBy('created_at', 'desc')->get();
       }
-      
-      
 
-      foreach($sps as $sp){
+      foreach ($sps as $sp) {
          if ($sp->date_to < $now) {
             // dd($sp->code);
             $sp->update([
@@ -45,7 +44,8 @@ class SpController extends Controller
       ])->with('i');
    }
 
-   public function store(Request $req){
+   public function store(Request $req)
+   {
 
       $date = Carbon::now();
       $employee = Employee::find($req->employee);
@@ -61,25 +61,23 @@ class SpController extends Controller
       if ($spEmployee) {
          if ($spEmployee->level == 'I') {
             $level = 'II';
-         } elseif($spEmployee->level == 'II'){
+         } elseif ($spEmployee->level == 'II') {
             $level = 'III';
          } else {
             $level = 'I';
          }
-         
-         
       } else {
          $level = 'I';
       }
 
+      // dd($req->date_from);
       $from = Carbon::make($req->date_from);
-      // dd($from->addMonths(6));
-      
+
       Sp::create([
          'department_id' => $employee->department_id,
          'employee_id' => $req->employee,
          'by_id' => auth()->user()->getEmployee()->id,
-         'status' => 1,
+         'status' => '0',
          'code' => $code,
          'level' => $req->level,
          'date_from' => $req->date_from,
@@ -90,16 +88,22 @@ class SpController extends Controller
       return redirect()->back()->with('success', 'SP submited');
    }
 
-   public function detail($id){
+   public function detail($id)
+   {
       $spkl = Spkl::get()->first();
       $sp = Sp::find(dekripRambo($id));
+
+      // dd($sp->created_by->biodata->fullName());
+
+
       return view('pages.sp.detail', [
          'spkl' => $spkl,
          'sp' => $sp
       ]);
    }
 
-   public function delete($id){
+   public function delete($id)
+   {
       // dd('delete');
       $sp = Sp::find(dekripRambo($id));
 
