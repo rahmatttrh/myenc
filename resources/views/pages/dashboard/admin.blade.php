@@ -98,47 +98,91 @@
          <div class="col-md-7">
             {{-- <div class="table-responsive"> --}}
                {{-- table table-bordered table-sm table-head-bg-info table-bordered-bd-info --}}
-               <div class="card">
-                  <div class="card-header p-2">
-                     <small>SPKL Request</small>
-                  </div>
-                  <div class="card-body p-0">
-                     <table class="display  table-sm table-bordered  table-striped ">
-                        <thead>
-                           
-                           <tr>
-                              {{-- <th scope="col">#</th> --}}
-                              <th scope="col">ID</th>
-                              <th scope="col">Date</th>
-                              <th>Name</th>
-                              {{-- <th>Desc</th> --}}
-                              <th scope="col">Status</th>
-                           </tr>
-                        </thead>
-                        <tbody>
-                           @if (count($spkls) > 0)
-                               @foreach ($spkls as $spkl)
-                               <tr>
-                                 <td><a href="{{route('spkl.detail', enkripRambo($spkl->id))}}">{{$spkl->code}}</a></td>
-                                 <td>{{formatDate($spkl->date)}}</td>
-                                 <td>{{$spkl->employee->biodata->first_name}} {{$spkl->employee->biodata->last_name}}</td>
-                                 {{-- <td style="max-width: 190px" class="text-truncate">{{$spkl->desc}}</td> --}}
-                                 <td>
-                                    <x-status.spkl :spkl="$spkl" />
-                                 </td>
-                              </tr>
-                               @endforeach
-                              @else
-                              <tr>
-                                 <td colspan="5" class="text-center">Empty</td>
-                              </tr>
-                           @endif
-                           
-                           
-                        </tbody>
-                     </table>
-                  </div>
+            <div class="card">
+               <div class="card-header p-2 bg-primary text-white">
+                  <small>SPKL Request</small>
                </div>
+               <div class="card-body p-0">
+                  <table class="display  table-sm table-bordered  table-striped ">
+                     <thead>
+                        
+                        <tr>
+                           {{-- <th scope="col">#</th> --}}
+                           <th scope="col">ID</th>
+                           <th scope="col">Date</th>
+                           <th>Name</th>
+                           {{-- <th>Desc</th> --}}
+                           <th scope="col">Status</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        @if (count($spkls) > 0)
+                              @foreach ($spkls as $spkl)
+                              <tr>
+                              <td><a href="{{route('spkl.detail', enkripRambo($spkl->id))}}">{{$spkl->code}}</a></td>
+                              <td>{{formatDate($spkl->date)}}</td>
+                              <td>{{$spkl->employee->biodata->first_name}} {{$spkl->employee->biodata->last_name}}</td>
+                              {{-- <td style="max-width: 190px" class="text-truncate">{{$spkl->desc}}</td> --}}
+                              <td>
+                                 <x-status.spkl :spkl="$spkl" />
+                              </td>
+                           </tr>
+                              @endforeach
+                           @else
+                           <tr>
+                              <td colspan="5" class="text-center">Empty</td>
+                           </tr>
+                        @endif
+                        
+                        
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+            <div class="card">
+               <div class="card-header p-2 bg-danger text-white">
+                  <small>SP Approval</small>
+               </div>
+               <div class="card-body p-0">
+                  <table class="display  table-sm table-bordered  table-striped ">
+                     <thead>
+                        
+                        <tr>
+                           {{-- <th scope="col">#</th> --}}
+                           <th scope="col">ID</th>
+                           <th scope="col">Name</th>
+                           <th>NIK</th>
+                           <th>Level</th>
+                           <th scope="col">Status</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        @if (count($sps) > 0)
+                              @foreach ($sps as $sp)
+                              <tr>
+                              <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->code}}</a></td>
+                              <td>{{$sp->employee->biodata->first_name}} {{$sp->employee->biodata->last_name}}</td>
+                              <td>{{$sp->employee->nik}}</td>
+                              <td>
+                                 SP {{$sp->level}}
+                              </td>
+                              {{-- <td style="max-width: 190px" class="text-truncate">{{$sp->desc}}</td> --}}
+                              <td>
+                                 <x-status.sp :sp="$sp" />
+                              </td>
+                           </tr>
+                              @endforeach
+                           @else
+                           <tr>
+                              <td colspan="5" class="text-center">Empty</td>
+                           </tr>
+                        @endif
+                        
+                        
+                     </tbody>
+                  </table>
+               </div>
+            </div>
             <table class=" table table-bordered  table-head-bg-info table-bordered-bd-info">
                <thead>
                   <tr>

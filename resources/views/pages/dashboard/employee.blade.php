@@ -39,11 +39,12 @@ Dashboard
          </div>
 
          @if (count($sps) > 0)
-         <div class="card card-danger">
-            <div class="card-header"><h3>Surat Peringatan <i class="fa fa-exclamation"></i></h3></div>
+         <div class="card ">
+            <div class="card-header bg-danger text-white"><b>Surat Peringatan <i class="fa fa-exclamation"></i></b></div>
             <div class="card-body">
                @foreach ($sps as $sp)
-               {{$sp->code}} - SP {{$sp->level}}  <br>
+               <a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->code}} - SP {{$sp->level}}</a>
+                 <br>
                @endforeach
             </div>
          </div>

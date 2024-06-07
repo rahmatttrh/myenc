@@ -61,7 +61,8 @@ Dashboard
             </div>
              
             <div class="card-footer d-flex justify-content-between">
-
+               
+               @if ($employee->contract_id != null)
                <div>
                   {{$employee->contract->shift->name ?? '-'}} <br>
                   Sisa Cuti <br>
@@ -71,6 +72,8 @@ Dashboard
                   {{formatTime($employee->contract->shift->in)}} - {{formatTime($employee->contract->shift->out)}} <br>
                   4
                </div>
+               @endif
+               
             </div>
             
          </div>

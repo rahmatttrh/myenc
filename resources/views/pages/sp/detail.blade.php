@@ -32,15 +32,15 @@ html { -webkit-print-color-adjust: exact; }
          <div class="row hide align-items-center">
             <div class="col">
                <h6 class="page-pretitle">
-                  @if ($spkl->status == 0)
+                  @if ($sp->status == 0)
                      Draft
-                     @elseif($spkl->status == 1)
-                     Approval SPV
-                     @elseif($spkl->status == 2)
+                     @elseif($sp->status == 1)
                      Approval Manager
-                     @elseif($spkl->status == 3)
-                     Verifikasi HRD
-                     @elseif($spkl->status == 4)
+                     @elseif($sp->status == 2)
+                     Approval HRD
+                     @elseif($sp->status == 3)
+                     Published
+                     @elseif($sp->status == 4)
                      Complete
                    @endif
                </h6>
@@ -48,9 +48,39 @@ html { -webkit-print-color-adjust: exact; }
                
             </div>
             <div class="col-auto">
-               <a href="#" class="btn btn-danger " data-toggle="modal" data-target="#modal-sp-delete">
-                  Delete
-               </a>
+               @if (auth()->user()->hasRole('Supervisor'))
+                  @if ($sp->status == 0)
+                      <a href="{{route('sp.release', enkripRambo($sp->id))}}" class="btn btn-primary">Send to Manager</a>
+                  @endif
+               @endif
+
+               @if (auth()->user()->hasRole('Manager'))
+                  @if ($sp->status == 1)
+                      <a href="{{route('sp.app.man', enkripRambo($sp->id))}}" class="btn btn-primary">Send to HRD</a>
+                  @endif
+               @endif
+
+               @if (auth()->user()->hasRole('Administrator'))
+                  @if ($sp->status == 2)
+                      <a href="{{route('sp.app.hrd', enkripRambo($sp->id))}}" class="btn btn-primary">Publish</a>
+                  @endif
+               @endif
+
+               @if (auth()->user()->hasRole('Karyawan'))
+                  @if ($sp->status == 3)
+                      <a href="{{route('sp.received', enkripRambo($sp->id))}}" class="btn btn-primary">Confirm</a>
+                  @endif
+               @endif
+
+               @if (!auth()->user()->hasRole('Karyawan'))
+                  @if ($sp->status == 0)
+                  <a href="#" class="btn btn-danger " data-toggle="modal" data-target="#modal-sp-delete">
+                     Delete
+                  </a>
+                  @endif
+               @endif
+               
+              
                
                
                <button type="button" class="btn btn-light border" onclick="javascript:window.print();">
@@ -147,12 +177,30 @@ html { -webkit-print-color-adjust: exact; }
                               <th>Diterima</th>
                            </tr>
                            <tr>
-                              <td style="height: 80px">
-                                 {{$sp->by->biodata->first_name}} {{$sp->by->biodata->last_name}}
+                              <td style="height: 80px" class="text-info">
+                                 @if ($sp->status >= 1)
+                                 {{$sp->by->biodata->first_name}} {{$sp->by->biodata->last_name}} <br>
+                                 <small>{{formatDate($sp->release)}}</small>
+                                 @endif
                               </td>
-                              <td></td>
-                              <td></td>
-                              <td></td>
+                              <td class="text-info">
+                                 @if ($sp->status >= 2)
+                                     {{$manager->biodata->first_name}} {{$manager->biodata->last_name}} <br>
+                                     <small>{{formatDate($sp->app_manager)}}</small>
+                                 @endif
+                              </td>
+                              <td class="text-info">
+                                 @if ($sp->status >= 3)
+                                     HRD <br>
+                                     <small>{{formatDate($sp->app_hrd)}}</small>
+                                 @endif
+                              </td>
+                              <td class="text-info">
+                                 @if ($sp->status >= 4)
+                                     {{$sp->employee->biodata->first_name}} {{$sp->employee->biodata->last_name}} <br>
+                                     <small>{{formatDate($sp->received)}}</small>
+                                 @endif
+                              </td>
                            </tr>
                            <tr>
                               <td>Tanggal : {{formatDate($sp->created_at)}}</td>

@@ -100,40 +100,7 @@
             <h4 class="text-section">Main Menu</h4>
          </li>
 
-         @if (auth()->user()->hasRole('Karyawan'))
-            {{-- <li class="nav-item {{ (request()->is('employee/detail/*')) ? 'active' : '' }}">
-               <a href="{{route('employee.detail', [enkripRambo(auth()->user()->employee->id), enkripRambo('contract')])}}">
-                  <i class="fas fa-user"></i>
-                  <p>My Profile</p>
-               </a>
-            </li> --}}
-            <li class="nav-item {{ (request()->is('employee/spkl/*')) ? 'active' : '' }}">
-               <a href="{{route('employee.spkl')}}">
-                  <i class="fas fa-clock"></i>
-                  <p>SPKL</p>
-               </a>
-            </li>
-
-            <li class="nav-item {{ (request()->is('employee/spt/*')) ? 'active' : '' }}">
-               <a href="{{route('employee.spt')}}">
-                  <i class="fas fa-briefcase"></i>
-                  <p>SPT</p>
-               </a>
-            </li>
-
-            <li class="nav-item">
-               <a href="{{route('employee.detail', [enkripRambo(auth()->user()->employee->id), enkripRambo('contract')])}}">
-                  <i class="fas fa-calendar"></i>
-                  <p>Cuti</p>
-               </a>
-            </li>
-            <li class="nav-item">
-               <a href="{{route('employee.detail', [enkripRambo(auth()->user()->employee->id), enkripRambo('contract')])}}">
-                  <i class="fas fa-hospital"></i>
-                  <p>Permit</p>
-               </a>
-            </li>
-         @endif
+         
 
          @if (auth()->user()->hasRole('Manager'))
             <li class="nav-item {{ (request()->is('employee/detail/*')) ? 'active' : '' }}">
@@ -366,6 +333,42 @@
                <p>SP</p>
             </a>
          </li>
+         @endif
+         <hr>
+
+         @if (auth()->user()->hasRole('Karyawan'))
+            {{-- <li class="nav-item {{ (request()->is('employee/detail/*')) ? 'active' : '' }}">
+               <a href="{{route('employee.detail', [enkripRambo(auth()->user()->employee->id), enkripRambo('contract')])}}">
+                  <i class="fas fa-user"></i>
+                  <p>My Profile</p>
+               </a>
+            </li> --}}
+            <li class="nav-item {{ (request()->is('employee/spkl/*')) ? 'active' : '' }}">
+               <a href="{{route('employee.spkl')}}">
+                  <i class="fas fa-clock"></i>
+                  <p>SPKL</p>
+               </a>
+            </li>
+
+            <li class="nav-item {{ (request()->is('employee/spt/*')) ? 'active' : '' }}">
+               <a href="{{route('employee.spt')}}">
+                  <i class="fas fa-briefcase"></i>
+                  <p>SPT</p>
+               </a>
+            </li>
+
+            <li class="nav-item">
+               <a href="{{route('employee.detail', [enkripRambo(auth()->user()->employee->id), enkripRambo('contract')])}}">
+                  <i class="fas fa-calendar"></i>
+                  <p>Cuti</p>
+               </a>
+            </li>
+            <li class="nav-item">
+               <a href="{{route('employee.detail', [enkripRambo(auth()->user()->employee->id), enkripRambo('contract')])}}">
+                  <i class="fas fa-hospital"></i>
+                  <p>Permit</p>
+               </a>
+            </li>
          @endif
       </ul>
 

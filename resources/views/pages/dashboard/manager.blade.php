@@ -104,7 +104,7 @@ Dashboard
          </div>
 
          <div class="card">
-            <div class="card-header p-2">
+            <div class="card-header p-2 bg-primary text-white">
                <small>SPKL Request</small>
             </div>
             <div class="card-body p-0">
@@ -145,7 +145,41 @@ Dashboard
             </div>
          </div>
          
-         
+         @if (count($sps) > 0)
+         <div class="card">
+            <div class="card-header p-2 bg-danger text-white">
+               <small>SP Approval Manager</small>
+            </div>
+            <div class="card-body p-0">
+               <table class=" ">
+                  <thead>
+                     
+                     <tr class="">
+                        {{-- <th scope="col">#</th> --}}
+                        <th scope="col">ID</th>
+                        <th>Name</th>
+                        <th>NIK</th>
+                        <th>Level</th>
+                        <th scope="col">Status</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     @foreach ($sps as $sp)
+                         <tr>
+                           <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->code}}</a></td>
+                           <td>{{$sp->employee->biodata->first_name}} {{$sp->employee->biodata->last_name}}</td>
+                           <td>{{$sp->employee->nik}}</td>
+                           <td>SP {{$sp->level}}</td>
+                           <td>
+                              <x-status.sp :sp="$sp" />
+                           </td>
+                        </tr>
+                     @endforeach
+                  </tbody>
+               </table>
+            </div>
+         </div>
+         @endif
          
       </div>
    </div>

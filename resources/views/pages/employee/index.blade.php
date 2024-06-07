@@ -96,8 +96,8 @@ Employee
                </td>
                <td class="text-truncate">{{$employee->contract->id_no}}</td>
                <td>{{$employee->biodata->phone}}</td>
-               <td>{{$employee->contract->department->unit->name ?? ''}}</td>
-               <td>{{$employee->contract->department->name ?? ''}}</td>
+               <td>{{$employee->department->unit->name ?? ''}}</td>
+               <td>{{$employee->department->name ?? ''}}</td>
                <td>{{$employee->contract->designation->name ?? ''}}</td>
                <td>{{$employee->position->name}}</td>
                <td>

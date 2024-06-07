@@ -174,7 +174,7 @@ Route::middleware(["auth"])->group(function () {
       });
    });
 
-   Route::group(['middleware' => ['role:Administrator|HRD|Karyawan']], function () {
+   Route::group(['middleware' => ['role:Administrator|HRD|Karyawan|Manager|Supervisor']], function () {
       Route::put('update', [EmployeeController::class, 'update'])->name('employee.update');
       Route::put('update/bio', [EmployeeController::class, 'updateBio'])->name('employee.update.bio');
       Route::put('update/picture', [EmployeeController::class, 'updatePicture'])->name('employee.update.picture');
@@ -198,6 +198,11 @@ Route::middleware(["auth"])->group(function () {
       Route::post('store', [SpController::class, 'store'])->name('sp.store');
       Route::get('detail/{id}', [SpController::class, 'detail'])->name('sp.detail');
       Route::get('delete/{id}', [SpController::class, 'delete'])->name('sp.delete');
+
+      Route::get('release/{id}', [SpController::class, 'release'])->name('sp.release');
+      Route::get('app/man/{id}', [SpController::class, 'appManager'])->name('sp.app.man');
+      Route::get('app/hrd/{id}', [SpController::class, 'appHrd'])->name('sp.app.hrd');
+      Route::get('received/{id}', [SpController::class, 'received'])->name('sp.received');
    });
 
    // Role Campuran  

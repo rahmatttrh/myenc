@@ -21,7 +21,7 @@ class SpController extends Controller
       } elseif(auth()->user()->hasRole('Manager')) {
          $employees = Employee::where('department_id', auth()->user()->getEmployee()->department_id)->where('designation_id', '<', 6)->get();
 
-         $sps = Sp::where('department_id', auth()->user()->getEmployee()->department_id)->orderBy('created_at', 'desc')->get();
+         $sps = Sp::where('status', '>', 0)->where('department_id', auth()->user()->getEmployee()->department_id)->orderBy('created_at', 'desc')->get();
       } elseif(auth()->user()->hasRole('Supervisor')) {
          $employees = Employee::where('department_id', auth()->user()->getEmployee()->department_id)->where('designation_id', '<', 4)->get();
 
@@ -74,12 +74,13 @@ class SpController extends Controller
 
       $from = Carbon::make($req->date_from);
       // dd($from->addMonths(6));
+
       
       Sp::create([
          'department_id' => $employee->department_id,
          'employee_id' => $req->employee,
          'by_id' => auth()->user()->getEmployee()->id,
-         'status' => 1,
+         'status' => 0,
          'code' => $code,
          'level' => $req->level,
          'date_from' => $req->date_from,
@@ -93,9 +94,12 @@ class SpController extends Controller
    public function detail($id){
       $spkl = Spkl::get()->first();
       $sp = Sp::find(dekripRambo($id));
+
+      $manager = Employee::where('department_id', $sp->department_id)->where('designation_id', 6)->first();  
       return view('pages.sp.detail', [
          'spkl' => $spkl,
-         'sp' => $sp
+         'sp' => $sp,
+         'manager' => $manager
       ]);
    }
 
@@ -106,5 +110,47 @@ class SpController extends Controller
       $sp->delete();
 
       return redirect()->route('sp')->with('success', 'SP deleted');
+   }
+
+   public function release($id){
+      $sp = Sp::find(dekripRambo($id));
+      $sp->update([
+         'status' => 1,
+         'release' => Carbon::now()
+      ]);
+      // dd($sp->code);
+
+      return redirect()->route('sp')->with('success', 'SP Form sent to Manager');
+   }
+
+   public function appManager($id){
+      $sp = Sp::find(dekripRambo($id));
+      $sp->update([
+         'status' => 2,
+         'app_manager' => Carbon::now()
+      ]);
+      // dd($sp->code);
+
+      return redirect()->route('sp')->with('success', 'SP Form sent to Manager');
+   }
+
+   public function appHrd($id){
+      $sp = Sp::find(dekripRambo($id));
+      $sp->update([
+         'status' => 3,
+         'app_hrd' => Carbon::now()
+      ]);
+
+      return redirect()->route('sp')->with('success', 'SP Form published, sent to ' . $sp->employee->biodata->first_name . ' ' . $sp->employee->biodata->last_name);
+   }
+
+   public function received($id){
+      $sp = Sp::find(dekripRambo($id));
+      $sp->update([
+         'status' => 4,
+         'received' => Carbon::now()
+      ]);
+
+      return redirect()->to('/')->with('success', 'SP Form received ');
    }
 }

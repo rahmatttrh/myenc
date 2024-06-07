@@ -132,30 +132,7 @@ table th {
                </thead>
               
                <tbody>
-                  <tr>
-                     
-                     <td><a href="{{route('spkl.detail')}}">19/04/24</a></td>
-                     <td>17.00 - 21.00</td>
-                     <td>HW</td>
-                     <td style="max-width: 300px" class="text-truncate">Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque, sed suscipit perferendis dolorum quis nesciunt! Amet aliquid temporibus possimus eius. Expedita, quae in!</td>
-                     <td>Approved</td>
-                     {{-- <td>
-                        <a href="{{route('spkl.detail')}}" class="btn btn-sm btn-primary">Detail</a>
-                     </td> --}}
                   
-                  </tr>
-                  <tr>
-                     
-                     <td><a href="{{route('spkl.detail')}}">18/04/24</a></td>
-                     <td>17.00 - 20.00</td>
-                     <td>HW</td>
-                     <td style="max-width: 250px" class="text-truncate">Consectetur adipisicing elit. Itaque, sed suscipit perferendis dolorum quis nesciunt! Amet aliquid temporibus possimus eius. Expedita, quae in!</td>
-                     <td>Approved</td>
-                     {{-- <td>
-                        <a href="" class="btn btn-sm btn-primary">Detail</a>
-                     </td> --}}
-                  
-                  </tr>
                   
                </tbody>
             </table>

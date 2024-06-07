@@ -102,8 +102,9 @@ SP
                      <th>ID</th>
                      <th>Name</th>
                      <th>NIK</th>
-                     <th>Status</th>
+                     
                      <th>Level</th>
+                     <th>Status</th>
                      {{-- <th>Date</th> --}}
                      {{-- <th style="width: 50px">Desc</th> --}}
                      {{-- <th></th> --}}
@@ -117,14 +118,25 @@ SP
                            <td>{{$sp->employee->biodata->first_name}} {{$sp->employee->biodata->last_name}}</td>
                            <td>{{$sp->employee->nik}}</td>
                            {{-- <td>{{formatDate($sp->date)}}</td> --}}
-                           <td>
+                           {{-- <td>
                               @if ($sp->status == 1)
                                   Active
                                   @else
                                   Non-Active
                               @endif
-                           </td>
+                           </td> --}}
                            <td>SP {{$sp->level}}</td>
+                           <td>
+                              @if ($sp->status == 0)
+                                  Draft
+                                  @elseif($sp->status == 1)
+                                  Approval Manager
+                                  @elseif($sp->status == 2)
+                                  Approval HRD
+                                  @elseif($sp->status == 3)
+                                  Published
+                              @endif
+                           </td>
                            {{-- <td class="text-truncate" style="max-width: 240px">{{$sp->desc}}</td> --}}
                            
                       </tr>
