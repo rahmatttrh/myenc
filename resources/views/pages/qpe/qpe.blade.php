@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-KPA
+QPE
 @endsection
 @section('content')
 
@@ -8,7 +8,7 @@ KPA
     <nav aria-label="breadcrumb ">
         <ol class="breadcrumb  ">
             <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
-            <li class="breadcrumb-item active" aria-current="page">KPA</li>
+            <li class="breadcrumb-item active" aria-current="page">QPE</li>
         </ol>
     </nav>
     <div class="row">
