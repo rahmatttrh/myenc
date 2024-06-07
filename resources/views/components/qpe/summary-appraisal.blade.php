@@ -50,6 +50,11 @@
                         <td class="text-center text-bold"><b>-</b></td>
                         @endif
                     </tr>
+                    <tr>
+                        <td>4</td>
+                        <td colspan="4" class="text-center">PENGURANG (SP)</td>
+                        <td class="text-center text-bold"><b>({{$pe->pengurang}})</b></td>
+                    </tr>
                 </tbody>
                 <tfoot>
                     <tr>

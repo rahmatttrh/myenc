@@ -268,7 +268,7 @@ PDF Example
                      {{-- <td></td> --}}
                      <td colspan="" class="text-center"><b>0</b></td>
                      <td></td>
-                     <td style="background-color: yellow" class="text-end">0</td>
+                     <td style="background-color: yellow" class="text-end">({{$pe->pengurang}})</td>
                   </tr>
 
                   <tr style="background-color: rgb(21, 21, 80); color:aqua">

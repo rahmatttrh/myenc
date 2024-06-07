@@ -15,6 +15,7 @@ use App\Models\PeKpa;
 use App\Models\PekpaDetail;
 use App\Models\PeKpi;
 use App\Models\PekpiDetail;
+use App\Models\Sp;
 use App\Models\Unit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -798,8 +799,11 @@ class QuickPEController extends Controller
 
         $this->createAndUpdateDiscipline($pe);
 
+        // Update Pengurang (SP)
+        $this->updatePengurang($pe);
+
         $pe->update([
-            'achievement' => $pe->discipline + $pe->kpi + $pe->behavior
+            'achievement' => ($pe->discipline + $pe->kpi + $pe->behavior) - $pe->pengurang
         ]);
     }
 
@@ -856,5 +860,35 @@ class QuickPEController extends Controller
         $pe->update([
             'discipline' => $pd->contribute_to_pe
         ]);
+    }
+
+    public function updatePengurang($pe)
+    {
+        $sp = Sp::where('employee_id', $pe->employe_id)
+            ->where('tahun', $pe->tahun)
+            ->where('semester', $pe->semester)
+            ->where('status', '2')
+            ->get();
+
+        // Update PE
+        if ($sp) {
+
+            // Update Tabel SP
+            Sp::where('employee_id', $pe->employe_id)
+                ->where('tahun', $pe->tahun)
+                ->where('semester', $pe->semester)
+                ->where('status', '2')
+                ->update([
+                    'pe_id' => $pe->id
+                ]);
+
+            $pe->update([
+                'pengurang' => 5
+            ]);
+        } else {
+            $pe->update([
+                'pengurang' => 0
+            ]);
+        }
     }
 }

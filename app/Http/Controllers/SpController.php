@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Models\Pe;
 use App\Models\Sp;
 use App\Models\Spkl;
 use Carbon\Carbon;
@@ -73,10 +74,23 @@ class SpController extends Controller
       // dd($req->date_from);
       $from = Carbon::make($req->date_from);
 
+      $bulan = $from->format('m');
+      $tahun = $from->format('Y');
+
+      if ($bulan >= 1 && $bulan <= 6) {
+         $semester =  1; // Semester 1: Januari sampai Juni
+      } else {
+         $semester =  2; // Semester 2: Juli sampai Desember
+      }
+
+
+
       Sp::create([
          'department_id' => $employee->department_id,
          'employee_id' => $req->employee,
          'by_id' => auth()->user()->getEmployee()->id,
+         'semester' => $semester,
+         'tahun' => $tahun,
          'status' => '0',
          'code' => $code,
          'level' => $req->level,
@@ -94,6 +108,7 @@ class SpController extends Controller
       $sp = Sp::find(dekripRambo($id));
 
       // dd($sp->created_by->biodata->fullName());
+      // dd();
 
 
       return view('pages.sp.detail', [
@@ -110,5 +125,74 @@ class SpController extends Controller
       $sp->delete();
 
       return redirect()->route('sp')->with('success', 'SP deleted');
+   }
+
+   public function submit(Request $req, $id)
+   {
+      // Validasi input
+      $req->validate([
+         'id' => 'required',
+      ]);
+
+      $sp = Sp::find($req->id);
+
+      $sp->update([
+         'status' => '1',
+         'release_at' => NOW()
+      ]);
+
+      return  back()->with('success', 'SP berhasil di submit');
+   }
+
+   public function approved(Request $req, $id)
+   {
+      // Validasi input
+      $req->validate([
+         'id' => 'required',
+      ]);
+
+      $sp = Sp::find($req->id);
+
+      $pe = Pe::where('employe_id', $sp->employee_id)
+         ->where('tahun', $sp->tahun)
+         ->where('semester', $sp->semester)
+         ->first();
+
+
+      $sp->update([
+         'status' => '2',
+         'approved_at' => NOW()
+      ]);
+
+      if ($pe) {
+         $sp->update([
+            'pe_id' => $pe->id
+         ]);
+
+         // Memanggil fungsi dari controller lain untuk calculate pe 
+         $qpc = new QuickPEController;
+         $qpc->calculatePe($pe->id);
+      }
+
+      return  back()->with('success', 'SP berhasil di Approved');
+   }
+
+
+   public function reject(Request $req, $id)
+   {
+      // Validasi input
+      $req->validate([
+         'id' => 'required',
+      ]);
+
+      $sp = Sp::find($req->id);
+
+      $sp->update([
+         'status' => '101',
+         'alasan_reject' => $req->alasan_reject,
+         'reject_at' => NOW()
+      ]);
+
+      return  back()->with('success', 'SP berhasil di reject');
    }
 }
