@@ -96,12 +96,6 @@
                   <p>SPT</p>
                </a>
             </li>
-            <li class="nav-item {{ (request()->is('sp/*')) ? 'active' : '' }}">
-               <a href="{{route('sp')}}">
-                  <i class="fas fa-file-code"></i>
-                  <p>SP</p>
-               </a>
-            </li>
 
             <li class="nav-item">
                <a href="{{route('employee.detail', [enkripRambo(auth()->user()->employee->id), enkripRambo('contract')])}}">
@@ -141,7 +135,7 @@
 
             @endif
 
-            @if (auth()->user()->hasRole('Administrator|HRD|Leader|Supervisor'))
+            @if (auth()->user()->hasRole('Administrator|HRD|Leader|Supervisor|Manager'))
 
             <!-- Master Data -->
             @if (auth()->user()->hasRole('Administrator|HRD'))
