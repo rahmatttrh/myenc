@@ -184,7 +184,7 @@ Route::middleware(["auth"])->group(function () {
       Route::prefix('employee')->group(function () {
          Route::get('spv', [EmployeeController::class, 'indexSpv'])->name('supervisor.employee');
       });
-      
+
       Route::prefix('spkl')->group(function () {
          Route::get('/index', [SpklController::class, 'indexSupervisor'])->name('supervisor.spkl');
          Route::get('/approve/supervisor/{id}', [SpklController::class, 'approveSupervisor'])->name('spkl.approve.supervisor');
@@ -199,10 +199,17 @@ Route::middleware(["auth"])->group(function () {
       Route::get('detail/{id}', [SpController::class, 'detail'])->name('sp.detail');
       Route::get('delete/{id}', [SpController::class, 'delete'])->name('sp.delete');
 
+<<<<<<< HEAD
       Route::get('release/{id}', [SpController::class, 'release'])->name('sp.release');
       Route::get('app/man/{id}', [SpController::class, 'appManager'])->name('sp.app.man');
       Route::get('app/hrd/{id}', [SpController::class, 'appHrd'])->name('sp.app.hrd');
       Route::get('received/{id}', [SpController::class, 'received'])->name('sp.received');
+=======
+      Route::put('/submit/{id}', [SpController::class, 'submit'])->name('sp.submit');
+      Route::put('/approved/{id}', [SpController::class, 'approved'])->name('sp.approved');
+
+      Route::patch('/reject/{id}', [SpController::class, 'reject'])->name('sp.reject');
+>>>>>>> 585af9fe4e0e76b0cf9aa0425a7bfd1c360c33d6
    });
 
    // Role Campuran  
@@ -267,8 +274,10 @@ Route::middleware(["auth"])->group(function () {
       Route::prefix('qpe')->group(function () {
          Route::get('/', [QuickPEController::class, 'index'])->name('qpe');
          Route::get('/create', [QuickPEController::class, 'create'])->name('qpe.create');
-         Route::post('/', [QuickPEController::class, 'store'])->name('qpe.store');
          Route::get('edit/{id}', [QuickPEController::class, 'edit'])->name('qpe.edit');
+         Route::get('show/{id}', [QuickPEController::class, 'show'])->name('qpe.show');
+
+         Route::post('/', [QuickPEController::class, 'store'])->name('qpe.store');
          Route::put('/submit/{id}', [QuickPEController::class, 'submit'])->name('qpe.submit');
 
          Route::get('approval/{id}', [QuickPEController::class, 'approval'])->name('qpe.approval');
@@ -338,6 +347,8 @@ Route::middleware(["auth"])->group(function () {
 
       // Example PDF
       Route::get('kpi/employee/', [ExportController::class, 'kpiExample'])->name('export.kpi');
+
+      Route::get('qpe/{id}', [ExportController::class, 'qpe'])->name('export.qpe');
    });
 
 
@@ -346,7 +357,7 @@ Route::middleware(["auth"])->group(function () {
       Route::get('/detail/{id}', [SpklController::class, 'detail'])->name('spkl.detail');
    });
    // Role Karyawan
-   Route::group(['middleware' => ['role:Karyawan']], function () {
+   Route::group(['middleware' => ['role:Karyawan|Leader']], function () {
       // kpi
       Route::prefix('employee')->group(function () {
 

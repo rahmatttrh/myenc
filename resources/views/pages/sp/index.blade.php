@@ -29,7 +29,7 @@ SP
 
 
             {{-- <a class="dropdown-item" style="text-decoration: none" href="{{route('employee.create')}}">Create</a> --}}
-            <a class="dropdown-item" style="text-decoration: none"  data-toggle="modal" data-target="#modal-export">Export</a>
+            <a class="dropdown-item" style="text-decoration: none" data-toggle="modal" data-target="#modal-export">Export</a>
             <div class="dropdown-divider"></div>
             {{-- <a class="dropdown-item" style="text-decoration: none" href="" target="_blank">Print Preview</a> --}}
          </div>
@@ -47,10 +47,10 @@ SP
                <select class="form-control" required id="employee" name="employee">
                   <option value="" selected disabled>Select Employee</option>
                   @foreach ($employees as $emp)
-                     <option value="{{$emp->id}}">{{$emp->biodata->first_name}} {{$emp->biodata->last_name}} </option>
+                  <option value="{{$emp->id}}">{{$emp->biodata->first_name}} {{$emp->biodata->last_name}} </option>
                   @endforeach
                </select>
-               
+
             </div>
             <div class="row">
                <div class="col-md-6">
@@ -62,16 +62,16 @@ SP
                         <option value="II">SP II</option>
                         <option value="III">SP III</option>
                      </select>
-                     
+
                   </div>
                </div>
                <div class="col-md-6">
                   <div class="form-group form-group-default">
                      <label>Berlaku dari</label>
-                     <input type="date" class="form-control"  name="date_from" id="date_from">
+                     <input type="date" class="form-control" name="date_from" id="date_from">
                   </div>
                </div>
-               
+
                {{-- <div class="col-md-6">
                   <small class="text-muted">Masa berlaku SP adalah 6 bulan</small>
                   <hr>
@@ -83,10 +83,10 @@ SP
                   </div>
                </div> --}}
             </div>
-            
+
             <div class="form-group form-group-default">
                <label>Desc</label>
-               <textarea  class="form-control"  name="desc" id="desc"></textarea>
+               <textarea class="form-control" name="desc" id="desc"></textarea>
             </div>
             <hr>
             <button type="submit" class="btn btn-block btn-primary">Submit</button>
@@ -112,36 +112,31 @@ SP
                </thead>
                <tbody>
                   @foreach ($sps as $sp)
-                      <tr>
-                        <td class="text-center">{{++$i}}</td>
-                        <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->code}}</a> </td>
-                           <td>{{$sp->employee->biodata->first_name}} {{$sp->employee->biodata->last_name}}</td>
-                           <td>{{$sp->employee->nik}}</td>
-                           {{-- <td>{{formatDate($sp->date)}}</td> --}}
-                           {{-- <td>
-                              @if ($sp->status == 1)
-                                  Active
-                                  @else
-                                  Non-Active
-                              @endif
-                           </td> --}}
-                           <td>SP {{$sp->level}}</td>
-                           <td>
-                              @if ($sp->status == 0)
-                                  Draft
-                                  @elseif($sp->status == 1)
-                                  Approval Manager
-                                  @elseif($sp->status == 2)
-                                  Approval HRD
-                                  @elseif($sp->status == 3)
-                                  Published
-                              @endif
-                           </td>
-                           {{-- <td class="text-truncate" style="max-width: 240px">{{$sp->desc}}</td> --}}
-                           
-                      </tr>
+                  <tr>
+                     <td class="text-center">{{++$i}}</td>
+                     <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->code}}</a> </td>
+                     <td>{{$sp->employee->biodata->first_name}} {{$sp->employee->biodata->last_name}}</td>
+                     <td>{{$sp->employee->nik}}</td>
+                     {{-- <td>{{formatDate($sp->date)}}</td> --}}
+                     <td>
+                        @if ($sp->status == 0)
+                        Draft
+                        @elseif ($sp->status == 1)
+                        Approval Manager
+                        @elseif ($sp->status == 2)
+                        Active
+                        @elseif ($sp->status == 101)
+                        Reject Manager
+                        @else
+                        Non-Active
+                        @endif
+                     </td>
+                     <td>SP {{$sp->level}}</td>
+                     {{-- <td class="text-truncate" style="max-width: 240px">{{$sp->desc}}</td> --}}
 
-                      
+                  </tr>
+
+
                   @endforeach
                </tbody>
             </table>

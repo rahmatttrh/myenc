@@ -15,6 +15,7 @@ use App\Models\PeKpa;
 use App\Models\PekpaDetail;
 use App\Models\PeKpi;
 use App\Models\PekpiDetail;
+use App\Models\Sp;
 use App\Models\Unit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -273,12 +274,19 @@ class QuickPEController extends Controller
         $addtional = PekpaDetail::where('kpa_id', $kpa->id)->where('addtional', '1')->first();
 
 
-        $employes = Employee::where('status', '1')
-            ->whereNotNull('kpi_id')
-            ->get();
+        $employe = Employee::where('id', $kpa->employe_id)->first();
+
+        if ($employe->designation->golongan == '1' || $employe->designation->golongan == '2') {
+            // Staff
+            $level = 's';
+        } else {
+            // Leader
+            $level = 'l';
+        }
+
 
         // Berikut Behavior  Staff
-        $behaviors = PeBehavior::where('level', 's')->get();
+        $behaviors = PeBehavior::where('level', $level)->get();
 
 
 
@@ -566,7 +574,8 @@ class QuickPEController extends Controller
             // Update status dan verifikasi pada tabel PE
             $pe->update([
                 'status' => '2',
-                'verifikasi_by' => $verifikasiBy
+                'verifikasi_by' => $verifikasiBy,
+                'verifikasi_at' => NOW()
             ]);
 
             // Commit transaksi jika semua operasi berhasil
@@ -590,7 +599,61 @@ class QuickPEController extends Controller
      */
     public function show($id)
     {
-        //
+        $kpa = PeKpa::find(dekripRambo($id));
+        $datas = PekpaDetail::where('kpa_id', $kpa->id)->where('addtional', '0')->get();
+        // Additional 
+        $addtional = PekpaDetail::where('kpa_id', $kpa->id)->where('addtional', '1')->first();
+
+
+        $employes = Employee::where('status', '1')
+            ->whereNotNull('kpi_id')
+            ->get();
+
+        // Berikut Behavior  Staff
+        $behaviors = PeBehavior::where('level', 's')->get();
+
+
+
+        // $pcc = new PeComponentController();
+        // $pcs = $pcc->getComponentDesignation($kpa->employe->contract->designation->id); // Memanggil fungsi show dari ProfileController
+
+        // dd($pcs);
+
+
+        $isDone = false;
+        $isReject = false;
+
+
+        if (!isset($kpa)) {
+            return back()->with('danger', 'Id KPA Anda Salah');
+        }
+
+        $pba = PeBehaviorApprasial::where('pe_id', $kpa->pe_id)->first();
+
+        if (isset($pba)) {
+            $pbads = PeBehaviorApprasialDetail::where('pba_id', $pba->id)->get();
+        } else {
+            $pbads = null;
+        }
+
+        $pe = Pe::find($kpa->pe_id);
+
+        $pd = PeDiscipline::where('pe_id', $kpa->pe_id)->first();
+
+        return view('pages.qpe.qpe-show', [
+            'kpa' => $kpa,
+            'addtional' => $addtional,
+            'behaviors' => $behaviors,
+            'isDone' => $isDone,
+            'isReject' => $isReject,
+            'pd' => $pd,
+            'pba' => $pba,
+            'pbads' => $pbads,
+            'pe' => $pe,
+            'kpaAchievement' => 0,
+            'pbaAchievement' => 0,
+            'datas' => $datas
+        ])->with('i');
     }
 
     /**
@@ -736,8 +799,11 @@ class QuickPEController extends Controller
 
         $this->createAndUpdateDiscipline($pe);
 
+        // Update Pengurang (SP)
+        $this->updatePengurang($pe);
+
         $pe->update([
-            'achievement' => $pe->discipline + $pe->kpi + $pe->behavior
+            'achievement' => ($pe->discipline + $pe->kpi + $pe->behavior) - $pe->pengurang
         ]);
     }
 
@@ -794,5 +860,35 @@ class QuickPEController extends Controller
         $pe->update([
             'discipline' => $pd->contribute_to_pe
         ]);
+    }
+
+    public function updatePengurang($pe)
+    {
+        $sp = Sp::where('employee_id', $pe->employe_id)
+            ->where('tahun', $pe->tahun)
+            ->where('semester', $pe->semester)
+            ->where('status', '2')
+            ->get();
+
+        // Update PE
+        if ($sp) {
+
+            // Update Tabel SP
+            Sp::where('employee_id', $pe->employe_id)
+                ->where('tahun', $pe->tahun)
+                ->where('semester', $pe->semester)
+                ->where('status', '2')
+                ->update([
+                    'pe_id' => $pe->id
+                ]);
+
+            $pe->update([
+                'pengurang' => 5
+            ]);
+        } else {
+            $pe->update([
+                'pengurang' => 0
+            ]);
+        }
     }
 }

@@ -20,10 +20,6 @@
                             <th>Target</th>
                             <th>Value</th>
                             <th>Achievement</th>
-                            @if($kpa->status == '2' || $kpa->status == '202')
-                            <th>Status</th>
-                            <th>Keterangan</th>
-                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -42,20 +38,6 @@
                             <td> {{$data->kpidetail->target}}</td>
                             <td> {{$data->value}}</td>
                             <td class="text-right"> <b>{{$data->achievement}}</b></td>
-                            @if($kpa->status == '2' || $kpa->status == '202')
-                            <td>
-                                @if($data->status == '0')
-                                <span class="badge badge-default">Open</span>
-                                @elseif($data->status == '1')
-                                <span class="badge badge-success">Valid</span>
-                                @elseif($data->status == '202')
-                                <span class="badge badge-danger">Invalid</span>
-                                @endif
-                            </td>
-                            <td>
-                                <br>{{$data->reason_rejection}}
-                            </td>
-                            @endif
                         </tr>
 
 

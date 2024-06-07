@@ -98,3 +98,25 @@ function formatDayDate($data)
    $date = \Carbon\Carbon::parse($data)->format('l, d/m/Y');
    return $date;
 }
+
+function numberToAlphabet($number)
+{
+   // Array untuk menyimpan huruf hasil konversi
+   $letters = [];
+
+   // Menghitung huruf berdasarkan angka yang diberikan
+   while ($number > 0) {
+      // Mengurangi 1 dari nomor untuk menangani indeks nol
+      $number--;
+
+      // Menentukan huruf berdasarkan nilai saat ini
+      $remainder = $number % 26;
+      $letters[] = chr($remainder + ord('a'));
+
+      // Mengupdate nomor untuk loop berikutnya
+      $number = intdiv($number, 26);
+   }
+
+   // Menggabungkan hasil dalam urutan terbalik
+   return implode('', array_reverse($letters));
+}

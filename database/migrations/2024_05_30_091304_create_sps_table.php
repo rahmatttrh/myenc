@@ -15,14 +15,23 @@ class CreateSpsTable extends Migration
     {
         Schema::create('sps', function (Blueprint $table) {
             $table->id();
-            $table->integer('status');
+            $table->string('code', 50)->nullable();
+            $table->string('status', 3)->default('0');
             $table->integer('employee_id');
+            $table->integer('department_id');
+            $table->integer('by_id');
+            $table->integer('pe_id')->nullable();
+            $table->string('tahun', 4)->nullable();
+            $table->string('semester', 1)->nullable();
             $table->date('date_from');
             $table->date('date_to');
             $table->string('level');
             $table->string('desc');
-
             $table->integer('by')->nullable();
+            $table->text('alasan_reject')->nullable();
+            $table->dateTime('release_at')->nullable();
+            $table->dateTime('approved_at')->nullable();
+            $table->dateTime('reject_at')->nullable();
             $table->timestamps();
         });
     }

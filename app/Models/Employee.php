@@ -20,10 +20,10 @@ class Employee extends Model
       return $this->belongsTo(Department::class);
    }
 
-   // public function designation()
-   // {
-   //    return $this->belongsTo(Designation::class);
-   // }
+   public function designation()
+   {
+      return $this->belongsTo(Designation::class);
+   }
 
    public function contract()
    {
@@ -60,6 +60,20 @@ class Employee extends Model
       return $this->belongsTo(Position::class);
    }
 
+   // Atasan Langsung
+   public function direct_leader()
+   {
+      return $this->belongsTo(Employee::class, 'direct_leader_id');
+   }
+
+   public function manager()
+   {
+      return $this->belongsTo(Employee::class, 'manager_id');
+   }
+
+
+
+   // HASH MANY 
 
    public function documents()
    {
@@ -91,15 +105,18 @@ class Employee extends Model
       return $this->hasMany(PeKpa::class);
    }
 
-   public function presences(){
+   public function presences()
+   {
       return $this->hasMany(Presence::class);
    }
 
-   public function spkls(){
+   public function spkls()
+   {
       return $this->hasMany(Spkl::class);
    }
 
-   public function sps(){
+   public function sps()
+   {
       return $this->hasMany(Sp::class);
    }
 

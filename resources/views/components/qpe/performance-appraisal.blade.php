@@ -32,7 +32,7 @@
                 @elseif($kpa->status == '1')
                 <span class="badge badge-warning badge-lg"><b>Verifikasi Manager</b></span>
                 @elseif($kpa->status == '2')
-                <span class="badge badge-primary badge-lg"><b>Validasi HRD</b></span>
+                <span class="badge badge-success badge-lg"><b>Done</b></span>
                 @elseif($kpa->status == '3')
                 <span class="badge badge-success badge-lg"><b>Done</b></span>
                 @elseif($kpa->status == '101')
@@ -46,6 +46,6 @@
         </form>
     </div>
     <div class="card-footer">
-        <a href="{{ route('export.kpi') }}" target="_blank">Export PDF</a>
+        <a href="{{ route('export.qpe', $kpa->pe_id) }}" target="_blank">Export PDF</a>
     </div>
 </div>
