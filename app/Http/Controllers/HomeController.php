@@ -34,46 +34,46 @@ class HomeController extends Controller
 
       // AKTIDKAN CODE DIBAWAH INI HANYA SEKALI SETELAH REFRESH DB
       // ASSIGN ROLE USER
-      $users = User::where('id', '!=', 1)->where('id', '!=', 2)->get();
-      $admin = User::where('email', 'admin@gmail.com')->first();
-      $developer = User::where('email', 'developer@gmail.com')->first();
+      // $users = User::where('id', '!=', 1)->where('id', '!=', 2)->get();
+      // $admin = User::where('email', 'admin@gmail.com')->first();
+      // $developer = User::where('email', 'developer@gmail.com')->first();
       
-      $admin->assignRole('Administrator');
-      $developer->assignRole('Administrator');
+      // $admin->assignRole('Administrator');
+      // $developer->assignRole('Administrator');
    
-      foreach($users as $user){
-         $employee = Employee::where('nik', $user->username)->first();
-         if ($employee->designation_id == 1 || $employee->designation_id == 2) {
-            $user->assignRole('Karyawan');
-         } else if ($employee->designation_id == 3){
-            $user->assignRole('Leader');
-         } else if ($employee->designation_id == 4){
-            $user->assignRole('Supervisor');
-         } else if ($employee->designation_id == 5){
-            $user->assignRole('Asst. Manager');
-         } else if ($employee->designation_id == 6){
-            $user->assignRole('Manager');
-         } else if ($employee->designation_id == 7){
-            $user->assignRole('BOD');
-         }
+      // foreach($users as $user){
+      //    $employee = Employee::where('nik', $user->username)->first();
+      //    if ($employee->designation_id == 1 || $employee->designation_id == 2) {
+      //       $user->assignRole('Karyawan');
+      //    } else if ($employee->designation_id == 3){
+      //       $user->assignRole('Leader');
+      //    } else if ($employee->designation_id == 4){
+      //       $user->assignRole('Supervisor');
+      //    } else if ($employee->designation_id == 5){
+      //       $user->assignRole('Asst. Manager');
+      //    } else if ($employee->designation_id == 6){
+      //       $user->assignRole('Manager');
+      //    } else if ($employee->designation_id == 7){
+      //       $user->assignRole('BOD');
+      //    }
 
-         // JIKA EMPLOYEE DARI DIVISI HRD
-         // ASSIGN 2 ROLE  (ADMINISTRATOR DAN HRD)
-         if ($employee->department_id == 8) {
-            $employee->update([
-               'department_id' => 1
-            ]);
-            $user->assignRole('Administrator');
-            $user->assignRole('HRD');
-         }
-      }
+      //    // JIKA EMPLOYEE DARI DIVISI HRD
+      //    // ASSIGN 2 ROLE  (ADMINISTRATOR DAN HRD)
+      //    if ($employee->department_id == 8) {
+      //       $employee->update([
+      //          'department_id' => 1
+      //       ]);
+      //       $user->assignRole('Administrator');
+      //       $user->assignRole('HRD');
+      //    }
+      // }
 
-      $contracts = Contract::get();
-      foreach($contracts as $cont){
-         $cont->update([
-            'shift_id' => 1
-         ]);
-      }
+      // $contracts = Contract::get();
+      // foreach($contracts as $cont){
+      //    $cont->update([
+      //       'shift_id' => 1
+      //    ]);
+      // }
       // END OF ASSIGN ROLE
 
 
