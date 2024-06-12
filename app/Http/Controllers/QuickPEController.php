@@ -74,7 +74,7 @@ class QuickPEController extends Controller
 
             $pes = Pe::join('employees', 'pes.employe_id', '=', 'employees.id')
                 ->where('employees.direct_leader_id', $employee->id)
-                ->where('pes.status', '>', '0')
+                
                 ->select('pes.*')
                 ->orderBy('pes.release_at', 'desc')
                 ->get();
