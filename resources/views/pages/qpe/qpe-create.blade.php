@@ -61,7 +61,7 @@ Create PE
 
                 </div>
                 <div class="card-footer">
-                    <a href="{{route('export.kpi')}}" target="_blank">Preview</a>
+                    <!-- <a href="{{route('export.kpi')}}" target="_blank">Preview</a> -->
                 </div>
             </div>
         </div>

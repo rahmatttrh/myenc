@@ -46,6 +46,6 @@
         </form>
     </div>
     <div class="card-footer">
-        <a href="{{ route('export.qpe', $kpa->pe_id) }}" target="_blank">Export PDF</a>
+        <!-- <a href="{{ route('export.qpe', $kpa->pe_id) }}" target="_blank">Export PDF</a> -->
     </div>
 </div>
