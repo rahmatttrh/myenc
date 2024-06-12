@@ -95,8 +95,8 @@
                         <td colspan="2">Baik</td>
                     </tr>
                     <tr>
-                        <td>KDR</td>
-                        <td>: Koordinator</td>
+                        <td>TL</td>
+                        <td>: Team Leader</td>
                         <td></td>
                         <td></td>
                         <td colspan="2">75 - 61</td>

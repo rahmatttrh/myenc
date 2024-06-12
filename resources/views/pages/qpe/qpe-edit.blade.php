@@ -672,6 +672,112 @@ PE
                             </tfoot>
                         </table>
                     </div>
+
+                    <a data-target="#modalPanduan" data-toggle="modal" class="text-danger "><span class="fa fa-info"></span> Panduan Pengisian Nilai Behavior</a>
+
+                    <div class="modal fade" id="modalPanduan" data-bs-backdrop="static">
+                        <div class="modal-dialog" style="max-width: 90%;">
+                            <div class="modal-content">
+
+                                <!-- Bagian header modal -->
+                                <div class="modal-header">
+                                    <h3 class="modal-title">Panduan Pengisian Nilai Behavior</h3>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+
+                                <!-- Konten modal -->
+                                <div class="modal-body">
+                                    <!-- Isi konten modal disini -->
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">Obyektif</th>
+                                                <th class="text-center">Deskripsi</th>
+                                                <th class="text-center">Bobot</th>
+                                                <th class="text-center">Periode Target</th>
+                                                <th class="text-center">1</th>
+                                                <th class="text-center">2</th>
+                                                <th class="text-center">3</th>
+                                                <th class="text-center">4</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="text-center text-bold">Kreatifitas dan Inovasi</td>
+                                                <td class="text-center">Memberikan ide, inovasi terkait lingkup pekerjaan dalam departemen</td>
+                                                <td class="text-center">5</td>
+                                                <td class="text-center">Semester</td>
+                                                <td class="text-center">Tidak pernah memberikan masukan dan inovasi terkait pekerjaan</td>
+                                                <td class="text-center">Bersama-sama dengan rekan yang lain berkontribusi dalam memberikan ide maupun inovasi baru</td>
+                                                <td class="text-center">Memberikan Ide atau inovasi minimal 1 dalam 1 semester</td>
+                                                <td class="text-center">Memberikan Ide atau inovasi minimal 1 dalam 1 semester dan dapat diaplikasikan dalam pekerjaan</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="">Kerjasama</td>
+                                                <td class="">kemampuan untuk melakukan koordinasi dan komunikasi dengan berbagai pihak yang terkait; merumuskan tujuan bersama dan berbagi tugas untuk mencapai sasaran kerja yang telah ditetapkan; serta saling menghargai pendapat dan masukan guna peningkatan kinerja tim</td>
+                                                <td class="">5</td>
+                                                <td class="">Semester</td>
+                                                <td class="">
+                                                    <br>- Memiliki kemampuan yang sangat rendah untuk melakukan koordinasi dan komunikasi dengan berbagai pihak yang terkait;
+                                                    <br>- Tidak mampu merumuskan tujuan bersama dan berbagi tugas untuk mencapai sasaran kerja yang telah ditetapkan; serta
+                                                    <br>- Tidak bisa menghargai pendapat dan masukan guna peningkatan kinerja tim.
+                                                </td>
+                                                <td class="">
+                                                    <br>- Memiliki kemampuan yang terbatas untuk melakukan koordinasi dan komunikasi dengan berbagai pihak yang terkait;
+                                                    <br>- Kurang mampu merumuskan tujuan bersama dan berbagi tugas untuk mencapai sasaran kerja yang telah ditetapkan;
+                                                    <br>- Kurang bisa menghargai pendapat dan masukan guna peningkatan kinerja tim.
+                                                </td>
+                                                <td class="">
+                                                    <br>- Memiliki kemampuan yang memadai untuk melakukan koordinasi dan komunikasi dengan berbagai pihak yang terkait;
+                                                    <br>- Mampu merumuskan tujuan bersama dan berbagi tugas untuk mencapai sasaran kerja yang telah ditetapkan; serta
+                                                    <br>- Saling menghargai pendapat dan masukan guna peningkatan kinerja tim
+                                                </td>
+                                                <td class="">
+                                                    <br>- Memiliki kemampuan untuk merencanakan dan mengendalikan proses koordinasi dan komunikasi dengan berbagai pihak yang terkait;
+                                                    <br>- Memiliki kemampuan yang sangat baik dalam merumuskan tujuan bersama dan berbagi tugas untuk mencapai sasaran kerja yang telah ditetapkan; serta
+                                                    <br>- Saling menghargai pendapat dan masukan guna peningkatan kinerja tim
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="">Inisiatif</td>
+                                                <td class="">kemampuan untuk menjalankan inisiatif perbaikan mutu kerja tanpa harus diperintah; bersikap proaktif dan memiliki self-motivation yang tinggi untuk menuntaskan pekerjaan; serta mampu dalam mengajukan usulan/masukan untuk peningkatan mutu kerja</td>
+                                                <td class="">5</td>
+                                                <td class="">Semester</td>
+                                                <td class="">
+                                                    <br>- Memiliki kemampuan yang sangat rendah untuk menjalankan inisiatif perbaikan mutu kerja tanpa harus diperintah;
+                                                    <br>- Bersikap pasif dan tidak memiliki self-motivation untuk menuntaskan pekerjaan;
+                                                    <br>- Tidak pernah mengutarakan usulan/masukan untuk peningkatan mutu kerja
+                                                </td>
+                                                <td class="">
+                                                    <br>- Memiliki kemampuan yang terbatas untuk menjalankan inisiatif perbaikan mutu kerja tanpa harus diperintah;
+                                                    <br>- Kadang-kadang bersikap pasif dan kurang memiliki self-motivation untuk menuntaskan pekerjaan;
+                                                    <br>- Terbatas dalam mengutarakan usulan/masukan untuk peningkatan mutu kerja
+                                                </td>
+                                                <td class="">
+                                                    <br>- Memiliki kemampuan yang memadai untuk menjalankan inisiatif perbaikan mutu kerja tanpa harus diperintah;
+                                                    <br>- Bersikap proaktif dan memiliki self-motivation untuk menuntaskan pekerjaan;
+                                                    <br>- Mampu dalam mengutarakan usulan/masukan untuk peningkatan mutu kerja
+                                                </td>
+                                                <td class="">
+                                                    <br>- Memiliki kemampuan untuk merencanakan, dan mengimplementasikan inisiatif perbaikan mutu kerja;
+                                                    <br>- Selalu bersikap proaktif dan memiliki self-motivation yang tinggi dan konsisten untuk menuntaskan pekerjaan;
+                                                    <br>- Mampu dalam mengutarakan usulan/masukan untuk peningkatan mutu kerja
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!-- Bagian footer modal -->
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
                 </div>
                 <div class="card-footer">
                     <div class="col-md-3 float-right mb-3">
@@ -803,8 +909,8 @@ $pbaAchievement = 0;
                                 <td colspan="2">Baik</td>
                             </tr>
                             <tr>
-                                <td>KDR</td>
-                                <td>: Koordinator</td>
+                                <td>TL</td>
+                                <td>: Team Leader</td>
                                 <td></td>
                                 <td></td>
                                 <td colspan="2">75 - 61</td>
