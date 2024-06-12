@@ -41,7 +41,7 @@ PE
                     <div class="card-title text-white">KPI</div>
                 </div>
 
-                @if(($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202') && (auth()->user()->hasRole('Leader') || auth()->user()->hasRole('Administrator') ) )
+                @if(($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202') && (auth()->user()->hasRole('Leader') || auth()->user()->hasRole('Supervisor') || auth()->user()->hasRole('Administrator') ) )
                 <div class="btn-group btn-group-page-header ml-auto">
                     <div class="button-group">
                         @if(isset($pd) && $pd->pdds->count() == 6)
@@ -898,6 +898,11 @@ $pbaAchievement = 0;
                                 <td class="text-center text-bold"><b>-</b></td>
                                 <td class="text-center text-bold"><b>-</b></td>
                                 @endif
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td colspan="4" class="text-center">PENGURANG (SP)</td>
+                                <td class="text-center text-bold"><b>({{$pe->pengurang}})</b></td>
                             </tr>
                         </tbody>
                         <tfoot>

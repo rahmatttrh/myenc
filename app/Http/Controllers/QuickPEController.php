@@ -647,7 +647,7 @@ class QuickPEController extends Controller
             DB::rollBack();
 
             // Redirect dengan pesan error
-            return back()->with('danger', 'An error occurred while verifying PE');
+            return back()->with('danger', $e .'An error occurred while verifying PE');
         }
     }
     /**
