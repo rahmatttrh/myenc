@@ -45,31 +45,59 @@ class QuickPEController extends Controller
             $outAssesments = $this->outstandingAssessment();
 
             // 
-        } else if (auth()->user()->hasRole('Leader|Supervisor|Manager')) {
+        } else if (auth()->user()->hasRole('Manager')) {
 
-            $kpas = DB::table('pe_kpas')
-                ->join('pe_kpis', 'pe_kpas.kpi_id', '=', 'pe_kpis.id')
-                ->where('pe_kpis.departement_id', $employee->department_id)
-                ->select('pe_kpas.*')
-                ->orderBy('pe_kpas.status', 'asc')
+            $pes = Pe::join('employees', 'pes.employe_id', '=', 'employees.id')
+                ->where('employees.manager_id', $employee->id)
+                ->where('pes.status', '>', '0')
+                ->select('pes.*')
+                ->orderBy('pes.release_at', 'desc')
                 ->get();
 
+            // dd($pes);
+
+
+            // $kpas = DB::table('pe_kpas')
+            //     ->join('pe_kpis', 'pe_kpas.kpi_id', '=', 'pe_kpis.id')
+            //     ->where('pe_kpis.departement_id', $employee->department_id)
+            //     ->select('pe_kpas.*')
+            //     ->orderBy('pe_kpas.status', 'asc')
+            //     ->get();
+            // // Convert the query builder result to Order model instances
+            // $kpas = PeKpa::hydrate($kpas->toArray());
+
+            // 
+            $outAssesments = $this->outstandingAssessment($employee->department_id);
+            // 
+        } else if (auth()->user()->hasRole('Leader|Supervisor ')) {
+
+
+            $pes = Pe::join('employees', 'pes.employe_id', '=', 'employees.id')
+                ->where('employees.direct_leader_id', $employee->id)
+                ->where('pes.status', '>', '0')
+                ->select('pes.*')
+                ->orderBy('pes.release_at', 'desc')
+                ->get();
+
+            // $kpas = DB::table('pe_kpas')
+            //     ->join('pe_kpis', 'pe_kpas.kpi_id', '=', 'pe_kpis.id')
+            //     ->where('pe_kpis.departement_id', $employee->department_id)
+            //     ->select('pe_kpas.*')
+            //     ->orderBy('pe_kpas.status', 'asc')
+            //     ->get();
+
             // Convert the query builder result to Order model instances
-            $kpas = PeKpa::hydrate($kpas->toArray());
+            // $kpas = PeKpa::hydrate($kpas->toArray());
 
             // 
             $outAssesments = $this->outstandingAssessment($employee->department_id);
             // 
         }
 
-        $designations = Designation::orderBy('name')->get();
-        $departements = Department::orderBy('name')->get();
 
 
         return view('pages.qpe.qpe', [
-            'designations' => $designations,
-            'departements' => $departements,
-            'kpas' => $kpas,
+            // 'kpas' => $kpas,
             'pes' => $pes,
             'outAssesments' =>  $outAssesments
         ])->with('i');
@@ -591,6 +619,37 @@ class QuickPEController extends Controller
             return redirect('qpe')->with('danger', 'An error occurred while verifying PE');
         }
     }
+
+    public function komentar(Request $request, $id)
+
+    {
+
+        $pe = Pe::find($id);
+
+        // Mulai transaksi
+        DB::beginTransaction();
+
+        try {
+
+            // Update status dan verifikasi pada tabel PE
+            $pe->update([
+                'komentar' => $request->komentar,
+                'pengembangan' => $request->pengembangan,
+            ]);
+
+            // Commit transaksi jika semua operasi berhasil
+            DB::commit();
+
+            // Redirect dengan pesan sukses
+            return back()->with('success', 'Komentar berhasil disimpan');
+        } catch (\Exception $e) {
+            // Rollback transaksi jika terjadi kesalahan
+            DB::rollBack();
+
+            // Redirect dengan pesan error
+            return back()->with('danger', 'An error occurred while verifying PE');
+        }
+    }
     /**
      * Display the specified resource.
      *
@@ -871,7 +930,7 @@ class QuickPEController extends Controller
             ->get();
 
         // Update PE
-        if ($sp) {
+        if ($sp->count() > 0) {
 
             // Update Tabel SP
             Sp::where('employee_id', $pe->employe_id)
@@ -886,6 +945,7 @@ class QuickPEController extends Controller
                 'pengurang' => 5
             ]);
         } else {
+
             $pe->update([
                 'pengurang' => 0
             ]);
