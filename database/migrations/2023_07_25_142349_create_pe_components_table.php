@@ -28,8 +28,8 @@ class CreatePeComponentsTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
-        Schema::dropIfExists('pe_components');
-    }
+   //  public function down()
+   //  {
+   //      Schema::dropIfExists('pe_components');
+   //  }
 }

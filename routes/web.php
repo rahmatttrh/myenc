@@ -44,7 +44,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware(["auth"])->group(function () {
-
+   Route::prefix('fetch')->group(function () {
+      Route::get('sp/active/{id}', [FetchController::class, 'fetchSpActive']);
+      Route::get('schedule/{date}/{id}', [FetchController::class, 'fetchSchedule']);
+   });
    /**
     * Verification Routes
     */
@@ -377,10 +380,7 @@ Route::middleware(["auth"])->group(function () {
    });
 
 
-   Route::prefix('fetch')->group(function () {
-      Route::get('sp/active/{id}', [FetchController::class, 'fetchSpActive']);
-      Route::get('schedule/{date}/{id}', [FetchController::class, 'fetchSchedule']);
-   });
+   
 });
 
 
