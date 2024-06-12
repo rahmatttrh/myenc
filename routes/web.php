@@ -279,6 +279,8 @@ Route::middleware(["auth"])->group(function () {
          Route::post('/behavior', [QuickPEController::class, 'storeBehavior'])->name('qpe.behavior.store');
          Route::patch('/behavior/update/{id}', [QuickPEController::class, 'updateBehavior'])->name('qpe.behavior.update');
 
+         Route::patch('komentar/{id}', [QuickPEController::class, 'komentar'])->name('qpe.komentar.patch');
+
          // Route::put('update/{id}', [QuickPEController::class, 'update'])->name('qpe.update');
          // // ADDTIONAL
          // Route::put('addtional-update/{id}', [QuickPEController::class, 'updateAddtional'])->name('qpe.addtional.update');

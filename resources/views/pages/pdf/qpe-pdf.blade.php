@@ -317,22 +317,9 @@ PDF Example
                         program pelatihan/pengembangan, coaching, mentoring)
                      </td>
                   </tr>
-                  <tr>
-                     <td class="text-center">1</td>
-                     <td colspan="2"></td>
-                     <td colspan="3">Alasan :</td>
-                  </tr>
-                  <tr>
-                     <td class="text-center">2</td>
-                     <td colspan="2"></td>
-                     <td colspan="3">Alasan :</td>
-                  </tr>
-
-                  <tr>
-                     <td class="text-center">3</td>
-                     <td colspan="2"></td>
-                     <td colspan="3">Alasan :</td>
-                  </tr>
+                  <td colspan="6" style="height: 60px">
+                     {{$pe->pengembangan ?? ''}}
+                  </td>
 
                   <tr style="background-color: rgb(121, 168, 250);"">
                      {{-- <td class="text-center"><b>4</b></td> --}}
@@ -340,7 +327,9 @@ PDF Example
 
                   </tr>
                   <tr>
-                     <td colspan="6" style="height: 60px"></td>
+                     <td colspan="6" style="height: 60px">
+                        {{$pe->komentar ?? ''}}
+                     </td>
                   </tr>
 
 
