@@ -11,7 +11,7 @@ class CreateContractsTable extends Migration
     *
     * @return void
     */
-   public function up()
+   public function upp()
    {
       Schema::create('contracts', function (Blueprint $table) {
          $table->id();
@@ -38,8 +38,8 @@ class CreateContractsTable extends Migration
     *
     * @return void
     */
-   public function down()
-   {
-      Schema::dropIfExists('contracts');
-   }
+   // public function down()
+   // {
+   //    Schema::dropIfExists('contracts');
+   // }
 }

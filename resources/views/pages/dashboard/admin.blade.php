@@ -6,7 +6,24 @@
 @section('content')
    <div class="page-inner mt--5">
       <div class="page-header">
-         <h4 class="page-title">Dashboard</h4>
+         <h5 class="page-title">
+            <i class="fa fa-home"></i>
+            Dashboard 
+            {{-- @if (auth()->user()->hasRole('Administrator'))
+                Administrator
+                
+            @endif
+            @if (auth()->user()->hasRole('HRD'))
+                HRD
+                
+            @endif --}}
+            @if (auth()->user()->email == 'admin@gmail.com' || auth()->user()->email == 'developer@gmail.com')
+               Administrator
+                @else
+                {{auth()->user()->employee->position->name}}
+            @endif
+            
+         </h5>
       </div>
       <div class="row">
          <div class="col-sm-6 col-md-3">

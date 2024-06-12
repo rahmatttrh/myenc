@@ -44,7 +44,7 @@ SP
             @csrf
             <div class="form-group form-group-default">
                <label>Employee</label>
-               <select class="form-control" required id="employee" name="employee">
+               <select class="form-control employee" required id="employee" name="employee">
                   <option value="" selected disabled>Select Employee</option>
                   @foreach ($employees as $emp)
                   <option value="{{$emp->id}}">{{$emp->biodata->first_name}} {{$emp->biodata->last_name}} </option>
@@ -85,6 +85,11 @@ SP
             </div>
 
             <div class="form-group form-group-default">
+               <label>Peraturan Perusahaan</label>
+               <input type="text" class="form-control" name="rule" id="rule">
+            </div>
+
+            <div class="form-group form-group-default">
                <label>Desc</label>
                <textarea class="form-control" name="desc" id="desc"></textarea>
             </div>
@@ -94,6 +99,21 @@ SP
       </div>
 
       <div class="col-md-8">
+         <div class=" sp px-3">
+            <table>
+               {{-- <thead>
+                  <tr>
+                     <th colspan="5">SP Aktif</th>
+                  </tr>
+               </thead> --}}
+               <tbody class="result">
+
+               </tbody>
+            </table>
+            <hr >
+         </div>
+         
+
          <div class="table-responsive">
             <table id="" class="display basic-datatables table-sm table-bordered  table-striped ">
                <thead>
@@ -105,9 +125,6 @@ SP
                      
                      <th>Level</th>
                      <th>Status</th>
-                     {{-- <th>Date</th> --}}
-                     {{-- <th style="width: 50px">Desc</th> --}}
-                     {{-- <th></th> --}}
                   </tr>
                </thead>
                <tbody>
@@ -118,6 +135,7 @@ SP
                      <td>{{$sp->employee->biodata->first_name}} {{$sp->employee->biodata->last_name}}</td>
                      <td>{{$sp->employee->nik}}</td>
                      {{-- <td>{{formatDate($sp->date)}}</td> --}}
+                     <td>SP {{$sp->level}}</td>
                      <td>
                         @if ($sp->status == 0)
                         Draft
@@ -131,7 +149,7 @@ SP
                         Non-Active
                         @endif
                      </td>
-                     <td>SP {{$sp->level}}</td>
+                     
                      {{-- <td class="text-truncate" style="max-width: 240px">{{$sp->desc}}</td> --}}
 
                   </tr>
@@ -144,6 +162,59 @@ SP
       </div>
    </div>
 </div>
+
+@push('myjs')
+   <script>
+      console.log('get_aktif_sp');
+      $(".sp").hide();
+   
+
+      $(document).ready(function() {
+         $(".line").hide();
+         $('.employee').change(function() {
+            
+            
+
+            var employee = $('#employee').val();
+            var _token = $('meta[name="csrf-token"]').attr('content');
+
+            console.log('employeeId:' + employee);
+            
+            $.ajax({
+               url: "/fetch/sp/active/" + employee ,
+               method: "GET",
+               dataType: 'json',
+
+               success: function(result) {
+                  // console.log('near :' + result.near);
+                  // console.log('result :' + result.result);
+                  
+                  console.log('status :' + result.success);
+                  if (result.success == true) {
+                     $('.result').empty()
+                     console.log('adaaa');
+                     $(".sp").show();
+                  } else {
+                     $('.result').empty()
+                     console.log('kosong');
+                     $(".sp").hide();
+                  }
+                  
+
+                  $.each(result.result, function(i, index) {
+                     $('.result').html(result.result);
+
+                  });
+               },
+               error: function(error) {
+                  console.log(error)
+               }
+
+            })
+         })
+      })
+   </script>
+@endpush
 
 
 

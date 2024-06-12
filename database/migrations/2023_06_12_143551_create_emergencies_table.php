@@ -11,7 +11,7 @@ class CreateEmergenciesTable extends Migration
     *
     * @return void
     */
-   public function up()
+   public function upp()
    {
       Schema::create('emergencies', function (Blueprint $table) {
          $table->id();
@@ -29,8 +29,8 @@ class CreateEmergenciesTable extends Migration
     *
     * @return void
     */
-   public function down()
-   {
-      Schema::dropIfExists('emergencies');
-   }
+   // public function down()
+   // {
+   //    Schema::dropIfExists('emergencies');
+   // }
 }

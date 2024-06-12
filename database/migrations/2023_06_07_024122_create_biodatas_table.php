@@ -11,7 +11,7 @@ class CreateBiodatasTable extends Migration
     *
     * @return void
     */
-   public function up()
+   public function upp()
    {
       Schema::create('biodatas', function (Blueprint $table) {
          $table->id();
@@ -51,8 +51,8 @@ class CreateBiodatasTable extends Migration
     *
     * @return void
     */
-   public function down()
-   {
-      Schema::dropIfExists('biodatas');
-   }
+   // public function down()
+   // {
+   //    Schema::dropIfExists('biodatas');
+   // }
 }

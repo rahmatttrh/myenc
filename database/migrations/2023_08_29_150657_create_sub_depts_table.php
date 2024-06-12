@@ -11,7 +11,7 @@ class CreateSubDeptsTable extends Migration
      *
      * @return void
      */
-    public function up()
+    public function upp()
     {
         Schema::create('sub_depts', function (Blueprint $table) {
             $table->smallIncrements('id');
@@ -26,8 +26,8 @@ class CreateSubDeptsTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
-        Schema::dropIfExists('sub_depts');
-    }
+   //  public function down()
+   //  {
+   //      Schema::dropIfExists('sub_depts');
+   //  }
 }

@@ -11,7 +11,7 @@ class CreatePeKpisTable extends Migration
      *
      * @return void
      */
-    public function up()
+    public function upp()
     {
         Schema::create('pe_kpis', function (Blueprint $table) {
             $table->integerIncrements('id');
@@ -29,7 +29,7 @@ class CreatePeKpisTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function downn()
     {
         Schema::dropIfExists('pe_kpis');
     }

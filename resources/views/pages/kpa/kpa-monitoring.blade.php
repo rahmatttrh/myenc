@@ -3,14 +3,914 @@
 KPA
 @endsection
 @section('content')
+<style>
+   table {
+      width: 100%;
+   }
+</style>
 
 <div class="page-inner">
     <nav aria-label="breadcrumb ">
         <ol class="breadcrumb  ">
             <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
-            <li class="breadcrumb-item active" aria-current="page">KPA</li>
+            <li class="breadcrumb-item " aria-current="page">KPA</li>
+            <li class="breadcrumb-item active" aria-current="page">Monitoring</li>
         </ol>
     </nav>
+    {{-- <div class="chart-container">
+      <canvas id="radarChart"></canvas>
+   </div> --}}
+   {{-- <div class="row">
+      <div class="col-md-6">
+         <div class="table-responsive">
+            <table>
+               <thead>
+                  
+                  <tr>
+                     <th colspan="15" rowspan="">Ekanuri</th>
+                  </tr>
+                  <tr>
+                     <th>Department</th>
+                     <th>Sub Dept</th>
+                     <th>1</th>
+                     <th>2</th>
+                     <th>3</th>
+                     <th>4</th>
+                     <th>5</th>
+                     <th>6</th>
+                     <th>7</th>
+                     <th>8</th>
+                     <th>9</th>
+                     <th>10</th>
+                     <th>11</th>
+                     <th>12</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr>
+                     <td>IT</td>
+                     <td>IT</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     
+                  </tr>
+                  <tr>
+                     <td>Finance</td>
+                     <td>GA</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                  </tr>
+                  <tr>
+                     <td>General Service</td>
+                     <td>General Service</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                  </tr>
+                  <tr>
+                     <td>Operation</td>
+                     <td>Operation</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                  </tr>
+                  <tr>
+                     <td>Maintenance</td>
+                     <td>Maintenance</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+         <div class="table-responsive">
+            <table>
+               <thead>
+                  
+                  <tr>
+                     <th colspan="15" rowspan="">Ekanuri</th>
+                  </tr>
+                  <tr>
+                     <th>Department</th>
+                     <th>Sub Dept</th>
+                     <th>1</th>
+                     <th>2</th>
+                     <th>3</th>
+                     <th>4</th>
+                     <th>5</th>
+                     <th>6</th>
+                     <th>7</th>
+                     <th>8</th>
+                     <th>9</th>
+                     <th>10</th>
+                     <th>11</th>
+                     <th>12</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr>
+                     <td>IT</td>
+                     <td>IT</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     
+                  </tr>
+                  <tr>
+                     <td>Finance</td>
+                     <td>GA</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                  </tr>
+                  <tr>
+                     <td>GS</td>
+                     <td>GS</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                  </tr>
+                  <tr>
+                     <td>Operation</td>
+                     <td>Operation</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                  </tr>
+                  <tr>
+                     <td>Maintenance</td>
+                     <td>Maintenance</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+      </div>
+      <div class="col-md-6">
+         <div class="table-responsive">
+            <table>
+               <thead>
+                  
+                  <tr>
+                     <th colspan="15" rowspan="">Ekanuri</th>
+                  </tr>
+                  <tr>
+                     <th>Department</th>
+                     <th>Sub Dept</th>
+                     <th>1</th>
+                     <th>2</th>
+                     <th>3</th>
+                     <th>4</th>
+                     <th>5</th>
+                     <th>6</th>
+                     <th>7</th>
+                     <th>8</th>
+                     <th>9</th>
+                     <th>10</th>
+                     <th>11</th>
+                     <th>12</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr>
+                     <td>IT</td>
+                     <td>IT</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     
+                  </tr>
+                  <tr>
+                     <td>Finance</td>
+                     <td>GA</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                  </tr>
+                  <tr>
+                     <td>GS</td>
+                     <td>GS</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                  </tr>
+                  <tr>
+                     <td>Operation</td>
+                     <td>Operation</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                  </tr>
+                  <tr>
+                     <td>Maintenance</td>
+                     <td>Maintenance</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+         <div class="table-responsive">
+            <table>
+               <thead>
+                  
+                  <tr>
+                     <th colspan="15" rowspan="">Ekanuri</th>
+                  </tr>
+                  <tr>
+                     <th>Department</th>
+                     <th>Sub Dept</th>
+                     <th>1</th>
+                     <th>2</th>
+                     <th>3</th>
+                     <th>4</th>
+                     <th>5</th>
+                     <th>6</th>
+                     <th>7</th>
+                     <th>8</th>
+                     <th>9</th>
+                     <th>10</th>
+                     <th>11</th>
+                     <th>12</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <tr>
+                     <td>IT</td>
+                     <td>IT</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     
+                  </tr>
+                  <tr>
+                     <td>Finance</td>
+                     <td>GA</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                  </tr>
+                  <tr>
+                     <td>GS</td>
+                     <td>GS</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                  </tr>
+                  <tr>
+                     <td>Operation</td>
+                     <td>Operation</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                  </tr>
+                  <tr>
+                     <td>Maintenance</td>
+                     <td>Maintenance</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                     <td class="text-center">4</td>
+                     <td class="text-center">14</td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+      </div>
+   </div> --}}
+
+   <div class="row">
+      <div class="col-md-4">
+         <div class="table-responsive">
+            <table>
+               <thead>
+                  
+                  <tr>
+                     <th colspan="4" rowspan="">Ekanuri</th>
+                     {{-- <th colspan="" class="text-center">Pending</th> --}}
+                     
+                  </tr>
+                  <tr>
+                     <th>Department</th>
+                     <th>Sub Dept</th>
+                     <th>Complete</th>
+                     <th>Pending</th>
+                  </tr>
+                  {{-- <tr>
+                     Pending
+                  </tr> --}}
+               </thead>
+               <tbody>
+                  <tr>
+                     <td>IT</td>
+                     <td>IT</td>
+                     <td class="text-center">40%</td>
+                     <td class="text-center">41</td>
+                     
+                  </tr>
+                  <tr>
+                     <td>Finance</td>
+                     <td>GA</td>
+                     <td class="text-center bg-success">51%</td>
+                     <td class="text-center">2</td>
+                  </tr>
+                  <tr>
+                     <td>General Service</td>
+                     <td>General Service</td>
+                     <td class="text-center">35%</td>
+                     <td class="text-center">23</td>
+                  </tr>
+                  <tr>
+                     <td>Operation</td>
+                     <td>Operation</td>
+                     <td class="text-center">55%</td>
+                     <td class="text-center">23</td>
+                  </tr>
+                  <tr>
+                     <td>Maintenance</td>
+                     <td>Maintenance</td>
+                     <td class="text-center">70%</td>
+                     <td class="text-center">32</td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+         
+         <div class="table-responsive">
+            <table>
+               <thead>
+                  
+                  <tr>
+                     <th colspan="4" rowspan="">Ekajaya Kridatama</th>
+                     {{-- <th colspan="" class="text-center">Pending</th> --}}
+                     
+                  </tr>
+                  <tr>
+                     <th>Department</th>
+                     <th>Sub Dept</th>
+                     <th>Complete</th>
+                     <th>Pending</th>
+                  </tr>
+                  {{-- <tr>
+                     Pending
+                  </tr> --}}
+               </thead>
+               <tbody>
+                  <tr>
+                     <td rowspan="">Operation</td>
+                     <td>Operation</td>
+                     <td class="text-center">40%</td>
+                     <td class="text-center">41</td>
+                     
+                  </tr>
+                  <tr>
+                     <td>GA</td>
+                     <td>GA</td>
+                     <td class="text-center">51%</td>
+                     <td class="text-center">23</td>
+                  </tr>
+                  <tr>
+                     <td>Oil & Gas</td>
+                     <td>Oil & Gas</td>
+                     <td class="text-center">35%</td>
+                     <td class="text-center">23</td>
+                  </tr>
+                  <tr>
+                     <td>Chemical</td>
+                     <td>Chemical</td>
+                     <td class="text-center">55%</td>
+                     <td class="text-center">23</td>
+                  </tr>
+                  <tr>
+                     <td>Driving</td>
+                     <td>Driving</td>
+                     <td class="text-center">70%</td>
+                     <td class="text-center">32</td>
+                  </tr>
+                  
+               </tbody>
+            </table>
+         </div>
+         <div class="table-responsive">
+            <table>
+               <thead>
+                  
+                  <tr>
+                     <th colspan="4" rowspan="">PEIPerkasa Agency</th>
+                     {{-- <th colspan="" class="text-center">Pending</th> --}}
+                     
+                  </tr>
+                  <tr>
+                     <th>Department</th>
+                     <th>Sub Dept</th>
+                     <th>Complete</th>
+                     <th>Pending</th>
+                  </tr>
+                  {{-- <tr>
+                     Pending
+                  </tr> --}}
+               </thead>
+               <tbody>
+                  <tr>
+                     <td rowspan="">Operation</td>
+                     <td>Operation</td>
+                     <td class="text-center">40%</td>
+                     <td class="text-center">41</td>
+                     
+                  </tr>
+                  <tr>
+                     <td>Accounting & Finance</td>
+                     <td>Accounting & Finance</td>
+                     <td class="text-center">51%</td>
+                     <td class="text-center">23</td>
+                  </tr>
+                  
+                  
+               </tbody>
+            </table>
+         </div>
+      </div>
+
+      <div class="col-md-4">
+         <div class="table-responsive">
+            <table>
+               <thead>
+                  
+                  <tr>
+                     <th colspan="4" rowspan="">PEIPerkasa</th>
+                     {{-- <th colspan="" class="text-center">Pending</th> --}}
+                     
+                  </tr>
+                  <tr>
+                     <th>Department</th>
+                     <th>Sub Dept</th>
+                     <th>Complete</th>
+                     <th>Pending</th>
+                  </tr>
+                  {{-- <tr>
+                     Pending
+                  </tr> --}}
+               </thead>
+               <tbody>
+                  <tr>
+                     <td rowspan="3">Finance</td>
+                     <td>Fnance</td>
+                     <td class="text-center">40%</td>
+                     <td class="text-center">41</td>
+                     
+                  </tr>
+                  <tr>
+                     {{-- <td>Finance</td> --}}
+                     <td>Accounting</td>
+                     <td class="text-center">51%</td>
+                     <td class="text-center">23</td>
+                  </tr>
+                  <tr>
+                     {{-- <td></td> --}}
+                     <td>GA</td>
+                     <td class="text-center">35%</td>
+                     <td class="text-center">23</td>
+                  </tr>
+                  <tr>
+                     <td>HRD</td>
+                     <td>HRD</td>
+                     <td class="text-center">55%</td>
+                     <td class="text-center">23</td>
+                  </tr>
+                  <tr>
+                     <td>Sekretariat</td>
+                     <td>Sekretariat</td>
+                     <td class="text-center">70%</td>
+                     <td class="text-center">32</td>
+                  </tr>
+                  <tr>
+                     <td>QHSSE</td>
+                     <td>QHSSE</td>
+                     <td class="text-center">70%</td>
+                     <td class="text-center">32</td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+
+         <div class="table-responsive">
+            <table>
+               <thead>
+                  
+                  <tr>
+                     <th colspan="4" rowspan="">PEIPratama</th>
+                     {{-- <th colspan="" class="text-center">Pending</th> --}}
+                     
+                  </tr>
+                  <tr>
+                     <th>Department</th>
+                     <th>Sub Dept</th>
+                     <th>Complete</th>
+                     <th>Pending</th>
+                  </tr>
+                  {{-- <tr>
+                     Pending
+                  </tr> --}}
+               </thead>
+               <tbody>
+                  
+                  <tr>
+                     <td>Operation</td>
+                     <td>Operation</td>
+                     <td class="text-center">51%</td>
+                     <td class="text-center">23</td>
+                  </tr>
+                  <tr>
+                     <td rowspan="">General Service</td>
+                     <td>General Service</td>
+                     <td class="text-center">40%</td>
+                     <td class="text-center">41</td>
+                     
+                  </tr>
+                  <tr>
+                     <td rowspan="">Accounting & Finance</td>
+                     <td>Accounting & Finance</td>
+                     <td class="text-center">40%</td>
+                     <td class="text-center">41</td>
+                     
+                  </tr>
+                  
+                  
+                  
+                  
+               </tbody>
+            </table>
+         </div>
+
+         <div class="table-responsive mb-2">
+            <table>
+               <thead>
+                  
+                  <tr>
+                     <th colspan="4" rowspan="">EN Anugrah</th>
+                     {{-- <th colspan="" class="text-center">Pending</th> --}}
+                     
+                  </tr>
+                  <tr>
+                     <th>Department</th>
+                     <th>Sub Dept</th>
+                     <th>Complete</th>
+                     <th>Pending</th>
+                  </tr>
+                  {{-- <tr>
+                     Pending
+                  </tr> --}}
+               </thead>
+               <tbody>
+                  <tr>
+                     <td>Operation</td>
+                     <td>Operation</td>
+                     <td class="text-center">40%</td>
+                     <td class="text-center">41</td>
+                     
+                  </tr>
+                  
+               </tbody>
+            </table>
+         </div>
+
+         
+      </div>
+
+      <div class="col-md-4">
+         
+
+         <div class="table-responsive">
+            <table>
+               <thead>
+                  
+                  <tr>
+                     <th colspan="4" rowspan="">KCI Cirebon</th>
+                     {{-- <th colspan="" class="text-center">Pending</th> --}}
+                     
+                  </tr>
+                  <tr>
+                     <th>Department</th>
+                     <th>Sub Dept</th>
+                     <th>Complete</th>
+                     <th>Pending</th>
+                  </tr>
+                  {{-- <tr>
+                     Pending
+                  </tr> --}}
+               </thead>
+               <tbody>
+                  <tr>
+                     <td rowspan="">Sekretariat</td>
+                     <td>Sekretariat</td>
+                     <td class="text-center">40%</td>
+                     <td class="text-center">41</td>
+                     
+                  </tr>
+                  <tr>
+                     <td>Operation</td>
+                     <td>Operation</td>
+                     <td class="text-center">51%</td>
+                     <td class="text-center">23</td>
+                  </tr>
+                  
+                  
+               </tbody>
+            </table>
+         </div>
+         <div class="table-responsive">
+            <table>
+               <thead>
+                  
+                  <tr>
+                     <th colspan="4" rowspan="">KCI Ancol</th>
+                     {{-- <th colspan="" class="text-center">Pending</th> --}}
+                     
+                  </tr>
+                  <tr>
+                     <th>Department</th>
+                     <th>Sub Dept</th>
+                     <th>Complete</th>
+                     <th>Pending</th>
+                  </tr>
+                  {{-- <tr>
+                     Pending
+                  </tr> --}}
+               </thead>
+               <tbody>
+                  
+                  <tr>
+                     <td>Operation</td>
+                     <td>Operation</td>
+                     <td class="text-center">51%</td>
+                     <td class="text-center">23</td>
+                  </tr>
+                  <tr>
+                     <td rowspan="">Busines Development</td>
+                     <td>Busines Development</td>
+                     <td class="text-center">40%</td>
+                     <td class="text-center">41</td>
+                     
+                  </tr>
+                  <tr>
+                     <td rowspan="">GA</td>
+                     <td>GA</td>
+                     <td class="text-center">40%</td>
+                     <td class="text-center">41</td>
+                     
+                  </tr>
+                  
+                  
+                  
+               </tbody>
+            </table>
+         </div>
+
+         <div class="table-responsive">
+            <table>
+               <thead>
+                  
+                  <tr>
+                     <th colspan="4" rowspan="">KCI Semarang</th>
+                     {{-- <th colspan="" class="text-center">Pending</th> --}}
+                     
+                  </tr>
+                  <tr>
+                     <th>Department</th>
+                     <th>Sub Dept</th>
+                     <th>Complete</th>
+                     <th>Pending</th>
+                  </tr>
+                  {{-- <tr>
+                     Pending
+                  </tr> --}}
+               </thead>
+               <tbody>
+                  
+                  <tr>
+                     <td>Operation</td>
+                     <td>Operation</td>
+                     <td class="text-center">51%</td>
+                     <td class="text-center">23</td>
+                  </tr>
+                  <tr>
+                     <td rowspan="">QHSSE</td>
+                     <td>QHSSE</td>
+                     <td class="text-center">40%</td>
+                     <td class="text-center">41</td>
+                     
+                  </tr>
+                  <tr>
+                     <td rowspan="">Accounting & Finance</td>
+                     <td>Accounting & Finance</td>
+                     <td class="text-center">40%</td>
+                     <td class="text-center">41</td>
+                     
+                  </tr>
+                  <tr>
+                     <td rowspan="">Maintenance</td>
+                     <td>Maintenance</td>
+                     <td class="text-center">40%</td>
+                     <td class="text-center">41</td>
+                     
+                  </tr>
+                  
+                  
+                  
+               </tbody>
+            </table>
+         </div>
+      </div>
+
+      <div class="col-md-4">
+         
+      </div>
+      
+   </div>
     <div class="row" id="boxCreate">
         <!-- <div class="col-md-2">
             <div class="card shadow-none border">
@@ -67,7 +967,7 @@ KPA
                     <input type="hidden" id="date" name="date">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table id="table" class="displays table table-striped ">
+                            <table id="table" class="displays table table-striped  border">
                                 <thead>
                                     <tr>
                                         <th rowspan="3">Bisnis Unit</th>
@@ -162,6 +1062,57 @@ KPA
 </div>
 
 @endsection
+
+@push('chart-dashboard')
+   <script>
+       $(document).ready(function() {
+         var radarChart = document.getElementById('radarChart').getContext('2d');
+
+         var myRadarChart = new Chart(radarChart, {
+            type: 'radar',
+            data: {
+               labels: [
+                  'Eating',
+                  'Drinking',
+                  'Sleeping',
+                  'Designing',
+                  'Coding',
+                  'Cycling',
+                  'Running'
+               ],
+               datasets: [{
+                  label: 'My First Dataset',
+                  data: [65, 59, 90, 81, 56, 55, 40],
+                  fill: true,
+                  backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                  borderColor: 'rgb(255, 99, 132)',
+                  pointBackgroundColor: 'rgb(255, 99, 132)',
+                  pointBorderColor: '#fff',
+                  pointHoverBackgroundColor: '#fff',
+                  pointHoverBorderColor: 'rgb(255, 99, 132)'
+               }, {
+                  label: 'My Second Dataset',
+                  data: [28, 48, 40, 19, 96, 27, 100],
+                  fill: true,
+                  backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                  borderColor: 'rgb(54, 162, 235)',
+                  pointBackgroundColor: 'rgb(54, 162, 235)',
+                  pointBorderColor: '#fff',
+                  pointHoverBackgroundColor: '#fff',
+                  pointHoverBorderColor: 'rgb(54, 162, 235)'
+               }]
+               },
+            options: {
+               elements: {
+                  line: {
+                  borderWidth: 3
+                  }
+               }
+            },
+         });
+      })
+   </script>
+   @endpush
 
 @push('js_footer')
 <script>

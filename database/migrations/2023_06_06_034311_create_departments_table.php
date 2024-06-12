@@ -11,7 +11,7 @@ class CreateDepartmentsTable extends Migration
     *
     * @return void
     */
-   public function up()
+   public function upp()
    {
       Schema::create('departments', function (Blueprint $table) {
          $table->smallIncrements('id');
@@ -26,8 +26,8 @@ class CreateDepartmentsTable extends Migration
     *
     * @return void
     */
-   public function down()
-   {
-      Schema::dropIfExists('departments');
-   }
+   // public function down()
+   // {
+   //    Schema::dropIfExists('departments');
+   // }
 }

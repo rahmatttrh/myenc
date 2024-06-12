@@ -151,7 +151,10 @@ class EmployeeController extends Controller
       $socials = Social::get();
       $banks = Bank::get();
 
-
+      $managers = Employee::where('department_id', $employee->department_id)->where('designation_id', 6)->get();
+      $spvs = Employee::where('department_id', $employee->department_id)->where('designation_id', 4)->get();
+      // dd($spvs);
+      $leaders = Employee::where('department_id', $employee->department_id)->where('designation_id', 3)->get();
 
       // dd($employee->documents);
       // $panel = 'contract';
@@ -168,7 +171,11 @@ class EmployeeController extends Controller
          'units' => $units,
          'socials' => $socials,
          'banks' => $banks,
-         'panel' => $panel
+         'panel' => $panel,
+
+         'managers' => $managers,
+         'spvs' => $spvs,
+         'leaders' => $leaders
          // 'tab' => $tab
       ]);
    }
@@ -246,6 +253,7 @@ class EmployeeController extends Controller
       $req->validate([]);
 
       $employee = Employee::find($req->employee);
+
       // dd($req->martial);
 
 
@@ -267,6 +275,13 @@ class EmployeeController extends Controller
          'nationality' => $req->nationality,
          'state' => $req->state,
          'city' => $req->city,
+         'no_ktp' => $req->no_ktp,
+         'no_kk' => $req->no_kk
+      ]);
+
+      $user = User::where('username', $employee->nik)->first();
+      $user->update([
+         'email' => $req->email
       ]);
 
       return redirect()->route('employee.detail', [enkripRambo($employee->id), enkripRambo('basic')])->with('success', 'Employee successfully updated');

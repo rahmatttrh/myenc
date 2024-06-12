@@ -83,6 +83,8 @@ class SpController extends Controller
          $semester =  2; // Semester 2: Juli sampai Desember
       }
 
+      
+
 
 
       Sp::create([
@@ -96,7 +98,8 @@ class SpController extends Controller
          'level' => $req->level,
          'date_from' => $req->date_from,
          'date_to' => $from->addMonths(6),
-         'desc' => $req->desc
+         'desc' => $req->desc,
+         'rule' => $req->rule,
       ]);
 
       return redirect()->back()->with('success', 'SP submited');
@@ -106,15 +109,24 @@ class SpController extends Controller
    {
       $spkl = Spkl::get()->first();
       $sp = Sp::find(dekripRambo($id));
+      $manager = Employee::find(1);
+      $employee = Employee::find($sp->employee_id);
 
       // dd($sp->created_by->biodata->fullName());
       // dd();
+
+      if ($employee->biodata->gender == 'Male') {
+         $gen = 'Saudara';
+      } else {
+         $gen = 'Saudari';
+      }
 
 
       return view('pages.sp.detail', [
          'spkl' => $spkl,
          'sp' => $sp,
-         'manager' => $manager
+         'manager' => $manager,
+         'gen' => $gen
       ]);
    }
 

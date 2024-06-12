@@ -95,9 +95,10 @@ SPKL Detail
                               </button>
                            </div>
                            <div class="modal-body">
-                              Submit KPI
+                              Submit SP <br>
+                              Send to Manager
 
-                              <?php echo   ' semester ' . $sp->semester . ' ' . $sp->tahun; ?>
+                              
                            </div>
                            <div class="modal-footer">
                               <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
@@ -319,13 +320,14 @@ SPKL Detail
 
 
          <br>
-         <p>Maka sesuai dengan peraturan yang berlaku (Peraturan Perusahaan Pasal 45 Ayat 1 Butir 1) kepada Saudari diberikan sanksi berupa SURAT PERINGATAN {{$sp->level}}.</p>
+         <p>Maka sesuai dengan peraturan yang berlaku (Peraturan Perusahaan {{$sp->rule}}) kepada {{$gen}} diberikan sanksi berupa SURAT PERINGATAN {{$sp->level}}.</p>
 
-         <p>Setelah Saudara/i menerima SURAT PERINGATAN {{$sp->level}} ini, diharapkan Saudara/i dapat merubah sikap Saudari dan kembali bekerja dengan baik.</p>
+         <p>Setelah {{$gen}} menerima SURAT PERINGATAN {{$sp->level}} ini, diharapkan {{$gen}} dapat merubah sikap {{$gen}} dan kembali bekerja dengan baik.</p>
 
          <p>Surat peringatan ini berlaku selama 6 bulan, Efektif tanggal <b>{{formatDate($sp->date_from)}}</b> s/d <b>{{formatDate($sp->date_to)}}</b>.</p>
 
-         <p>Apabila ternyata Saudari kembali berbuat sesuatu kesalahan atau pelanggaran yang dapat diberikan sanksi, maka kepada Saudari akan diberikan sanksi yang lebih keras dan dapat berakibat pemutusan hubungan kerja antara perusahaan dengan Saudari.</p>
+         <p>Apabila ternyata {{$gen}} kembali berbuat sesuatu kesalahan atau pelanggaran yang dapat diberikan sanksi, maka kepada <Saudara>
+         <i></i> akan diberikan sanksi yang lebih keras dan dapat berakibat pemutusan hubungan kerja antara perusahaan dengan {{$gen}}.</p>
 
          <p>Semoga dapat dimengerti dan dimaklumi.</p>
 
@@ -340,11 +342,20 @@ SPKL Detail
                   <th>Diterima</th>
                </tr>
                <tr>
-                  <td style="height: 80px">
+                  <td style="height: 80px" class="text-info">
                      {{$sp->created_by->biodata->fullName()}}
+                     @if ($sp->status >= 1)
+                           <br>
+                         {{formatDateTime($sp->release_at)}}
+                     @endif
+                     
                   </td>
                   <td>
-                     {{$sp->employee->manager->biodata->fullName()}}
+                     @if ($sp->status >= 2)
+                     {{$sp->employee->manager->biodata->fullName()}} <br>
+                     {{formatDateTime($sp->approved_at)}}
+                     @endif
+                     
                   </td>
                   <td>
                      {{$sp->approved_at ? 'Saharudin Batubara' : ''}}

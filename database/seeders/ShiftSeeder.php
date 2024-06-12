@@ -31,11 +31,11 @@ class ShiftSeeder extends Seeder
          'updated_at' => NOW()
       ]);
 
-      Shift::create([
-         'name' => 'Shift',
-         'total' => new Carbon('12:00:00'),
-         'created_at' => NOW(),
-         'updated_at' => NOW()
-      ]);
+      // Shift::create([
+      //    'name' => 'Shift',
+      //    'total' => new Carbon('12:00:00'),
+      //    'created_at' => NOW(),
+      //    'updated_at' => NOW()
+      // ]);
    }
 }

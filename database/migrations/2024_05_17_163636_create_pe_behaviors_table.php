@@ -11,7 +11,7 @@ class CreatePeBehaviorsTable extends Migration
      *
      * @return void
      */
-    public function up()
+    public function upp()
     {
         Schema::create('pe_behaviors', function (Blueprint $table) {
             $table->tinyIncrements('id');
@@ -29,8 +29,8 @@ class CreatePeBehaviorsTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
-        Schema::dropIfExists('pe_behaviors');
-    }
+   //  public function down()
+   //  {
+   //      Schema::dropIfExists('pe_behaviors');
+   //  }
 }

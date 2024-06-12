@@ -15,17 +15,17 @@ class DatabaseSeeder extends Seeder
    {
       // \App\Models\User::factory(10)->create();
       $this->call([
-         // RoleSeeder::class,
+         RoleSeeder::class,
          // UserSeeder::class,
          // DepartmentSeeder::class,
          // DesignationSeeder::class,
          // UnitSeeder::class,
-         // ShiftSeeder::class,
+         ShiftSeeder::class,
          // SocialSeeder::class,
          // BankSeeder::class,
-         PeComponentGroupSeeder::class,
-         PeComponentSeeder::class,
-         PeComponentForSeeder::class,
+         // PeComponentGroupSeeder::class,
+         // PeComponentSeeder::class,
+         // PeComponentForSeeder::class,
          // PeKpiSeeder::class,
          // PekpiDetailSeeder::class,
 

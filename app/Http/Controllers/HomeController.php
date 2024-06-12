@@ -32,35 +32,55 @@ class HomeController extends Controller
    public function index()
    {
 
+      // AKTIDKAN CODE DIBAWAH INI HANYA SEKALI SETELAH REFRESH DB
+      // ASSIGN ROLE USER
       $users = User::where('id', '!=', 1)->where('id', '!=', 2)->get();
-      // dd(count($users));
+      $admin = User::where('email', 'admin@gmail.com')->first();
+      $developer = User::where('email', 'developer@gmail.com')->first();
+      
+      $admin->assignRole('Administrator');
+      $developer->assignRole('Administrator');
+   
       foreach($users as $user){
          $employee = Employee::where('nik', $user->username)->first();
-         // if ($employee->designation_id == 1 || $employee->designation_id == 2) {
-         //    $user->assignRole('Karyawan');
-         // } else if ($employee->designation_id == 3){
-         //    $user->assignRole('Leader');
-         // } else if ($employee->designation_id == 4){
-         //    $user->assignRole('Supervisor');
-         // } else if ($employee->designation_id == 5){
-         //    $user->assignRole('Asst. Manager');
-         // } else if ($employee->designation_id == 6){
-         //    $user->assignRole('Manager');
-         // } else if ($employee->designation_id == 7){
-         //    $user->assignRole('BOD');
-         // }
+         if ($employee->designation_id == 1 || $employee->designation_id == 2) {
+            $user->assignRole('Karyawan');
+         } else if ($employee->designation_id == 3){
+            $user->assignRole('Leader');
+         } else if ($employee->designation_id == 4){
+            $user->assignRole('Supervisor');
+         } else if ($employee->designation_id == 5){
+            $user->assignRole('Asst. Manager');
+         } else if ($employee->designation_id == 6){
+            $user->assignRole('Manager');
+         } else if ($employee->designation_id == 7){
+            $user->assignRole('BOD');
+         }
 
-      // dd($employee->biodata->first_name);
+         // JIKA EMPLOYEE DARI DIVISI HRD
+         // ASSIGN 2 ROLE  (ADMINISTRATOR DAN HRD)
          if ($employee->department_id == 8) {
             $employee->update([
                'department_id' => 1
             ]);
             $user->assignRole('Administrator');
-            // dd('hrd');
+            $user->assignRole('HRD');
          }
       }
 
-      $employee = Employee::where('nik', auth()->user()->username)->first();
+      $contracts = Contract::get();
+      foreach($contracts as $cont){
+         $cont->update([
+            'shift_id' => 1
+         ]);
+      }
+      // END OF ASSIGN ROLE
+
+
+
+
+
+      // $employee = Employee::where('nik', auth()->user()->username)->first();
       // dd($employee->id);
 
       // if (auth()->user()->hasRole('Administrator')) {
@@ -69,12 +89,7 @@ class HomeController extends Controller
       //    dd('staff');
       // }
 
-      // $contracts = Contract::get();
-      // foreach($contracts as $cont){
-      //    $cont->update([
-      //       'shift_id' => 1
-      //    ]);
-      // }
+      
 
       $employeeUsers = User::where('');
 
@@ -148,15 +163,15 @@ class HomeController extends Controller
          
          $employee = Employee::where('nik', auth()->user()->username)->first();
          $biodata = Biodata::where('email', auth()->user()->email)->first();
-         $presences = Presence::where('employee_id', $employee->id)->orderBy('created_at', 'desc')->get();
-         $pending = Presence::where('employee_id', $employee->id)->where('out_time', null)->first();
+         $presences = Presence::where('employee_id', auth()->user()->getEmployeeId())->orderBy('created_at', 'desc')->get();
+         $pending = Presence::where('employee_id', auth()->user()->getEmployeeId())->where('out_time', null)->first();
          // dd($biodata->employee->id);
 
-         $spkls = Spkl::where('employee_id', $employee->id)->orderBy('updated_at', 'desc')->paginate(3);
-         $sps = Sp::where('employee_id', $employee->id)->where('status', 3)->get();
+         $spkls = Spkl::where('employee_id', )->orderBy('updated_at', 'desc')->paginate(3);
+         $sps = Sp::where('employee_id', 4)->where('status', 3)->get();
          return view('pages.dashboard.employee', [
             'now' => $now,
-            'employee' => $biodata->employee,
+            'employee' => $employee,
             'dates' => $dates,
             'presences' => $presences,
             'pending' => $pending,

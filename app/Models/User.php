@@ -72,6 +72,7 @@ class User extends Authenticatable implements MustVerifyEmail
    {
       return Employee::where('user_id', auth()->user()->id)->first();
    }
+   // auth()->user()->id
 
    public function getEmployeeId()
    {

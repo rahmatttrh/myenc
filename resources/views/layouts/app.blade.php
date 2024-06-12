@@ -175,6 +175,7 @@
 
       @stack('js_footer')
       @stack('chart-dashboard')
+      @stack('myjs')
 
       <script >
          $(document).ready(function() {

@@ -9,9 +9,9 @@ class CreatePekpiPointsTable extends Migration
     /**
      * Run the migrations.
      *
-     * @return void
+     * @return voidp
      */
-    public function up()
+    public function upp()
     {
         Schema::create('pekpi_points', function (Blueprint $table) {
             $table->tinyIncrements('id');
@@ -27,7 +27,7 @@ class CreatePekpiPointsTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function downn()
     {
         Schema::dropIfExists('pekpi_points');
     }

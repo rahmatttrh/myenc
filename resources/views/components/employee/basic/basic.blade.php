@@ -30,6 +30,36 @@
                         </div>
                      </div>
 
+                    
+
+                     {{-- <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                           <label>Role</label>
+                           <select class="form-control" id="role" name="role">
+                              @foreach ($roles as $role)
+                              <option {{$employee->biodata->role_id == $role->id ? 'selected' : ''}} value="{{$role->id}}">{{$role->name}}</option>
+                              @endforeach
+
+                              <option {{$employee->biodata->gender == 'Female' ? 'selected' : ''}} value="Female">Female</option>
+                           </select>
+                        </div>
+                     </div> --}}
+                  </div>
+                  <div class="row">
+                     <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                           <label>Phone</label>
+                           <input type="text" class="form-control" value="{{$employee->biodata->phone}}" name="phone" id="phone">
+                        </div>
+                     </div>
+                     <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                           <label>Email</label>
+                           <input type="email" class="form-control" value="{{$employee->biodata->email}}" name="email" id="email">
+                        </div>
+                     </div>
+                  </div>
+                  <div class="row">
                      @if ($employee->status == 0)
                      <div class="col-md-6">
                         <div class="form-group form-group-default">
@@ -52,36 +82,7 @@
                         </div>
                      </div>
                      @endif
-
                      <div class="col-md-6">
-                        <div class="form-group form-group-default">
-                           <label>Role</label>
-                           <select class="form-control" id="role" name="role">
-                              @foreach ($roles as $role)
-                              <option {{$employee->biodata->role_id == $role->id ? 'selected' : ''}} value="{{$role->id}}">{{$role->name}}</option>
-                              @endforeach
-
-                              {{-- <option {{$employee->biodata->gender == 'Female' ? 'selected' : ''}} value="Female">Female</option> --}}
-                           </select>
-                        </div>
-                     </div>
-                  </div>
-                  <div class="row">
-                     <div class="col-md-6">
-                        <div class="form-group form-group-default">
-                           <label>Phone</label>
-                           <input type="text" class="form-control" value="{{$employee->biodata->phone}}" name="phone" id="phone">
-                        </div>
-                     </div>
-                     <div class="col-md-6">
-                        <div class="form-group form-group-default">
-                           <label>Email</label>
-                           <input type="email" class="form-control" value="{{$employee->biodata->email}}" name="email" id="email">
-                        </div>
-                     </div>
-                  </div>
-                  <div class="row">
-                     <div class="col-md-4">
                         <div class="form-group form-group-default">
                            <label>Religion</label>
                            <select class="form-control" id="religion" name="religion">
@@ -93,7 +94,7 @@
                            </select>
                         </div>
                      </div>
-                     <div class="col-md-4">
+                     <div class="col-md-6">
                         <div class="form-group form-group-default">
                            <label>Gender</label>
                            <select class="form-control" id="gender" name="gender">
@@ -103,7 +104,7 @@
                            </select>
                         </div>
                      </div>
-                     <div class="col-md-4">
+                     <div class="col-md-6">
                         <div class="form-group form-group-default">
                            <label>Status Perkawinan</label>
                            <select class="form-control" id="marital" name="marital">
@@ -187,6 +188,22 @@
                         </div>
                      </div>
 
+                  </div>
+                  <hr>
+
+                  <div class="row">
+                     <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                           <label>No. KTP</label>
+                           <input type="text" class="form-control" value="{{$employee->biodata->no_ktp}}" name="no_ktp" id="no_ktp">
+                        </div>
+                     </div>
+                     <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                           <label>No. KK</label>
+                           <input type="text" class="form-control" value="{{$employee->biodata->no_kk}}" name="no_kk" id="no_kk">
+                        </div>
+                     </div>
                   </div>
 
                   <div class="text-right mt-3 mb-3">

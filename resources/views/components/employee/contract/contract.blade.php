@@ -21,6 +21,37 @@
                   <input type="number" name="employee" id="employee" value="{{$employee->id}}" hidden>
                   <input type="number" name="contract" id="contract" value="{{$employee->contract_id}}" hidden>
                   <div class="row">
+                     <div class="col-md-4">
+                        <div class="form-group form-group-default">
+                           <label>Manager</label>
+                           <select class="form-control" id="manager" name="manager" <?= auth()->user()->hasRole('Administrator|HRD') ? '' : 'readonly' ?>>
+                              @foreach ($managers as $man)
+                              <option {{$employee->manager_id == $man->id ? 'selected' : ''}} value="{{$man->id}}">{{$man->biodata->first_name}} {{$man->biodata->last_name}}</option>
+                              @endforeach
+                           </select>
+                           @error('manager')
+                           <small class="text-danger"><i>{{ $message }}</i></small>
+                           @enderror
+                        </div>
+                     </div>
+                     <div class="col-md-8">
+                        <div class="form-group form-group-default">
+                           <label>Direct Leader</label>
+                           <select class="form-control" id="leader" name="leader" <?= auth()->user()->hasRole('Administrator|HRD') ? '' : 'readonly' ?>>
+                              @foreach ($spvs as $spv)
+                              <option {{$employee->direct_leader_id == $spv->id ? 'selected' : ''}} value="{{$spv->id}}">  {{$spv->designation->name}} | {{$spv->biodata->first_name}} {{$spv->biodata->last_name}}</option>
+                              @endforeach
+                              @foreach ($leaders as $lead)
+                              <option {{$employee->direct_leader_id == $lead->id ? 'selected' : ''}} value="{{$lead->id}}">  {{$lead->designation->name}} | {{$lead->biodata->first_name}} {{$lead->biodata->last_name}}</option>
+                              @endforeach
+                           </select>
+                           @error('leader')
+                           <small class="text-danger"><i>{{ $message }}</i></small>
+                           @enderror
+                        </div>
+                     </div>
+                  </div>
+                  <div class="row">
 
                      <div class="col-md-4">
                         <div class="form-group form-group-default">
@@ -110,6 +141,8 @@
                         </div>
                      </div>
                   </div>
+
+                  
 
          
                   <div class="form-group form-group-default">

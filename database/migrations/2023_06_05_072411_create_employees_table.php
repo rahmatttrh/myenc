@@ -11,7 +11,7 @@ class CreateEmployeesTable extends Migration
     *
     * @return void
     */
-   public function up()
+   public function upp()
    {
       Schema::create('employees', function (Blueprint $table) {
          $table->id();
@@ -51,8 +51,8 @@ class CreateEmployeesTable extends Migration
     *
     * @return void
     */
-   public function down()
-   {
-      Schema::dropIfExists('employees');
-   }
+   // public function down()
+   // {
+   //    Schema::dropIfExists('employees');
+   // }
 }

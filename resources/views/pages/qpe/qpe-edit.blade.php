@@ -563,7 +563,7 @@ PE
                                     <th>Objective</th>
                                     <th>Description</th>
                                     <th>Bobot</th>
-                                    <th>Value</th>
+                                    <th >Value</th>
                                     <th>Achievement</th>
                                 </tr>
                             </thead>
@@ -576,11 +576,11 @@ PE
                                     <td>{{ $behavior->description }}</td>
                                     <td>{{ $behavior->bobot }}</td>
                                     <td>
-                                        <input type="text" name="valBehavior[{{ $behavior->id }}]" value="0" min="0.01" max="4" step="0.01">
-                                        <br><span><small>*Max 4 point</small></span>
+                                        <input style="width: 50px" type="text" name="valBehavior[{{ $behavior->id }}]" value="0" min="0.01" max="4" step="0.01">
+                                        <br><span><small>*Max 4</small></span>
                                     </td>
                                     <td>
-                                        <input type="text" name="acvBehavior[{{ $behavior->id }}]" readonly>
+                                        <input style="width: 50px" type="text" name="acvBehavior[{{ $behavior->id }}]" readonly>
                                         <br><span>-</span>
                                     </td>
                                 </tr>

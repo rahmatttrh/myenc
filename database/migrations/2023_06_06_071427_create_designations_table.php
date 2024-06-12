@@ -11,7 +11,7 @@ class CreateDesignationsTable extends Migration
      *
      * @return void
      */
-    public function up()
+    public function upp()
     {
         Schema::create('designations', function (Blueprint $table) {
             $table->tinyIncrements('id');
@@ -26,8 +26,8 @@ class CreateDesignationsTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
-        Schema::dropIfExists('designations');
-    }
+   //  public function down()
+   //  {
+   //      Schema::dropIfExists('designations');
+   //  }
 }

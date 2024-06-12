@@ -127,7 +127,7 @@ Detail Employee
       @endif
 
       <div class="tab-content" id="v-pills-tabContent">
-         <x-employee.contract.contract :employee="$employee" :departments="$departments" :designations="$designations" :positions="$positions" :roles="$roles" :shifts="$shifts" :panel="$panel" :i="0" />
+         <x-employee.contract.contract :employee="$employee" :departments="$departments" :designations="$designations" :positions="$positions" :roles="$roles" :shifts="$shifts" :panel="$panel" :i="0" :managers="$managers" :spvs="$spvs" :leaders="$leaders" />
          <x-employee.basic.basic :employee="$employee" :departments="$departments" :designations="$designations" :roles="$roles" :panel="$panel" />
          <x-employee.personal.personal :employee="$employee" :departments="$departments" :designations="$designations" :roles="$roles" :socials="$socials" :banks="$banks" :panel="$panel" />
          <x-employee.account.account :employee="$employee" :departments="$departments" :designations="$designations" :roles="$roles" :panel="$panel" />

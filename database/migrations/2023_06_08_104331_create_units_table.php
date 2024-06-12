@@ -11,7 +11,7 @@ class CreateUnitsTable extends Migration
     *
     * @return void
     */
-   public function up()
+   public function upp()
    {
       Schema::create('units', function (Blueprint $table) {
          $table->tinyIncrements('id');
@@ -25,8 +25,8 @@ class CreateUnitsTable extends Migration
     *
     * @return void
     */
-   public function down()
-   {
-      Schema::dropIfExists('units');
-   }
+   // public function down()
+   // {
+   //    Schema::dropIfExists('units');
+   // }
 }

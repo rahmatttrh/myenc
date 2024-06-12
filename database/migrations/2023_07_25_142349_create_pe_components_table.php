@@ -11,7 +11,7 @@ class CreatePeComponentsTable extends Migration
      *
      * @return void
      */
-    public function up()
+    public function upp()
     {
         Schema::create('pe_components', function (Blueprint $table) {
             $table->tinyIncrements('id');

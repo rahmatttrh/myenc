@@ -11,7 +11,7 @@ class CreatePositionsTable extends Migration
      *
      * @return void
      */
-    public function up()
+    public function upp()
     {
         Schema::create('positions', function (Blueprint $table) {
             $table->smallIncrements('id');
@@ -28,8 +28,8 @@ class CreatePositionsTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
-        Schema::dropIfExists('positions');
-    }
+   //  public function down()
+   //  {
+   //      Schema::dropIfExists('positions');
+   //  }
 }

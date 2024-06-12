@@ -27,6 +27,7 @@ class CreateSpsTable extends Migration
             $table->date('date_to');
             $table->string('level');
             $table->string('desc');
+            $table->string('rule')->nullable();
             $table->integer('by')->nullable();
             $table->text('alasan_reject')->nullable();
             $table->dateTime('release_at')->nullable();

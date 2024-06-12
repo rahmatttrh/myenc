@@ -12,6 +12,7 @@ use App\Http\Controllers\DutyController;
 use App\Http\Controllers\EmergencyController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ExportController;
+use App\Http\Controllers\FetchController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OvertimeController;
 use App\Http\Controllers\PeComponentController;
@@ -199,22 +200,15 @@ Route::middleware(["auth"])->group(function () {
       Route::get('detail/{id}', [SpController::class, 'detail'])->name('sp.detail');
       Route::get('delete/{id}', [SpController::class, 'delete'])->name('sp.delete');
 
-<<<<<<< HEAD
-      Route::get('release/{id}', [SpController::class, 'release'])->name('sp.release');
-      Route::get('app/man/{id}', [SpController::class, 'appManager'])->name('sp.app.man');
-      Route::get('app/hrd/{id}', [SpController::class, 'appHrd'])->name('sp.app.hrd');
-      Route::get('received/{id}', [SpController::class, 'received'])->name('sp.received');
-=======
       Route::put('/submit/{id}', [SpController::class, 'submit'])->name('sp.submit');
       Route::put('/approved/{id}', [SpController::class, 'approved'])->name('sp.approved');
 
       Route::patch('/reject/{id}', [SpController::class, 'reject'])->name('sp.reject');
->>>>>>> 585af9fe4e0e76b0cf9aa0425a7bfd1c360c33d6
    });
 
    // Role Campuran  
 
-   Route::group(['middleware' => ['role:Administrator|HRD|Leader|Manager']], function () {
+   Route::group(['middleware' => ['role:Administrator|HRD|Leader|Manager|Supervisor']], function () {
       // kpi
       Route::prefix('kpi')->group(function () {
          Route::get('/', [PeKpiController::class, 'index'])->name('kpi');
@@ -378,6 +372,12 @@ Route::middleware(["auth"])->group(function () {
             Route::put('/out', [PresenceController::class, 'out'])->name('employee.presence.out');
          });
       });
+   });
+
+
+   Route::prefix('fetch')->group(function () {
+      Route::get('sp/active/{id}', [FetchController::class, 'fetchSpActive']);
+      Route::get('schedule/{date}/{id}', [FetchController::class, 'fetchSchedule']);
    });
 });
 

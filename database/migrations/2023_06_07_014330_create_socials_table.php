@@ -11,7 +11,7 @@ class CreateSocialsTable extends Migration
     *
     * @return void
     */
-   public function up()
+   public function upp()
    {
       Schema::create('socials', function (Blueprint $table) {
          $table->id();
@@ -26,7 +26,7 @@ class CreateSocialsTable extends Migration
     *
     * @return void
     */
-   public function down()
+   public function downn()
    {
       Schema::dropIfExists('socials');
    }

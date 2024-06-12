@@ -11,7 +11,7 @@ class CreatePekpiDetailsTable extends Migration
      *
      * @return void
      */
-    public function up()
+    public function upp()
     {
         Schema::create('pekpi_details', function (Blueprint $table) {
             $table->id();
@@ -31,7 +31,7 @@ class CreatePekpiDetailsTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function downn()
     {
         Schema::dropIfExists('pekpi_details');
     }

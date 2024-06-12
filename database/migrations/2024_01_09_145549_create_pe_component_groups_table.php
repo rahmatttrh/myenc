@@ -11,7 +11,7 @@ class CreatePeComponentGroupsTable extends Migration
      *
      * @return void
      */
-    public function up()
+    public function upp()
     {
         Schema::create('pe_component_groups', function (Blueprint $table) {
             $table->tinyIncrements('id');
@@ -25,7 +25,7 @@ class CreatePeComponentGroupsTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function downn()
     {
         Schema::dropIfExists('pe_component_groups');
     }

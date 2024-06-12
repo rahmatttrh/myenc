@@ -17,10 +17,15 @@ class CreateSpklsTable extends Migration
             $table->id();
             $table->integer('status');
             $table->integer('employee_id');
+            $table->integer('department_id');
+            $table->string('code')->nullable();
             $table->date('date');
             $table->time('start');
             $table->time('end');
+            $table->time('total')->nullable();
             $table->string('desc');
+            $table->string('loc');
+
             $table->timestamps();
         });
     }
