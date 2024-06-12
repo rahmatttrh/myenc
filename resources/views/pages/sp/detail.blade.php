@@ -301,7 +301,7 @@ SPKL Detail
                      <div class="col-10">: {{$sp->employee->department->name}}</div>
                   </div>
                   <div class="row mt-4">
-                     <div class="col-12">Sehubugan dengan pelanggaran yang Saudara/i lakukan, yaitu :</div>
+                  <div class="col-12">Sehubugan dengan pelanggaran yang {{$gen}} lakukan, yaitu :</div>
                      {{-- <div class="col-md-9">: {{$spkl->desc}}
                   </div> --}}
                </div>

@@ -117,8 +117,10 @@ class SpController extends Controller
 
       if ($employee->biodata->gender == 'Male') {
          $gen = 'Saudara';
-      } else {
+      } elseif($employee->biodata->gender == 'Female') {
          $gen = 'Saudari';
+      } else {
+         $gen = 'Saudara/Saudari';
       }
 
 
