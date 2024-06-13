@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Department;
 use App\Models\Designation;
 use App\Models\Employee;
+use App\Models\Pe;
 use App\Models\PeKpa;
 use App\Models\PekpaDetail;
 use App\Models\PeKpi;
@@ -475,8 +476,16 @@ class PeKpaController extends Controller
 
     public function  rejectVerifikasi(Request $request, $id)
     {
-        $result = PeKpa::where('id', $id)
-            ->update([
+        $kpa = PeKpa::find($id);
+        $pe = Pe::find($kpa->pe_id);
+
+        $result = $kpa->update([
+                'status' => '101',
+                'alasan_reject' => $request->alasan_reject,
+                'verifikasi_at' => NOW()
+            ]);
+
+        $pe->update([
                 'status' => '101',
                 'alasan_reject' => $request->alasan_reject,
                 'verifikasi_at' => NOW()

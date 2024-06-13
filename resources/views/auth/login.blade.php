@@ -92,7 +92,7 @@
 									</form>
 									<hr>
 									<div class="login-account">
-										<span class="msg">Copyright &copy; 2021 ENC IT</span>
+										<span class="msg">Copyright &copy; 2024 ENC IT</span>
 									</div>
 								</div>
 							</div>

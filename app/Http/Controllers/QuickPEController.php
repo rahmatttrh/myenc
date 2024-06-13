@@ -74,7 +74,7 @@ class QuickPEController extends Controller
 
             $pes = Pe::join('employees', 'pes.employe_id', '=', 'employees.id')
                 ->where('employees.direct_leader_id', $employee->id)
-                ->where('pes.status', '>', '0')
+                
                 ->select('pes.*')
                 ->orderBy('pes.release_at', 'desc')
                 ->get();
@@ -647,7 +647,7 @@ class QuickPEController extends Controller
             DB::rollBack();
 
             // Redirect dengan pesan error
-            return back()->with('danger', 'An error occurred while verifying PE');
+            return back()->with('danger', $e .'An error occurred while verifying PE');
         }
     }
     /**

@@ -45,7 +45,7 @@
                </span>
                <h4 class="text-section">Main Menu</h4>
             </li>
-            @if (auth()->user()->hasRole('Administrator|HRD|Leader|Supervisor'))
+            @if (auth()->user()->hasRole('Administrator|HRD|Leader|Supervisor|Manager'))
 
                <!-- Master Data -->
                @if (auth()->user()->hasRole('Administrator|HRD'))

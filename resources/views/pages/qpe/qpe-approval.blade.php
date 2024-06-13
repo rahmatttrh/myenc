@@ -14,8 +14,7 @@ PE
     </nav>
 
     <div class="row mr-3">
-        {{-- @if (auth()->user()->hasRole('Manager') && $kpa->status == '1' ) --}}
-        @if ( $kpa->status == '1' )
+        @if (auth()->user()->hasRole('Manager') && $kpa->status == '1' )  
         <div class="button-group ml-auto">
             <button onclick="doneVerifikasi({{$kpa->id}})" class=" btn btn-sm btn-warning  "><i class="fa fa-check"></i> Approved</button>
             <button data-target="#modalReject" data-toggle="modal" class="btn btn-sm btn-danger "><i class="fa fa-reply"></i> Reject</button>
