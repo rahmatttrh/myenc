@@ -10,7 +10,7 @@ class FetchController extends Controller
 {
    public function fetchSpActive($id){
       $employee = Employee::find($id);
-      $spActives = Sp::where('employee_id', $employee->id)->where('status', 1)->get();
+      $spActives = Sp::where('employee_id', $employee->id)->where('status', '>=', 1)->get();
       $result = array();
 
       $result[] = "

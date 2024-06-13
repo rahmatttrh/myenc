@@ -170,14 +170,11 @@ SP
    
 
       $(document).ready(function() {
-         $(".line").hide();
          $('.employee').change(function() {
             
-            
-
             var employee = $('#employee').val();
             var _token = $('meta[name="csrf-token"]').attr('content');
-
+            // console.log('okeee');
             console.log('employeeId:' + employee);
             
             $.ajax({
