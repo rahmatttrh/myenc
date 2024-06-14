@@ -201,9 +201,12 @@ Route::middleware(["auth"])->group(function () {
       Route::get('/', [SpController::class, 'index'])->name('sp');
       Route::post('store', [SpController::class, 'store'])->name('sp.store');
       Route::get('detail/{id}', [SpController::class, 'detail'])->name('sp.detail');
+      Route::put('update', [SpController::class, 'update'])->name('sp.update');
       Route::get('delete/{id}', [SpController::class, 'delete'])->name('sp.delete');
 
       Route::put('/submit/{id}', [SpController::class, 'submit'])->name('sp.submit');
+      Route::put('/app/hrd/{id}', [SpController::class, 'appHrd'])->name('sp.app.hrd');
+
       Route::put('/approved/{id}', [SpController::class, 'approved'])->name('sp.approved');
 
       Route::patch('/reject/{id}', [SpController::class, 'reject'])->name('sp.reject');
@@ -378,9 +381,6 @@ Route::middleware(["auth"])->group(function () {
          });
       });
    });
-
-
-   
 });
 
 

@@ -32,44 +32,54 @@ class HomeController extends Controller
    public function index()
    {
 
+      // if (auth()->user()->assignRole('Karyawan')) {
+      //    dd('karyawan');
+      // } else {
+      //    dd('bukan karyawan');
+      // }
+
       // AKTIDKAN CODE DIBAWAH INI HANYA SEKALI SETELAH REFRESH DB
       // ASSIGN ROLE USER
       // $users = User::where('id', '!=', 1)->where('id', '!=', 2)->get();
       // $admin = User::where('email', 'admin@gmail.com')->first();
       // $developer = User::where('email', 'developer@gmail.com')->first();
-      
+
       // $admin->assignRole('Administrator');
       // $developer->assignRole('Administrator');
-   
-      // foreach($users as $user){
-      //    $employee = Employee::where('nik', $user->username)->first();
-      //    if ($employee->designation_id == 1 || $employee->designation_id == 2) {
-      //       $user->assignRole('Karyawan');
-      //    } else if ($employee->designation_id == 3){
-      //       $user->assignRole('Leader');
-      //    } else if ($employee->designation_id == 4){
-      //       $user->assignRole('Supervisor');
-      //    } else if ($employee->designation_id == 5){
-      //       $user->assignRole('Asst. Manager');
-      //    } else if ($employee->designation_id == 6){
-      //       $user->assignRole('Manager');
-      //    } else if ($employee->designation_id == 7){
-      //       $user->assignRole('BOD');
-      //    }
 
+      // foreach ($users as $user) {
+      //    $user->roles()->detach();
+      //    $employee = Employee::where('nik', $user->username)->first();
+
+      //    // $hrds = Employee::where('department_id', 8)->get();
+      //    // dd($hrds);
       //    // JIKA EMPLOYEE DARI DIVISI HRD
       //    // ASSIGN 2 ROLE  (ADMINISTRATOR DAN HRD)
       //    if ($employee->department_id == 8) {
-      //       $employee->update([
-      //          'department_id' => 1
-      //       ]);
-      //       $user->assignRole('Administrator');
+      //       // $employee->update([
+      //       //    'department_id' => 8
+      //       // ]);
+      //       // $user->assignRole('Administrator');
       //       $user->assignRole('HRD');
+      //    } else {
+      //       if ($employee->designation_id == 1 || $employee->designation_id == 2) {
+      //          $user->assignRole('Karyawan');
+      //       } else if ($employee->designation_id == 3) {
+      //          $user->assignRole('Leader');
+      //       } else if ($employee->designation_id == 4) {
+      //          $user->assignRole('Supervisor');
+      //       } else if ($employee->designation_id == 5) {
+      //          $user->assignRole('Asst. Manager');
+      //       } else if ($employee->designation_id == 6) {
+      //          $user->assignRole('Manager');
+      //       } else if ($employee->designation_id == 7) {
+      //          $user->assignRole('BOD');
+      //       }
       //    }
       // }
 
       // $contracts = Contract::get();
-      // foreach($contracts as $cont){
+      // foreach ($contracts as $cont) {
       //    $cont->update([
       //       'shift_id' => 1
       //    ]);
@@ -89,7 +99,7 @@ class HomeController extends Controller
       //    dd('staff');
       // }
 
-      
+
 
       $employeeUsers = User::where('');
 
@@ -122,7 +132,20 @@ class HomeController extends Controller
             'spkls' => $spkls,
             'sps' => $sps
          ]);
-      } elseif (auth()->user()->hasRole('Manager')){
+      } elseif (auth()->user()->hasRole('HRD')) {
+         $employees = Employee::get();
+         $male = Biodata::where('gender', 'Male')->count();
+         $female = Biodata::where('gender', 'Female')->count();
+         $spkls = Spkl::orderBy('updated_at', 'desc')->paginate(5);
+         $sps = Sp::where('status', 1)->get();
+         return view('pages.dashboard.hrd', [
+            'employees' => $employees,
+            'male' => $male,
+            'female' => $female,
+            'spkls' => $spkls,
+            'sps' => $sps
+         ]);
+      } elseif (auth()->user()->hasRole('Manager')) {
          $employee = Employee::where('nik', auth()->user()->username)->first();
          $biodata = Biodata::where('email', auth()->user()->email)->first();
          $presences = Presence::where('employee_id', $employee->id)->orderBy('created_at', 'desc')->get();
@@ -141,7 +164,7 @@ class HomeController extends Controller
             'spkls' => $spkls,
             'sps' => $sps
          ]);
-      } elseif (auth()->user()->hasRole('Supervisor')){
+      } elseif (auth()->user()->hasRole('Supervisor')) {
          $employee = Employee::where('nik', auth()->user()->username)->first();
          $biodata = Biodata::where('email', auth()->user()->email)->first();
          $presences = Presence::where('employee_id', $employee->id)->orderBy('created_at', 'desc')->get();
@@ -160,15 +183,16 @@ class HomeController extends Controller
          ]);
       } else {
 
-         
+
          $employee = Employee::where('nik', auth()->user()->username)->first();
          $biodata = Biodata::where('email', auth()->user()->email)->first();
          $presences = Presence::where('employee_id', auth()->user()->getEmployeeId())->orderBy('created_at', 'desc')->get();
          $pending = Presence::where('employee_id', auth()->user()->getEmployeeId())->where('out_time', null)->first();
          // dd($biodata->employee->id);
 
-         $spkls = Spkl::where('employee_id', )->orderBy('updated_at', 'desc')->paginate(3);
-         $sps = Sp::where('employee_id', 4)->where('status', 3)->get();
+         $spkls = Spkl::where('employee_id',)->orderBy('updated_at', 'desc')->paginate(3);
+         $sps = Sp::where('employee_id', auth()->user()->getEmployeeId())->where('status', 2)->get();
+         // dd(auth()->user()->getEmployeeId());
          return view('pages.dashboard.employee', [
             'now' => $now,
             'employee' => $employee,
