@@ -94,7 +94,7 @@ QPE
                                     @endif
                                     <td class="text-right">
                                         @if($pe->status == 0)
-                                        <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-delete-{{$pe->id}}"><i class="fas fa-trash"></i> Delete</button>
+                                        <!-- <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-delete-{{$pe->id}}"><i class="fas fa-trash"></i> Delete</button> -->
                                         @elseif($pe->status == '1' || $pe->status == '2')
                                         <a href="{{ route('export.qpe', $pe->id) }}" target="_blank"><button class="btn btn-sm btn-success text-dark"> Preview PDF </button></a>
                                         @elseif(($pe->status == 0 || $pe->status == 101 || $pe->status == 202) && auth()->user()->hasRole('Leader'))
@@ -103,7 +103,7 @@ QPE
                                     </td>
                                 </tr>
                                 <x-modal.submit :id="$pe->id" :body="'KPI ' . $pe->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($pe->date))   " url="" />
-                                <x-modal.delete :id="$pe->id" :body="'KPI ' . $pe->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($pe->date))   " url="" />
+                                <x-modal.delete :id="$pe->id" :body="'KPI ' . $pe->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($pe->date))   " url="qpe/delete/{{$pe->id}}" />
                                 @endforeach
                                 <!-- <tr>
                                     <td>

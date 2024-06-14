@@ -81,6 +81,8 @@ SPKL Detail
                <!-- Start -->
                <button class="btn btn-md btn-warning" data-toggle="modal" data-target="#modal-submit-{{$sp->id}}"><i class="fas fa-rocket"></i> Submit </button>
 
+               <button class="btn btn-md btn-success"><i class="fas fa-edit"></i> Edit </button>
+
                <div class="modal fade" id="modal-submit-{{$sp->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog" role="document">
                      <div class="modal-content">
@@ -98,7 +100,7 @@ SPKL Detail
                               Submit SP <br>
                               Send to Manager
 
-                              
+
                            </div>
                            <div class="modal-footer">
                               <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
@@ -301,7 +303,7 @@ SPKL Detail
                      <div class="col-10">: {{$sp->employee->department->name}}</div>
                   </div>
                   <div class="row mt-4">
-                  <div class="col-12">Sehubugan dengan pelanggaran yang {{$gen}} lakukan, yaitu :</div>
+                     <div class="col-12">Sehubugan dengan pelanggaran yang {{$gen}} lakukan, yaitu :</div>
                      {{-- <div class="col-md-9">: {{$spkl->desc}}
                   </div> --}}
                </div>
@@ -327,7 +329,7 @@ SPKL Detail
          <p>Surat peringatan ini berlaku selama 6 bulan, Efektif tanggal <b>{{formatDate($sp->date_from)}}</b> s/d <b>{{formatDate($sp->date_to)}}</b>.</p>
 
          <p>Apabila ternyata {{$gen}} kembali berbuat sesuatu kesalahan atau pelanggaran yang dapat diberikan sanksi, maka kepada <Saudara>
-         <i></i> akan diberikan sanksi yang lebih keras dan dapat berakibat pemutusan hubungan kerja antara perusahaan dengan {{$gen}}.</p>
+               <i></i> akan diberikan sanksi yang lebih keras dan dapat berakibat pemutusan hubungan kerja antara perusahaan dengan {{$gen}}.</p>
 
          <p>Semoga dapat dimengerti dan dimaklumi.</p>
 
@@ -345,17 +347,17 @@ SPKL Detail
                   <td style="height: 80px" class="text-info">
                      {{$sp->created_by->biodata->fullName()}}
                      @if ($sp->status >= 1)
-                           <br>
-                         {{formatDateTime($sp->release_at)}}
+                     <br>
+                     {{formatDateTime($sp->release_at)}}
                      @endif
-                     
+
                   </td>
                   <td>
                      @if ($sp->status >= 2)
                      {{$sp->employee->manager->biodata->fullName()}} <br>
                      {{formatDateTime($sp->approved_at)}}
                      @endif
-                     
+
                   </td>
                   <td>
                      {{$sp->approved_at ? 'Saharudin Batubara' : ''}}

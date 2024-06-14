@@ -285,6 +285,10 @@ Route::middleware(["auth"])->group(function () {
 
          Route::patch('komentar/{id}', [QuickPEController::class, 'komentar'])->name('qpe.komentar.patch');
 
+
+         // Delete
+         Route::get('delete/{id}', [QuickPEController::class, 'destroy'])->name('qpe.delete');
+
          // Route::put('update/{id}', [QuickPEController::class, 'update'])->name('qpe.update');
          // // ADDTIONAL
          // Route::put('addtional-update/{id}', [QuickPEController::class, 'updateAddtional'])->name('qpe.addtional.update');
@@ -378,9 +382,6 @@ Route::middleware(["auth"])->group(function () {
          });
       });
    });
-
-
-   
 });
 
 

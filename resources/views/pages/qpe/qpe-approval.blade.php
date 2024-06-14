@@ -14,7 +14,7 @@ PE
     </nav>
 
     <div class="row mr-3">
-        @if (auth()->user()->hasRole('Manager') && $kpa->status == '1' )  
+        @if (auth()->user()->hasRole('Manager') && $kpa->status == '1' )
         <div class="button-group ml-auto">
             <button onclick="doneVerifikasi({{$kpa->id}})" class=" btn btn-sm btn-warning  "><i class="fa fa-check"></i> Approved</button>
             <button data-target="#modalReject" data-toggle="modal" class="btn btn-sm btn-danger "><i class="fa fa-reply"></i> Reject</button>
@@ -190,6 +190,37 @@ PE
                     @if($pba == null)
                 </form>
                 @endif
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <form method="POST" action="{{route('qpe.komentar.patch', $pe->id)}}">
+                    @csrf
+                    @method('patch')
+                    <div class="card-header bg-primary text-white">
+                        Komentar Evaluator
+                    </div>
+                    <div class=" card-body">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="form-control">Komentar <span class="text-danger">*</span> : </label>
+                                    <textarea name="komentar" id="komentar" class="form-control komentar" rows="4" required placeholder="Tuliskan komentar anda disini disini!">{{$pe->komentar ?? ''}}</textarea>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="form-control">Development & Training : </label>
+                                    <textarea name="pengembangan" id="pengembangan" class="form-control pengembangan" rows="4" placeholder="Tuliskan alasan penolakan disini!">{{$pe->pengembangan ?? ''}}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary float-right"><i class="fa fa-save"></i> Simpan</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
