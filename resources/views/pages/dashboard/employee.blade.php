@@ -121,7 +121,7 @@ Dashboard
       <div class="col-md-8">
          {{-- <div class="alert alert-info">You have 2 Notification !</div> --}}
          <div class="d-none d-sm-block">
-            <div class="alert alert-info shadow-sm">
+            <div class="alert alert-danger shadow-sm">
 
                {{-- <div class="card-body"> --}}
                <div class="card-opening">
@@ -132,7 +132,13 @@ Dashboard
                </div>
                <hr>
                <div class="card-desc">
-                  Tanggal 8 & 9 Februari Libur Nasional dan Cuti Bersama
+                  {{-- Tanggal 8 & 9 Februari Libur Nasional dan Cuti Bersama --}}
+                  @if (count($sps) > 0)
+                      @foreach ($sps as $sp)
+                      S orry, you've got SP {{$sp->level}} {{$sp->code}}, <a href="{{route('sp.detail', enkripRambo($sp->id))}}">click here to confirm </a><br>
+                         
+                      @endforeach
+                  @endif
                </div>
                {{-- <div class="card-detail">
                         <div class="btn btn-light btn-rounded">Download Template</div>

@@ -137,17 +137,7 @@ SP
                      {{-- <td>{{formatDate($sp->date)}}</td> --}}
                      <td>SP {{$sp->level}}</td>
                      <td>
-                        @if ($sp->status == 0)
-                        Draft
-                        @elseif ($sp->status == 1)
-                        Approval Manager
-                        @elseif ($sp->status == 2)
-                        Active
-                        @elseif ($sp->status == 101)
-                        Reject Manager
-                        @else
-                        Non-Active
-                        @endif
+                        <x-status.sp :sp="$sp" />
                      </td>
                      
                      {{-- <td class="text-truncate" style="max-width: 240px">{{$sp->desc}}</td> --}}
@@ -170,14 +160,11 @@ SP
    
 
       $(document).ready(function() {
-         $(".line").hide();
          $('.employee').change(function() {
             
-            
-
             var employee = $('#employee').val();
             var _token = $('meta[name="csrf-token"]').attr('content');
-
+            // console.log('okeee');
             console.log('employeeId:' + employee);
             
             $.ajax({

@@ -5,13 +5,13 @@
          <div class="user">
             <div class="avatar-sm border rounded float-left mr-2">
                @if (auth()->user()->hasRole('Administrator'))
-               <img src="{{asset('img/businessman.png')}}" alt="..." class="avatar-img bg-muted  ">
-               @else
-               @if (auth()->user()->getEmployee()->picture == null)
-               <img src="{{asset('img/businessman.png')}}" alt="..." class="avatar-img bg-muted  ">
-               @else
-               <img src="{{asset('storage/' . auth()->user()->getEmployee()->picture)}}" alt="..." class="avatar-img bg-muted  ">
-               @endif
+                  <img src="{{asset('img/businessman.png')}}" alt="..." class="avatar-img bg-muted  ">
+                  @else
+                  @if (auth()->user()->getEmployee()->picture == null)
+                  <img src="{{asset('img/businessman.png')}}" alt="..." class="avatar-img bg-muted  ">
+                  @else
+                  <img src="{{asset('storage/' . auth()->user()->getEmployee()->picture)}}" alt="..." class="avatar-img bg-muted  ">
+                  @endif
                @endif
 
 
@@ -203,12 +203,12 @@
                   </a>
                </li>
 
-            <li class="nav-item {{ (request()->is('employee/spt/*')) ? 'active' : '' }}">
-               <a href="{{route('employee.spt')}}">
-                  <i class="fas fa-briefcase"></i>
-                  <p>SPT</p>
-               </a>
-            </li>
+               <li class="nav-item {{ (request()->is('employee/spt/*')) ? 'active' : '' }}">
+                  <a href="{{route('employee.spt')}}">
+                     <i class="fas fa-briefcase"></i>
+                     <p>SPT</p>
+                  </a>
+               </li>
 
                <li class="nav-item">
                   <a href="{{route('employee.detail', [enkripRambo(auth()->user()->employee->id), enkripRambo('contract')])}}">
@@ -226,25 +226,25 @@
 
             @if (auth()->user()->hasRole('Supervisor') || auth()->user()->hasRole('Leader'))
 
-            <li class="nav-item {{ (request()->is('supervisor/spkl/*')) ? 'active' : '' }}">
-               <a href="{{route('supervisor.spkl')}}">
-                  <i class="fas fa-clock"></i>
-                  <p>SPKL</p>
-               </a>
-            </li>
+               <li class="nav-item {{ (request()->is('supervisor/spkl/*')) ? 'active' : '' }}">
+                  <a href="{{route('supervisor.spkl')}}">
+                     <i class="fas fa-clock"></i>
+                     <p>SPKL</p>
+                  </a>
+               </li>
 
-            <li class="nav-item {{ (request()->is('employee/spt/*')) ? 'active' : '' }}">
-               <a href="{{route('employee.spt')}}">
-                  <i class="fas fa-briefcase"></i>
-                  <p>SPT</p>
-               </a>
-            </li>
-            {{-- <li class="nav-item {{ (request()->is('sp/*')) ? 'active' : '' }}">
-               <a href="{{route('sp')}}">
-                  <i class="fas fa-file-code"></i>
-                  <p>SP</p>
-               </a>
-            </li> --}}
+               <li class="nav-item {{ (request()->is('employee/spt/*')) ? 'active' : '' }}">
+                  <a href="{{route('employee.spt')}}">
+                     <i class="fas fa-briefcase"></i>
+                     <p>SPT</p>
+                  </a>
+               </li>
+               {{-- <li class="nav-item {{ (request()->is('sp/*')) ? 'active' : '' }}">
+                  <a href="{{route('sp')}}">
+                     <i class="fas fa-file-code"></i>
+                     <p>SP</p>
+                  </a>
+               </li> --}}
 
             @endif
 
@@ -290,6 +290,7 @@
                </li>
                <!-- End Master Data -->
             @endif
+            @endif
 
             @if (auth()->user()->hasRole('Karyawan'))
 
@@ -321,7 +322,7 @@
                </li>
             @endif
          </ul>
-         @endif
+         
       </div>
    </div>
 </div>
