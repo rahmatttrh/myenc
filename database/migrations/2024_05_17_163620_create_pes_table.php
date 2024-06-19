@@ -28,6 +28,7 @@ class CreatePesTable extends Migration
             $table->string('tahun', 4)->nullable();
             $table->text('komentar')->nullable();
             $table->text('pengembangan')->nullable();
+            $table->string('evidence')->nullable();
             $table->text('alasan_reject')->nullable();  // Alasan Reject dari manager
             $table->dateTime('release_at')->nullable();
             $table->dateTime('resend_at')->nullable(); // Untuk merevisi dan mengirim kembali

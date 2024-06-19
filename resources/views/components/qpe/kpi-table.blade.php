@@ -305,12 +305,13 @@
                         </div>
                         @endif
                         <tr>
-                            <th colspan="5" class="text-right">Achievement </th>
+                            <th colspan="4" class="text-right">Achievement </th>
+                            <th>{{$valueAvg}}</th>
                             <th class="text-right" id="totalAchievement">{{$kpa->achievement}}</th>
                         </tr>
                         <tr>
                             <th colspan="5" class="text-right">Achievement Final
-                                <br><small>Bobot 70%</small>
+                                <br><small>Achievement * ( {{$kpa->weight}} / 100)</small>
                             </th>
                             <th class="text-right" id="totalAchievement">{{$kpa->contribute_to_pe}}</th>
                         </tr>

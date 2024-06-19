@@ -19,6 +19,7 @@ use App\Models\Sp;
 use App\Models\Unit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Round;
 
 class QuickPEController extends Controller
 {
@@ -298,6 +299,9 @@ class QuickPEController extends Controller
 
         $kpa = PeKpa::find(dekripRambo($id));
         $datas = PekpaDetail::where('kpa_id', $kpa->id)->where('addtional', '0')->get();
+        $valueAvg = ROUND(PekpaDetail::where('kpa_id', $kpa->id)->where('addtional', '0')->avg('value'), 2);
+
+        // dd(ROUND($valueAvg, 2));
         // Additional 
         $addtional = PekpaDetail::where('kpa_id', $kpa->id)->where('addtional', '1')->first();
 
@@ -376,7 +380,8 @@ class QuickPEController extends Controller
             'pe' => $pe,
             'kpaAchievement' => 0,
             'pbaAchievement' => 0,
-            'datas' => $datas
+            'datas' => $datas,
+            'valueAvg' => $valueAvg
         ])->with('i');
     }
 
@@ -386,6 +391,8 @@ class QuickPEController extends Controller
 
         $kpa = PeKpa::find(dekripRambo($id));
         $datas = PekpaDetail::where('kpa_id', $kpa->id)->where('addtional', '0')->get();
+        $valueAvg = ROUND(PekpaDetail::where('kpa_id', $kpa->id)->where('addtional', '0')->avg('value'), 2);
+
         // Additional 
         $addtional = PekpaDetail::where('kpa_id', $kpa->id)->where('addtional', '1')->first();
 
@@ -455,7 +462,8 @@ class QuickPEController extends Controller
             'pe' => $pe,
             'kpaAchievement' => 0,
             'pbaAchievement' => 0,
-            'datas' => $datas
+            'datas' => $datas,
+            'valueAvg' => $valueAvg
         ])->with('i');
     }
 
@@ -631,11 +639,29 @@ class QuickPEController extends Controller
 
         try {
 
-            // Update status dan verifikasi pada tabel PE
-            $pe->update([
-                'komentar' => $request->komentar,
-                'pengembangan' => $request->pengembangan,
-            ]);
+            if ($request->evidence) {
+                # code...
+                $pdfFile = $request->evidence;
+
+                $pdfFileName = time() . '_' . $request->id . '.pdf';
+                $pdfFile->storeAs('pe-evidence', $pdfFileName, 'public');
+
+                // Update status dan verifikasi pada tabel PE
+                $result = $pe->update([
+                    'komentar' => $request->komentar,
+                    'pengembangan' => $request->pengembangan,
+                    'evidence' => 'pe-evidence/' . $pdfFileName
+                ]);
+            } else {
+
+                // Update status dan verifikasi pada tabel PE
+                $pe->update([
+                    'komentar' => $request->komentar,
+                    'pengembangan' => $request->pengembangan,
+                ]);
+            }
+
+
 
             // Commit transaksi jika semua operasi berhasil
             DB::commit();
@@ -660,6 +686,7 @@ class QuickPEController extends Controller
     {
         $kpa = PeKpa::find(dekripRambo($id));
         $datas = PekpaDetail::where('kpa_id', $kpa->id)->where('addtional', '0')->get();
+        $valueAvg = ROUND(PekpaDetail::where('kpa_id', $kpa->id)->where('addtional', '0')->avg('value'), 2);
         // Additional 
         $addtional = PekpaDetail::where('kpa_id', $kpa->id)->where('addtional', '1')->first();
 
@@ -711,7 +738,8 @@ class QuickPEController extends Controller
             'pe' => $pe,
             'kpaAchievement' => 0,
             'pbaAchievement' => 0,
-            'datas' => $datas
+            'datas' => $datas,
+            'valueAvg' => $valueAvg
         ])->with('i');
     }
 
