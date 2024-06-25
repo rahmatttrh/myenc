@@ -288,6 +288,8 @@ Route::middleware(["auth"])->group(function () {
 
          Route::patch('komentar/{id}', [QuickPEController::class, 'komentar'])->name('qpe.komentar.patch');
 
+         Route::patch('discuss/{id}', [QuickPEController::class, 'discuss'])->name('qpe.discuss.patch');
+
 
          // Delete
          Route::get('delete/{id}', [QuickPEController::class, 'destroy'])->name('qpe.delete');

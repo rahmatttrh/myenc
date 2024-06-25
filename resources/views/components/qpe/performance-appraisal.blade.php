@@ -27,20 +27,26 @@
             </div>
             <div class="form-group form-group-default">
                 <label>Status</label>
-                @if($kpa->status == 0)
+                @if($kpa->pe->status == 0)
                 <span class="badge badge-dark badge-lg"><b>Draft</b></span>
-                @elseif($kpa->status == '1')
+                @elseif($kpa->pe->status == '1')
                 <span class="badge badge-warning badge-lg"><b>Verifikasi Manager</b></span>
-                @elseif($kpa->status == '2')
+                @elseif($kpa->pe->status == '2')
                 <span class="badge badge-success badge-lg"><b>Done</b></span>
-                @elseif($kpa->status == '3')
+                @elseif($kpa->pe->status == '3')
                 <span class="badge badge-success badge-lg"><b>Done</b></span>
-                @elseif($kpa->status == '101')
+                @elseif($kpa->pe->status == '101')
                 <span class="badge badge-danger badge-lg"><b>Di Reject Manager</b></span>
                 <label class="mt-3">Alasan Penolakan</label>
-                <span class="text-danger">{{ $kpa->alasan_reject }}</span>
-                @elseif($kpa->status == '202')
-                <span class="badge badge-danger badge-lg"><b>Di Reject HRD</b></span>
+                <span class="text-danger">{{ $kpa->pe->alasan_reject }}</span>
+                @elseif($kpa->pe->status == '202')
+                <span class="badge badge-warning badge-lg"><b>Need Discuss</b></span>
+                <br><br>
+                {{$kpa->pe->nd_dibuat}} : <i> {{$kpa->pe->nd_alasan}} </i>
+                <br><br>
+                Tanggal : {{$kpa->pe->nd_date}}
+
+
                 @endif
             </div>
         </form>

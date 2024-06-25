@@ -64,12 +64,12 @@ PE
                                     <label for="form-control">Development & Training : </label>
                                     <textarea name="pengembangan" id="pengembangan" readonly class="form-control pengembangan" rows="4" placeholder="Tuliskan alasan penolakan disini!">{{$pe->pengembangan ?? ''}}</textarea>
                                 </div>
+                                @if($pe->evidence)
                                 <div class="col-md-6 mt-3">
                                     <div class="form-group ">
                                         <b>File Bukti Persetujuan Karyawan <span class="text-danger">*</span> </b><br />
                                     </div>
 
-                                    @if($pe->evidence)
                                     <!-- Button -->
                                     <a href="#" data-target="#modalEvidence" data-toggle="modal"><span class="fa fa-file"></span> Lihat File</a>
 
@@ -118,8 +118,8 @@ PE
                                         </div>
                                     </div>
                                     <!-- End Modal -->
-                                    @endif
                                 </div>
+                                @endif
                             </div>
                         </div>
                     </div>

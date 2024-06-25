@@ -404,7 +404,7 @@ class QuickPEController extends Controller
         // Berikut Behavior  Staff
         $behaviors = PeBehavior::where('level', 's')->get();
 
-
+        $user = auth()->user()->getEmployee();
 
         // $pcc = new PeComponentController();
         // $pcs = $pcc->getComponentDesignation($kpa->employe->contract->designation->id); // Memanggil fungsi show dari ProfileController
@@ -463,6 +463,7 @@ class QuickPEController extends Controller
             'kpaAchievement' => 0,
             'pbaAchievement' => 0,
             'datas' => $datas,
+            'user' => $user,
             'valueAvg' => $valueAvg
         ])->with('i');
     }
@@ -668,6 +669,45 @@ class QuickPEController extends Controller
 
             // Redirect dengan pesan sukses
             return back()->with('success', 'Komentar berhasil disimpan');
+        } catch (\Exception $e) {
+            // Rollback transaksi jika terjadi kesalahan
+            DB::rollBack();
+
+            // Redirect dengan pesan error
+            return back()->with('danger', $e . 'An error occurred while verifying PE');
+        }
+    }
+
+    public function discuss(Request $request, $id)
+
+    {
+        $pe = Pe::find($id);
+        // Validasi input
+        $request->validate([
+            'nd_dibuat' => 'required|string|max:50',
+            'nd_from' => 'required|string|max:50',
+            'nd_date' => 'required|date',
+            'nd_alasan' => 'required',
+        ]);
+
+        // Mulai transaksi
+        DB::beginTransaction();
+
+        try {
+
+            $update = $pe->update([
+                'nd_dibuat' => $request->nd_dibuat,
+                'nd_from' => $request->nd_from,
+                'nd_date' => $request->nd_date,
+                'nd_alasan' => $request->nd_alasan,
+                'status' => '202' //Status need discuss
+            ]);
+
+            // Commit transaksi jika semua operasi berhasil
+            DB::commit();
+
+            // Redirect dengan pesan sukses
+            return back()->with('success', 'Need Discuss berhasil di kirim');
         } catch (\Exception $e) {
             // Rollback transaksi jika terjadi kesalahan
             DB::rollBack();
