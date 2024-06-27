@@ -55,18 +55,6 @@ class QuickPEController extends Controller
                 ->orderBy('pes.release_at', 'desc')
                 ->get();
 
-            // dd($pes);
-
-
-            // $kpas = DB::table('pe_kpas')
-            //     ->join('pe_kpis', 'pe_kpas.kpi_id', '=', 'pe_kpis.id')
-            //     ->where('pe_kpis.departement_id', $employee->department_id)
-            //     ->select('pe_kpas.*')
-            //     ->orderBy('pe_kpas.status', 'asc')
-            //     ->get();
-            // // Convert the query builder result to Order model instances
-            // $kpas = PeKpa::hydrate($kpas->toArray());
-
             // 
             $outAssesments = $this->outstandingAssessment($employee->department_id);
             // 
@@ -80,15 +68,18 @@ class QuickPEController extends Controller
                 ->orderBy('pes.release_at', 'desc')
                 ->get();
 
-            // $kpas = DB::table('pe_kpas')
-            //     ->join('pe_kpis', 'pe_kpas.kpi_id', '=', 'pe_kpis.id')
-            //     ->where('pe_kpis.departement_id', $employee->department_id)
-            //     ->select('pe_kpas.*')
-            //     ->orderBy('pe_kpas.status', 'asc')
-            //     ->get();
+            // 
+            $outAssesments = $this->outstandingAssessment($employee->department_id);
+            // 
+        } else if (auth()->user()->hasRole('Karyawan')) {
 
-            // Convert the query builder result to Order model instances
-            // $kpas = PeKpa::hydrate($kpas->toArray());
+
+            $pes = Pe::join('employees', 'pes.employe_id', '=', 'employees.id')
+                ->where('employees.id', $employee->id)
+                ->whereIn('pes.status', [2, 101, 202])
+                ->select('pes.*')
+                ->orderBy('pes.release_at', 'desc')
+                ->get();
 
             // 
             $outAssesments = $this->outstandingAssessment($employee->department_id);
@@ -708,6 +699,42 @@ class QuickPEController extends Controller
 
             // Redirect dengan pesan sukses
             return back()->with('success', 'Need Discuss berhasil di kirim');
+        } catch (\Exception $e) {
+            // Rollback transaksi jika terjadi kesalahan
+            DB::rollBack();
+
+            // Redirect dengan pesan error
+            return back()->with('danger', $e . 'An error occurred while verifying PE');
+        }
+    }
+
+
+    public function complain(Request $request, $id)
+
+    {
+        $pe = Pe::find($id);
+        // Validasi input
+        $request->validate([
+            'complain_alasan' => 'required',
+        ]);
+
+        // Mulai transaksi
+        DB::beginTransaction();
+
+        try {
+
+            $update = $pe->update([
+                'complained' => '1',
+                'complain_date' => NOW(),
+                'complain_alasan' => $request->complain_alasan
+                // 'status' => '303' //Status need discuss
+            ]);
+
+            // Commit transaksi jika semua operasi berhasil
+            DB::commit();
+
+            // Redirect dengan pesan sukses
+            return back()->with('success', 'Komplain berhasil di kirim');
         } catch (\Exception $e) {
             // Rollback transaksi jika terjadi kesalahan
             DB::rollBack();

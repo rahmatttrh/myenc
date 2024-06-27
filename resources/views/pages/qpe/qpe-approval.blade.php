@@ -19,6 +19,71 @@ PE
     </div>
     @endif
     <div class="row mr-6">
+
+        <!-- Hanya karyawan tersebut yang bisa komplen -->
+        @if(auth()->user()->employee->id == $pe->employe_id && ($kpa->pe->status == '1'|| $kpa->pe->status == '101' || $kpa->pe->status == '202') && $pe->complained == '0' )
+        <div class="btn-group ml-auto">
+            <button data-target="#modalKomplain" data-toggle="modal" class="btn btn-sm btn-success "><i class="fa fa-comments"></i> Ajukan Komplain</button>
+        </div>
+
+        <!-- Modal Discuss  -->
+        <div class="modal fade" id="modalKomplain" data-bs-backdrop="static">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+
+                    <!-- Bagian header modal -->
+                    <div class="modal-header">
+                        <h3 class="modal-title"> </h3>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <form method="POST" action="{{route('qpe.complain.patch', $pe->id) }}" enctype="multipart/form-data">
+                        @csrf
+                        @method('patch')
+                        <input type="hidden" name="id" value="{{$pe->id}}">
+
+                        <!-- Bagian konten modal -->
+                        <div class="modal-body">
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card shadow-none border">
+                                        <div class="card-header d-flex">
+                                            <div class="d-flex  align-items-center">
+                                                <div class="card-title">Konfirmasi </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <label for="" class="label-control">Alasan Pengajuan Komplain <span class="text-danger">*</span></label>
+                                                        <textarea name="complain_alasan" class="form-control" id="" rows="5" placeholder="isi alasan komplain" required></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bagian footer modal -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-success"><i class="fa fa-send"></i> Submit</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- End Modal Discuss  -->
+        @endif
+
+        <!-- Akhir Action Karyawan  -->
+
         @if (auth()->user()->hasRole('Manager') && ($kpa->pe->status == '1' || $kpa->pe->status == '202') )
         <div class="btn-group ml-auto">
             @if($kpa->pe->status == '1')
@@ -281,11 +346,11 @@ PE
                             <div class="row">
                                 <div class="col-md-6">
                                     <label for="form-control">Komentar <span class="text-danger">*</span> : </label>
-                                    <textarea name="komentar" id="komentar" class="form-control komentar" rows="4" required placeholder="Tuliskan komentar anda disini disini!">{{$pe->komentar ?? ''}}</textarea>
+                                    <textarea name="komentar" id="komentar" {{ ($pe->status != '1' && $pe->status != '0') ? 'readonly' : '' }} class="form-control komentar" rows="4" required placeholder="Tuliskan komentar anda disini disini!">{{$pe->komentar ?? ''}}</textarea>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="form-control">Development & Training : </label>
-                                    <textarea name="pengembangan" id="pengembangan" class="form-control pengembangan" rows="4" placeholder="Tuliskan alasan penolakan disini!">{{$pe->pengembangan ?? ''}}</textarea>
+                                    <textarea name="pengembangan" id="pengembangan" {{ ($pe->status != '1' && $pe->status != '0') ? 'readonly' : '' }} class="form-control pengembangan" rows="4" placeholder="Tuliskan alasan penolakan disini!">{{$pe->pengembangan ?? ''}}</textarea>
                                 </div>
                                 <div class="col-md-6 mt-3">
                                     <div class="form-group ">
@@ -347,7 +412,9 @@ PE
                         </div>
                     </div>
                     <div class="card-footer">
+                        @if($pe->status == '1' || $pe->status == '0')
                         <button type="submit" class="btn btn-primary float-right"><i class="fa fa-save"></i> Simpan</button>
+                        @endif
                     </div>
                 </form>
             </div>

@@ -34,6 +34,9 @@ class CreatePesTable extends Migration
             $table->string('nd_from', 50)->nullable();
             $table->text('nd_alasan')->nullable();  // Alasan Need Discuss
             $table->date('nd_date')->nullable();
+            $table->string('complained', 1)->default('0');
+            $table->string('complain_alasan')->nullable();
+            $table->date('complain_date')->nullable();
             $table->dateTime('release_at')->nullable();
             $table->dateTime('resend_at')->nullable(); // Untuk merevisi dan mengirim kembali
             $table->dateTime('verifikasi_at')->nullable();

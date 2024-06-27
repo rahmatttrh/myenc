@@ -3,7 +3,7 @@
 <div class="card shadow-none border">
     <div class="card-header d-flex">
         <div class="d-flex  align-items-center">
-            <div class="card-title">Give Performance Apprasial</div>
+            <div class="card-title">Performance Apprasial</div>
         </div>
     </div>
     <div class="card-body">
@@ -44,11 +44,20 @@
                 <br><br>
                 {{$kpa->pe->nd_dibuat}} : <i> {{$kpa->pe->nd_alasan}} </i>
                 <br><br>
-                Tanggal : {{$kpa->pe->nd_date}}
+                Tanggal : {{formatDate($kpa->pe->nd_date)}}
 
 
                 @endif
             </div>
+            @if($kpa->pe->complained == '1')
+            <div class="form-group form-group-default">
+                <label for="" class="text-danger">Karyawan Komplain</label>
+                <br>
+                [{{formatDate($kpa->pe->complain_date)}}] {{$kpa->employe->biodata->fullName()}} :
+                <br>
+                {{$kpa->pe->complain_alasan}}
+            </div>
+            @endif
         </form>
     </div>
     <div class="card-footer">

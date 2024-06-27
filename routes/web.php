@@ -178,10 +178,24 @@ Route::middleware(["auth"])->group(function () {
       });
    });
 
-   Route::group(['middleware' => ['role:Administrator|HRD|Karyawan|Manager|Supervisor']], function () {
+
+   // Semua Role 
+
+   Route::group(['middleware' => ['role:Administrator|HRD|Karyawan|Manager|Supervisor|Leader']], function () {
       Route::put('update', [EmployeeController::class, 'update'])->name('employee.update');
       Route::put('update/bio', [EmployeeController::class, 'updateBio'])->name('employee.update.bio');
       Route::put('update/picture', [EmployeeController::class, 'updatePicture'])->name('employee.update.picture');
+
+      // Quick PE All
+      Route::prefix('qpe')->group(function () {
+         Route::get('/', [QuickPEController::class, 'index'])->name('qpe');
+
+         Route::get('show/{id}', [QuickPEController::class, 'show'])->name('qpe.show');
+
+         Route::get('approval/{id}', [QuickPEController::class, 'approval'])->name('qpe.approval');
+
+         Route::patch('complain/{id}', [QuickPEController::class, 'complain'])->name('qpe.complain.patch');
+      });
    });
 
    Route::group(['middleware' => ['role:Supervisor|Manager']], function () {
@@ -275,15 +289,15 @@ Route::middleware(["auth"])->group(function () {
 
       // Quick PE
       Route::prefix('qpe')->group(function () {
-         Route::get('/', [QuickPEController::class, 'index'])->name('qpe');
+         // Route::get('/', [QuickPEController::class, 'index'])->name('qpe'); //ada di atas
          Route::get('/create', [QuickPEController::class, 'create'])->name('qpe.create');
          Route::get('edit/{id}', [QuickPEController::class, 'edit'])->name('qpe.edit');
-         Route::get('show/{id}', [QuickPEController::class, 'show'])->name('qpe.show');
+         // Route::get('show/{id}', [QuickPEController::class, 'show'])->name('qpe.show');  //ada di atas
 
          Route::post('/', [QuickPEController::class, 'store'])->name('qpe.store');
          Route::put('/submit/{id}', [QuickPEController::class, 'submit'])->name('qpe.submit');
 
-         Route::get('approval/{id}', [QuickPEController::class, 'approval'])->name('qpe.approval');
+         // Route::get('approval/{id}', [QuickPEController::class, 'approval'])->name('qpe.approval');  // Ada di atas
          Route::patch('approved/{id}', [QuickPEController::class, 'approved'])->name('qpe.approved');
 
          Route::post('/behavior', [QuickPEController::class, 'storeBehavior'])->name('qpe.behavior.store');
