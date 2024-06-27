@@ -195,6 +195,7 @@ Route::middleware(["auth"])->group(function () {
          Route::get('approval/{id}', [QuickPEController::class, 'approval'])->name('qpe.approval');
 
          Route::patch('complain/{id}', [QuickPEController::class, 'complain'])->name('qpe.complain.patch');
+         Route::patch('close-complain/{id}', [QuickPEController::class, 'closeComplain'])->name('qpe.closecomplain.patch');
       });
    });
 

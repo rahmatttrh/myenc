@@ -743,6 +743,37 @@ class QuickPEController extends Controller
             return back()->with('danger', $e . 'An error occurred while verifying PE');
         }
     }
+
+
+    public function closeComplain(Request $request, $id)
+
+    {
+        $pe = Pe::find($id);
+        // Validasi input
+
+        // Mulai transaksi
+        DB::beginTransaction();
+
+        try {
+
+            $update = $pe->update([
+                'complained' => '0',
+                // 'status' => '303' //Status need discuss
+            ]);
+
+            // Commit transaksi jika semua operasi berhasil
+            DB::commit();
+
+            // Redirect dengan pesan sukses
+            return back()->with('success', 'Komplain berhasil di tutup');
+        } catch (\Exception $e) {
+            // Rollback transaksi jika terjadi kesalahan
+            DB::rollBack();
+
+            // Redirect dengan pesan error
+            return back()->with('danger', $e . 'An error occurred while verifying PE');
+        }
+    }
     /**
      * Display the specified resource.
      *

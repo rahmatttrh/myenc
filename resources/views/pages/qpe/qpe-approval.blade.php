@@ -20,13 +20,15 @@ PE
     @endif
     <div class="row mr-6">
 
+        <!-- Awal Action Karyawan -->
+
         <!-- Hanya karyawan tersebut yang bisa komplen -->
         @if(auth()->user()->employee->id == $pe->employe_id && ($kpa->pe->status == '1'|| $kpa->pe->status == '101' || $kpa->pe->status == '202') && $pe->complained == '0' )
         <div class="btn-group ml-auto">
-            <button data-target="#modalKomplain" data-toggle="modal" class="btn btn-sm btn-success "><i class="fa fa-comments"></i> Ajukan Komplain</button>
+            <button data-target="#modalKomplain" data-toggle="modal" class="btn btn-xs btn-warning "><i class="fa fa-comments"></i> Ajukan Komplain</button>
         </div>
 
-        <!-- Modal Discuss  -->
+        <!-- Modal Komplain  -->
         <div class="modal fade" id="modalKomplain" data-bs-backdrop="static">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -79,7 +81,66 @@ PE
             </div>
         </div>
 
-        <!-- End Modal Discuss  -->
+        <!-- End Modal Komplain  -->
+        @endif
+
+        <!-- Tombol Komplain karyawan  -->
+        @if(auth()->user()->employee->id == $pe->employe_id && $pe->complained == '1' )
+        <div class="btn-group ml-auto">
+            <button data-target="#closeKomplain" data-toggle="modal" class="btn btn-xs btn-success "><i class="fa fa-flag"></i> Close Komplain</button>
+        </div>
+
+        <div class="modal fade" id="closeKomplain" data-bs-backdrop="static">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+
+                    <!-- Bagian header modal -->
+                    <div class="modal-header">
+                        <h3 class="modal-title"> </h3>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <form method="POST" action="{{route('qpe.closecomplain.patch', $pe->id) }}" enctype="multipart/form-data">
+                        @csrf
+                        @method('patch')
+                        <input type="hidden" name="id" value="{{$pe->id}}">
+
+                        <!-- Bagian konten modal -->
+                        <div class="modal-body">
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card shadow-none border">
+                                        <div class="card-header d-flex">
+                                            <div class="d-flex  align-items-center">
+                                                <div class="card-title">Konfirmasi </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <h3>Apakah Anda yakin ingin menutup komplain tersebut?</h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bagian footer modal -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-success"><i class="fa fa-send"></i> Ya, Saya Yakin</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
         @endif
 
         <!-- Akhir Action Karyawan  -->
