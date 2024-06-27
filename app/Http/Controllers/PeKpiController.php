@@ -26,7 +26,7 @@ class PeKpiController extends Controller
             $kpis = PeKpi::where('departement_id', $employee->department_id)->get();
         }
 
-      //   dd($kpis);
+        //   dd($kpis);
 
         // Data Unit
         if (auth()->user()->hasRole('Administrator|HRD')) {
@@ -195,6 +195,31 @@ class PeKpiController extends Controller
             return redirect()->back()->with('success', 'User successfully added KPI');
         } else {
             return redirect()->back()->with('danger', 'Failed');
+        }
+    }
+
+    public function revokeUser(Request $request)
+    {
+
+        $request->validate([
+            'kpi_id' => 'required',
+            'employe_id' => 'required'
+        ]);
+        // 
+
+        $employe = Employee::where('id', $request->employe_id)->first();
+
+
+        $result = $employe->update([
+            'kpi_id' => NULL,
+        ]);
+
+
+        if ($result) {
+            # code...
+            return back()->with('success', 'User successfully revoke from  KPI');
+        } else {
+            return back()->with('danger', 'Failed');
         }
     }
 

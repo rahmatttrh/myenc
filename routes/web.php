@@ -230,7 +230,10 @@ Route::middleware(["auth"])->group(function () {
 
          // DETAIL
          Route::post('/detail', [PekpiDetailController::class, 'store'])->name('kpidetail.store');
+
+         // Add/Revoke User
          Route::post('/detail/add-user', [PeKpiController::class, 'addUser'])->name('kpi.add.user');
+         Route::patch('revoke-user/{id}', [PeKpiController::class, 'revokeUser'])->name('kpi.revoke.user');
 
 
          // KPI POINT
