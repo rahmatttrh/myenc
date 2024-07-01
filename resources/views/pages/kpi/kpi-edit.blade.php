@@ -298,14 +298,41 @@ KPI
 
                                         <tr>
                                             <td>{{$no++}}</td>
-                                            <td>{{$user->biodata->first_name}}</td>
+                                            <td>{{$user->biodata->fullName()}}</td>
                                             <td class="text-right">
-                                                {{--<a href="{{route('data.edit', enkripRambo($user->id) )}}">Edit</a>--}}
-                                                <a href="#" data-toggle="modal" data-target="#modal-delete-{{$user->id}}">Delete</a>
+                                                <a href="" data-toggle="modal" class="text-danger" data-target="#modal-revoke-{{$user->id}}">Revoke</a>
                                             </td>
                                         </tr>
-                                        <x-modal.delete :id="$data->id" :body="$data->name" url="" />
-                                        {{--<x-modal.delete :id="$data->id" :body="$data->name" url="{{route('data.delete', enkripRambo($data->id))}}" />--}}
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="modal-revoke-{{$user->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <form action="{{route('kpi.revoke.user', $user->id)}}" method="post">
+                                                        @csrf
+                                                        @method('patch')
+                                                        <input type="hidden" name="kpi_id" value="{{$kpi->id}}">
+                                                        <input type="hidden" name="employe_id" value="{{$user->id}}">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Revoke {{$user->biodata->fullName()}} from This KPI ?
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-danger">
+                                                                Revoke
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- End Modal -->
                                         @endforeach
                                     </tbody>
                                 </table>

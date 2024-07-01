@@ -5,15 +5,18 @@ use App\Http\Controllers\BankAccountController;
 use App\Http\Controllers\CommissionController;
 use App\Http\Controllers\CompositionController;
 use App\Http\Controllers\ContractController;
+use App\Http\Controllers\DeactivateController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\DutyController;
+use App\Http\Controllers\EducationalController;
 use App\Http\Controllers\EmergencyController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\FetchController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MutationController;
 use App\Http\Controllers\OvertimeController;
 use App\Http\Controllers\PeComponentController;
 use App\Http\Controllers\PeDisciplineController;
@@ -30,6 +33,7 @@ use App\Http\Controllers\SpklController;
 use App\Http\Controllers\SubDeptController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\VerificationController;
+use App\Models\Emergency;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -68,6 +72,7 @@ Route::middleware(["auth"])->group(function () {
    Route::group(['middleware' => ['role:Administrator|HRD']], function () {
       Route::prefix('employee')->group(function () {
          Route::get('tab/{tab}', [EmployeeController::class, 'index'])->name('employee');
+         Route::get('nonactive', [EmployeeController::class, 'nonactive'])->name('employee.nonactive');
          Route::get('off', [EmployeeController::class, 'off'])->name('employee.off');
 
          Route::get('create', [EmployeeController::class, 'create'])->name('employee.create');
@@ -138,11 +143,22 @@ Route::middleware(["auth"])->group(function () {
       });
 
       Route::prefix('contract')->group(function () {
+         Route::post('store', [ContractController::class, 'store'])->name('contract.store');
          Route::put('update', [ContractController::class, 'update'])->name('contract.update');
       });
 
+      Route::post('deactivate', [DeactivateController::class, 'deactivate'])->name('deactivate');
+
       Route::prefix('emergency')->group(function () {
+         Route::post('store', [EmergencyController::class, 'store'])->name('emergency.store');
          Route::put('update', [EmergencyController::class, 'update'])->name('emergency.update');
+         Route::get('delete/{id}', [EmergencyController::class, 'delete'])->name('emergency.delete');
+      });
+
+      Route::prefix('educational')->group(function () {
+         Route::post('store', [EducationalController::class, 'store'])->name('educational.store');
+         Route::put('update', [EducationalController::class, 'update'])->name('educational.update');
+         Route::get('delete/{id}', [EducationalController::class, 'delete'])->name('educational.delete');
       });
 
       Route::prefix('social/account')->group(function () {
@@ -178,10 +194,30 @@ Route::middleware(["auth"])->group(function () {
       });
    });
 
-   Route::group(['middleware' => ['role:Administrator|HRD|Karyawan|Manager|Supervisor']], function () {
+
+   // Semua Role 
+
+   Route::group(['middleware' => ['role:Administrator|HRD|Karyawan|Manager|Supervisor|Leader']], function () {
       Route::put('update', [EmployeeController::class, 'update'])->name('employee.update');
+      Route::put('update/doc', [EmployeeController::class, 'updateDoc'])->name('employee.update.doc');
       Route::put('update/bio', [EmployeeController::class, 'updateBio'])->name('employee.update.bio');
       Route::put('update/picture', [EmployeeController::class, 'updatePicture'])->name('employee.update.picture');
+
+      // Quick PE All
+      Route::prefix('qpe')->group(function () {
+         Route::get('/', [QuickPEController::class, 'index'])->name('qpe');
+
+         Route::get('show/{id}', [QuickPEController::class, 'show'])->name('qpe.show');
+
+         Route::get('approval/{id}', [QuickPEController::class, 'approval'])->name('qpe.approval');
+
+         Route::patch('complain/{id}', [QuickPEController::class, 'complain'])->name('qpe.complain.patch');
+         Route::patch('close-complain/{id}', [QuickPEController::class, 'closeComplain'])->name('qpe.closecomplain.patch');
+      });
+   });
+
+   Route::prefix('mutation')->group(function () {
+      Route::post('store', [MutationController::class, 'store'])->name('mutation.store');
    });
 
    Route::group(['middleware' => ['role:Supervisor|Manager']], function () {
@@ -201,9 +237,13 @@ Route::middleware(["auth"])->group(function () {
       Route::get('/', [SpController::class, 'index'])->name('sp');
       Route::post('store', [SpController::class, 'store'])->name('sp.store');
       Route::get('detail/{id}', [SpController::class, 'detail'])->name('sp.detail');
+      Route::put('update', [SpController::class, 'update'])->name('sp.update');
       Route::get('delete/{id}', [SpController::class, 'delete'])->name('sp.delete');
 
       Route::put('/submit/{id}', [SpController::class, 'submit'])->name('sp.submit');
+      Route::put('/app/hrd/{id}', [SpController::class, 'appHrd'])->name('sp.app.hrd');
+      Route::put('/app/employee/{id}', [SpController::class, 'appEmployee'])->name('sp.app.employee');
+
       Route::put('/approved/{id}', [SpController::class, 'approved'])->name('sp.approved');
 
       Route::patch('/reject/{id}', [SpController::class, 'reject'])->name('sp.reject');
@@ -227,7 +267,10 @@ Route::middleware(["auth"])->group(function () {
 
          // DETAIL
          Route::post('/detail', [PekpiDetailController::class, 'store'])->name('kpidetail.store');
+
+         // Add/Revoke User
          Route::post('/detail/add-user', [PeKpiController::class, 'addUser'])->name('kpi.add.user');
+         Route::patch('revoke-user/{id}', [PeKpiController::class, 'revokeUser'])->name('kpi.revoke.user');
 
 
          // KPI POINT
@@ -269,21 +312,27 @@ Route::middleware(["auth"])->group(function () {
 
       // Quick PE
       Route::prefix('qpe')->group(function () {
-         Route::get('/', [QuickPEController::class, 'index'])->name('qpe');
+         // Route::get('/', [QuickPEController::class, 'index'])->name('qpe'); //ada di atas
          Route::get('/create', [QuickPEController::class, 'create'])->name('qpe.create');
          Route::get('edit/{id}', [QuickPEController::class, 'edit'])->name('qpe.edit');
-         Route::get('show/{id}', [QuickPEController::class, 'show'])->name('qpe.show');
+         // Route::get('show/{id}', [QuickPEController::class, 'show'])->name('qpe.show');  //ada di atas
 
          Route::post('/', [QuickPEController::class, 'store'])->name('qpe.store');
          Route::put('/submit/{id}', [QuickPEController::class, 'submit'])->name('qpe.submit');
 
-         Route::get('approval/{id}', [QuickPEController::class, 'approval'])->name('qpe.approval');
+         // Route::get('approval/{id}', [QuickPEController::class, 'approval'])->name('qpe.approval');  // Ada di atas
          Route::patch('approved/{id}', [QuickPEController::class, 'approved'])->name('qpe.approved');
 
          Route::post('/behavior', [QuickPEController::class, 'storeBehavior'])->name('qpe.behavior.store');
          Route::patch('/behavior/update/{id}', [QuickPEController::class, 'updateBehavior'])->name('qpe.behavior.update');
 
          Route::patch('komentar/{id}', [QuickPEController::class, 'komentar'])->name('qpe.komentar.patch');
+
+         Route::patch('discuss/{id}', [QuickPEController::class, 'discuss'])->name('qpe.discuss.patch');
+
+
+         // Delete
+         Route::get('delete/{id}', [QuickPEController::class, 'destroy'])->name('qpe.delete');
 
          // Route::put('update/{id}', [QuickPEController::class, 'update'])->name('qpe.update');
          // // ADDTIONAL
@@ -378,9 +427,6 @@ Route::middleware(["auth"])->group(function () {
          });
       });
    });
-
-
-   
 });
 
 

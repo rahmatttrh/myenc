@@ -13,13 +13,212 @@ PE
         </ol>
     </nav>
 
-    <div class="row mr-3">
-        @if (auth()->user()->hasRole('Manager') && $kpa->status == '1' )  
-        <div class="button-group ml-auto">
+    @if($pba == null)
+    <div class="alert alert-warning" role="alert">
+        Silahkan isi nilai behavior !
+    </div>
+    @endif
+    <div class="row mr-6">
+
+        <!-- Awal Action Karyawan -->
+
+        <!-- Hanya karyawan tersebut yang bisa komplen -->
+        @if(auth()->user()->employee->id == $pe->employe_id && ($kpa->pe->status == '1'|| $kpa->pe->status == '101' || $kpa->pe->status == '202') && $pe->complained == '0' )
+        <div class="btn-group ml-auto">
+            <button data-target="#modalKomplain" data-toggle="modal" class="btn btn-xs btn-warning "><i class="fa fa-comments"></i> Ajukan Komplain</button>
+        </div>
+
+        <!-- Modal Komplain  -->
+        <div class="modal fade" id="modalKomplain" data-bs-backdrop="static">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+
+                    <!-- Bagian header modal -->
+                    <div class="modal-header">
+                        <h3 class="modal-title"> </h3>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <form method="POST" action="{{route('qpe.complain.patch', $pe->id) }}" enctype="multipart/form-data">
+                        @csrf
+                        @method('patch')
+                        <input type="hidden" name="id" value="{{$pe->id}}">
+
+                        <!-- Bagian konten modal -->
+                        <div class="modal-body">
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card shadow-none border">
+                                        <div class="card-header d-flex">
+                                            <div class="d-flex  align-items-center">
+                                                <div class="card-title">Konfirmasi </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <label for="" class="label-control">Alasan Pengajuan Komplain <span class="text-danger">*</span></label>
+                                                        <textarea name="complain_alasan" class="form-control" id="" rows="5" placeholder="isi alasan komplain" required></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bagian footer modal -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-success"><i class="fa fa-send"></i> Submit</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- End Modal Komplain  -->
+        @endif
+
+        <!-- Tombol Komplain karyawan  -->
+        @if(auth()->user()->employee->id == $pe->employe_id && $pe->complained == '1' )
+        <div class="btn-group ml-auto">
+            <button data-target="#closeKomplain" data-toggle="modal" class="btn btn-xs btn-success "><i class="fa fa-flag"></i> Close Komplain</button>
+        </div>
+
+        <div class="modal fade" id="closeKomplain" data-bs-backdrop="static">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+
+                    <!-- Bagian header modal -->
+                    <div class="modal-header">
+                        <h3 class="modal-title"> </h3>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <form method="POST" action="{{route('qpe.closecomplain.patch', $pe->id) }}" enctype="multipart/form-data">
+                        @csrf
+                        @method('patch')
+                        <input type="hidden" name="id" value="{{$pe->id}}">
+
+                        <!-- Bagian konten modal -->
+                        <div class="modal-body">
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card shadow-none border">
+                                        <div class="card-header d-flex">
+                                            <div class="d-flex  align-items-center">
+                                                <div class="card-title">Konfirmasi </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <h3>Apakah Anda yakin ingin menutup komplain tersebut?</h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bagian footer modal -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-success"><i class="fa fa-send"></i> Ya, Saya Yakin</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        @endif
+
+        <!-- Akhir Action Karyawan  -->
+
+        @if (auth()->user()->hasRole('Manager') && ($kpa->pe->status == '1' || $kpa->pe->status == '202') )
+        <div class="btn-group ml-auto">
+            @if($kpa->pe->status == '1')
+            <button data-target="#modalDiscuss" data-toggle="modal" class="btn btn-sm btn-success "><i class="fa fa-users"></i> Need Discuss</button>
+
+            <!-- Modal Discuss  -->
+            <div class="modal fade" id="modalDiscuss" data-bs-backdrop="static">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+
+                        <!-- Bagian header modal -->
+                        <div class="modal-header">
+                            <h3 class="modal-title"> </h3>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <form method="POST" action="{{route('qpe.discuss.patch', $pe->id) }}" enctype="multipart/form-data">
+                            @csrf
+                            @method('patch')
+                            <input type="hidden" name="id" value="{{$pe->id}}">
+                            <input type="hidden" name="nd_dibuat" value="{{ $user ? $user->biodata->fullName() : ''}}">
+                            <input type="hidden" name="nd_from" value="Manager">
+
+                            <!-- Bagian konten modal -->
+                            <div class="modal-body">
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card shadow-none border">
+                                            <div class="card-header d-flex">
+                                                <div class="d-flex  align-items-center">
+                                                    <div class="card-title">Konfirmasi </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <label for="" class="label-control">Tetapkan Tanggal Diskusi <span class="hidden-danger">*</span></label>
+                                                            <input required name="nd_date" type="date" class="form-control" min="<?php echo date('Y-m-d'); ?>">
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label for="" class="label-control">Alasan <span class="text-danger">*</span></label>
+                                                            <textarea name="nd_alasan" class="form-control" id="" rows="5" placeholder="isi alasan untuk berdiskusi disini" required></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Bagian footer modal -->
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-success"><i class="fa fa-send"></i> Submit</button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- End Modal Discuss  -->
+
+            @endif
+
+            @if($pba != null)
             <button onclick="doneVerifikasi({{$kpa->id}})" class=" btn btn-sm btn-warning  "><i class="fa fa-check"></i> Approved</button>
+            <form id="done-validasi" action="{{route('qpe.approved', $pe->id)}}" method="POST"> @csrf @method('patch')</form>
+            @endif
             <button data-target="#modalReject" data-toggle="modal" class="btn btn-sm btn-danger "><i class="fa fa-reply"></i> Reject</button>
 
-            <form id="done-validasi" action="{{route('qpe.approved', $pe->id)}}" method="POST"> @csrf @method('patch')</form>
         </div>
         @endif
     </div>
@@ -29,7 +228,7 @@ PE
             <x-qpe.performance-appraisal :kpa="$kpa" />
         </div>
         <div class="col-md-9">
-            <x-qpe.kpi-table :kpa="$kpa" :datas="$datas" :addtional="$addtional" :i="$i" />
+            <x-qpe.kpi-table :kpa="$kpa" :datas="$datas" :valueAvg="$valueAvg" :addtional="$addtional" :i="$i" />
         </div>
     </div>
 
@@ -190,6 +389,95 @@ PE
                     @if($pba == null)
                 </form>
                 @endif
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <form method="POST" action="{{route('qpe.komentar.patch', $pe->id)}}">
+                    @csrf
+                    @method('patch')
+                    <div class="card-header bg-primary text-white">
+                        Komentar Evaluator
+                    </div>
+                    <div class=" card-body">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="form-control">Komentar <span class="text-danger">*</span> : </label>
+                                    <textarea name="komentar" id="komentar" {{ ($pe->status != '1' && $pe->status != '0') ? 'readonly' : '' }} class="form-control komentar" rows="4" required placeholder="Tuliskan komentar anda disini disini!">{{$pe->komentar ?? ''}}</textarea>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="form-control">Development & Training : </label>
+                                    <textarea name="pengembangan" id="pengembangan" {{ ($pe->status != '1' && $pe->status != '0') ? 'readonly' : '' }} class="form-control pengembangan" rows="4" placeholder="Tuliskan alasan penolakan disini!">{{$pe->pengembangan ?? ''}}</textarea>
+                                </div>
+                                <div class="col-md-6 mt-3">
+                                    <div class="form-group ">
+                                        <b>File Bukti Persetujuan Karyawan <span class="text-danger">*</span> </b><br />
+                                    </div>
+
+                                    @if($pe->evidence)
+                                    <!-- Button -->
+                                    <a href="#" data-target="#modalEvidence" data-toggle="modal"><span class="fa fa-file"></span> Lihat File</a>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="modalEvidence" data-bs-backdrop="static">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+
+                                                <!-- Bagian header modal -->
+                                                <div class="modal-header">
+                                                    <h3 class="modal-title"> </h3>
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                </div>
+
+                                                <!-- Bagian konten modal -->
+                                                <div class="modal-body">
+
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="card shadow-none border">
+                                                                <div class="card-header d-flex">
+                                                                    <div class="d-flex  align-items-center">
+                                                                        <div class="card-title">File Evidence</div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="card-body">
+                                                                    <div class="form-group">
+                                                                        @if ($pe->evidence)
+                                                                        <iframe src="{{ Storage::url($pe->evidence) }}" id="pdfPreview-{{$pe->id}}" width=" 100%" height="575px"></iframe>
+                                                                        @else
+                                                                        <p>No attachment available.</p>
+                                                                        @endif
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Bagian footer modal -->
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Tutup</button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- End Modal -->
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        @if($pe->status == '1' || $pe->status == '0')
+                        <button type="submit" class="btn btn-primary float-right"><i class="fa fa-save"></i> Simpan</button>
+                        @endif
+                    </div>
+                </form>
             </div>
         </div>
     </div>

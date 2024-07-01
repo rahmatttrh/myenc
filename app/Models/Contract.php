@@ -15,6 +15,11 @@ class Contract extends Model
       return $this->hasMany(Employee::class);
    }
 
+   public function employee()
+   {
+      return $this->belongsTo(Employee::class);
+   }
+
    public function department()
    {
       return $this->belongsTo(Department::class);
@@ -28,5 +33,15 @@ class Contract extends Model
    public function shift()
    {
       return $this->belongsTo(Shift::class);
+   }
+
+   public function position()
+   {
+      return $this->belongsTo(Position::class);
+   }
+
+   public function unit()
+   {
+      return $this->belongsTo(Unit::class);
    }
 }

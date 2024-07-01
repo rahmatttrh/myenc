@@ -20,6 +20,9 @@ class SpController extends Controller
       if (auth()->user()->hasRole('Administrator')) {
          $employees = Employee::get();
          $sps = Sp::orderBy('created_at', 'desc')->get();
+      } elseif (auth()->user()->hasRole('HRD')) {
+         $employees = Employee::get();
+         $sps = Sp::orderBy('created_at', 'desc')->get();
       } elseif (auth()->user()->hasRole('Manager')) {
          $employees = Employee::where('department_id', auth()->user()->getEmployee()->department_id)->where('designation_id', '<', 6)->get();
 
@@ -83,7 +86,7 @@ class SpController extends Controller
          $semester =  2; // Semester 2: Juli sampai Desember
       }
 
-      
+
 
 
 
@@ -111,13 +114,22 @@ class SpController extends Controller
       $sp = Sp::find(dekripRambo($id));
       $manager = Employee::find(1);
       $employee = Employee::find($sp->employee_id);
+      if (auth()->user()->hasRole('Administrator|HRD')) {
+         $employees = Employee::get();
+      } elseif (auth()->user()->hasRole('Manager')) {
+         $employees = Employee::where('department_id', auth()->user()->getEmployee()->department_id)->where('designation_id', '<', 6)->get();
+      } elseif (auth()->user()->hasRole('Leader') || auth()->user()->hasRole('Supervisor')) {
+         $employees = Employee::where('department_id', auth()->user()->getEmployee()->department_id)->where('designation_id', '<', 4)->get();
+      } else {
+         $employees = null;
+      }
 
       // dd($sp->created_by->biodata->fullName());
       // dd();
 
       if ($employee->biodata->gender == 'Male') {
          $gen = 'Saudara';
-      } elseif($employee->biodata->gender == 'Female') {
+      } elseif ($employee->biodata->gender == 'Female') {
          $gen = 'Saudari';
       } else {
          $gen = 'Saudara/Saudari';
@@ -128,8 +140,25 @@ class SpController extends Controller
          'spkl' => $spkl,
          'sp' => $sp,
          'manager' => $manager,
-         'gen' => $gen
+         'gen' => $gen,
+         'employees' => $employees
       ]);
+   }
+
+   public function update(Request $req)
+   {
+      $sp = Sp::find($req->id);
+      // dd($sp->code);
+
+      $sp->update([
+         'employee_id' => $req->employee,
+         'level' => $req->level,
+         'date_from' => $req->date_from,
+         'rule' => $req->rule,
+         'desc' => $req->desc
+      ]);
+
+      return redirect()->back()->with('success', 'SP updated.');
    }
 
    public function delete($id)
@@ -157,6 +186,53 @@ class SpController extends Controller
       ]);
 
       return  back()->with('success', 'SP berhasil di submit');
+   }
+
+   public function appHrd(Request $req, $id)
+   {
+      // Validasi input
+      $req->validate([
+         'id' => 'required',
+      ]);
+
+      $sp = Sp::find($req->id);
+      $sp->update([
+         'status' => '2',
+         'approved_at' => NOW()
+      ]);
+
+      $pe = Pe::where('employe_id', $sp->employee_id)
+         ->where('tahun', $sp->tahun)
+         ->where('semester', $sp->semester)
+         ->first();
+
+      if ($pe) {
+         $sp->update([
+            'pe_id' => $pe->id
+         ]);
+
+         // Memanggil fungsi dari controller lain untuk calculate pe 
+         $qpc = new QuickPEController;
+         $qpc->calculatePe($pe->id);
+      }
+
+      return  back()->with('success', 'SP berhasil di Approved');
+   }
+
+   public function appEmployee(Request $req, $id)
+   {
+      // Validasi input
+      $req->validate([
+         'id' => 'required',
+      ]);
+
+      $sp = Sp::find($req->id);
+      $sp->update([
+         'status' => '3',
+         'approved_at' => NOW()
+      ]);
+
+      return  back()->with('success', 'SP successfully confirmed');
    }
 
    public function approved(Request $req, $id)
