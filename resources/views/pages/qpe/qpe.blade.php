@@ -65,7 +65,7 @@ QPE
                                     <td>
                                         @if($pe->status == '0' || $pe->status == '101')
                                         <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->biodata->fullName()}} </a>
-                                        @elseif($pe->status == '1' )
+                                        @elseif($pe->status == '1' || $pe->status == '202' )
                                         <a href="/qpe/approval/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->biodata->fullName()}} </a>
                                         @else
                                         <a href="/qpe/show/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->biodata->fullName()}} </a>
@@ -90,12 +90,12 @@ QPE
                                     @elseif($pe->status == '101')
                                     <td><span class="badge badge-danger badge-lg"><b>Di Reject Manager</b></span></td>
                                     @elseif($pe->status == '202')
-                                    <td><span class="badge badge-danger badge-lg"><b>Di Reject HRD</b></span></td>
+                                    <td><span class="badge badge-warning badge-lg"><b>Need Discuss</b></span></td>
                                     @endif
                                     <td class="text-right">
                                         @if($pe->status == 0)
-                                        <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-delete-{{$pe->id}}"><i class="fas fa-trash"></i> Delete</button>
-                                        @elseif($pe->status == '1' || $pe->status == '2')
+                                        <!-- <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-delete-{{$pe->id}}"><i class="fas fa-trash"></i> Delete</button> -->
+                                        @elseif(($pe->status == '1' || $pe->status == '2' || $pe->status == '101' || $pe->status == '202') && $pe->behavior > 0)
                                         <a href="{{ route('export.qpe', $pe->id) }}" target="_blank"><button class="btn btn-sm btn-success text-dark"> Preview PDF </button></a>
                                         @elseif(($pe->status == 0 || $pe->status == 101 || $pe->status == 202) && auth()->user()->hasRole('Leader'))
                                         <!-- <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-submit-{{$pe->id}}"><i class="fas fa-rocket"></i> Submit</button> -->
@@ -103,7 +103,7 @@ QPE
                                     </td>
                                 </tr>
                                 <x-modal.submit :id="$pe->id" :body="'KPI ' . $pe->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($pe->date))   " url="" />
-                                <x-modal.delete :id="$pe->id" :body="'KPI ' . $pe->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($pe->date))   " url="" />
+                                <x-modal.delete :id="$pe->id" :body="'KPI ' . $pe->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($pe->date))   " url="qpe/delete/{{$pe->id}}" />
                                 @endforeach
                                 <!-- <tr>
                                     <td>

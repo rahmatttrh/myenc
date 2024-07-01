@@ -19,6 +19,7 @@ use App\Models\Sp;
 use App\Models\Unit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Round;
 
 class QuickPEController extends Controller
 {
@@ -54,18 +55,6 @@ class QuickPEController extends Controller
                 ->orderBy('pes.release_at', 'desc')
                 ->get();
 
-            // dd($pes);
-
-
-            // $kpas = DB::table('pe_kpas')
-            //     ->join('pe_kpis', 'pe_kpas.kpi_id', '=', 'pe_kpis.id')
-            //     ->where('pe_kpis.departement_id', $employee->department_id)
-            //     ->select('pe_kpas.*')
-            //     ->orderBy('pe_kpas.status', 'asc')
-            //     ->get();
-            // // Convert the query builder result to Order model instances
-            // $kpas = PeKpa::hydrate($kpas->toArray());
-
             // 
             $outAssesments = $this->outstandingAssessment($employee->department_id);
             // 
@@ -74,20 +63,23 @@ class QuickPEController extends Controller
 
             $pes = Pe::join('employees', 'pes.employe_id', '=', 'employees.id')
                 ->where('employees.direct_leader_id', $employee->id)
-                
+
                 ->select('pes.*')
                 ->orderBy('pes.release_at', 'desc')
                 ->get();
 
-            // $kpas = DB::table('pe_kpas')
-            //     ->join('pe_kpis', 'pe_kpas.kpi_id', '=', 'pe_kpis.id')
-            //     ->where('pe_kpis.departement_id', $employee->department_id)
-            //     ->select('pe_kpas.*')
-            //     ->orderBy('pe_kpas.status', 'asc')
-            //     ->get();
+            // 
+            $outAssesments = $this->outstandingAssessment($employee->department_id);
+            // 
+        } else if (auth()->user()->hasRole('Karyawan')) {
 
-            // Convert the query builder result to Order model instances
-            // $kpas = PeKpa::hydrate($kpas->toArray());
+
+            $pes = Pe::join('employees', 'pes.employe_id', '=', 'employees.id')
+                ->where('employees.id', $employee->id)
+                ->whereIn('pes.status', [2, 101, 202])
+                ->select('pes.*')
+                ->orderBy('pes.release_at', 'desc')
+                ->get();
 
             // 
             $outAssesments = $this->outstandingAssessment($employee->department_id);
@@ -298,6 +290,9 @@ class QuickPEController extends Controller
 
         $kpa = PeKpa::find(dekripRambo($id));
         $datas = PekpaDetail::where('kpa_id', $kpa->id)->where('addtional', '0')->get();
+        $valueAvg = ROUND(PekpaDetail::where('kpa_id', $kpa->id)->where('addtional', '0')->avg('value'), 2);
+
+        // dd(ROUND($valueAvg, 2));
         // Additional 
         $addtional = PekpaDetail::where('kpa_id', $kpa->id)->where('addtional', '1')->first();
 
@@ -376,7 +371,8 @@ class QuickPEController extends Controller
             'pe' => $pe,
             'kpaAchievement' => 0,
             'pbaAchievement' => 0,
-            'datas' => $datas
+            'datas' => $datas,
+            'valueAvg' => $valueAvg
         ])->with('i');
     }
 
@@ -386,6 +382,8 @@ class QuickPEController extends Controller
 
         $kpa = PeKpa::find(dekripRambo($id));
         $datas = PekpaDetail::where('kpa_id', $kpa->id)->where('addtional', '0')->get();
+        $valueAvg = ROUND(PekpaDetail::where('kpa_id', $kpa->id)->where('addtional', '0')->avg('value'), 2);
+
         // Additional 
         $addtional = PekpaDetail::where('kpa_id', $kpa->id)->where('addtional', '1')->first();
 
@@ -397,7 +395,7 @@ class QuickPEController extends Controller
         // Berikut Behavior  Staff
         $behaviors = PeBehavior::where('level', 's')->get();
 
-
+        $user = auth()->user()->getEmployee();
 
         // $pcc = new PeComponentController();
         // $pcs = $pcc->getComponentDesignation($kpa->employe->contract->designation->id); // Memanggil fungsi show dari ProfileController
@@ -455,7 +453,9 @@ class QuickPEController extends Controller
             'pe' => $pe,
             'kpaAchievement' => 0,
             'pbaAchievement' => 0,
-            'datas' => $datas
+            'datas' => $datas,
+            'user' => $user,
+            'valueAvg' => $valueAvg
         ])->with('i');
     }
 
@@ -631,11 +631,29 @@ class QuickPEController extends Controller
 
         try {
 
-            // Update status dan verifikasi pada tabel PE
-            $pe->update([
-                'komentar' => $request->komentar,
-                'pengembangan' => $request->pengembangan,
-            ]);
+            if ($request->evidence) {
+                # code...
+                $pdfFile = $request->evidence;
+
+                $pdfFileName = time() . '_' . $request->id . '.pdf';
+                $pdfFile->storeAs('pe-evidence', $pdfFileName, 'public');
+
+                // Update status dan verifikasi pada tabel PE
+                $result = $pe->update([
+                    'komentar' => $request->komentar,
+                    'pengembangan' => $request->pengembangan,
+                    'evidence' => 'pe-evidence/' . $pdfFileName
+                ]);
+            } else {
+
+                // Update status dan verifikasi pada tabel PE
+                $pe->update([
+                    'komentar' => $request->komentar,
+                    'pengembangan' => $request->pengembangan,
+                ]);
+            }
+
+
 
             // Commit transaksi jika semua operasi berhasil
             DB::commit();
@@ -647,7 +665,113 @@ class QuickPEController extends Controller
             DB::rollBack();
 
             // Redirect dengan pesan error
-            return back()->with('danger', $e .'An error occurred while verifying PE');
+            return back()->with('danger', $e . 'An error occurred while verifying PE');
+        }
+    }
+
+    public function discuss(Request $request, $id)
+
+    {
+        $pe = Pe::find($id);
+        // Validasi input
+        $request->validate([
+            'nd_dibuat' => 'required|string|max:50',
+            'nd_from' => 'required|string|max:50',
+            'nd_date' => 'required|date',
+            'nd_alasan' => 'required',
+        ]);
+
+        // Mulai transaksi
+        DB::beginTransaction();
+
+        try {
+
+            $update = $pe->update([
+                'nd_dibuat' => $request->nd_dibuat,
+                'nd_from' => $request->nd_from,
+                'nd_date' => $request->nd_date,
+                'nd_alasan' => $request->nd_alasan,
+                'status' => '202' //Status need discuss
+            ]);
+
+            // Commit transaksi jika semua operasi berhasil
+            DB::commit();
+
+            // Redirect dengan pesan sukses
+            return back()->with('success', 'Need Discuss berhasil di kirim');
+        } catch (\Exception $e) {
+            // Rollback transaksi jika terjadi kesalahan
+            DB::rollBack();
+
+            // Redirect dengan pesan error
+            return back()->with('danger', $e . 'An error occurred while verifying PE');
+        }
+    }
+
+
+    public function complain(Request $request, $id)
+
+    {
+        $pe = Pe::find($id);
+        // Validasi input
+        $request->validate([
+            'complain_alasan' => 'required',
+        ]);
+
+        // Mulai transaksi
+        DB::beginTransaction();
+
+        try {
+
+            $update = $pe->update([
+                'complained' => '1',
+                'complain_date' => NOW(),
+                'complain_alasan' => $request->complain_alasan
+                // 'status' => '303' //Status need discuss
+            ]);
+
+            // Commit transaksi jika semua operasi berhasil
+            DB::commit();
+
+            // Redirect dengan pesan sukses
+            return back()->with('success', 'Komplain berhasil di kirim');
+        } catch (\Exception $e) {
+            // Rollback transaksi jika terjadi kesalahan
+            DB::rollBack();
+
+            // Redirect dengan pesan error
+            return back()->with('danger', $e . 'An error occurred while verifying PE');
+        }
+    }
+
+
+    public function closeComplain(Request $request, $id)
+
+    {
+        $pe = Pe::find($id);
+        // Validasi input
+
+        // Mulai transaksi
+        DB::beginTransaction();
+
+        try {
+
+            $update = $pe->update([
+                'complained' => '0',
+                // 'status' => '303' //Status need discuss
+            ]);
+
+            // Commit transaksi jika semua operasi berhasil
+            DB::commit();
+
+            // Redirect dengan pesan sukses
+            return back()->with('success', 'Komplain berhasil di tutup');
+        } catch (\Exception $e) {
+            // Rollback transaksi jika terjadi kesalahan
+            DB::rollBack();
+
+            // Redirect dengan pesan error
+            return back()->with('danger', $e . 'An error occurred while verifying PE');
         }
     }
     /**
@@ -660,6 +784,7 @@ class QuickPEController extends Controller
     {
         $kpa = PeKpa::find(dekripRambo($id));
         $datas = PekpaDetail::where('kpa_id', $kpa->id)->where('addtional', '0')->get();
+        $valueAvg = ROUND(PekpaDetail::where('kpa_id', $kpa->id)->where('addtional', '0')->avg('value'), 2);
         // Additional 
         $addtional = PekpaDetail::where('kpa_id', $kpa->id)->where('addtional', '1')->first();
 
@@ -711,7 +836,8 @@ class QuickPEController extends Controller
             'pe' => $pe,
             'kpaAchievement' => 0,
             'pbaAchievement' => 0,
-            'datas' => $datas
+            'datas' => $datas,
+            'valueAvg' => $valueAvg
         ])->with('i');
     }
 
@@ -744,6 +870,9 @@ class QuickPEController extends Controller
     public function destroy($id)
     {
         //
+        $pe = Pe::find($id);
+
+        // dd($pe);
     }
 
     private function outstandingAssessment($departmentId = 'All')
