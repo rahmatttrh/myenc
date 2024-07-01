@@ -20,6 +20,7 @@ PE
     @endif
     <div class="row mr-6">
 
+      @if (auth()->user()->hasRole('Karywawan'))
         <!-- Awal Action Karyawan -->
 
         <!-- Hanya karyawan tersebut yang bisa komplen -->
@@ -144,6 +145,7 @@ PE
         @endif
 
         <!-- Akhir Action Karyawan  -->
+        @endif
 
         @if (auth()->user()->hasRole('Manager') && ($kpa->pe->status == '1' || $kpa->pe->status == '202') )
         <div class="btn-group ml-auto">

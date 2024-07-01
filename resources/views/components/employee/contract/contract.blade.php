@@ -100,12 +100,12 @@
                      
                      <div class="row">
                         <div class="col-6 pr-0">
-                           <h3 class="fw-bold mb-1">{{$employee->manager->biodata->first_name}} {{$employee->manager->biodata->last_name}}</h3>
+                           <h3 class="fw-bold mb-1">{{$employee->manager->biodata->first_name ?? '-'}} {{$employee->manager->biodata->last_name ?? '-'}}</h3>
                            <div class="text-small text-uppercase fw-bold op-8">Manager </div>
                            
                         </div>
                         <div class="col-6 pl-0 text-right">
-                           <h3 class="fw-bold mb-1">{{$employee->direct_leader->biodata->first_name}} {{$employee->direct_leader->biodata->last_name}}</h3>
+                           <h3 class="fw-bold mb-1">{{$employee->direct_leader->biodata->first_name ?? '-'}} {{$employee->direct_leader->biodata->last_name ?? '-'}}</h3>
                            <div class="text-small text-uppercase fw-bold op-8">Direct Leader</div>
                           
                            
