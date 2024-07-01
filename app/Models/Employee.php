@@ -45,6 +45,16 @@ class Employee extends Model
       return $this->hasMany(BankAccount::class);
    }
 
+   public function contactEmergencies()
+   {
+      return $this->hasMany(Emergency::class);
+   }
+
+   public function educationals()
+   {
+      return $this->hasMany(Educational::class);
+   }
+
    public function emergency()
    {
       return $this->belongsTo(Emergency::class);
@@ -120,10 +130,20 @@ class Employee extends Model
       return $this->hasMany(Sp::class);
    }
 
+   public function contracts()
+   {
+      return $this->hasMany(Contract::class);
+   }
+
+   public function mutations()
+   {
+      return $this->hasMany(Mutation::class);
+   }
+
    // public function shift()
    // {
    //    return $this->belongsTo(Shift::class);
    // }
 
-   
+
 }

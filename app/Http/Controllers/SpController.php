@@ -219,6 +219,22 @@ class SpController extends Controller
       return  back()->with('success', 'SP berhasil di Approved');
    }
 
+   public function appEmployee(Request $req, $id)
+   {
+      // Validasi input
+      $req->validate([
+         'id' => 'required',
+      ]);
+
+      $sp = Sp::find($req->id);
+      $sp->update([
+         'status' => '3',
+         'approved_at' => NOW()
+      ]);
+
+      return  back()->with('success', 'SP successfully confirmed');
+   }
+
    public function approved(Request $req, $id)
    {
       // Validasi input

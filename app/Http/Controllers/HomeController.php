@@ -192,6 +192,7 @@ class HomeController extends Controller
 
          $spkls = Spkl::where('employee_id',)->orderBy('updated_at', 'desc')->paginate(3);
          $sps = Sp::where('employee_id', auth()->user()->getEmployeeId())->where('status', 2)->get();
+         $spHistories = Sp::where('employee_id', auth()->user()->getEmployeeId())->where('status', '>', 2)->get();
          // dd(auth()->user()->getEmployeeId());
          return view('pages.dashboard.employee', [
             'now' => $now,
@@ -200,8 +201,9 @@ class HomeController extends Controller
             'presences' => $presences,
             'pending' => $pending,
             'spkls' => $spkls,
-            'sps' => $sps
-         ]);
+            'sps' => $sps,
+            'spHistories' => $spHistories
+         ])->with('i');
       }
    }
 

@@ -4,6 +4,8 @@
          <div class="row row-nav-line">
             <ul class="nav nav-tabs nav-line nav-color-secondary" role="tablist">
                <li class="nav-item"> <a class="nav-link show active" id="pills-contract-tab-nobd" data-toggle="pill" href="#pills-contract-nobd" role="tab" aria-controls="pills-contract-nobd" aria-selected="true">Contract</a> </li>
+               <li class="nav-item"> <a class="nav-link " id="pills-history-tab-nobd" data-toggle="pill" href="#pills-history-nobd" role="tab" aria-controls="pills-history-nobd" aria-selected="true">History</a> </li>
+               <li class="nav-item"> <a class="nav-link " id="pills-mutation-tab-nobd" data-toggle="pill" href="#pills-mutation-nobd" role="tab" aria-controls="pills-mutation-nobd" aria-selected="true">Mutation</a> </li>
                {{--<li class="nav-item"> <a class="nav-link " id="pills-allowances-tab-nobd" data-toggle="pill" href="#pills-allowances-nobd" role="tab" aria-controls="pills-allowances-nobd" aria-selected="false">Allowances</a> </li>
                <li class="nav-item"> <a class="nav-link " id="pills-commissions-tab-nobd" data-toggle="pill" href="#pills-commissions-nobd" role="tab" aria-controls="pills-commissions-nobd" aria-selected="false">Commissions</a> </li>
                <li class="nav-item"> <a class="nav-link " id="pills-deductions-tab-nobd" data-toggle="pill" href="#pills-deductions-nobd" role="tab" aria-controls="pills-deductions-nobd" aria-selected="false">Deductions</a> </li>
@@ -15,6 +17,105 @@
          <div class="tab-content mt-2 mb-3" id="pills-without-border-tabContent">
 
             <div class="tab-pane fade show active" id="pills-contract-nobd" role="tabpanel" aria-labelledby="pills-contract-tab-nobd">
+               <div class="card card-dark bg-secondary-gradient shadow-none">
+                  <div class="card-body bubble-shadow text-white">
+                     <div class="row">
+                        <div class="col-md-8">
+                           {{-- <img src="{{asset('img/visa.svg')}}" height="12.5" alt="Visa Logo"> --}}
+                           <h1 style="font-weight: bolder" class="text-uppercase">
+                              @if ($employee->contract->type == 'PKWT')
+                              {{$employee->contract->type}} 
+                              @elseif($employee->contract->type == 'Tetap')
+                              KARYAWAN TETAP
+                              @else
+                              Status karyawan Belum ditentukan
+                              @endif
+                              
+                              <br> 
+                              @if ($employee->contract->type == 'PKWT')
+                                 {{formatDate($employee->contract->start)}} - {{formatDate($employee->contract->end)}} 
+                              @endif
+                           </h1>
+                        </div>
+                        <div class="col text-right">
+                           <div class=" ml-auto">
+                              <a href="#" type="button" class="text-white dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-ellipsis-h"></i>
+                              </a>
+                              <div class="dropdown-menu">
+                                 @if ($employee->contract->type == 'PKWT')
+                                 <a  class="dropdown-item" style="text-decoration: none" href="" data-toggle="modal" data-target="#modal-add-contract">Create New</a>
+                                 
+                                 @endif
+                                 <a  class="dropdown-item" style="text-decoration: none" href="" data-toggle="modal" data-target="#modal-create-mutation">Add Mutation</a>
+                                 <hr>
+                                 <a  class="dropdown-item" style="text-decoration: none" href="" data-toggle="modal" data-target="#modal-edit-contract">Edit</a>
+                                 
+                                 @if ($employee->contract->type == 'PKWT')
+                                 <a  class="dropdown-item" style="text-decoration: none" href="" data-toggle="modal" data-target="#modal-delete-bank-{{$employee->id}}">Delete</a>
+                                 @endif
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     
+                     {{-- <h2 class="py-3 mb-0">{{$acc->account_no}}</h2> --}}
+                     <div class="row">
+                        <div class="col-8 pr-0">
+                           {{-- <h3 class="fw-bold mb-1">{{$employee->id}}</h3> --}}
+                           <div class="text-small text-uppercase fw-bold op-8">{{$employee->contract->id_no}} </div>
+                           <div class="text-small text-uppercase fw-bold op-8">{{$employee->designation->name}} - {{$employee->position->name}} </div>
+                           {{-- <div class="text-small text-uppercase fw-bold op-8"> </div> --}}
+                           <div class="text-small text-uppercase fw-bold op-8">Department {{$employee->department->name}}</div>
+                           <div class="text-small text-uppercase fw-bold op-8">{{$employee->contract->unit->name}}</div>
+                           <div class="text-small text-uppercase fw-bold op-8">Lokasi Kerja {{$employee->contract->loc ?? '-'}}</div>
+                        </div>
+                        <div class="col-4 pl-0 text-right">
+                           {{-- <h3 class="fw-bold mb-1"> 2023 - 2024</h3> --}}
+                           <div class="text-small text-uppercase fw-bold op-8">{{$employee->contract->shift->name}} {{formatTime($employee->contract->shift->in)}} - {{formatTime($employee->contract->shift->out)}}</div>
+                           <div class="text-small text-uppercase fw-bold op-8">Salary {{formatRupiah($employee->contract->salary)}} </div>
+                           
+                        </div>
+                     </div>
+                     <hr class="bg-white">
+                     <div class="text-small text-uppercase fw-bold op-8"> {{$employee->contract->desc ?? 'Jobdesk Empty'}} </div>
+                     <hr class="bg-white">
+                     @if ($employee->contract->type == 'Tetap')
+                     
+                     <div class="row">
+                        <div class="col-6 pr-0">
+                           <h3 class="fw-bold mb-1">{{formatDate($employee->contract->start)}}</h3>
+                           <div class="text-small text-uppercase fw-bold op-8">Join </div>
+                           
+                        </div>
+                        <div class="col-6 pl-0 text-right">
+                           <h3 class="fw-bold mb-1">{{formatDate($employee->contract->determination)}}</h3>
+                           <div class="text-small text-uppercase fw-bold op-8">Penetapan</div>
+                          
+                           
+                        </div>
+                     </div>
+                     <hr class="bg-white">
+                     @endif
+                     
+                     <div class="row">
+                        <div class="col-6 pr-0">
+                           <h3 class="fw-bold mb-1">{{$employee->manager->biodata->first_name}} {{$employee->manager->biodata->last_name}}</h3>
+                           <div class="text-small text-uppercase fw-bold op-8">Manager </div>
+                           
+                        </div>
+                        <div class="col-6 pl-0 text-right">
+                           <h3 class="fw-bold mb-1">{{$employee->direct_leader->biodata->first_name}} {{$employee->direct_leader->biodata->last_name}}</h3>
+                           <div class="text-small text-uppercase fw-bold op-8">Direct Leader</div>
+                          
+                           
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               {{-- <x-employee.personal.modal.edit-bank :acc="$acc" :banks="$banks" />
+               <x-employee.personal.modal.delete-bank :acc="$acc"/> --}}
+               {{-- <hr>
                <form action="{{route('contract.update')}}" method="POST">
                   @csrf
                   @method('PUT')
@@ -23,33 +124,35 @@
                   <div class="row">
                      <div class="col-md-4">
                         <div class="form-group form-group-default">
-                           <label>Manager</label>
-                           <select class="form-control" id="manager" name="manager" <?= auth()->user()->hasRole('Administrator|HRD') ? '' : 'readonly' ?>>
-                              @foreach ($managers as $man)
-                              <option {{$employee->manager_id == $man->id ? 'selected' : ''}} value="{{$man->id}}">{{$man->biodata->first_name}} {{$man->biodata->last_name}}</option>
-                              @endforeach
+                           <label>Type</label>
+                           <select class="form-control type"  id="type" name="type" <?= auth()->user()->hasRole('Administrator|HRD') ? '' : 'readonly' ?>>
+                              <option value="PKWT">PKWT</option>
+                              <option value="Tetap">Tetap</option>
                            </select>
-                           @error('manager')
+                           @error('type')
                            <small class="text-danger"><i>{{ $message }}</i></small>
                            @enderror
                         </div>
                      </div>
-                     <div class="col-md-8">
+                     <div class="col-md-4">
                         <div class="form-group form-group-default">
-                           <label>Direct Leader</label>
-                           <select class="form-control" id="leader" name="leader" <?= auth()->user()->hasRole('Administrator|HRD') ? '' : 'readonly' ?>>
-                              @foreach ($spvs as $spv)
-                              <option {{$employee->direct_leader_id == $spv->id ? 'selected' : ''}} value="{{$spv->id}}">  {{$spv->designation->name}} | {{$spv->biodata->first_name}} {{$spv->biodata->last_name}}</option>
-                              @endforeach
-                              @foreach ($leaders as $lead)
-                              <option {{$employee->direct_leader_id == $lead->id ? 'selected' : ''}} value="{{$lead->id}}">  {{$lead->designation->name}} | {{$lead->biodata->first_name}} {{$lead->biodata->last_name}}</option>
-                              @endforeach
-                           </select>
-                           @error('leader')
-                           <small class="text-danger"><i>{{ $message }}</i></small>
-                           @enderror
+                           <label>Start</label>
+                           <input type="date" class="form-control" <?= auth()->user()->hasRole('Administrator|HRD') ? '' : 'readonly' ?> name="start" id="start" value="{{$employee->contract->start}}">
                         </div>
                      </div>
+                     <div class="col-md-4 end">
+                        <div class="form-group form-group-default">
+                           <label>End</label>
+                           <input type="date" class="form-control" <?= auth()->user()->hasRole('Administrator|HRD') ? '' : 'readonly' ?> name="end" id="end" value="{{$employee->contract->end}}" >
+                        </div>
+                     </div>
+                     <div class="col-md-4 determination">
+                        <div class="form-group form-group-default">
+                           <label>Penetapan</label>
+                           <input type="date" class="form-control" <?= auth()->user()->hasRole('Administrator|HRD') ? '' : 'readonly' ?> name="penetapan" id="penetapan" value="{{$employee->contract->deterination}}" >
+                        </div>
+                     </div>
+                     
                   </div>
                   <div class="row">
 
@@ -103,7 +206,6 @@
                            <label>Jabatan</label>
                            <select class="form-control" id="position" name="position" <?= auth()->user()->hasRole('Administrator|HRD') ? '' : 'readonly' ?>>
                               @foreach ($positions as $position)
-                              {{--<option {{$employee->contract->designation_id == $designation->id ? 'selected' : ''}} value="{{$designation->id}}">{{$designation->name}}</option>--}}
                               <option {{$employee->position_id == $position->id ? 'selected' : ''}} value="{{$position->id}}">{{$position->name}} </option>
                               @endforeach
                            </select>
@@ -122,22 +224,18 @@
                      
                   </div>
                   <div class="row">
-                     <div class="col-md-4">
-                        <div class="form-group form-group-default">
-                           <label>Start</label>
-                           <input type="date" class="form-control" <?= auth()->user()->hasRole('Administrator|HRD') ? '' : 'readonly' ?> name="start" id="start" value="{{$employee->contract->start}}">
-                        </div>
-                     </div>
-                     <div class="col-md-4">
-                        <div class="form-group form-group-default">
-                           <label>End</label>
-                           <input type="date" class="form-control" <?= auth()->user()->hasRole('Administrator|HRD') ? '' : 'readonly' ?> name="end" id="end" value="{{$employee->contract->end}}" >
-                        </div>
-                     </div>
+                     
                      <div class="col-md-4">
                         <div class="form-group form-group-default">
                            <label>Cuti Tahunan</label>
                            <input type="text" class="form-control" <?= auth()->user()->hasRole('Administrator|HRD') ? '' : 'readonly' ?> name="cuti" id="cuti" value="{{$employee->contract->cuti}}" >
+                        </div>
+                     </div>
+                     <div class="col-md-8">
+                        <div class="form-group form-group-default">
+                           <label>Role Description</label>
+                           <input type="text" class="form-control" name="desc" id="desc" value="{{$employee->contract->desc}}" >
+
                         </div>
                      </div>
                   </div>
@@ -145,9 +243,38 @@
                   
 
          
-                  <div class="form-group form-group-default">
-                     <label>Role Description</label>
-                     <textarea type="text" class="form-control" id="desc" <?= auth()->user()->hasRole('Administrator|HRD') ? '' : 'readonly' ?>   name="desc">{{$employee->contract->desc}}</textarea>
+                  
+                  <hr>
+                  <div class="row">
+                     <div class="col-md-4">
+                        <div class="form-group form-group-default">
+                           <label>Manager</label>
+                           <select class="form-control" id="manager" name="manager" <?= auth()->user()->hasRole('Administrator|HRD') ? '' : 'readonly' ?>>
+                              @foreach ($managers as $man)
+                              <option {{$employee->manager_id == $man->id ? 'selected' : ''}} value="{{$man->id}}">{{$man->biodata->first_name}} {{$man->biodata->last_name}}</option>
+                              @endforeach
+                           </select>
+                           @error('manager')
+                           <small class="text-danger"><i>{{ $message }}</i></small>
+                           @enderror
+                        </div>
+                     </div>
+                     <div class="col-md-8">
+                        <div class="form-group form-group-default">
+                           <label>Direct Leader</label>
+                           <select class="form-control" id="leader" name="leader" <?= auth()->user()->hasRole('Administrator|HRD') ? '' : 'readonly' ?>>
+                              @foreach ($spvs as $spv)
+                              <option {{$employee->direct_leader_id == $spv->id ? 'selected' : ''}} value="{{$spv->id}}">  {{$spv->designation->name}} | {{$spv->biodata->first_name}} {{$spv->biodata->last_name}}</option>
+                              @endforeach
+                              @foreach ($leaders as $lead)
+                              <option {{$employee->direct_leader_id == $lead->id ? 'selected' : ''}} value="{{$lead->id}}">  {{$lead->designation->name}} | {{$lead->biodata->first_name}} {{$lead->biodata->last_name}}</option>
+                              @endforeach
+                           </select>
+                           @error('leader')
+                           <small class="text-danger"><i>{{ $message }}</i></small>
+                           @enderror
+                        </div>
+                     </div>
                   </div>
 
 
@@ -157,7 +284,97 @@
                   @endif  
                   </div>
                </form>
+               <hr> --}}
                <hr>
+            </div>
+
+            <div class="tab-pane fade s" id="pills-history-nobd" role="tabpanel" aria-labelledby="pills-history-tab-nobd">
+               {{-- <h3>Histories</h3> --}}
+               @foreach ($employee->contracts as $contract)
+                  @if ($contract->status == 0)
+                  <div class="card  shadow-none border">
+                     <div class="card-body ">
+                        <div class="row">
+   
+                           <div class="col-md-8">
+                              {{-- <img src="{{asset('img/visa.svg')}}" height="12.5" alt="Visa Logo"> --}}
+                              <span>{{$contract->type}} <br> 
+                                 @if ($contract->type == 'PKWT')
+                                    {{formatDate($contract->start)}} - {{formatDate($contract->end)}} 
+                                 @endif
+                              </span>
+                           </div>
+                           <div class="col text-right">
+                              <div class=" ml-auto">
+                                 <a href="#" type="button" class=" dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                       <i class="fa fa-ellipsis-h"></i>
+                                 </a>
+                                 <div class="dropdown-menu">
+                                    
+                                    <a  class="dropdown-item" style="text-decoration: none" href="" data-toggle="modal" data-target="#modal-detail-contract-{{$contract->id}}">Detail</a>
+                                    {{-- <a  class="dropdown-item" style="text-decoration: none" href="" data-toggle="modal" data-target="#modal-delete-bank-{{$id}}">Delete</a> --}}
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        
+                        {{-- <h2 class="py-3 mb-0">{{$acc->account_no}}</h2> --}}
+                        
+                     </div>
+                  </div>
+                  <x-employee.contract.modal.detail-contract :contract="$contract"/>
+                  @else
+                  @endif
+               @endforeach
+               
+               
+            </div>
+
+            <div class="tab-pane fade s" id="pills-mutation-nobd" role="tabpanel" aria-labelledby="pills-mutation-tab-nobd">
+               {{-- <h3>Histories</h3> --}}
+               @foreach ($employee->mutations as $mutation)
+               <div class="card  shadow-none border">
+                  
+                  <div class="card-body ">
+                     {{formatDate($mutation->date)}}
+                     <hr>
+                     <div class="row">
+
+                        <div class="col-md-8">
+                           {{-- <img src="{{asset('img/visa.svg')}}" height="12.5" alt="Visa Logo"> --}}
+                           <span>
+                              {{-- {{$mutation->before->designation->name}}  --}}
+                              {{$mutation->before->position->name}} <br> 
+                              Department {{$mutation->before->department->name}} <br>
+                              {{$mutation->before->unit->name}} <br>
+                              {{$mutation->before->loc}} <br>
+                              
+
+                           </span>
+                        </div>
+                        <div class="col text-right">
+                           <span>
+                              {{-- {{$mutation->before->designation->name}}  --}}
+                              {{$mutation->become->position->name}} <br> 
+                              Department {{$mutation->become->department->name}} <br>
+                              {{$mutation->become->unit->name}} <br>
+                              {{$mutation->become->loc}} <br>
+                              
+
+                           </span>
+                        </div>
+                     </div>
+                     <hr>
+                     <a href="#" data-toggle="modal" data-target="#modal-detail-mutation-{{$mutation->id}}">Detail</a>
+                     
+                     {{-- <h2 class="py-3 mb-0">{{$acc->account_no}}</h2> --}}
+                     
+                  </div>
+               </div>
+               <x-employee.contract.modal.detail-mutation :mutation="$mutation"/>
+               @endforeach
+               
+               
             </div>
 
             <div class="tab-pane fade " id="pills-allowances-nobd" role="tabpanel" aria-labelledby="pills-allowances-tab-nobd">
@@ -467,3 +684,63 @@
       </div>
    </div>
 </div>
+
+<x-employee.contract.modal.edit-contract :employee="$employee" :shifts="$shifts" :designations="$designations" :departments="$departments" :positions="$positions" :managers="$managers" :spvs="$spvs"  :leaders="$leaders" :subdepts="$subdepts" :units="$units" :allpositions="$allpositions" />
+<x-employee.contract.modal.add-contract :employee="$employee" :shifts="$shifts" :designations="$designations" :departments="$departments" :positions="$positions" :managers="$managers" :spvs="$spvs"  :leaders="$leaders" :subdepts="$subdepts" :units="$units" :allpositions="$allpositions" />
+
+<x-employee.contract.modal.create-mutation :employee="$employee" :shifts="$shifts" :designations="$designations" :departments="$departments" :positions="$positions" :managers="$managers" :spvs="$spvs"  :leaders="$leaders" :allmanagers="$allmanagers" :allspvs="$allspvs"  :allleaders="$allleaders" :subdepts="$subdepts" :units="$units" :allpositions="$allpositions" />
+
+
+@push('js_footer')
+    
+
+<script>
+   $(document).ready(function() {
+      $('.determination').hide()
+      var type = $('#type').val();
+      if (type == 'PKWT') {
+         $('.determination').hide()
+         $('.end').show()
+      } else {
+         $('.determination').show()
+         $('.end').hide()
+      }
+
+      $('.type').change(function() {
+         
+         var type = $('#type').val();
+         console.log(type);
+         if (type == 'PKWT') {
+            $('.determination').hide()
+            $('.end').show()
+         } else {
+            $('.determination').show()
+            $('.end').hide()
+         }
+      })
+
+      $('.determination_add').hide()
+      var type = $('#type_add').val();
+      if (type == 'PKWT') {
+         $('.determination_add').hide()
+         $('.end_add').show()
+      } else {
+         $('.determination_add').show()
+         $('.end_add').hide()
+      }
+
+      $('.type_add').change(function() {
+         
+         var type = $('#type_add').val();
+         console.log(type);
+         if (type == 'PKWT') {
+            $('.determination_add').hide()
+            $('.end_add').show()
+         } else {
+            $('.determination_add').show()
+            $('.end_add').hide()
+         }
+      })
+   })
+</script>
+@endpush

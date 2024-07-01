@@ -3,8 +3,10 @@
       <div class="card-header">
          <div class="row row-nav-line">
             <ul class="nav nav-tabs nav-line nav-color-secondary" role="tablist">
-               <li class="nav-item"> <a class="nav-link show active" id="pills-basic-tab-nobd" data-toggle="pill" href="#pills-basic-nobd" role="tab" aria-controls="pills-basic-nobd" aria-selected="true">Basic Information</a> </li>
+               <li class="nav-item"> <a class="nav-link show active" id="pills-basic-tab-nobd" data-toggle="pill" href="#pills-basic-nobd" role="tab" aria-controls="pills-basic-nobd" aria-selected="true">Biodata</a> </li>
+               <li class="nav-item"> <a class="nav-link " id="pills-doc-tab-nobd" data-toggle="pill" href="#pills-doc-nobd" role="tab" aria-controls="pills-doc-nobd" aria-selected="true">Document</a> </li>
                <li class="nav-item"> <a class="nav-link" id="pills-profile-tab-nobd" data-toggle="pill" href="#pills-profile-nobd" role="tab" aria-controls="pills-profile-nobd" aria-selected="false">Profile Picture</a> </li>
+               <li class="nav-item"> <a class="nav-link  " id="pills-bio-tab-nobd" data-toggle="pill" href="#pills-bio-nobd" role="tab" aria-controls="pills-bio-nobd" aria-selected="true">Notes</a> </li>
                {{-- <li class="nav-item"> <a class="nav-link" id="pills-contact-tab-nobd" data-toggle="pill" href="#pills-contact-nobd" role="tab" aria-controls="pills-contact-nobd" aria-selected="false">Social Networking</a> </li> --}}
             </ul>
          </div>
@@ -60,7 +62,7 @@
                      </div>
                   </div>
                   <div class="row">
-                     @if ($employee->status == 0)
+                     {{-- @if ($employee->status == 0)
                      <div class="col-md-6">
                         <div class="form-group form-group-default">
                            <label>Status</label>
@@ -68,7 +70,6 @@
                               <option {{$employee->biodata->status == '1' ? 'selected' : ''}} value="1">Active</option>
                               <option {{$employee->biodata->status == '0' ? 'selected' : ''}} value="0">Off</option>
                            </select>
-                           {{-- <small class="text-muted mt-2">* Please publish this account</small> --}}
                         </div>
                      </div>
                      @else
@@ -81,8 +82,8 @@
                            </select>
                         </div>
                      </div>
-                     @endif
-                     <div class="col-md-6">
+                     @endif --}}
+                     <div class="col-md-4">
                         <div class="form-group form-group-default">
                            <label>Religion</label>
                            <select class="form-control" id="religion" name="religion">
@@ -94,7 +95,7 @@
                            </select>
                         </div>
                      </div>
-                     <div class="col-md-6">
+                     <div class="col-md-4">
                         <div class="form-group form-group-default">
                            <label>Gender</label>
                            <select class="form-control" id="gender" name="gender">
@@ -104,7 +105,7 @@
                            </select>
                         </div>
                      </div>
-                     <div class="col-md-6">
+                     <div class="col-md-4">
                         <div class="form-group form-group-default">
                            <label>Status Perkawinan</label>
                            <select class="form-control" id="marital" name="marital">
@@ -191,6 +192,21 @@
                   </div>
                   <hr>
 
+                  
+
+                  <div class="text-right mt-3 mb-3">
+                     <button type="submit" class="btn btn-dark" {{$employee->status == 0 ? 'disabled' : ''}}>Update</button>
+                  </div>
+               </form>
+            </div>
+
+            <div class="tab-pane fade" id="pills-doc-nobd" role="tabpanel" aria-labelledby="pills-doc-tab-nobd">
+               <form action="{{route('employee.update.doc')}}" method="POST">
+                  @csrf
+                  @method('PUT')
+                  <input type="number" name="employee" id="employee" value="{{$employee->id}}" hidden>
+                  
+
                   <div class="row">
                      <div class="col-md-6">
                         <div class="form-group form-group-default">
@@ -204,6 +220,34 @@
                            <input type="text" class="form-control" value="{{$employee->biodata->no_kk}}" name="no_kk" id="no_kk">
                         </div>
                      </div>
+                     <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                           <label>No. NPWP</label>
+                           <input type="text" class="form-control" value="{{$employee->biodata->no_kk}}" name="no_kk" id="no_kk">
+                        </div>
+                     </div>
+                     <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                           <label>Status Pajak</label>
+                           <input type="text" class="form-control" value="{{$employee->biodata->no_kk}}" name="no_kk" id="no_kk">
+                        </div>
+                     </div>
+                     
+                  </div>
+
+                  <div class="row">
+                     <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                           <label>No. JAMSOSTEK</label>
+                           <input type="text" class="form-control" value="{{$employee->biodata->no_kk}}" name="no_kk" id="no_kk">
+                        </div>
+                     </div>
+                     <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                           <label>No. BPJS Kesehatan</label>
+                           <input type="text" class="form-control" value="{{$employee->biodata->no_kk}}" name="no_kk" id="no_kk">
+                        </div>
+                     </div>
                   </div>
 
                   <div class="text-right mt-3 mb-3">
@@ -211,13 +255,14 @@
                   </div>
                </form>
             </div>
+
             <div class="tab-pane fade " id="pills-profile-nobd" role="tabpanel" aria-labelledby="pills-profile-tab-nobd">
                <form action="{{route('employee.update.picture')}}" method="POST" enctype="multipart/form-data">
                   @csrf
                   @method('PUT')
                   <input type="number" name="employee" id="employee" value="{{$employee->id}}" hidden>
                   <div class="row">
-                     <div class="col-md-3">
+                     <div class="col-md-6">
                         @if ($employee->picture)
                         <img src="{{asset('storage/' .$employee->picture)}}" alt="..." class="img-thumbnail">
                         @else
@@ -226,7 +271,7 @@
 
 
                      </div>
-                     <div class="col-md-9">
+                     <div class="col-md-6">
                         <div class="form-group form-group-default">
                            <label>Select</label>
                            <input type="file" class="form-control" name="picture" id="picture">
@@ -235,6 +280,35 @@
                   </div>
                   <hr>
                   <button class="btn btn-dark" {{$employee->status == 0 ? 'disabled' : ''}}>Update</button>
+               </form>
+            </div>
+            <div class="tab-pane fade" id="pills-bio-nobd" role="tabpanel" aria-labelledby="pills-bio-tab-nobd">
+               <form action="{{route('employee.update.bio')}}" method="POST">
+                  @csrf
+                  @method('PUT')
+                  <input type="number" name="employee" id="employee" value="{{$employee->id}}" hidden>
+                  <div class="form-group form-group-default">  
+                     <label>Bio *</label>
+                     <textarea type="text" class="form-control" id="bio" name="bio">{{$employee->bio}}</textarea>
+                     @error('bio')
+                        <small class="text-danger"><i>{{ $message }}</i></small>
+                     @enderror
+                  </div>
+                  <div class="form-group form-group-default">  
+                     <label>Experience</label>
+                     <select class="form-control" id="experience" name="experience">
+                        <option value="" disabled selected>Choose one</option>
+                        <option  {{$employee->experience == 'Startup' ? 'selected' : ''}} value="Startup">Startup</option>
+                        <option {{$employee->experience == 'Intermediate' ? 'selected' : ''}} value="Intermediate">Intermediate</option>
+                        <option {{$employee->experience == 'Expert' ? 'selected' : ''}} value="Expert">Expert</option>
+                     </select>
+                     @error('experience')
+                        <small class="text-danger"><i>{{ $message }}</i></small>
+                     @enderror
+                  </div>
+                  <div class="text-right mt-3 mb-3">
+                     <button type="submit" class="btn btn-dark" {{$employee->status == 0 ? 'disabled' : ''}}>Update Bio</button>
+                  </div>
                </form>
             </div>
 

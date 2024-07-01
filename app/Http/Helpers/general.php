@@ -81,6 +81,8 @@ function formatDateTime($data)
 
 
 
+
+
 function formatDateB($data)
 {
    $date = \Carbon\Carbon::parse($data)->format('d F Y');

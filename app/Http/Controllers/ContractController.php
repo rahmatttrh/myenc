@@ -10,6 +10,48 @@ use Illuminate\Support\Facades\DB;
 
 class ContractController extends Controller
 {
+
+   public function store(Request $req)
+   {
+      $req->validate([]);
+      $employee = Employee::find($req->employee);
+      $currentContract = Contract::find($employee->contract_id);
+      $currentContract->update([
+         'status' => 0
+      ]);
+      $contract = Contract::create([
+         'status' => 1,
+         'employee_id' => $req->employee,
+         'id_no' => $req->id,
+         'type' => $req->type_add,
+         'unit_id' => $req->unit,
+         'department_id' => $req->department,
+         'designation_id' => $req->designation,
+         'salary' => $req->salary,
+         'hourly_rate' => $req->hourly_rate,
+         'payslip' => $req->payslip,
+         'shift_id' => $req->shift,
+         'start' => $req->start,
+         'end' => $req->end,
+         'determination' => $req->determination,
+         'desc' => $req->desc,
+         'cuti' => $req->cuti,
+         'position_id' => $req->position,
+         'loc' => $req->loc
+      ]);
+
+      $employee->update([
+         // 'unit_id' => $contract->unit_id,
+         'contract_id' => $contract->id,
+         'department_id' => $contract->department_id,
+         'designation_id' => $contract->designation_id,
+         'position_id' => $contract->position_id,
+         'manager_id' => $contract->manager_id,
+         'direct_leader_id' => $contract->direct_leader_id,
+      ]);
+
+      return redirect()->route('employee.detail', [enkripRambo($req->employee), enkripRambo('contract')])->with('success', 'Contract successfully added');
+   }
    public function update(Request $req)
    {
       // dd('ok');
@@ -23,6 +65,7 @@ class ContractController extends Controller
 
       // dd($req->designation);
       $employee->update([
+         // 'unit_id' => $req->unit,
          'manager_id' => $req->manager,
          'direct_leader_id' => $req->leader,
          'department_id' => $req->department,
@@ -32,7 +75,9 @@ class ContractController extends Controller
 
       $contract->update([
          'id_no' => $req->id,
+         'type' => $req->type,
          'date' => $req->date,
+         'unit_id' => $req->unit,
          'department_id' => $req->department,
          'designation_id' => $req->designation,
          'salary' => $req->salary,
@@ -41,18 +86,21 @@ class ContractController extends Controller
          'shift_id' => $req->shift,
          'start' => $req->start,
          'end' => $req->end,
+         'determination' => $req->determination,
          'desc' => $req->desc,
-         'cuti' => $req->cuti
+         'cuti' => $req->cuti,
+         'position_id' => $req->position,
+         'loc' => $req->loc
       ]);
       // });
 
       $user = User::where('username', $employee->nik)->first();
       $user->roles()->detach();
-      if($req->designation == 3) {
+      if ($req->designation == 3) {
          $user->assignRole('Leader');
-      } elseif($req->designation == 4) {
+      } elseif ($req->designation == 4) {
          $user->assignRole('Supervisor');
-      } elseif($req->designation == 6) {
+      } elseif ($req->designation == 6) {
          $user->assignRole('Manager');
       } else {
          $user->assignRole('Karyawan');
