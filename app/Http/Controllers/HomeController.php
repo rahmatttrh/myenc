@@ -31,6 +31,12 @@ class HomeController extends Controller
     */
    public function index()
    {
+      $contracts = Contract::get();
+      foreach($contracts as $con){
+         $con->update([
+            'shift_id' => 1
+         ]);
+      }
 
       // if (auth()->user()->assignRole('Karyawan')) {
       //    dd('karyawan');
