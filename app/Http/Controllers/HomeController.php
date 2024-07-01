@@ -45,7 +45,8 @@ class HomeController extends Controller
       //    $employee = Employee::where('nik', $user->username)->first();
       //    if ($employee->designation_id == 1 || $employee->designation_id == 2) {
       //       $user->assignRole('Karyawan');
-      //    } else if ($employee->designation_id == 3){
+      //    } 
+      //    else if ($employee->designation_id == 3){
       //       $user->assignRole('Leader');
       //    } else if ($employee->designation_id == 4){
       //       $user->assignRole('Supervisor');
@@ -57,8 +58,8 @@ class HomeController extends Controller
       //       $user->assignRole('BOD');
       //    }
 
-      //    // JIKA EMPLOYEE DARI DIVISI HRD
-      //    // ASSIGN 2 ROLE  (ADMINISTRATOR DAN HRD)
+      //    JIKA EMPLOYEE DARI DIVISI HRD
+      //    ASSIGN 2 ROLE  (ADMINISTRATOR DAN HRD)
       //    if ($employee->department_id == 8) {
       //       $employee->update([
       //          'department_id' => 1
