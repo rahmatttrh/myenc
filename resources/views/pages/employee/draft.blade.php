@@ -32,6 +32,19 @@
                <a href="#">Draft</a>
             </li> --}}
          </ul>
+         <div class="ml-auto">
+            <button class="btn btn-light border btn-round " data-toggle="dropdown">
+               <i class="fa fa-ellipsis-h"></i>
+            </button>
+            <div class="dropdown-menu">
+   
+   
+               <a class="dropdown-item" style="text-decoration: none" href="{{route('employee.create')}}">Create</a>
+               {{-- <a class="dropdown-item" style="text-decoration: none"  data-toggle="modal" data-target="#modal-export">Export</a> --}}
+               <div class="dropdown-divider"></div>
+               {{-- <a class="dropdown-item" style="text-decoration: none" href="" target="_blank">Print Preview</a> --}}
+            </div>
+         </div>
       </div>
       
       <form action="{{route('employee.publish')}}" method="post" >
@@ -83,7 +96,7 @@
                                     {{-- <td><a href="{{route('employee.detail', enkripRambo($employee->id))}}">{{$employee->name}}</a> </td> --}}
                                     <td >
                                        <div class="text-nowrap">
-                                          <a href="{{route('employee.detail', enkripRambo($employee->id))}}">{{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</a><br>
+                                          <a href="{{route('employee.detail', [enkripRambo($employee->id), enkripRambo('contract')])}}">{{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</a><br>
                                           {{-- <small class="text-muted">{{$employee->biodata->email}}</small> --}}
                                        </div>
                                              

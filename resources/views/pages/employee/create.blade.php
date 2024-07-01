@@ -53,7 +53,7 @@
                         <div class="col-md-6">
                            <div class="form-group form-group-default">
                               <label>First Name *</label>
-                              <input id="first_name" name="first_name" type="text" value="{{old('first_name')}}" class="form-control" placeholder="Fill First Name">
+                              <input id="first_name" name="first_name" required type="text" value="{{old('first_name')}}" class="form-control" placeholder="Fill First Name">
                               @error('first_name')
                                  <small class="text-danger"><i>{{ $message }}</i></small>
                               @enderror
@@ -62,15 +62,28 @@
                         <div class="col-md-6">
                            <div class="form-group form-group-default">
                               <label>Last Name *</label>
-                              <input id="last_name" name="last_name" type="text" value="{{old('last_name')}}" class="form-control" placeholder="Fill Last Name">
+                              <input id="last_name" name="last_name" required type="text" value="{{old('last_name')}}" class="form-control" placeholder="Fill Last Name">
                               @error('last_name')
                                  <small class="text-danger"><i>{{ $message }}</i></small>
                               @enderror
                            </div>
                         </div>
                      </div>
-                     {{-- <div class="row">
-                        <div class="col-md-4">
+                     <div class="row">
+                        <div class="col-md-3">
+                           <div class="form-group form-group-default">
+                              <label>Gender</label>
+                              <select class="form-control" id="gender" name="gender">
+                                 <option value="" disabled selected>Choose one</option>
+                                 <option {{old('gender') == 'Male' ? 'selected' : ''}} value="Male">Male</option>
+                                 <option {{old('gender') == 'Female' ? 'selected' : ''}} value="Female">Female</option>
+                              </select>
+                              @error('gender')
+                                 <small class="text-danger"><i>{{ $message }}</i></small>
+                              @enderror
+                           </div>
+                        </div>
+                        <div class="col-md-3">
                            <div class="form-group form-group-default">
                               <label>Birth Date</label>
                               <input id="birth_date" name="birth_date" value="{{old('birth_date')}}" type="date" class="form-control">
@@ -79,7 +92,7 @@
                               @enderror
                            </div>
                         </div>
-                        <div class="col-md-8">
+                        <div class="col-md-6">
                            <div class="form-group form-group-default">
                               <label>Birth Place</label>
                               <input id="birth_place" name="birth_place" value="{{old('birth_place')}}" type="text" class="form-control" placeholder="Fill City">
@@ -88,7 +101,7 @@
                               @enderror
                            </div>
                         </div>
-                     </div> --}}
+                     </div>
                      <div class="row">
                         {{-- <div class="col-md-4">
                            <div class="form-group form-group-default">
@@ -104,20 +117,8 @@
                               @enderror
                            </div>
                         </div> --}}
-                        <div class="col-md-3">
-                           <div class="form-group form-group-default">
-                              <label>Gender</label>
-                              <select class="form-control" id="gender" name="gender">
-                                 <option value="" disabled selected>Choose one</option>
-                                 <option {{old('gender') == 'Male' ? 'selected' : ''}} value="Male">Male</option>
-                                 <option {{old('gender') == 'Female' ? 'selected' : ''}} value="Female">Female</option>
-                              </select>
-                              @error('gender')
-                                 <small class="text-danger"><i>{{ $message }}</i></small>
-                              @enderror
-                           </div>
-                        </div>
-                        <div class="col-md-4">
+                        
+                        {{-- <div class="col-md-4">
                            <div class="form-group form-group-default">
                               <label>Employee ID</label>
                               <input id="id" name="id" type="text" class="form-control" value="{{old('id')}}" placeholder="Fill ID Number">
@@ -125,12 +126,21 @@
                                  <small class="text-danger"><i>{{ $message }}</i></small>
                               @enderror
                            </div>
-                        </div>
-                        <div class="col-md-5">
+                        </div> --}}
+                        <div class="col-md-6">
                            <div class="form-group form-group-default">
                               <label>Phone Number</label>
                               <input id="phone" name="phone" type="text" value="{{old('phone')}}" class="form-control" placeholder="Fill Phone Number">
                               @error('phone')
+                                 <small class="text-danger"><i>{{ $message }}</i></small>
+                              @enderror
+                           </div>
+                        </div>
+                        <div class="col-md-6">
+                           <div class="form-group form-group-default">
+                              <label>Email</label>
+                              <input id="email" name="email" required type="email" value="{{old('email')}}" class="form-control" placeholder="Fill Email">
+                              @error('email')
                                  <small class="text-danger"><i>{{ $message }}</i></small>
                               @enderror
                            </div>
@@ -149,20 +159,22 @@
                         <label>Address</label>
                         <textarea id="address" name="address" type="text" class="form-control">{{old('address')}}</textarea>
                      </div> --}}
+                     <hr>
+                     <div class="badge badge-info mb-2">Contract</div>
                      <div class="row">
                         <div class="col-md-6">
                            <div class="form-group form-group-default">
-                              <label>Email</label>
-                              <input id="email" name="email" type="email" value="{{old('email')}}" class="form-control" placeholder="Fill Email">
-                              @error('email')
+                              <label>ID Employee*</label>
+                              <input id="id" name="id" type="text" required value="{{old('id')}}" class="form-control" placeholder="">
+                              @error('id')
                                  <small class="text-danger"><i>{{ $message }}</i></small>
                               @enderror
                            </div>
                         </div>
                         <div class="col-md-6">
                            <div class="form-group form-group-default">
-                              <label>Bussiness Unit</label>
-                              <select class="form-control" id="unit" name="unit">
+                              <label>Bussiness Unit*</label>
+                              <select class="form-control" id="unit" name="unit" required >
                                  <option value="" disabled selected>Choose one</option>
                                  @foreach ($units as $unit)
                                        <option {{old('unit') == $unit->id ? 'selected' : ''}} value="{{$unit->id}}">{{$unit->name}}</option>
@@ -178,84 +190,109 @@
                      <div class="row">
                         <div class="col-md-4">
                            <div class="form-group form-group-default">
-                              <label>Department</label>
-                              <select class="form-control" id="department" name="department">
-                                 {{-- <option >{{$department->name}}</option> --}}
-                                 <option value="" disabled selected>Choose one</option>
-                                 @foreach ($departments as $department)
-                                       <option {{old('department') == $department->id ? 'selected' : ''}} value="{{$department->id}}">{{$department->name}}</option>
-                                 @endforeach
+                              <label>Type*</label>
+                              <select class="form-control type" required  id="type" name="type">
+                                 <option  value="PKWT">PKWT</option>
+                                 <option  value="Tetap">Tetap</option>
                               </select>
-                              @error('department')
-                                 <small class="text-danger"><i>{{ $message }}</i></small>
+                              @error('type')
+                              <small class="text-danger"><i>{{ $message }}</i></small>
                               @enderror
                            </div>
                         </div>
                         <div class="col-md-4">
                            <div class="form-group form-group-default">
-                              <label>Designation</label>
-                              <select class="form-control" id="designation" name="designation">
-                                 <option value="" disabled selected>Choose one</option>
+                              <label>Start*</label>
+                              <input type="date" class="form-control" required name="start" id="start" >
+                           </div>
+                        </div>
+                        <div class="col-md-4 end">
+                           <div class="form-group form-group-default">
+                              <label>End</label>
+                              <input type="date" class="form-control"  name="end" id="end"  >
+                           </div>
+                        </div>
+                        <div class="col-md-4 determination">
+                           <div class="form-group form-group-default">
+                              <label>Penetapan</label>
+                              <input type="date" class="form-control"  name="determination" id="determination"  >
+                           </div>
+                        </div>
+
+                        <div class="col-md-4">
+                           <div class="form-group form-group-default">
+                              <label>Work Hour*</label>
+                              <select class="form-control" id="shift" required name="shift">
+                                 @foreach ($shifts as $shift)
+                                 <option  value="{{$shift->id}}">{{formatTime($shift->in)}} - {{formatTime($shift->out)}}</option>
+                                 @endforeach
+                              </select>
+                           </div>
+                        </div>
+                        <div class="col-md-4">
+                           <div class="form-group form-group-default">
+                              <label>Lokasi*</label>
+                              <select class="form-control" id="loc" name="loc" required>
+                                 <option value="">Select</option>
+                                 <option  value="HW">HW</option>
+                                 <option  value="JGC">JGC</option>
+                                 <option  value="KJ4">KJ4</option>
+                                 <option  value="KJ2/KJ5">KJ2/KJ5</option>
+                                 <option  value="GS">GS</option>
+                              </select>
+                           </div>
+                        </div>
+   
+                        <div class="col-md-4">
+                           <div class="form-group form-group-default">
+                              <label>Level*</label>
+                              <select class="form-control" id="designation" name="designation" required >
                                  @foreach ($designations as $designation)
-                                       <option {{old('designation') == $designation->id ? 'selected' : ''}} value="{{$designation->id}}">{{$designation->name}}</option>
+                                 <option value="{{$designation->id}}">{{$designation->name}}</option>
                                  @endforeach
                               </select>
                               @error('designation')
-                                 <small class="text-danger"><i>{{ $message }}</i></small>
+                              <small class="text-danger"><i>{{ $message }}</i></small>
                               @enderror
                            </div>
                         </div>
                         <div class="col-md-4">
                            <div class="form-group form-group-default">
-                              <label>Role</label>
-                              <select class="form-control" id="role" name="role">
-                                 <option value="" disabled selected>Choose one</option>
-                                 @foreach ($roles as $role)
-                                       <option {{old('role') == $role->name ? 'selected' : ''}} value="{{$role->name}}">{{$role->name}}</option>
+                              <label>Department</label>
+                              <select class="form-control" id="department" name="department" >
+                                 @foreach ($departments as $department)
+                                 <option value="{{$department->id}}">{{$department->name}}</option>
                                  @endforeach
                               </select>
-                              @error('role')
-                                 <small class="text-danger"><i>{{ $message }}</i></small>
+                              @error('department')
+                              <small class="text-danger"><i>{{ $message }}</i></small>
                               @enderror
                            </div>
                         </div>
                         
                         <div class="col-md-4">
                            <div class="form-group form-group-default">
-                              <label>Office Shift</label>
-                              <select class="form-control" id="shift" name="shift">
-                                 <option value="" disabled selected>Choose one</option>
-                                 @foreach ($shifts as $shift)
-                                       <option {{old('shift') == $shift->id ? 'selected' : ''}} value="{{$shift->id}}">{{$shift->name}}</option>
+                              <label>Jabatan*</label>
+                              <select class="form-control" id="position" name="position" required>
+                                 @foreach ($positions as $position)
+                                 {{--<option {{$employee->contract->designation_id == $designation->id ? 'selected' : ''}} value="{{$designation->id}}">{{$designation->name}}</option>--}}
+                                 <option value="{{$position->id}}">{{$position->name}} </option>
                                  @endforeach
                               </select>
-                              @error('shift')
-                                 <small class="text-danger"><i>{{ $message }}</i></small>
+                              @error('position')
+                              <small class="text-danger"><i>{{ $message }}</i></small>
                               @enderror
                            </div>
                         </div>
+   
                         <div class="col-md-4">
                            <div class="form-group form-group-default">
-                              <label>Basic Salary</label>
-                              <input id="salary" name="salary" type="text" value="{{old('salary')}}" class="form-control" placeholder="Fill Basic Salary">
-                              @error('salary')
-                                 <small class="text-danger"><i>{{ $message }}</i></small>
-                              @enderror
+                              <label>Salary</label>
+                              <input type="text" class="form-control"  name="salary" id="salary" >
                            </div>
                         </div>
-                        <div class="col-md-4">
-                           <div class="form-group form-group-default">
-                              <label>Payslip Type</label>
-                              <select class="form-control" id="payslip" name="payslip">
-                                 <option value="" disabled selected>Choose one</option>
-                                 <option {{old('payslip') == 'Month' ? 'selected' : ''}}  value="Month">Month</option>
-                                 <option {{old('payslip') == 'Week' ? 'selected' : ''}} value="Week">Week</option>
-                              </select>
-                              @error('payslip')
-                                 <small class="text-danger"><i>{{ $message }}</i></small>
-                              @enderror
-                           </div>
-                        </div>
+
+                        
                      </div>
                   </div>
                   <div class="col-md-4">
@@ -275,5 +312,60 @@
          </div>
       </div>
    </div>
+
+
+   @push('js_footer')
+    
+
+<script>
+   $(document).ready(function() {
+      $('.determination').hide()
+      var type = $('#type').val();
+      if (type == 'PKWT') {
+         $('.determination').hide()
+         $('.end').show()
+      } else {
+         $('.determination').show()
+         $('.end').hide()
+      }
+
+      $('.type').change(function() {
+         
+         var type = $('#type').val();
+         console.log(type);
+         if (type == 'PKWT') {
+            $('.determination').hide()
+            $('.end').show()
+         } else {
+            $('.determination').show()
+            $('.end').hide()
+         }
+      })
+
+      $('.determination_add').hide()
+      var type = $('#type_add').val();
+      if (type == 'PKWT') {
+         $('.determination_add').hide()
+         $('.end_add').show()
+      } else {
+         $('.determination_add').show()
+         $('.end_add').hide()
+      }
+
+      $('.type_add').change(function() {
+         
+         var type = $('#type_add').val();
+         console.log(type);
+         if (type == 'PKWT') {
+            $('.determination_add').hide()
+            $('.end_add').show()
+         } else {
+            $('.determination_add').show()
+            $('.end_add').hide()
+         }
+      })
+   })
+</script>
+@endpush
 
 @endsection

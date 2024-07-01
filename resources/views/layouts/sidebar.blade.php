@@ -45,48 +45,50 @@
                </span>
                <h4 class="text-section">Main Menu</h4>
             </li>
-            @if (auth()->user()->hasRole('Administrator|HRD|Leader|Supervisor|Manager'))
 
             <!-- Master Data -->
             @if (auth()->user()->hasRole('Administrator|HRD'))
-            <li class="nav-item">
-               <a data-toggle="collapse" href="#vessel">
-                  <i class="fas fa-server"></i>
-                  <p>Master Data</p>
-                  <span class="caret"></span>
-               </a>
-               <div class="collapse" id="vessel">
-                  <ul class="nav nav-collapse">
-                     <li>
-                        <a href="{{route('unit')}}">
-                           <span class="sub-item">Bisnis Unit</span>
-                        </a>
-                     </li>
-                     <li>
-                        <a href="{{route('department')}}">
-                           <span class="sub-item">Department</span>
-                        </a>
-                     </li>
-                     <li>
-                        <a href="{{route('designation')}}">
-                           <span class="sub-item">Level</span>
-                        </a>
-                     </li>
-                     <li>
-                        <a href="{{route('position')}}">
-                           <span class="sub-item">Jabatan</span>
-                        </a>
-                     </li>
-                     <li>
-                        <a href="{{route('so')}}">
-                           <span class="sub-item">Struktur Organisasi</span>
-                        </a>
-                     </li>
-                  </ul>
-               </div>
-            </li>
-            <!-- End Master Data -->
+               <li class="nav-item">
+                  <a data-toggle="collapse" href="#vessel">
+                     <i class="fas fa-server"></i>
+                     <p>Master Data</p>
+                     <span class="caret"></span>
+                  </a>
+                  <div class="collapse" id="vessel">
+                     <ul class="nav nav-collapse">
+                        <li>
+                           <a href="{{route('unit')}}">
+                              <span class="sub-item">Bisnis Unit</span>
+                           </a>
+                        </li>
+                        <li>
+                           <a href="{{route('department')}}">
+                              <span class="sub-item">Department</span>
+                           </a>
+                        </li>
+                        <li>
+                           <a href="{{route('designation')}}">
+                              <span class="sub-item">Level</span>
+                           </a>
+                        </li>
+                        <li>
+                           <a href="{{route('position')}}">
+                              <span class="sub-item">Jabatan</span>
+                           </a>
+                        </li>
+                        <li>
+                           <a href="{{route('so')}}">
+                              <span class="sub-item">Struktur Organisasi</span>
+                           </a>
+                        </li>
+                     </ul>
+                  </div>
+               </li>
+               <!-- End Master Data -->
             @endif
+            @if (auth()->user()->hasRole('Administrator|HRD|Leader|Supervisor|Manager'))
+
+            
 
             <li class="nav-item">
                <a data-toggle="collapse" href="#kpi">
@@ -195,107 +197,65 @@
 
 
             @if (auth()->user()->hasRole('Manager'))
-            <li class="nav-item {{ (request()->is('employee/detail/*')) ? 'active' : '' }}">
-               <a href="{{route('employee.detail', [enkripRambo(auth()->user()->employee->id), enkripRambo('contract')])}}">
-                  <i class="fas fa-user"></i>
-                  <p>My Profile</p>
-               </a>
-            </li>
-            <li class="nav-item {{ (request()->is('employee/spkl/*')) ? 'active' : '' }}">
-               <a href="{{route('manager.spkl')}}">
-                  <i class="fas fa-clock"></i>
-                  <p>SPKL</p>
-               </a>
-            </li>
+               <li class="nav-item {{ (request()->is('employee/detail/*')) ? 'active' : '' }}">
+                  <a href="{{route('employee.detail', [enkripRambo(auth()->user()->employee->id), enkripRambo('contract')])}}">
+                     <i class="fas fa-user"></i>
+                     <p>My Profile</p>
+                  </a>
+               </li>
+               <li class="nav-item {{ (request()->is('employee/spkl/*')) ? 'active' : '' }}">
+                  <a href="{{route('manager.spkl')}}">
+                     <i class="fas fa-clock"></i>
+                     <p>SPKL</p>
+                  </a>
+               </li>
 
-            <li class="nav-item {{ (request()->is('employee/spt/*')) ? 'active' : '' }}">
-               <a href="{{route('employee.spt')}}">
-                  <i class="fas fa-briefcase"></i>
-                  <p>SPT</p>
-               </a>
-            </li>
+               <li class="nav-item {{ (request()->is('employee/spt/*')) ? 'active' : '' }}">
+                  <a href="{{route('employee.spt')}}">
+                     <i class="fas fa-briefcase"></i>
+                     <p>SPT</p>
+                  </a>
+               </li>
 
-            <li class="nav-item">
-               <a href="{{route('employee.detail', [enkripRambo(auth()->user()->employee->id), enkripRambo('contract')])}}">
-                  <i class="fas fa-calendar"></i>
-                  <p>Cuti</p>
-               </a>
-            </li>
-            <li class="nav-item">
-               <a href="{{route('employee.detail', [enkripRambo(auth()->user()->employee->id), enkripRambo('contract')])}}">
-                  <i class="fas fa-hospital"></i>
-                  <p>Permit</p>
-               </a>
-            </li>
+               <li class="nav-item">
+                  <a href="{{route('employee.detail', [enkripRambo(auth()->user()->employee->id), enkripRambo('contract')])}}">
+                     <i class="fas fa-calendar"></i>
+                     <p>Cuti</p>
+                  </a>
+               </li>
+               <li class="nav-item">
+                  <a href="{{route('employee.detail', [enkripRambo(auth()->user()->employee->id), enkripRambo('contract')])}}">
+                     <i class="fas fa-hospital"></i>
+                     <p>Permit</p>
+                  </a>
+               </li>
             @endif
 
             @if (auth()->user()->hasRole('Supervisor') || auth()->user()->hasRole('Leader') )
 
-            <li class="nav-item {{ (request()->is('supervisor/spkl/*')) ? 'active' : '' }}">
-               <a href="{{route('supervisor.spkl')}}">
-                  <i class="fas fa-clock"></i>
-                  <p>SPKL</p>
-               </a>
-            </li>
+               <li class="nav-item {{ (request()->is('supervisor/spkl/*')) ? 'active' : '' }}">
+                  <a href="{{route('supervisor.spkl')}}">
+                     <i class="fas fa-clock"></i>
+                     <p>SPKL</p>
+                  </a>
+               </li>
 
-            <li class="nav-item {{ (request()->is('employee/spt/*')) ? 'active' : '' }}">
-               <a href="{{route('employee.spt')}}">
-                  <i class="fas fa-briefcase"></i>
-                  <p>SPT</p>
+               <li class="nav-item {{ (request()->is('employee/spt/*')) ? 'active' : '' }}">
+                  <a href="{{route('employee.spt')}}">
+                     <i class="fas fa-briefcase"></i>
+                     <p>SPT</p>
+                  </a>
+               </li>
+               {{-- <li class="nav-item {{ (request()->is('sp/*')) ? 'active' : '' }}">
+               <a href="{{route('sp')}}">
+                  <i class="fas fa-file-code"></i>
+                  <p>SP</p>
                </a>
-            </li>
-            {{-- <li class="nav-item {{ (request()->is('sp/*')) ? 'active' : '' }}">
-            <a href="{{route('sp')}}">
-               <i class="fas fa-file-code"></i>
-               <p>SP</p>
-            </a>
-            </li> --}}
+               </li> --}}
 
             @endif
 
-            @if (auth()->user()->hasRole('Administrator|HRD|Leader|Supervisor|Manager'))
-
-            <!-- Master Data -->
-            @if (auth()->user()->hasRole('Administrator|HRD'))
-            <li class="nav-item">
-               <a data-toggle="collapse" href="#vessel">
-                  <i class="fas fa-server"></i>
-                  <p>Master Data</p>
-                  <span class="caret"></span>
-               </a>
-               <div class="collapse" id="vessel">
-                  <ul class="nav nav-collapse">
-                     <li>
-                        <a href="{{route('unit')}}">
-                           <span class="sub-item">Bisnis Unit</span>
-                        </a>
-                     </li>
-                     <li>
-                        <a href="{{route('department')}}">
-                           <span class="sub-item">Department</span>
-                        </a>
-                     </li>
-                     <li>
-                        <a href="{{route('designation')}}">
-                           <span class="sub-item">Level</span>
-                        </a>
-                     </li>
-                     <li>
-                        <a href="{{route('position')}}">
-                           <span class="sub-item">Jabatan</span>
-                        </a>
-                     </li>
-                     <li>
-                        <a href="{{route('so')}}">
-                           <span class="sub-item">Struktur Organisasi</span>
-                        </a>
-                     </li>
-                  </ul>
-               </div>
-            </li>
-            <!-- End Master Data -->
-            @endif
-            @endif
+            
 
             @if (auth()->user()->hasRole('Karyawan'))
 

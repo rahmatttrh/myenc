@@ -28,7 +28,7 @@ Employee
          <div class="dropdown-menu">
 
 
-            {{-- <a class="dropdown-item" style="text-decoration: none" href="{{route('employee.create')}}">Create</a> --}}
+            <a class="dropdown-item" style="text-decoration: none" href="{{route('employee.create')}}">Create</a>
             <a class="dropdown-item" style="text-decoration: none"  data-toggle="modal" data-target="#modal-export">Export</a>
             <div class="dropdown-divider"></div>
             {{-- <a class="dropdown-item" style="text-decoration: none" href="" target="_blank">Print Preview</a> --}}

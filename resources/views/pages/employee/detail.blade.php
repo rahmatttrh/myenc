@@ -48,6 +48,8 @@ Detail Employee
             <div class="card-header">
                @if ($employee->status == 1)
                   <small class="badge badge-info text-uppercase "><a href="#" class="text-white" data-toggle="modal" data-target="#modal-deactivate-employee">Aktif</a></small>
+                   @elseif($employee->status == 0)
+                   <small class="badge badge-muted ">Draft</small>
                    @else
                    <small class="badge badge-muted ">Non Active</small>
                @endif

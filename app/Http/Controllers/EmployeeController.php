@@ -115,6 +115,7 @@ class EmployeeController extends Controller
             $user = User::create([
                'name' => $employee->biodata->first_name . ' ' . $employee->biodata->last_name,
                'email' => $employee->biodata->email,
+               'username' => $employee->nik,
                'password' => Hash::make('12345678')
             ]);
          } catch (Exception $e) {
@@ -130,7 +131,9 @@ class EmployeeController extends Controller
             'status' => 1,
          ]);
 
-         $user->assignRole($employee->role);
+         
+
+         $user->assignRole($employee->role->name);
 
          // Cek email apakah ada atau belum 
 
@@ -217,13 +220,15 @@ class EmployeeController extends Controller
       $shifts = Shift::get();
       $units = Unit::get();
       $roles = Role::get();
+      $positions = Position::get();
 
       return view('pages.employee.create', [
          'departments' => $departments,
          'designations' => $designations,
          'shifts' => $shifts,
          'units' => $units,
-         'roles' => $roles
+         'roles' => $roles,
+         'positions' => $positions
       ]);
    }
 
@@ -255,27 +260,54 @@ class EmployeeController extends Controller
 
       $contract = Contract::create([
          'id_no' => $req->id,
+         'type' => $req->type,
          'unit_id' => $req->unit,
          'department_id' => $req->department,
          'designation_id' => $req->designation,
+         'position_id' => $req->position,
          'shift_id' => $req->shift,
          'salary' => $req->salary,
-         'hourly_rate' => $req->hourly_rate,
-         'payslip' => $req->payslip,
+         // 'hourly_rate' => $req->hourly_rate,
+         // 'payslip' => $req->payslip,
+         'start' => $req->start,
+         'end' => $req->end,
+         'determination' => $req->determination,
+         'loc' => $req->loc,
          'desc' => $req->desc
       ]);
 
       $employee = Employee::create([
          'status' => 0,
          'role' => $req->role,
+         // 'unit_id' => $req->unit,
+         'department_id' => $req->department,
+         'designation_id' => $req->designation,
+         'position_id' => $req->position,
          'contract_id' => $contract->id,
          'biodata_id' => $biodata->id,
          'picture' => request('picture') ? request()->file('picture')->store('employee/picture') : '',
       ]);
 
+      
+
+      // if ($req->designation == 1 || $req->designation == 2) {
+      //    $employee->assignRole('Karyawan');
+      // } else if ($employee->designation_id == 3) {
+      //    $employee->assignRole('Leader');
+      // } else if ($employee->designation_id == 4) {
+      //    $employee->assignRole('Supervisor');
+      // } else if ($employee->designation_id == 5) {
+      //    $employee->assignRole('Asst. Manager');
+      // } else if ($employee->designation_id == 6) {
+      //    $employee->assignRole('Manager');
+      // } else if ($employee->designation_id == 7) {
+      //    $employee->assignRole('BOD');
+      // }
 
 
-      return redirect()->route('employee.detail', [enkripRambo($employee->id), enkripRambo('contract')])->with('success', 'Employee successfully saved');
+      // return redirect()->route('employee.detail', [enkripRambo($employee->id), enkripRambo('contract')])->with('success', 'Employee successfully added');
+
+      return redirect()->route('employee.draft')->with('success', 'Employee successfully added');
    }
 
    public function update(Request $req)
