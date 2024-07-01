@@ -169,6 +169,11 @@
                         </a>
                      </li>
                      <li>
+                        <a href="{{route('employee.nonactive')}}">
+                           <span class="sub-item">Non Active</span>
+                        </a>
+                     </li>
+                     <li>
                         <a href="{{route('employee.draft')}}">
                            <span class="sub-item">Import</span>
                         </a>
