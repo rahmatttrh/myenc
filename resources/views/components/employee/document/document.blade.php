@@ -5,7 +5,7 @@
          <div class="row">
             <div class="col">
                <h1>Documents</h1>
-               <small>List of your documents</small>
+               <small>List of documents</small>
             </div>
             {{-- <div class="col text-right">
                <button class="btn btn-sm btn-light border" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">Add account ...</button>

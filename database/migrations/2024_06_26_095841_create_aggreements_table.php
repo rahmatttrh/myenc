@@ -21,7 +21,9 @@ class CreateAggreementsTable extends Migration
          $table->string('id_no')->nullable();
          $table->integer('unit_id')->nullable();
          $table->integer('department_id')->nullable();
+         $table->integer('sub_dept_id')->nullable();
          $table->integer('designation_id')->nullable();
+         $table->integer('position_id')->nullable();
          $table->integer('shift_id')->nullable();
          $table->string('project')->nullable();
          $table->string('location')->nullable();
@@ -34,7 +36,7 @@ class CreateAggreementsTable extends Migration
          $table->date('determination')->nullable();
          $table->string('desc')->nullable();
          $table->integer('cuti')->nullable();
-         $table->integer('position_id')->nullable();
+         
          $table->integer('manager_id')->nullable();
          $table->integer('direct_leader_id')->nullable();
          $table->string('loc')->nullable();

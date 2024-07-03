@@ -12,6 +12,7 @@ use App\Models\Contract;
 use App\Models\Department;
 use App\Models\Designation;
 use App\Models\Employee;
+use App\Models\Log;
 use App\Models\Position;
 use App\Models\Role;
 use App\Models\Shift;
@@ -171,10 +172,13 @@ class EmployeeController extends Controller
       $socials = Social::get();
       $banks = Bank::get();
 
-      $managers = Employee::where('department_id', $employee->department_id)->where('designation_id', 6)->get();
-      $spvs = Employee::where('department_id', $employee->department_id)->where('designation_id', 4)->get();
-      // dd($spvs);
-      $leaders = Employee::where('department_id', $employee->department_id)->where('designation_id', 3)->get();
+      // $managers = Employee::where('department_id', $employee->department_id)->where('designation_id', 6)->get();
+      // $spvs = Employee::where('department_id', $employee->department_id)->where('designation_id', 4)->get();
+      // $leaders = Employee::where('department_id', $employee->department_id)->where('designation_id', 3)->get();
+
+      $managers = Employee::where('designation_id', 6)->get();
+      $spvs = Employee::where('designation_id', 4)->get();
+      $leaders = Employee::where('designation_id', 3)->get();
 
       // dd($employee->documents);
       // $panel = 'contract';
@@ -184,7 +188,7 @@ class EmployeeController extends Controller
       $allSpvs = Employee::where('designation_id', 4)->get();
       // dd($spvs);
       $allLeaders = Employee::where('designation_id', 3)->get();
-      $subdepts = SubDept::get();
+      $subdepts = SubDept::where('department_id', $employee->department_id)->get();
 
 
       return view('pages.employee.detail', [
@@ -267,6 +271,7 @@ class EmployeeController extends Controller
          'position_id' => $req->position,
          'shift_id' => $req->shift,
          'salary' => $req->salary,
+         
          // 'hourly_rate' => $req->hourly_rate,
          // 'payslip' => $req->payslip,
          'start' => $req->start,
@@ -286,6 +291,12 @@ class EmployeeController extends Controller
          'contract_id' => $contract->id,
          'biodata_id' => $biodata->id,
          'picture' => request('picture') ? request()->file('picture')->store('employee/picture') : '',
+      ]);
+
+      Log::create([
+         'user_id' => auth()->user()->id,
+         'action' => 'Create',
+         'desc' => 'Employee ' . $employee->nik . ' ' . $employee->biodata->fullname()
       ]);
 
       
@@ -341,9 +352,19 @@ class EmployeeController extends Controller
          'no_kk' => $req->no_kk
       ]);
 
+      $employee->update([
+         'join' => $req->join
+      ]);
+
       $user = User::where('username', $employee->nik)->first();
       $user->update([
          'email' => $req->email
+      ]);
+
+      Log::create([
+         'user_id' => auth()->user()->id,
+         'action' => 'Update',
+         'desc' => 'Biodata ' . $employee->nik . ' ' . $employee->biodata->fullname()
       ]);
 
       return redirect()->route('employee.detail', [enkripRambo($employee->id), enkripRambo('basic')])->with('success', 'Employee successfully updated');
@@ -364,6 +385,12 @@ class EmployeeController extends Controller
          'no_bpjs_kesehatan' => $req->no_bpjs_kesehatan
       ]);
 
+      Log::create([
+         'user_id' => auth()->user()->id,
+         'action' => 'Update',
+         'desc' => 'Document Data ' . $employee->nik . ' ' . $employee->biodata->fullname()
+      ]);
+
       return redirect()->route('employee.detail', [enkripRambo($employee->id), enkripRambo('basic')])->with('success', 'Employee Document successfully updated');
    }
 
@@ -375,6 +402,12 @@ class EmployeeController extends Controller
       $employee->update([
          'bio' => $req->bio,
          'experience' => $req->experience
+      ]);
+
+      Log::create([
+         'user_id' => auth()->user()->id,
+         'action' => 'Update',
+         'desc' => 'Bio ' . $employee->nik . ' ' . $employee->biodata->fullname()
       ]);
 
       return redirect()->route('employee.detail', [enkripRambo($employee->id), enkripRambo('basic')])->with('success', 'Employee Bio successfully updated');
@@ -401,7 +434,32 @@ class EmployeeController extends Controller
          'picture' => $picture
       ]);
 
+      Log::create([
+         'user_id' => auth()->user()->id,
+         'action' => 'Update',
+         'desc' => 'Profile Picture ' . $employee->nik . ' ' . $employee->biodata->fullname()
+      ]);
+
       return redirect()->route('employee.detail', [enkripRambo($employee->id), enkripRambo('basic')])->with('success', 'Employee successfully updated');
+   }
+
+   public function updateRole(Request $req){
+      $employee = Employee::find($req->employee);
+      $role = Role::find($req->role);
+      $user = User::where('username', $employee->nik)->first();
+      $employee->update([
+         'role' => $req->role
+      ]);
+      $user->roles()->detach();
+      $user->assignRole($role->name);
+      // dd($req->role);
+      Log::create([
+         'user_id' => auth()->user()->id,
+         'action' => 'Update',
+         'desc' => 'Role ' . $employee->nik . ' ' . $employee->biodata->fullname()
+      ]);
+
+      return redirect()->route('employee.detail', [enkripRambo($employee->id), enkripRambo('account')])->with('success', 'Employee successfully updated');
    }
 
    public function export()

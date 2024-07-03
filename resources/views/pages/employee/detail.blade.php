@@ -76,9 +76,9 @@ Detail Employee
                         </div>
                      </div>
                   </div>
-                  <small class="badge badge-white text-uppercase">{{$employee->contract->type ?? 'Status karywan belum ditentukan'}}</small>
+                  <small class="badge badge-white text-uppercase">{{$employee->contract->type ?? 'Kontrak/Tetap'}}</small>
                   <small class="badge badge-white text-uppercase">{{$employee->contract->unit->name}}</small>
-                  <small class="badge badge-white text-uppercase">{{$employee->contract->loc ?? 'Lokasi Kerja'}}</small>
+                  <small class="badge badge-white text-uppercase">{{$employee->contract->loc ?? 'Lokasi'}}</small>
                </div>
                <div class="card-body">
                   {{-- <div class="user-profile text-center mb--4">
@@ -94,7 +94,7 @@ Detail Employee
                <a class="nav-link {{$panel == 'contract' ? 'active' : ''}}  text-left pl-3" id="v-pills-contract-tab" data-toggle="pill" href="#v-pills-contract" role="tab" aria-controls="v-pills-contract" aria-selected="false">
                   <i class="fas fa-file-contract mr-1"></i>
 
-                  Contract
+                  Contract Agreement
                </a>
                
                <a class="nav-link {{$panel == 'personal' ? 'active' : ''}} text-left pl-3" id="v-pills-personal-tab" data-toggle="pill" href="#v-pills-personal" role="tab" aria-controls="v-pills-personal" aria-selected="true">

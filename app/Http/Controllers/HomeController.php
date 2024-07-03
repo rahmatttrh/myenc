@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Biodata;
 use App\Models\Contract;
 use App\Models\Employee;
+use App\Models\Log;
 use App\Models\Presence;
 use App\Models\Sp;
 use App\Models\Spkl;
+use App\Models\Unit;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -149,6 +151,50 @@ class HomeController extends Controller
             'female' => $female,
             'spkls' => $spkls,
             'sps' => $sps
+         ]);
+      } elseif (auth()->user()->hasRole('HRD-Spv')) {
+         $units = Unit::get()->count();
+         $employees = Employee::get();
+         $male = Biodata::where('gender', 'Male')->count();
+         $female = Biodata::where('gender', 'Female')->count();
+         $spkls = Spkl::orderBy('updated_at', 'desc')->paginate(5);
+         $sps = Sp::where('status', 1)->get();
+         $kontrak = Contract::where('status', 1)->where('type', 'Kontrak')->get()->count();
+         $tetap = Contract::where('status', 1)->where('type', 'Tetap')->get()->count();
+         $empty = Contract::where('type', null)->get()->count();
+         $logs = Log::orderBy('created_at', 'desc')->paginate(5);
+         return view('pages.dashboard.hrd-spv', [
+            'units' => $units,
+            'employees' => $employees,
+            'male' => $male,
+            'female' => $female,
+            'spkls' => $spkls,
+            'sps' => $sps,
+            'kontrak' => $kontrak,
+            'tetap' => $tetap,
+            'empty' => $empty,
+            'logs' => $logs
+         ]);
+      } elseif (auth()->user()->hasRole('HRD-Recruitment')) {
+         $units = Unit::get()->count();
+         $employees = Employee::get();
+         $male = Biodata::where('gender', 'Male')->count();
+         $female = Biodata::where('gender', 'Female')->count();
+         $spkls = Spkl::orderBy('updated_at', 'desc')->paginate(5);
+         $sps = Sp::where('status', 1)->get();
+         $kontrak = Contract::where('status', 1)->where('type', 'Kontrak')->get()->count();
+         $tetap = Contract::where('status', 1)->where('type', 'Tetap')->get()->count();
+         $empty = Contract::where('type', null)->get()->count();
+         return view('pages.dashboard.hrd-recruitment', [
+            'units' => $units,
+            'employees' => $employees,
+            'male' => $male,
+            'female' => $female,
+            'spkls' => $spkls,
+            'sps' => $sps,
+            'kontrak' => $kontrak,
+            'tetap' => $tetap,
+            'empty' => $empty
          ]);
       } elseif (auth()->user()->hasRole('Manager')) {
          $employee = Employee::where('nik', auth()->user()->username)->first();

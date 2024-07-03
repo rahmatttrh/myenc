@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Contract;
 use App\Models\Employee;
+use App\Models\Log;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -24,20 +25,22 @@ class ContractController extends Controller
          'employee_id' => $req->employee,
          'id_no' => $req->id,
          'type' => $req->type_add,
-         'unit_id' => $req->unit,
-         'department_id' => $req->department,
+         'shift_id' => $req->shift,
          'designation_id' => $req->designation,
+         'unit_id' => $req->unit_add,
+         'department_id' => $req->department_add,
+         'sub_dept_id' => $req->subdept_add,
+         'position_id' => $req->position_add,
          'salary' => $req->salary,
          'hourly_rate' => $req->hourly_rate,
          'payslip' => $req->payslip,
-         'shift_id' => $req->shift,
          'start' => $req->start,
          'end' => $req->end,
          'determination' => $req->determination,
          'desc' => $req->desc,
          'cuti' => $req->cuti,
-         'position_id' => $req->position,
-         'loc' => $req->loc
+         'loc' => $req->loc,
+         'note' => $req->note
       ]);
 
       $employee->update([
@@ -48,6 +51,12 @@ class ContractController extends Controller
          'position_id' => $contract->position_id,
          'manager_id' => $contract->manager_id,
          'direct_leader_id' => $contract->direct_leader_id,
+      ]);
+
+      Log::create([
+         'user_id' => auth()->user()->id,
+         'action' => 'Create',
+         'desc' => 'Contract ' . $employee->nik . ' ' . $employee->biodata->fullname()
       ]);
 
       return redirect()->route('employee.detail', [enkripRambo($req->employee), enkripRambo('contract')])->with('success', 'Contract successfully added');
@@ -68,43 +77,55 @@ class ContractController extends Controller
          // 'unit_id' => $req->unit,
          'manager_id' => $req->manager,
          'direct_leader_id' => $req->leader,
+         'designation_id' => $req->designation,
          'department_id' => $req->department,
+         'sub_dept_id' => $req->sub_dept_id,
          'position_id' => $req->position,
-         'designation_id' => $req->designation
+         
+         
       ]);
 
       $contract->update([
+         'status' => 1,
          'id_no' => $req->id,
          'type' => $req->type,
          'date' => $req->date,
+         'shift_id' => $req->shift,
+         'designation_id' => $req->designation,
          'unit_id' => $req->unit,
          'department_id' => $req->department,
-         'designation_id' => $req->designation,
+         'sub_dept_id' => $req->sub_dept_id,
+         'position_id' => $req->position,
          'salary' => $req->salary,
          'hourly_rate' => $req->hourly_rate,
          'payslip' => $req->payslip,
-         'shift_id' => $req->shift,
+         
          'start' => $req->start,
          'end' => $req->end,
          'determination' => $req->determination,
          'desc' => $req->desc,
          'cuti' => $req->cuti,
-         'position_id' => $req->position,
          'loc' => $req->loc
       ]);
       // });
 
-      $user = User::where('username', $employee->nik)->first();
-      $user->roles()->detach();
-      if ($req->designation == 3) {
-         $user->assignRole('Leader');
-      } elseif ($req->designation == 4) {
-         $user->assignRole('Supervisor');
-      } elseif ($req->designation == 6) {
-         $user->assignRole('Manager');
-      } else {
-         $user->assignRole('Karyawan');
-      }
+      // $user = User::where('username', $employee->nik)->first();
+      // $user->roles()->detach();
+      // if ($req->designation == 3) {
+      //    $user->assignRole('Leader');
+      // } elseif ($req->designation == 4) {
+      //    $user->assignRole('Supervisor');
+      // } elseif ($req->designation == 6) {
+      //    $user->assignRole('Manager');
+      // } else {
+      //    $user->assignRole('Karyawan');
+      // }
+
+      Log::create([
+         'user_id' => auth()->user()->id,
+         'action' => 'Update',
+         'desc' => 'Contract ' . $employee->nik . ' ' . $employee->biodata->fullName()
+      ]);
 
       return redirect()->route('employee.detail', [enkripRambo($req->employee), enkripRambo('contract')])->with('success', 'Contract successfully updated');
       // } catch (\Exception $e) {

@@ -192,7 +192,8 @@
                            <div class="form-group form-group-default">
                               <label>Type*</label>
                               <select class="form-control type" required  id="type" name="type">
-                                 <option  value="PKWT">PKWT</option>
+                                 <option value="" disabled selected>Select</option>
+                                 <option  value="Kontrak">Kontrak</option>
                                  <option  value="Tetap">Tetap</option>
                               </select>
                               @error('type')
@@ -223,6 +224,7 @@
                            <div class="form-group form-group-default">
                               <label>Work Hour*</label>
                               <select class="form-control" id="shift" required name="shift">
+                                 <option value="" disabled selected>Select</option>
                                  @foreach ($shifts as $shift)
                                  <option  value="{{$shift->id}}">{{formatTime($shift->in)}} - {{formatTime($shift->out)}}</option>
                                  @endforeach
@@ -233,7 +235,7 @@
                            <div class="form-group form-group-default">
                               <label>Lokasi*</label>
                               <select class="form-control" id="loc" name="loc" required>
-                                 <option value="">Select</option>
+                                 <option value="" disabled selected>Select</option>
                                  <option  value="HW">HW</option>
                                  <option  value="JGC">JGC</option>
                                  <option  value="KJ4">KJ4</option>
@@ -247,6 +249,7 @@
                            <div class="form-group form-group-default">
                               <label>Level*</label>
                               <select class="form-control" id="designation" name="designation" required >
+                                 <option value="" disabled selected>Select</option>
                                  @foreach ($designations as $designation)
                                  <option value="{{$designation->id}}">{{$designation->name}}</option>
                                  @endforeach
@@ -260,6 +263,7 @@
                            <div class="form-group form-group-default">
                               <label>Department</label>
                               <select class="form-control" id="department" name="department" >
+                                 <option value="" disabled selected>Select</option>
                                  @foreach ($departments as $department)
                                  <option value="{{$department->id}}">{{$department->name}}</option>
                                  @endforeach
@@ -274,6 +278,7 @@
                            <div class="form-group form-group-default">
                               <label>Jabatan*</label>
                               <select class="form-control" id="position" name="position" required>
+                                 <option value="" disabled selected>Select</option>
                                  @foreach ($positions as $position)
                                  {{--<option {{$employee->contract->designation_id == $designation->id ? 'selected' : ''}} value="{{$designation->id}}">{{$designation->name}}</option>--}}
                                  <option value="{{$position->id}}">{{$position->name}} </option>
@@ -284,18 +289,35 @@
                               @enderror
                            </div>
                         </div>
-   
                         <div class="col-md-4">
+                           <div class="form-group form-group-default">
+                              <label>Role</label>
+                              <select class="form-control" id="role" name="role" >
+                                 @foreach ($roles as $role)
+                                 <option value="{{$role->id}}">{{$role->name}}</option>
+                                 @endforeach
+                              </select>
+                              @error('role')
+                              <small class="text-danger"><i>{{ $message }}</i></small>
+                              @enderror
+                           </div>
+                        </div>
+   
+                        {{-- <div class="col-md-4">
                            <div class="form-group form-group-default">
                               <label>Salary</label>
                               <input type="text" class="form-control"  name="salary" id="salary" >
                            </div>
-                        </div>
+                        </div> --}}
 
                         
                      </div>
                   </div>
                   <div class="col-md-4">
+                     <div class="form-group form-group-default">
+                        <label>Join Date*</label>
+                        <input type="date" class="form-control" required name="join" id="join">
+                     </div>
                      <div class="form-group form-group-default">
                         <label>Select Picture</label>
                         <input type="file" class="form-control" name="picture" id="picture">
@@ -321,7 +343,7 @@
    $(document).ready(function() {
       $('.determination').hide()
       var type = $('#type').val();
-      if (type == 'PKWT') {
+      if (type == 'Kontrak') {
          $('.determination').hide()
          $('.end').show()
       } else {
@@ -333,7 +355,7 @@
          
          var type = $('#type').val();
          console.log(type);
-         if (type == 'PKWT') {
+         if (type == 'Kontrak') {
             $('.determination').hide()
             $('.end').show()
          } else {
@@ -344,7 +366,7 @@
 
       $('.determination_add').hide()
       var type = $('#type_add').val();
-      if (type == 'PKWT') {
+      if (type == 'Kontrak') {
          $('.determination_add').hide()
          $('.end_add').show()
       } else {
@@ -356,7 +378,7 @@
          
          var type = $('#type_add').val();
          console.log(type);
-         if (type == 'PKWT') {
+         if (type == 'Kontrak') {
             $('.determination_add').hide()
             $('.end_add').show()
          } else {

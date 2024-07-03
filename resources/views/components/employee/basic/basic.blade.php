@@ -48,16 +48,22 @@
                      </div> --}}
                   </div>
                   <div class="row">
-                     <div class="col-md-6">
+                     <div class="col-md-4">
                         <div class="form-group form-group-default">
                            <label>Phone</label>
                            <input type="text" class="form-control" value="{{$employee->biodata->phone}}" name="phone" id="phone">
                         </div>
                      </div>
-                     <div class="col-md-6">
+                     <div class="col-md-5">
                         <div class="form-group form-group-default">
                            <label>Email</label>
                            <input type="email" class="form-control" value="{{$employee->biodata->email}}" name="email" id="email">
+                        </div>
+                     </div>
+                     <div class="col-md-3">
+                        <div class="form-group form-group-default">
+                           <label>Join</label>
+                           <input type="date" class="form-control" value="{{$employee->join}}" name="join" id="join">
                         </div>
                      </div>
                   </div>

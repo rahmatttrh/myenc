@@ -13,15 +13,21 @@ Dashboard
 
 <div class="page-inner mt--5">
    <div class="page-header">
-      <h5 class="page-title">
+      <h5 class="page-title text-info">
          <i class="fa fa-home"></i>
-         Dashboard Employee
+         Dashboard
          
       </h5>
    </div>
    <div class="row">
       <div class="col-md-4">
-
+         <div class="card">
+            <div class="card-body">
+               @if (auth()->user()->hasRole('HRD-Recruitment'))
+                 Hak Akses :  HRD Recruitment
+               @endif
+            </div>
+         </div>
          {{-- ANNOUNCE --}}
          <div class="d-block d-sm-none">
             <div class="alert alert-info shadow-sm">

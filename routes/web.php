@@ -16,6 +16,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\FetchController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LogController;
 use App\Http\Controllers\MutationController;
 use App\Http\Controllers\OvertimeController;
 use App\Http\Controllers\PeComponentController;
@@ -51,6 +52,9 @@ Route::middleware(["auth"])->group(function () {
    Route::prefix('fetch')->group(function () {
       Route::get('sp/active/{id}', [FetchController::class, 'fetchSpActive']);
       Route::get('schedule/{date}/{id}', [FetchController::class, 'fetchSchedule']);
+      Route::get('department/{id}', [FetchController::class, 'fetchDepartment']);
+      Route::get('subdept/{id}', [FetchController::class, 'fetchSubdept']);
+      Route::get('position/{id}', [FetchController::class, 'fetchPosition']);
    });
    /**
     * Verification Routes
@@ -69,7 +73,7 @@ Route::middleware(["auth"])->group(function () {
    Route::get('sub-dept/fetch-data/{id}', [SubDeptController::class, 'fetchData'])->name('department.fetch-data');
    // End Fetch
 
-   Route::group(['middleware' => ['role:Administrator|HRD']], function () {
+   Route::group(['middleware' => ['role:Administrator|HRD|HRD-Recruitment|HRD-Spv']], function () {
       Route::prefix('employee')->group(function () {
          Route::get('tab/{tab}', [EmployeeController::class, 'index'])->name('employee');
          Route::get('nonactive', [EmployeeController::class, 'nonactive'])->name('employee.nonactive');
@@ -187,21 +191,31 @@ Route::middleware(["auth"])->group(function () {
          // Route::get('delete/{department:id}', [DepartmentController::class, 'delete'])->name('department.delete');
       });
 
-
       // KPA
       Route::prefix('generate')->group(function () {
          Route::get('/komposisi', [CompositionController::class, 'komposisi'])->name('komposisi');
       });
+
+      Route::prefix('mutation')->group(function () {
+         Route::post('store', [MutationController::class, 'store'])->name('mutation.store');
+      });
+
+      Route::get('/log', [LogController::class, 'index'])->name('log');
+
    });
 
 
    // Semua Role 
 
-   Route::group(['middleware' => ['role:Administrator|HRD|Karyawan|Manager|Supervisor|Leader']], function () {
-      Route::put('update', [EmployeeController::class, 'update'])->name('employee.update');
-      Route::put('update/doc', [EmployeeController::class, 'updateDoc'])->name('employee.update.doc');
-      Route::put('update/bio', [EmployeeController::class, 'updateBio'])->name('employee.update.bio');
-      Route::put('update/picture', [EmployeeController::class, 'updatePicture'])->name('employee.update.picture');
+   Route::group(['middleware' => ['role:Administrator|HRD|HRD-Recruitment|HRD-Spv|Karyawan|Manager|Supervisor|Leader']], function () {
+      
+      Route::prefix('qpe')->group(function () {
+         Route::put('update', [EmployeeController::class, 'update'])->name('employee.update');
+         Route::put('update/doc', [EmployeeController::class, 'updateDoc'])->name('employee.update.doc');
+         Route::put('update/bio', [EmployeeController::class, 'updateBio'])->name('employee.update.bio');
+         Route::put('update/picture', [EmployeeController::class, 'updatePicture'])->name('employee.update.picture');
+         Route::put('update/role', [EmployeeController::class, 'updateRole'])->name('employee.update.role');
+      });
 
       // Quick PE All
       Route::prefix('qpe')->group(function () {
@@ -214,11 +228,10 @@ Route::middleware(["auth"])->group(function () {
          Route::patch('complain/{id}', [QuickPEController::class, 'complain'])->name('qpe.complain.patch');
          Route::patch('close-complain/{id}', [QuickPEController::class, 'closeComplain'])->name('qpe.closecomplain.patch');
       });
+      
    });
 
-   Route::prefix('mutation')->group(function () {
-      Route::post('store', [MutationController::class, 'store'])->name('mutation.store');
-   });
+   
 
    Route::group(['middleware' => ['role:Supervisor|Manager']], function () {
       Route::prefix('employee')->group(function () {
@@ -251,7 +264,7 @@ Route::middleware(["auth"])->group(function () {
 
    // Role Campuran  
 
-   Route::group(['middleware' => ['role:Administrator|HRD|Leader|Manager|Supervisor']], function () {
+   Route::group(['middleware' => ['role:Administrator|HRD|HRD-Recruitment|HRD-Spv|Leader|Manager|Supervisor']], function () {
       // kpi
       Route::prefix('kpi')->group(function () {
          Route::get('/', [PeKpiController::class, 'index'])->name('kpi');

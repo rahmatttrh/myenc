@@ -3,7 +3,7 @@
       <div class="card-header">
          <div class="row row-nav-line">
             <ul class="nav nav-tabs nav-line nav-color-secondary" role="tablist">
-               <li class="nav-item"> <a class="nav-link show active" id="pills-contract-tab-nobd" data-toggle="pill" href="#pills-contract-nobd" role="tab" aria-controls="pills-contract-nobd" aria-selected="true">Contract</a> </li>
+               <li class="nav-item"> <a class="nav-link show active" id="pills-contract-tab-nobd" data-toggle="pill" href="#pills-contract-nobd" role="tab" aria-controls="pills-contract-nobd" aria-selected="true">Active</a> </li>
                <li class="nav-item"> <a class="nav-link " id="pills-history-tab-nobd" data-toggle="pill" href="#pills-history-nobd" role="tab" aria-controls="pills-history-nobd" aria-selected="true">History</a> </li>
                <li class="nav-item"> <a class="nav-link " id="pills-mutation-tab-nobd" data-toggle="pill" href="#pills-mutation-nobd" role="tab" aria-controls="pills-mutation-nobd" aria-selected="true">Mutation</a> </li>
                {{--<li class="nav-item"> <a class="nav-link " id="pills-allowances-tab-nobd" data-toggle="pill" href="#pills-allowances-nobd" role="tab" aria-controls="pills-allowances-nobd" aria-selected="false">Allowances</a> </li>
@@ -23,16 +23,17 @@
                         <div class="col-md-8">
                            {{-- <img src="{{asset('img/visa.svg')}}" height="12.5" alt="Visa Logo"> --}}
                            <h1 style="font-weight: bolder" class="text-uppercase">
-                              @if ($employee->contract->type == 'PKWT')
-                              {{$employee->contract->type}} 
+                              @if ($employee->contract->type == 'Kontrak')
+                              {{-- {{$employee->contract->type}}  --}}
+                              Kontrak
                               @elseif($employee->contract->type == 'Tetap')
-                              KARYAWAN TETAP
+                              Tetap
                               @else
-                              Status karyawan Belum ditentukan
+                              Kontrak/Tetap
                               @endif
                               
                               <br> 
-                              @if ($employee->contract->type == 'PKWT')
+                              @if ($employee->contract->type == 'Kontrak')
                                  {{formatDate($employee->contract->start)}} - {{formatDate($employee->contract->end)}} 
                               @endif
                            </h1>
@@ -43,7 +44,7 @@
                                     <i class="fa fa-ellipsis-h"></i>
                               </a>
                               <div class="dropdown-menu">
-                                 @if ($employee->contract->type == 'PKWT')
+                                 @if ($employee->contract->type == 'Kontrak')
                                  <a  class="dropdown-item" style="text-decoration: none" href="" data-toggle="modal" data-target="#modal-add-contract">Create New</a>
                                  
                                  @endif
@@ -64,9 +65,9 @@
                         <div class="col-8 pr-0">
                            {{-- <h3 class="fw-bold mb-1">{{$employee->id}}</h3> --}}
                            <div class="text-small text-uppercase fw-bold op-8">{{$employee->contract->id_no}} </div>
-                           <div class="text-small text-uppercase fw-bold op-8">{{$employee->designation->name}} - {{$employee->position->name}} </div>
+                           <div class="text-small text-uppercase fw-bold op-8"> {{$employee->position->name}} </div>
                            {{-- <div class="text-small text-uppercase fw-bold op-8"> </div> --}}
-                           <div class="text-small text-uppercase fw-bold op-8">Department {{$employee->department->name}}</div>
+                           <div class="text-small text-uppercase fw-bold op-8">{{$employee->department->name}} Department</div>
                            <div class="text-small text-uppercase fw-bold op-8">{{$employee->contract->unit->name}}</div>
                            <div class="text-small text-uppercase fw-bold op-8">Lokasi Kerja {{$employee->contract->loc ?? '-'}}</div>
                         </div>
@@ -84,8 +85,8 @@
                      
                      <div class="row">
                         <div class="col-6 pr-0">
-                           <h3 class="fw-bold mb-1">{{formatDate($employee->contract->start)}}</h3>
-                           <div class="text-small text-uppercase fw-bold op-8">Join </div>
+                           <h3 class="fw-bold mb-1">{{formatDate($employee->join)}}</h3>
+                           <div class="text-small text-uppercase fw-bold op-8">Join Date </div>
                            
                         </div>
                         <div class="col-6 pl-0 text-right">
@@ -111,6 +112,18 @@
                            
                         </div>
                      </div>
+                     <hr>
+                     @if ($employee->contract->type == 'Kontrak')
+                     <div class="row">
+                        <div class="col-12 pl-0 text-right">
+                           <div class="text-small text-uppercase fw-bold op-8">{{formatDate($employee->join)}}</div>
+                           <div class="text-small text-uppercase fw-bold op-8">Join Date</div>
+                          
+                           
+                        </div>
+                     </div>
+                     @endif
+                     
                   </div>
                </div>
                {{-- <x-employee.personal.modal.edit-bank :acc="$acc" :banks="$banks" />
@@ -299,7 +312,7 @@
                            <div class="col-md-8">
                               {{-- <img src="{{asset('img/visa.svg')}}" height="12.5" alt="Visa Logo"> --}}
                               <span>{{$contract->type}} <br> 
-                                 @if ($contract->type == 'PKWT')
+                                 @if ($contract->type == 'Kontrak')
                                     {{formatDate($contract->start)}} - {{formatDate($contract->end)}} 
                                  @endif
                               </span>
@@ -698,7 +711,7 @@
    $(document).ready(function() {
       $('.determination').hide()
       var type = $('#type').val();
-      if (type == 'PKWT') {
+      if (type == 'Kontrak') {
          $('.determination').hide()
          $('.end').show()
       } else {
@@ -710,7 +723,7 @@
          
          var type = $('#type').val();
          console.log(type);
-         if (type == 'PKWT') {
+         if (type == 'Kontrak') {
             $('.determination').hide()
             $('.end').show()
          } else {
@@ -721,7 +734,7 @@
 
       $('.determination_add').hide()
       var type = $('#type_add').val();
-      if (type == 'PKWT') {
+      if (type == 'Kontrak') {
          $('.determination_add').hide()
          $('.end_add').show()
       } else {
@@ -733,7 +746,7 @@
          
          var type = $('#type_add').val();
          console.log(type);
-         if (type == 'PKWT') {
+         if (type == 'Kontrak') {
             $('.determination_add').hide()
             $('.end_add').show()
          } else {
@@ -743,4 +756,253 @@
       })
    })
 </script>
+@endpush
+
+
+@push('myjs')
+   <script>
+      console.log('get_department');
+   
+      $(document).ready(function() {
+         $('.unit').change(function() {
+            
+            var unit = $('#unit').val();
+            var _token = $('meta[name="csrf-token"]').attr('content');
+            // console.log('okeee');
+            console.log('unit :' + unit);
+            
+            $.ajax({
+               url: "/fetch/department/" + unit ,
+               method: "GET",
+               dataType: 'json',
+
+               success: function(result) {
+                  
+                  $.each(result.result, function(i, index) {
+                     $('.department').html(result.result);
+
+                  });
+               },
+               error: function(error) {
+                  console.log(error)
+               }
+
+            })
+         })
+
+         $('.department').change(function() {
+            
+            var department = $('#department').val();
+            var _token = $('meta[name="csrf-token"]').attr('content');
+            // console.log('okeee');
+            console.log('department :' + department);
+            
+            $.ajax({
+               url: "/fetch/subdept/" + department ,
+               method: "GET",
+               dataType: 'json',
+
+               success: function(result) {
+                  
+                  $.each(result.result, function(i, index) {
+                     $('.subdept').html(result.result);
+                     $('.manager').html(result.manager);
+                     $('.leader').html(result.leader);
+                  });
+               },
+               error: function(error) {
+                  console.log(error)
+               }
+
+            })
+         })
+
+         $('.subdept').change(function() {
+            
+            var subdept = $('#subdept').val();
+            var _token = $('meta[name="csrf-token"]').attr('content');
+            // console.log('okeee');
+            console.log('subdept :' + subdept);
+            
+            $.ajax({
+               url: "/fetch/position/" + subdept ,
+               method: "GET",
+               dataType: 'json',
+
+               success: function(result) {
+                  
+                  $.each(result.result, function(i, index) {
+                     $('.position').html(result.result);
+                     
+                  });
+               },
+               error: function(error) {
+                  console.log(error)
+               }
+
+            })
+         })
+
+
+
+         $('.unit_add').change(function() {
+            
+            var unit_add = $('#unit_add').val();
+            var _token = $('meta[name="csrf-token"]').attr('content');
+            // console.log('okeee');
+            console.log('unit_add :' + unit_add);
+            
+            $.ajax({
+               url: "/fetch/department/" + unit_add ,
+               method: "GET",
+               dataType: 'json',
+
+               success: function(result) {
+                  
+                  $.each(result.result, function(i, index) {
+                     $('.department_add').html(result.result);
+
+                  });
+               },
+               error: function(error) {
+                  console.log(error)
+               }
+
+            })
+         })
+
+         $('.department_add').change(function() {
+            
+            var department_add = $('#department_add').val();
+            var _token = $('meta[name="csrf-token"]').attr('content');
+            // console.log('okeee');
+            console.log('department_add :' + department_add);
+            
+            $.ajax({
+               url: "/fetch/subdept/" + department_add ,
+               method: "GET",
+               dataType: 'json',
+
+               success: function(result) {
+                  
+                  $.each(result.result, function(i, index) {
+                     $('.subdept_add').html(result.result);
+                     
+                  });
+               },
+               error: function(error) {
+                  console.log(error)
+               }
+
+            })
+         })
+
+         $('.subdept_add').change(function() {
+            
+            var subdept_add = $('#subdept_add').val();
+            var _token = $('meta[name="csrf-token"]').attr('content');
+            // console.log('okeee');
+            console.log('subdept_add :' + subdept_add);
+            
+            $.ajax({
+               url: "/fetch/position/" + subdept_add ,
+               method: "GET",
+               dataType: 'json',
+
+               success: function(result) {
+                  
+                  $.each(result.result, function(i, index) {
+                     $('.position_add').html(result.result);
+                     
+                  });
+               },
+               error: function(error) {
+                  console.log(error)
+               }
+
+            })
+         })
+
+
+
+         $('.unit_mutation').change(function() {
+            
+            var unit_mutation = $('#unit_mutation').val();
+            var _token = $('meta[name="csrf-token"]').attr('content');
+            // console.log('okeee');
+            console.log('unit_mutation :' + unit_mutation);
+            
+            $.ajax({
+               url: "/fetch/department/" + unit_mutation ,
+               method: "GET",
+               dataType: 'json',
+
+               success: function(result) {
+                  
+                  $.each(result.result, function(i, index) {
+                     $('.department_mutation').html(result.result);
+
+                  });
+               },
+               error: function(error) {
+                  console.log(error)
+               }
+
+            })
+         })
+
+         $('.department_mutation').change(function() {
+            
+            var department_mutation = $('#department_mutation').val();
+            var _token = $('meta[name="csrf-token"]').attr('content');
+            // console.log('okeee');
+            console.log('department_mutation :' + department_mutation);
+            
+            $.ajax({
+               url: "/fetch/subdept/" + department_mutation ,
+               method: "GET",
+               dataType: 'json',
+
+               success: function(result) {
+                  
+                  $.each(result.result, function(i, index) {
+                     $('.subdept_mutation').html(result.result);
+                     $('.manager_mutation').html(result.manager);
+                     $('.leader_mutation').html(result.leader);
+                  });
+               },
+               error: function(error) {
+                  console.log(error)
+               }
+
+            })
+         })
+
+         $('.subdept_mutation').change(function() {
+            
+            var subdept_mutation = $('#subdept_mutation').val();
+            var _token = $('meta[name="csrf-token"]').attr('content');
+            // console.log('okeee');
+            console.log('subdept_mutation :' + subdept_mutation);
+            
+            $.ajax({
+               url: "/fetch/position/" + subdept_mutation ,
+               method: "GET",
+               dataType: 'json',
+
+               success: function(result) {
+                  
+                  $.each(result.result, function(i, index) {
+                     $('.position_mutation').html(result.result);
+                     
+                  });
+               },
+               error: function(error) {
+                  console.log(error)
+               }
+
+            })
+         })
+      })
+   </script>
 @endpush

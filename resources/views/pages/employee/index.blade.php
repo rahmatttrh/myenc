@@ -43,12 +43,12 @@ Employee
                <th class="text-center">No</th>
                <th>Name</th>
                <th>ID</th>
-               <th>Phone</th>
+               {{-- <th>Phone</th> --}}
                <th class="text-truncate">Bisnis Unit</th>
                <th>Department</th>
-               <th>Level</th>
-               <th>Jabatan</th>
-               <th>Status</th>
+               {{-- <th>Level</th> --}}
+               <th  >Posisi</th>
+               <th>Kontrak/Tetap</th>
                {{-- <th class="text-right">Action</th> --}}
             </tr>
          </thead>
@@ -56,8 +56,8 @@ Employee
             <tr>
                <th class=""></th>
                <td @disabled(true)></td>
-               <th></th>
-               <th></th>
+               {{-- <th></th>
+               <th></th> --}}
                <th></th>
                <th></th>
                <th></th>
@@ -95,17 +95,19 @@ Employee
                      </div> --}}
                </td>
                <td class="text-truncate">{{$employee->contract->id_no}}</td>
-               <td>{{$employee->biodata->phone}}</td>
+               {{-- <td>{{$employee->biodata->phone}}</td> --}}
                <td>{{$employee->department->unit->name ?? ''}}</td>
                <td>{{$employee->department->name ?? ''}}</td>
-               <td>{{$employee->contract->designation->name ?? ''}}</td>
+               {{-- <td>{{$employee->contract->designation->name ?? ''}}</td> --}}
                <td>{{$employee->position->name}}</td>
                <td>
-                  {{-- @if ($employee->biodata->status == 1)
-                  <span class="badge badge-info">Active</span>
+                  @if ($employee->contract->type == 'Kontrak')
+                  <span class="badge badge-info">Kontrak</span>
+                  @elseif($employee->contract->type == 'Tetap')
+                  <span class="badge badge-info">Tetap</span>
                   @else
-                  <span class="badge badge-muted">Off</span>
-                  @endif --}}
+                  <span class="badge badge-muted">Empty</span>
+                  @endif
 
                </td>
             </tr>
