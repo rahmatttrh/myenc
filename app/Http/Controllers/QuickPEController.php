@@ -677,6 +677,7 @@ class QuickPEController extends Controller
         $request->validate([
             'nd_dibuat' => 'required|string|max:50',
             'nd_from' => 'required|string|max:50',
+            'nd_for' => 'required',
             'nd_date' => 'required|date',
             'nd_alasan' => 'required',
         ]);
@@ -689,6 +690,7 @@ class QuickPEController extends Controller
             $update = $pe->update([
                 'nd_dibuat' => $request->nd_dibuat,
                 'nd_from' => $request->nd_from,
+                'nd_for' => $request->nd_for,
                 'nd_date' => $request->nd_date,
                 'nd_alasan' => $request->nd_alasan,
                 'status' => '202' //Status need discuss

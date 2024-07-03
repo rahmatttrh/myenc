@@ -20,13 +20,13 @@ PE
     @endif
     <div class="row mr-6">
 
-      @if (auth()->user()->hasRole('Karywawan'))
+        @if (auth()->user()->hasRole('Karyawan'))
         <!-- Awal Action Karyawan -->
 
         <!-- Hanya karyawan tersebut yang bisa komplen -->
         @if(auth()->user()->employee->id == $pe->employe_id && ($kpa->pe->status == '1'|| $kpa->pe->status == '101' || $kpa->pe->status == '202') && $pe->complained == '0' )
         <div class="btn-group ml-auto">
-            <button data-target="#modalKomplain" data-toggle="modal" class="btn btn-xs btn-warning "><i class="fa fa-comments"></i> Ajukan Komplain</button>
+            <button data-target="#modalKomplain" data-toggle="modal" class="btn btn-md btn-warning "><i class="fa fa-comments"></i> Ajukan Komplain</button>
         </div>
 
         <!-- Modal Komplain  -->
@@ -185,13 +185,21 @@ PE
                                                 <div class="form-group">
                                                     <div class="row">
                                                         <div class="col-md-6">
-                                                            <label for="" class="label-control">Tetapkan Tanggal Diskusi <span class="hidden-danger">*</span></label>
+                                                            <label for="" class="label-control">Tetapkan Tanggal Diskusi <span class="text-danger">*</span></label>
                                                             <input required name="nd_date" type="date" class="form-control" min="<?php echo date('Y-m-d'); ?>">
+                                                            <br>
+                                                            <label for="" class="label-control">Di Tunjukan untuk <span class="text-danger">*</span></label>
+                                                            <select name="nd_for" id="" class="form-control">
+                                                                <option value="3">Karyawan dan Team Leader/Spv</option>
+                                                                <option value="2">Karyawan</option>
+                                                                <option value="1">TL/Spv</option>
+                                                            </select>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <label for="" class="label-control">Alasan <span class="text-danger">*</span></label>
                                                             <textarea name="nd_alasan" class="form-control" id="" rows="5" placeholder="isi alasan untuk berdiskusi disini" required></textarea>
                                                         </div>
+
                                                     </div>
                                                 </div>
                                             </div>
