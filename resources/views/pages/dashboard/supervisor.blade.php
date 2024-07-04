@@ -16,12 +16,11 @@ Dashboard
    </div> --}}
    <div class="row">
       <div class="col-md-4">
-         <div class="btn btn-primary btn-block">Supervisor</div>
-         <hr>
-         <div class="d-block d-sm-none">
+         {{-- <div class="btn btn-primary btn-block">Supervisor</div>
+         <hr> --}}
+         {{-- <div class="d-block d-sm-none">
             <div class="alert alert-info shadow-sm">
 
-               {{-- <div class="card-body"> --}}
                   <div class="card-opening">
                      <h4>
                         <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1">
@@ -32,13 +31,9 @@ Dashboard
                   <div class="card-desc">
                      Tanggal 8 & 9 Februari Libur Nasional dan Cuti Bersama
                   </div>
-                  {{-- <div class="card-detail">
-                        <div class="btn btn-light btn-rounded">Download Template</div>
-                     </div> --}}
-               {{-- </div> --}}
             </div>
             <hr>
-         </div>
+         </div> --}}
          <div class="card card-profile card-secondary ">
             <div class="card-header" style="background-image: url({{asset('img/blogpost.jpg')}})">
                <div class="profile-picture">
@@ -60,7 +55,7 @@ Dashboard
                
             </div>
              
-            <div class="card-footer d-flex justify-content-between">
+            {{-- <div class="card-footer d-flex justify-content-between">
                
                @if ($employee->contract_id != null)
                <div>
@@ -74,16 +69,35 @@ Dashboard
                </div>
                @endif
                
-            </div>
+            </div> --}}
             
+         </div>
+
+         <div class="card">
+            <div class="card-header bg-primary text-white p-2">
+               <small>My Team</small>
+            </div>
+            <div class="card-body p-0">
+               <table class=" ">
+                  
+                  <tbody>
+                     @foreach ($teams as $employee)
+                         <tr>
+                           <td>{{$employee->nik}} {{$employee->biodata->fullName()}}</td>
+                           {{-- <td></td> --}}
+                         </tr>
+                     @endforeach
+                     
+                     
+                  </tbody>
+               </table>
+            </div>
          </div>
       </div>
       <div class="col-md-8">
-         {{-- <div class="alert alert-info">You have 2 Notification !</div> --}}
-         <div class="d-none d-sm-block">
+         {{-- <div class="d-none d-sm-block">
             <div class="alert alert-info shadow-sm">
 
-               {{-- <div class="card-body"> --}}
                   <div class="card-opening">
                      <h4>
                         <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1">
@@ -94,15 +108,79 @@ Dashboard
                   <div class="card-desc">
                      Tanggal 8 & 9 Februari Libur Nasional dan Cuti Bersama
                   </div>
-                  {{-- <div class="card-detail">
-                        <div class="btn btn-light btn-rounded">Download Template</div>
-                     </div> --}}
-               {{-- </div> --}}
             </div>
             <hr>
+         </div> --}}
+
+         <div class="card">
+            <div class="card-header bg-primary text-white p-2">
+               <small>Recent QPE</small>
+            </div>
+            <div class="card-body p-0">
+               <table class=" ">
+                  <thead>
+                     
+                     <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">Employee</th>
+                        <th>Semester/Tahun</th>
+                        <th scope="col">Achievement</th>
+                        <th>Status</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr>
+                        <td colspan="5" class="text-center">Empty</td>
+                     </tr>
+                     
+                     
+                  </tbody>
+               </table>
+            </div>
          </div>
 
          <div class="card">
+            <div class="card-header bg-danger text-white p-2">
+               <small>Recent SP</small>
+            </div>
+            <div class="card-body p-0">
+               <table class=" ">
+                  <thead>
+                     
+                     <tr>
+                        {{-- <th scope="col">No</th> --}}
+                        <th scope="col">ID</th>
+                        <th>Level</th>
+                        <th scope="col">NIK</th>
+                        <th>Name</th>
+                        <th>Status</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     @if (count($spRecents) > 0)
+                        @foreach ($spRecents as $sp)
+                            <tr>
+                              <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->code}}</a></td>
+                              <td>SP {{$sp->level}}</td>
+                              <td>{{$sp->employee->nik}}</td>
+                              <td>{{$sp->employee->biodata->fullName()}}</td>
+                              <td><x-status.sp :sp="$sp" /> </td>
+                            </tr>
+                        @endforeach
+                         @else
+                         <tr>
+                           <td colspan="4" class="text-center">Empty</td>
+                        </tr>
+                     @endif
+                     
+                     
+                     
+                  </tbody>
+               </table>
+            </div>
+         </div>
+
+         {{-- <div class="card">
             <div class="card-header p-2">
                <small>SPKL Request</small>
             </div>
@@ -111,11 +189,9 @@ Dashboard
                   <thead>
                      
                      <tr>
-                        {{-- <th scope="col">#</th> --}}
                         <th scope="col">ID</th>
                         <th scope="col">Date</th>
                         <th>Name</th>
-                        {{-- <th>Desc</th> --}}
                         <th scope="col">Status</th>
                      </tr>
                   </thead>
@@ -126,7 +202,6 @@ Dashboard
                            <td><a href="{{route('spkl.detail', enkripRambo($spkl->id))}}">{{$spkl->code}}</a></td>
                            <td>{{formatDate($spkl->date)}}</td>
                            <td>{{$spkl->employee->biodata->first_name}} {{$spkl->employee->biodata->last_name}}</td>
-                           {{-- <td style="max-width: 190px" class="text-truncate">{{$spkl->desc}}</td> --}}
                            <td>
                               <x-status.spkl :spkl="$spkl" />
                            </td>
@@ -153,36 +228,17 @@ Dashboard
                   <thead>
                      
                      <tr>
-                        {{-- <th scope="col">#</th> --}}
                         <th scope="col">ID</th>
                         <th scope="col">Date</th>
                         <th>Name</th>
-                        {{-- <th>Desc</th> --}}
                         <th scope="col">Status</th>
                      </tr>
                   </thead>
                   <tbody>
-                     {{-- @if (count($spkls) > 0)
-                         @foreach ($spkls as $spkl)
-                         <tr>
-                           <td><a href="{{route('spkl.detail', enkripRambo($spkl->id))}}">{{$spkl->code}}</a></td>
-                           <td>{{formatDate($spkl->date)}}</td>
-                           <td>{{$spkl->employee->biodata->first_name}} {{$spkl->employee->biodata->last_name}}</td><td>
-                              <x-status.spkl :spkl="$spkl" />
-                           </td>
-                        </tr>
-                         @endforeach
-                        @else
-                        <tr>
-                           <td colspan="5" class="text-center">Empty</td>
-                        </tr>
-                     @endif --}}
-                     
-                     
                   </tbody>
                </table>
             </div>
-         </div>
+         </div> --}}
          
          
          

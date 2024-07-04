@@ -14,7 +14,9 @@ class ContractController extends Controller
 
    public function store(Request $req)
    {
-      $req->validate([]);
+      $req->validate([
+         'nik' => 'required|unique:employees'
+      ]);
       $employee = Employee::find($req->employee);
       $currentContract = Contract::find($employee->contract_id);
       $currentContract->update([
@@ -23,7 +25,7 @@ class ContractController extends Controller
       $contract = Contract::create([
          'status' => 1,
          'employee_id' => $req->employee,
-         'id_no' => $req->id,
+         'id_no' => $req->nik,
          'type' => $req->type_add,
          'shift_id' => $req->shift,
          'designation_id' => $req->designation,
@@ -45,6 +47,7 @@ class ContractController extends Controller
 
       $employee->update([
          // 'unit_id' => $contract->unit_id,
+         'nik' => $req->nik,
          'contract_id' => $contract->id,
          'department_id' => $contract->department_id,
          'designation_id' => $contract->designation_id,
@@ -53,7 +56,9 @@ class ContractController extends Controller
          'direct_leader_id' => $contract->direct_leader_id,
       ]);
 
+      $user = Employee::find(auth()->user()->getEmployeeId());
       Log::create([
+         'department_id' => $user->department_id,
          'user_id' => auth()->user()->id,
          'action' => 'Create',
          'desc' => 'Contract ' . $employee->nik . ' ' . $employee->biodata->fullname()
@@ -64,7 +69,9 @@ class ContractController extends Controller
    public function update(Request $req)
    {
       // dd('ok');
-      $req->validate([]);
+      $req->validate([
+         'nik' => 'required'
+      ]);
 
       // try {
       //    DB::transaction(function () use ($req) {
@@ -75,6 +82,7 @@ class ContractController extends Controller
       // dd($req->designation);
       $employee->update([
          // 'unit_id' => $req->unit,
+         'nik' => $req->nik,
          'manager_id' => $req->manager,
          'direct_leader_id' => $req->leader,
          'designation_id' => $req->designation,
@@ -87,7 +95,7 @@ class ContractController extends Controller
 
       $contract->update([
          'status' => 1,
-         'id_no' => $req->id,
+         'id_no' => $req->nik,
          'type' => $req->type,
          'date' => $req->date,
          'shift_id' => $req->shift,
@@ -105,7 +113,8 @@ class ContractController extends Controller
          'determination' => $req->determination,
          'desc' => $req->desc,
          'cuti' => $req->cuti,
-         'loc' => $req->loc
+         'loc' => $req->loc,
+         'note' => $req->note
       ]);
       // });
 
@@ -121,10 +130,12 @@ class ContractController extends Controller
       //    $user->assignRole('Karyawan');
       // }
 
+      $user = Employee::find(auth()->user()->getEmployeeId());
       Log::create([
+         'department_id' => $user->department_id,
          'user_id' => auth()->user()->id,
          'action' => 'Update',
-         'desc' => 'Contract ' . $employee->nik . ' ' . $employee->biodata->fullName()
+         'desc' => 'Contract ' . $employee->nik . ' ' . $employee->biodata->fullname()
       ]);
 
       return redirect()->route('employee.detail', [enkripRambo($req->employee), enkripRambo('contract')])->with('success', 'Contract successfully updated');

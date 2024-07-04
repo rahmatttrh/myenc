@@ -533,7 +533,7 @@
                         </div>
                         <div class="col-md-2">
                            <div class="text-right">
-                              <button type="submit" class="btn btn-block btn-dark" {{$employee->status == 0 ? 'disabled' : ''}}>Add</button>
+                              <button type="submit" class="btn btn-block btn-dark" >Add</button>
                            </div>
                         </div>
 

@@ -14,7 +14,7 @@
          </h5>
       </div>
       <div class="row">
-         <div class="col-sm-6 col-md-3">
+         {{-- <div class="col-sm-6 col-md-3">
             <a href="" style="text-decoration: none" data-toggle="tooltip" data-placement="top" title="Total Vessel">
                <div class="card card-stats card-primary card-round">
                   <div class="card-body">
@@ -34,7 +34,7 @@
                   </div>
                </div>
             </a>
-         </div>
+         </div> --}}
          <div class="col-sm-6 col-md-3">
             <a href="" style="text-decoration: none" data-toggle="tooltip" data-placement="top" title="Total Vessel">
                <div class="card card-stats card-primary card-round">
@@ -55,53 +55,6 @@
                   </div>
                </div>
             </a>
-         </div>
-         <div class="col-sm-6 col-md-3">
-            <a href="#" style="text-decoration: none" data-toggle="tooltip" data-placement="top" title="Total Office">
-               <div class="card card-stats card-info card-round">
-                  <div class="card-body">
-                     <div class="row">
-                        <div class="col-5">
-                           <div class="icon-big text-center">
-                              <i class="flaticon-user"></i>
-                           </div>
-                        </div>
-                        <div class="col col-stats">
-                           <div class="numbers">
-                              <p class="card-category">Male</p>
-                               <h4 class="card-title">{{$male}}</h4> 
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </a>
-         </div>
-         <div class="col-sm-6 col-md-3">
-            <a href="" style="text-decoration: none" data-toggle="tooltip" data-placement="top" title="Total Material">
-               <div class="card card-stats card-secondary card-round">
-                  <div class="card-body">
-                     <div class="row">
-                        <div class="col-5">
-                           <div class="icon-big text-center">
-                              <i class="flaticon-like"></i>
-                           </div>
-                        </div>
-                        <div class="col col-stats">
-                           <div class="numbers">
-                              <p class="card-category">Female</p>
-                              <h4 class="card-title">{{$female}}</h4>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </a>
-         </div>
-         
-      </div>
-      <div class="row">
-         <div class="col-md-3">
             <div class="card">
                <div class="card-body">
                     Hak Akses :  HRD SPV
@@ -143,8 +96,6 @@
                   </table>
                </div>
             </div>
-
-            
          </div>
          <div class="col-md-9">
             <div class="row">
@@ -194,9 +145,20 @@
                               
                            </thead>
                            <tbody>
-                              <tr>
-                                 <td colspan="3" class="text-center">Empty</td>
-                              </tr>
+                              @if (count($sps) > 0)
+                                 @foreach ($sps as $sp)
+                                 <tr>
+                                    <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->code}}</a></td>
+                                    <td>{{$sp->employee->biodata->fullName()}}</td>
+                                    <td>SP {{$sp->level}}</td>
+                                 </tr>
+                                 @endforeach
+                                  @else
+                                  <tr>
+                                    <td colspan="3" class="text-center">Empty</td>
+                                 </tr>
+                              @endif
+                              
                            </tbody>
                         </table>
                      </div>
@@ -246,6 +208,18 @@
                   </div>
                </div>
             </div>
+         </div>
+         
+         
+      </div>
+      <div class="row">
+         <div class="col-md-3">
+            
+
+            
+         </div>
+         <div class="col-md-9">
+            
             
          </div>
       </div>

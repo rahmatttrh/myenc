@@ -30,6 +30,42 @@
                   </a>
                </li>
 
+
+               <li class="nav-item dropdown hidden-caret">
+                  <a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     <i class="fa fa-bell"></i>
+                     <span class="notification">{{count($notifSp)}}</span>
+                  </a>
+                  <ul class="dropdown-menu notif-box animated fadeIn" aria-labelledby="notifDropdown">
+                     <li>
+                        <div class="dropdown-title">You have {{count($notifSp)}} new notification</div>
+                     </li>
+                     <li>
+                        <div class="notif-scroll scrollbar-outer">
+                           <div class="notif-center">
+                              @foreach ($notifSp as $sp)
+                              <a href="{{route('sp.detail', enkripRambo($sp->id))}}">
+                                 {{-- <div class="notif-icon notif-primary"> <i class="fa fa-user-plus"></i> </div> --}}
+                                 <div class="notif-content pl-4">
+                                    <span class="block">
+                                       
+                                      SP {{$sp->level}} - {{$sp->employee->nik}} {{$sp->employee->biodata->fullName()}}
+                                    </span>
+                                    <span class="time">{{$sp->updated_at->diffForHumans()}}</span> 
+                                 </div>
+                              </a>
+                              @endforeach
+                              
+                              
+                           </div>
+                        </div>
+                     </li>
+                     <li>
+                        <a class="see-all" href="javascript:void(0);">See all notifications<i class="fa fa-angle-right"></i> </a>
+                     </li>
+                  </ul>
+               </li>
+
             
 
                <li class="nav-item dropdown hidden-caret">

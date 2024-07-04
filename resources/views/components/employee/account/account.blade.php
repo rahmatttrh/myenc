@@ -22,11 +22,16 @@
                   <div class="form-group form-group-default">
                      <label>Role</label>
                      <select class="form-control" id="role" name="role">
+                        <option value="" selected disabled>Select</option>
                         @foreach ($roles as $role)
                             <option {{$employee->role == $role->id ? 'selected' : ''}} value="{{$role->id}}">{{$role->name}}</option>
                         @endforeach
                      </select>
+                     
                   </div>
+                  @if ($employee->status == 0)
+                        * Publish karyawan untuk menambahkan Role
+                     @endif
                </div>
                <div class="col-md-2">
                   <button type="submit" class="btn btn-block btn-dark" {{$employee->status == 0 ? 'disabled' : ''}}>Update</button>

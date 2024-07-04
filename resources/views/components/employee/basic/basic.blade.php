@@ -201,7 +201,8 @@
                   
 
                   <div class="text-right mt-3 mb-3">
-                     <button type="submit" class="btn btn-dark" {{$employee->status == 0 ? 'disabled' : ''}}>Update</button>
+                     {{-- <button type="submit" class="btn btn-dark" {{$employee->status == 0 ? 'disabled' : ''}}>Update</button> --}}
+                     <button type="submit" class="btn btn-dark" >Update</button>
                   </div>
                </form>
             </div>
@@ -257,7 +258,7 @@
                   </div>
 
                   <div class="text-right mt-3 mb-3">
-                     <button type="submit" class="btn btn-dark" {{$employee->status == 0 ? 'disabled' : ''}}>Update</button>
+                     <button type="submit" class="btn btn-dark">Update</button>
                   </div>
                </form>
             </div>
@@ -285,7 +286,7 @@
                      </div>
                   </div>
                   <hr>
-                  <button class="btn btn-dark" {{$employee->status == 0 ? 'disabled' : ''}}>Update</button>
+                  <button class="btn btn-dark" >Update</button>
                </form>
             </div>
             <div class="tab-pane fade" id="pills-bio-nobd" role="tabpanel" aria-labelledby="pills-bio-tab-nobd">
@@ -313,7 +314,7 @@
                      @enderror
                   </div>
                   <div class="text-right mt-3 mb-3">
-                     <button type="submit" class="btn btn-dark" {{$employee->status == 0 ? 'disabled' : ''}}>Update Bio</button>
+                     <button type="submit" class="btn btn-dark" >Update Bio</button>
                   </div>
                </form>
             </div>

@@ -20,6 +20,7 @@ class User extends Authenticatable implements MustVerifyEmail
     */
    protected $fillable = [
       'name',
+      'username',
       'email',
       'password',
    ];
@@ -77,6 +78,7 @@ class User extends Authenticatable implements MustVerifyEmail
    public function getEmployeeId()
    {
       // dd($this->email);
+      // dd($this->id);
       $biodata = Biodata::where('email', $this->email)->first();
       // dd($biodata->id);
       $employee = Employee::where('biodata_id', $biodata->id)->first();

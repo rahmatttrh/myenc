@@ -52,7 +52,7 @@
                         <div class="col-md-4">
                            <div class="form-group form-group-default">
                               <label>ID Employee</label>
-                              <input type="text" class="form-control"  name="id" id="id" value="{{$employee->contract->id_no}}">
+                              <input type="text" class="form-control"  name="nik" id="nik" value="{{$employee->contract->id_no}}">
                            </div>
                         </div>
                         <div class="col-md-4">

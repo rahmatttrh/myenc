@@ -44,6 +44,9 @@ Detail Employee
    </div>
    <div class="row">
       <div class="col-md-4">
+         @if ($employee->status == 0)
+             <a href="#" data-toggle="modal" data-target="#modal-publish-employee" class="btn btn-block btn-primary mb-2">Publish</a>
+         @endif
          <div class="card card-light shadow-none border">
             <div class="card-header">
                @if ($employee->status == 1)
@@ -101,7 +104,7 @@ Detail Employee
                   <i class="fas fa-user mr-1"></i>
                   Personal Data
                </a>
-               <a class="nav-link {{$panel == 'account' ? 'active' : ''}} text-left pl-3" id="v-pills-account-tab" data-toggle="pill" href="#v-pills-account" role="tab" aria-controls="v-pills-account" aria-selected="false">
+               <a class="nav-link {{$panel == 'account' ? 'active' : ''}} text-left pl-3" id="v-pills-account-tab"  data-toggle="pill" href="#v-pills-account" role="tab" aria-controls="v-pills-account" aria-selected="false">
                   <i class="fas fa-credit-card mr-1"></i>
                   System Account
                </a>
@@ -145,11 +148,11 @@ Detail Employee
       </div>
    </div>
    <div class="col-md-8">
-      @if ($employee->status == 0)
+      {{-- @if ($employee->status == 0)
       <div class="alert alert-warning shadow-none">
          <small class="text-muted">You can not change data before activate employee</small>
       </div>
-      @endif
+      @endif --}}
 
       <div class="tab-content" id="v-pills-tabContent">
          <x-employee.contract.contract :employee="$employee" :departments="$departments" :designations="$designations" :positions="$positions" :roles="$roles" :shifts="$shifts" :panel="$panel" :i="0" :managers="$managers" :spvs="$spvs" :leaders="$leaders" :allmanagers="$allManagers" :allspvs="$allSpvs" :allleaders="$allLeaders" :subdepts="$subdepts" :units="$units" :allpositions="$allPositions" />
@@ -204,6 +207,31 @@ Detail Employee
                <button type="submit" class="btn btn-dark ">Update</button>
             </div>
          </form>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="modal-publish-employee" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Publish Employee</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            Ubah status menjadi Karyawan Aktif?
+            <hr>
+            <small>- Sistem akan otomatis membuat akun</small><br>
+            <small>- Username : NIK</small><br>
+            <small>- Password : 12345678</small><br>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+            {{-- <button type="submit" class="btn btn-dark ">Update</button> --}}
+            <a href="{{route('employee.publish.single', enkripRambo($employee->id))}}" class="btn btn-primary ">Publish</a>
+         </div>
       </div>
    </div>
 </div>

@@ -145,6 +145,11 @@
                   </table>
                </div>
             </div>
+            <div class="d-flex">
+               <a href="{{route('employee.create')}}" class="btn btn-primary btn-block mr-2">Create</a>
+               <a href="{{route('employee.import')}}" class="btn btn-primary">Import</a>
+            </div>
+            
          </div>
          <div class="col-md-9">
             <div class="row">

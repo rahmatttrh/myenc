@@ -224,13 +224,17 @@ class HomeController extends Controller
 
          $spkls = Spkl::where('status', '>=', 1)->where('department_id', $employee->department_id)->orderBy('created_at', 'desc')->paginate(5);
          // dd($spkls);
+         $teams = Employee::where('direct_leader_id', auth()->user()->getEmployeeId())->get();
+         $spRecents = Sp::where('by_id',auth()->user()->getEmployeeId())->paginate('5');
          return view('pages.dashboard.supervisor', [
             'employee' => $biodata->employee,
+            'teams' => $teams,
             'dates' => $dates,
             'presences' => $presences,
             'pending' => $pending,
 
-            'spkls' => $spkls
+            'spkls' => $spkls,
+            'spRecents' => $spRecents
          ]);
       } else {
 

@@ -1,5 +1,5 @@
 {{-- Master Data --}}
-<li class="nav-item">
+<li class="nav-item {{ (request()->is('master/*')) ? 'active' : '' }}">
    <a data-toggle="collapse" href="#vessel">
       <i class="fas fa-server"></i>
       <p>Master Data</p>
@@ -36,8 +36,33 @@
    </div>
 </li>
 
+
+<li class="nav-section">
+   <span class="sidebar-mini-icon">
+      <i class="fa fa-ellipsis-h"></i>
+   </span>
+   <h4 class="text-section">Employee</h4>
+</li>
+<li class="nav-item {{ (request()->is('employee/tab/*')) ? 'active' : '' }}">
+   <a href="{{route('employee', enkripRambo('active'))}}">
+      <i class="fas fa-users"></i>
+      <p>Active</p>
+   </a>
+</li>
+<li class="nav-item {{ (request()->is('employee/nonactive')) ? 'active' : '' }}">
+   <a href="{{route('employee.nonactive')}}">
+      <i class="fas fa-users"></i>
+      <p>Non Active</p>
+   </a>
+</li>
+<li class="nav-item {{ (request()->is('employee/draft')) ? 'active' : '' }}">
+   <a href="{{route('employee.draft')}}">
+      <i class="fas fa-users"></i>
+      <p>Draft</p>
+   </a>
+</li>
 {{-- Employee --}}
-<li class="nav-item">
+{{-- <li class="nav-item">
    <a data-toggle="collapse" href="#employee">
       <i class="fas fa-users"></i>
       <p>Employee</p>
@@ -63,4 +88,4 @@
 
       </ul>
    </div>
-</li>
+</li> --}}

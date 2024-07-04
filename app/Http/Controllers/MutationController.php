@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Aggreement;
 use App\Models\Contract;
 use App\Models\Employee;
+use App\Models\Log;
 use App\Models\Mutation;
 use Illuminate\Http\Request;
 
@@ -82,6 +83,14 @@ class MutationController extends Controller
          'position_id' => $contract->position_id,
          'manager_id' => $req->manager_mutation,
          'direct_leader_id' => $req->leader_mutation,
+      ]);
+
+      $user = Employee::find(auth()->user()->getEmployeeId());
+      Log::create([
+         'department_id' => $user->department_id,
+         'user_id' => auth()->user()->id,
+         'action' => 'Add',
+         'desc' => 'Mutation ' . $employee->nik . ' ' . $employee->biodata->fullname()
       ]);
 
       return redirect()->route('employee.detail', [enkripRambo($req->employee), enkripRambo('contract')])->with('success', 'Mutation successfully added');

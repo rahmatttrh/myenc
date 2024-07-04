@@ -165,8 +165,8 @@
                         <div class="col-md-6">
                            <div class="form-group form-group-default">
                               <label>ID Employee*</label>
-                              <input id="id" name="id" type="text" required value="{{old('id')}}" class="form-control" placeholder="">
-                              @error('id')
+                              <input id="nik" name="nik" type="text" required value="{{old('nik')}}" class="form-control" placeholder="">
+                              @error('nik')
                                  <small class="text-danger"><i>{{ $message }}</i></small>
                               @enderror
                            </div>
@@ -174,7 +174,7 @@
                         <div class="col-md-6">
                            <div class="form-group form-group-default">
                               <label>Bussiness Unit*</label>
-                              <select class="form-control" id="unit" name="unit" required >
+                              <select class="form-control unit" id="unit" name="unit" required >
                                  <option value="" disabled selected>Choose one</option>
                                  @foreach ($units as $unit)
                                        <option {{old('unit') == $unit->id ? 'selected' : ''}} value="{{$unit->id}}">{{$unit->name}}</option>
@@ -193,8 +193,8 @@
                               <label>Type*</label>
                               <select class="form-control type" required  id="type" name="type">
                                  <option value="" disabled selected>Select</option>
-                                 <option  value="Kontrak">Kontrak</option>
-                                 <option  value="Tetap">Tetap</option>
+                                 <option {{old('type') == 'Kontrak' ? 'selected' : ''}}  value="Kontrak">Kontrak</option>
+                                 <option {{old('type') == 'Tetap' ? 'selected' : ''}}  value="Tetap">Tetap</option>
                               </select>
                               @error('type')
                               <small class="text-danger"><i>{{ $message }}</i></small>
@@ -204,29 +204,29 @@
                         <div class="col-md-4">
                            <div class="form-group form-group-default">
                               <label>Start*</label>
-                              <input type="date" class="form-control" required name="start" id="start" >
+                              <input type="date" class="form-control" required name="start" id="start" value="{{old('start')}}" >
                            </div>
                         </div>
                         <div class="col-md-4 end">
                            <div class="form-group form-group-default">
                               <label>End</label>
-                              <input type="date" class="form-control"  name="end" id="end"  >
+                              <input type="date" class="form-control"  name="end" id="end" value="{{old('end')}}" >
                            </div>
                         </div>
                         <div class="col-md-4 determination">
                            <div class="form-group form-group-default">
                               <label>Penetapan</label>
-                              <input type="date" class="form-control"  name="determination" id="determination"  >
+                              <input type="date" class="form-control"  name="determination" id="determination" value="{{old('determination')}}" >
                            </div>
                         </div>
 
                         <div class="col-md-4">
                            <div class="form-group form-group-default">
                               <label>Work Hour*</label>
-                              <select class="form-control" id="shift" required name="shift">
+                              <select class="form-control" required id="shift" required name="shift">
                                  <option value="" disabled selected>Select</option>
                                  @foreach ($shifts as $shift)
-                                 <option  value="{{$shift->id}}">{{formatTime($shift->in)}} - {{formatTime($shift->out)}}</option>
+                                 <option {{old('shift') == $shift->id ? 'selected' : ''}}  value="{{$shift->id}}">{{formatTime($shift->in)}} - {{formatTime($shift->out)}}</option>
                                  @endforeach
                               </select>
                            </div>
@@ -234,13 +234,18 @@
                         <div class="col-md-4">
                            <div class="form-group form-group-default">
                               <label>Lokasi*</label>
-                              <select class="form-control" id="loc" name="loc" required>
+                              <select class="form-control" id="loc" required name="loc" required>
                                  <option value="" disabled selected>Select</option>
-                                 <option  value="HW">HW</option>
-                                 <option  value="JGC">JGC</option>
-                                 <option  value="KJ4">KJ4</option>
-                                 <option  value="KJ2/KJ5">KJ2/KJ5</option>
-                                 <option  value="GS">GS</option>
+                                 <option {{old('loc') == 'hw' ? 'selected' : ''}} value="hw">HW</option>
+                                 <option {{old('loc') == 'jgc' ? 'selected' : ''}} value="jgc">JGC</option>
+                                 <option {{old('loc') == 'kj1-2' ? 'selected' : ''}} value="kj1-2">KJ 1-2</option>
+                                 <option {{old('loc') == 'kj4' ? 'selected' : ''}} value="kj4">KJ 4</option>
+                                 <option {{old('loc') == 'kj5' ? 'selected' : ''}} value="kj5">KJ 5</option>
+                                 <option {{old('loc') == 'kj1-5' ? 'selected' : ''}} value="kj1-5">KJ 1-5</option>
+                                 <option {{old('loc') == 'gs' ? 'selected' : ''}} value="gs">GS</option>
+                                 <option {{old('loc') == 'enc' ? 'selected' : ''}} value="enc">ENC</option>
+                                 <option {{old('loc') == 'plb' ? 'selected' : ''}} value="plb">PLB</option>
+                                 <option {{old('loc') == 'smg' ? 'selected' : ''}} value="smg">Semarang</option>
                               </select>
                            </div>
                         </div>
@@ -248,10 +253,10 @@
                         <div class="col-md-4">
                            <div class="form-group form-group-default">
                               <label>Level*</label>
-                              <select class="form-control" id="designation" name="designation" required >
+                              <select class="form-control" id="designation" required name="designation" required >
                                  <option value="" disabled selected>Select</option>
                                  @foreach ($designations as $designation)
-                                 <option value="{{$designation->id}}">{{$designation->name}}</option>
+                                 <option {{old('designation') == $designation->id ? 'selected' : ''}} value="{{$designation->id}}">{{$designation->name}}</option>
                                  @endforeach
                               </select>
                               @error('designation')
@@ -262,10 +267,10 @@
                         <div class="col-md-4">
                            <div class="form-group form-group-default">
                               <label>Department</label>
-                              <select class="form-control" id="department" name="department" >
+                              <select class="form-control department" required id="department" name="department" >
                                  <option value="" disabled selected>Select</option>
                                  @foreach ($departments as $department)
-                                 <option value="{{$department->id}}">{{$department->name}}</option>
+                                 <option {{old('department') == $department->id ? 'selected' : ''}} value="{{$department->id}}">{{$department->name}}</option>
                                  @endforeach
                               </select>
                               @error('department')
@@ -273,15 +278,30 @@
                               @enderror
                            </div>
                         </div>
+
+                        <div class="col-md-4">
+                           <div class="form-group form-group-default">
+                              <label>Sub Department</label>
+                              <select class="form-control subdept" required id="subdept" name="subdept" >
+                                 <option value="" disabled selected>Select</option>
+                                 @foreach ($subdepts as $sub)
+                                 <option {{old('subdept') == $sub->id ? 'selected' : ''}} value="{{$sub->id}}">{{$sub->name}}</option>
+                                 @endforeach
+                              </select>
+                              @error('subdept')
+                              <small class="text-danger"><i>{{ $message }}</i></small>
+                              @enderror
+                           </div>
+                        </div>
                         
                         <div class="col-md-4">
                            <div class="form-group form-group-default">
-                              <label>Jabatan*</label>
-                              <select class="form-control" id="position" name="position" required>
+                              <label>Posisi*</label>
+                              <select class="form-control position" required id="position" name="position" required>
                                  <option value="" disabled selected>Select</option>
                                  @foreach ($positions as $position)
                                  {{--<option {{$employee->contract->designation_id == $designation->id ? 'selected' : ''}} value="{{$designation->id}}">{{$designation->name}}</option>--}}
-                                 <option value="{{$position->id}}">{{$position->name}} </option>
+                                 <option {{old('position') == $position->id ? 'selected' : ''}} value="{{$position->id}}">{{$position->name}} </option>
                                  @endforeach
                               </select>
                               @error('position')
@@ -289,7 +309,7 @@
                               @enderror
                            </div>
                         </div>
-                        <div class="col-md-4">
+                        {{-- <div class="col-md-4">
                            <div class="form-group form-group-default">
                               <label>Role</label>
                               <select class="form-control" id="role" name="role" >
@@ -301,7 +321,7 @@
                               <small class="text-danger"><i>{{ $message }}</i></small>
                               @enderror
                            </div>
-                        </div>
+                        </div> --}}
    
                         {{-- <div class="col-md-4">
                            <div class="form-group form-group-default">
@@ -316,7 +336,7 @@
                   <div class="col-md-4">
                      <div class="form-group form-group-default">
                         <label>Join Date*</label>
-                        <input type="date" class="form-control" required name="join" id="join">
+                        <input type="date" class="form-control" required name="join" id="join" value="{{old('join')}}">
                      </div>
                      <div class="form-group form-group-default">
                         <label>Select Picture</label>
@@ -386,6 +406,85 @@
             $('.end_add').hide()
          }
       })
+
+      $('.unit').change(function() {
+            
+            var unit = $('#unit').val();
+            var _token = $('meta[name="csrf-token"]').attr('content');
+            // console.log('okeee');
+            console.log('unit :' + unit);
+            
+            $.ajax({
+               url: "/fetch/department/" + unit ,
+               method: "GET",
+               dataType: 'json',
+
+               success: function(result) {
+                  
+                  $.each(result.result, function(i, index) {
+                     $('.department').html(result.result);
+
+                  });
+               },
+               error: function(error) {
+                  console.log(error)
+               }
+
+            })
+         })
+
+         $('.department').change(function() {
+            
+            var department = $('#department').val();
+            var _token = $('meta[name="csrf-token"]').attr('content');
+            // console.log('okeee');
+            console.log('department :' + department);
+            
+            $.ajax({
+               url: "/fetch/subdept/" + department ,
+               method: "GET",
+               dataType: 'json',
+
+               success: function(result) {
+                  
+                  $.each(result.result, function(i, index) {
+                     $('.subdept').html(result.result);
+                     $('.manager').html(result.manager);
+                     $('.leader').html(result.leader);
+                  });
+               },
+               error: function(error) {
+                  console.log(error)
+               }
+
+            })
+         })
+
+         $('.subdept').change(function() {
+            
+            var subdept = $('#subdept').val();
+            var _token = $('meta[name="csrf-token"]').attr('content');
+            // console.log('okeee');
+            console.log('subdept :' + subdept);
+            
+            $.ajax({
+               url: "/fetch/position/" + subdept ,
+               method: "GET",
+               dataType: 'json',
+
+               success: function(result) {
+                  
+                  $.each(result.result, function(i, index) {
+                     $('.position').html(result.result);
+                     
+                  });
+               },
+               error: function(error) {
+                  console.log(error)
+               }
+
+            })
+         })
    })
 </script>
 @endpush

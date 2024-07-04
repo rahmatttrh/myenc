@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Employee;
 use App\Models\Pe;
 use App\Models\Sp;
+use App\Models\SpApproval;
 use App\Models\Spkl;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -17,7 +18,7 @@ class SpController extends Controller
 
       // dd(auth()->user()->getEmployee()->id);
 
-      if (auth()->user()->hasRole('Administrator')) {
+      if (auth()->user()->hasRole('Administrator|HRD-Spv')) {
          $employees = Employee::get();
          $sps = Sp::orderBy('created_at', 'desc')->get();
       } elseif (auth()->user()->hasRole('HRD')) {
@@ -28,19 +29,20 @@ class SpController extends Controller
 
          $sps = Sp::where('department_id', auth()->user()->getEmployee()->department_id)->orderBy('created_at', 'desc')->get();
       } elseif (auth()->user()->hasRole('Leader') || auth()->user()->hasRole('Supervisor')) {
-         $employees = Employee::where('department_id', auth()->user()->getEmployee()->department_id)->where('designation_id', '<', 4)->get();
-
+         // dd(auth()->user()->getEmployeeId());
+         // $employees = Employee::where('department_id', auth()->user()->getEmployee()->department_id)->where('designation_id', '<', 4)->get();
+         $employees = Employee::where('direct_leader_id', auth()->user()->getEmployeeId())->get();
          $sps = Sp::where('department_id', auth()->user()->getEmployee()->department_id)->orderBy('created_at', 'desc')->get();
       }
-
-      foreach ($sps as $sp) {
-         if ($sp->date_to < $now) {
-            // dd($sp->code);
-            $sp->update([
-               'status' => 0
-            ]);
-         }
-      }
+      
+      // foreach ($sps as $sp) {
+      //    if ($sp->date_to < $now) {
+      //       // dd($sp->code);
+      //       $sp->update([
+      //          'status' => 0
+      //       ]);
+      //    }
+      // }
 
       return view('pages.sp.index', [
          'employees' => $employees,
@@ -75,16 +77,16 @@ class SpController extends Controller
       }
 
       // dd($req->date_from);
-      $from = Carbon::make($req->date_from);
+      // $from = Carbon::make($req->date_from);
 
-      $bulan = $from->format('m');
-      $tahun = $from->format('Y');
+      // $bulan = $from->format('m');
+      // $tahun = $from->format('Y');
 
-      if ($bulan >= 1 && $bulan <= 6) {
-         $semester =  1; // Semester 1: Januari sampai Juni
-      } else {
-         $semester =  2; // Semester 2: Juli sampai Desember
-      }
+      // if ($bulan >= 1 && $bulan <= 6) {
+      //    $semester =  1; // Semester 1: Januari sampai Juni
+      // } else {
+      //    $semester =  2; // Semester 2: Juli sampai Desember
+      // }
 
 
 
@@ -94,36 +96,43 @@ class SpController extends Controller
          'department_id' => $employee->department_id,
          'employee_id' => $req->employee,
          'by_id' => auth()->user()->getEmployee()->id,
-         'semester' => $semester,
-         'tahun' => $tahun,
+         // 'semester' => $semester,
+         // 'tahun' => $tahun,
          'status' => '0',
          'code' => $code,
          'level' => $req->level,
-         'date_from' => $req->date_from,
-         'date_to' => $from->addMonths(6),
+         // 'date_from' => $req->date_from,
+         // 'date_to' => $from->addMonths(6),
+         'reason' => $req->reason,
          'desc' => $req->desc,
-         'rule' => $req->rule,
+         // 'rule' => $req->rule,
       ]);
 
-      return redirect()->back()->with('success', 'SP submited');
+      
+
+      return redirect()->back()->with('success', 'SP Created');
    }
 
    public function detail($id)
    {
       $spkl = Spkl::get()->first();
       $sp = Sp::find(dekripRambo($id));
-      $manager = Employee::find(1);
+      // $manager = Employee::find(1);
       $employee = Employee::find($sp->employee_id);
-      if (auth()->user()->hasRole('Administrator|HRD')) {
+      if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv')) {
          $employees = Employee::get();
       } elseif (auth()->user()->hasRole('Manager')) {
          $employees = Employee::where('department_id', auth()->user()->getEmployee()->department_id)->where('designation_id', '<', 6)->get();
       } elseif (auth()->user()->hasRole('Leader') || auth()->user()->hasRole('Supervisor')) {
          $employees = Employee::where('department_id', auth()->user()->getEmployee()->department_id)->where('designation_id', '<', 4)->get();
       } else {
-         $employees = null;
+         $employees = [];
       }
 
+      $user = SpApproval::where('status', 1)->where('type', 'Release')->first();
+      $hrd = SpApproval::where('status', 1)->where('type', 'Approve')->where('level', 'hrd')->first();
+      $manager = SpApproval::where('status', 1)->where('type', 'Approve')->where('level', 'manager')->first();
+      $suspect = SpApproval::where('status', 1)->where('type', 'Approve')->where('level', 'employee')->first();
       // dd($sp->created_by->biodata->fullName());
       // dd();
 
@@ -135,13 +144,20 @@ class SpController extends Controller
          $gen = 'Saudara/Saudari';
       }
 
+      $approvals = SpApproval::where('sp_id', $sp->id)->get();
+
 
       return view('pages.sp.detail', [
          'spkl' => $spkl,
          'sp' => $sp,
-         'manager' => $manager,
+         // 'manager' => $manager,
          'gen' => $gen,
-         'employees' => $employees
+         'employees' => $employees,
+         'approvals' => $approvals,
+         'user' => $user,
+         'hrd' => $hrd,
+         'manager' => $manager,
+         'suspect' => $suspect
       ]);
    }
 
@@ -153,8 +169,7 @@ class SpController extends Controller
       $sp->update([
          'employee_id' => $req->employee,
          'level' => $req->level,
-         'date_from' => $req->date_from,
-         'rule' => $req->rule,
+         'reason' => $req->reason,
          'desc' => $req->desc
       ]);
 
@@ -171,119 +186,5 @@ class SpController extends Controller
       return redirect()->route('sp')->with('success', 'SP deleted');
    }
 
-   public function submit(Request $req, $id)
-   {
-      // Validasi input
-      $req->validate([
-         'id' => 'required',
-      ]);
-
-      $sp = Sp::find($req->id);
-
-      $sp->update([
-         'status' => '1',
-         'release_at' => NOW()
-      ]);
-
-      return  back()->with('success', 'SP berhasil di submit');
-   }
-
-   public function appHrd(Request $req, $id)
-   {
-      // Validasi input
-      $req->validate([
-         'id' => 'required',
-      ]);
-
-      $sp = Sp::find($req->id);
-      $sp->update([
-         'status' => '2',
-         'approved_at' => NOW()
-      ]);
-
-      $pe = Pe::where('employe_id', $sp->employee_id)
-         ->where('tahun', $sp->tahun)
-         ->where('semester', $sp->semester)
-         ->first();
-
-      if ($pe) {
-         $sp->update([
-            'pe_id' => $pe->id
-         ]);
-
-         // Memanggil fungsi dari controller lain untuk calculate pe 
-         $qpc = new QuickPEController;
-         $qpc->calculatePe($pe->id);
-      }
-
-      return  back()->with('success', 'SP berhasil di Approved');
-   }
-
-   public function appEmployee(Request $req, $id)
-   {
-      // Validasi input
-      $req->validate([
-         'id' => 'required',
-      ]);
-
-      $sp = Sp::find($req->id);
-      $sp->update([
-         'status' => '3',
-         'approved_at' => NOW()
-      ]);
-
-      return  back()->with('success', 'SP successfully confirmed');
-   }
-
-   public function approved(Request $req, $id)
-   {
-      // Validasi input
-      $req->validate([
-         'id' => 'required',
-      ]);
-
-      $sp = Sp::find($req->id);
-
-      $pe = Pe::where('employe_id', $sp->employee_id)
-         ->where('tahun', $sp->tahun)
-         ->where('semester', $sp->semester)
-         ->first();
-
-
-      $sp->update([
-         'status' => '2',
-         'approved_at' => NOW()
-      ]);
-
-      if ($pe) {
-         $sp->update([
-            'pe_id' => $pe->id
-         ]);
-
-         // Memanggil fungsi dari controller lain untuk calculate pe 
-         $qpc = new QuickPEController;
-         $qpc->calculatePe($pe->id);
-      }
-
-      return  back()->with('success', 'SP berhasil di Approved');
-   }
-
-
-   public function reject(Request $req, $id)
-   {
-      // Validasi input
-      $req->validate([
-         'id' => 'required',
-      ]);
-
-      $sp = Sp::find($req->id);
-
-      $sp->update([
-         'status' => '101',
-         'alasan_reject' => $req->alasan_reject,
-         'reject_at' => NOW()
-      ]);
-
-      return  back()->with('success', 'SP berhasil di reject');
-   }
+   
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLogsTable extends Migration
+class CreateSpApprovalsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreateLogsTable extends Migration
      */
     public function up()
     {
-        Schema::create('logs', function (Blueprint $table) {
+        Schema::create('sp_approvals', function (Blueprint $table) {
             $table->id();
-            $table->integer('department_id');
-            $table->integer('user_id');
-            $table->string('action');
-            $table->string('desc');
+            $table->integer('sp_id');
+            $table->integer('employee_id');
+            $table->string('type');
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ class CreateLogsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('logs');
+        Schema::dropIfExists('sp_approvals');
     }
 }

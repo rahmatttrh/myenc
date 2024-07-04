@@ -29,12 +29,14 @@ use App\Http\Controllers\PresenceController;
 use App\Http\Controllers\QuickPEController;
 use App\Http\Controllers\SocialAccountController;
 use App\Http\Controllers\SoController;
+use App\Http\Controllers\SpApprovalController;
 use App\Http\Controllers\SpController;
 use App\Http\Controllers\SpklController;
 use App\Http\Controllers\SubDeptController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\VerificationController;
 use App\Models\Emergency;
+use App\Models\SpApproval;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -90,6 +92,7 @@ Route::middleware(["auth"])->group(function () {
          Route::prefix('draft')->group(function () {
             Route::get('/', [EmployeeController::class, 'draft'])->name('employee.draft');
             Route::post('/publish', [EmployeeController::class, 'publish'])->name('employee.publish');
+            Route::get('/publish/single/{id}', [EmployeeController::class, 'publishSingle'])->name('employee.publish.single');
          });
 
          Route::prefix('document')->group(function () {
@@ -109,7 +112,7 @@ Route::middleware(["auth"])->group(function () {
          });
       });
 
-      Route::prefix('unit')->group(function () {
+      Route::prefix('master/unit')->group(function () {
          Route::get('/', [UnitController::class, 'index'])->name('unit');
 
          // Belum
@@ -119,7 +122,7 @@ Route::middleware(["auth"])->group(function () {
          Route::get('delete/{unit:id}', [UnitController::class, 'delete'])->name('unit.delete');
       });
 
-      Route::prefix('department')->group(function () {
+      Route::prefix('master/department')->group(function () {
          Route::get('/', [DepartmentController::class, 'index'])->name('department');
          Route::post('store', [DepartmentController::class, 'store'])->name('department.store');
          Route::get('edit/{department:id}', [DepartmentController::class, 'edit'])->name('department.edit');
@@ -127,10 +130,10 @@ Route::middleware(["auth"])->group(function () {
          Route::get('delete/{department:id}', [DepartmentController::class, 'delete'])->name('department.delete');
       });
 
-      Route::prefix('sub-dept')->group(function () {
+      Route::prefix('<master>sub-dept')->group(function () {
       });
 
-      Route::prefix('designation')->group(function () {
+      Route::prefix('master/designation')->group(function () {
          Route::get('/', [DesignationController::class, 'index'])->name('designation');
          Route::post('store', [DesignationController::class, 'store'])->name('designation.store');
          Route::get('edit/{designation:id}', [DesignationController::class, 'edit'])->name('designation.edit');
@@ -138,7 +141,7 @@ Route::middleware(["auth"])->group(function () {
          Route::get('delete/{designation:id}', [DesignationController::class, 'delete'])->name('designation.delete');
       });
 
-      Route::prefix('position')->group(function () {
+      Route::prefix('master/position')->group(function () {
          Route::get('/', [PositionController::class, 'index'])->name('position');
          //    Route::post('store', [DesignationController::class, 'store'])->name('position.store');
          //    Route::get('edit/{position:id}', [DesignationController::class, 'edit'])->name('position.edit');
@@ -178,7 +181,7 @@ Route::middleware(["auth"])->group(function () {
       });
 
       // PE
-      Route::prefix('so')->group(function () {
+      Route::prefix('master/so')->group(function () {
          Route::get('/', [SoController::class, 'index'])->name('so');
       });
 
@@ -253,13 +256,17 @@ Route::middleware(["auth"])->group(function () {
       Route::put('update', [SpController::class, 'update'])->name('sp.update');
       Route::get('delete/{id}', [SpController::class, 'delete'])->name('sp.delete');
 
-      Route::put('/submit/{id}', [SpController::class, 'submit'])->name('sp.submit');
-      Route::put('/app/hrd/{id}', [SpController::class, 'appHrd'])->name('sp.app.hrd');
-      Route::put('/app/employee/{id}', [SpController::class, 'appEmployee'])->name('sp.app.employee');
+      Route::put('/submit/{id}', [SpApprovalController::class, 'submit'])->name('sp.submit');
+      Route::put('/app/hrd/{id}', [SpApprovalController::class, 'appHrd'])->name('sp.app.hrd');
+      Route::put('/app/manager/{id}', [SpApprovalController::class, 'appManager'])->name('sp.app.manager');
+      Route::put('/app/employee/{id}', [SpApprovalController::class, 'appEmployee'])->name('sp.app.employee');
+      
+      
+      Route::put('/app/employee/{id}', [SpApprovalController::class, 'appEmployee'])->name('sp.app.employee');
 
-      Route::put('/approved/{id}', [SpController::class, 'approved'])->name('sp.approved');
+      Route::put('/approved/{id}', [SpApprovalController::class, 'approved'])->name('sp.approved');
 
-      Route::patch('/reject/{id}', [SpController::class, 'reject'])->name('sp.reject');
+      Route::patch('/reject/{id}', [SpApprovalController::class, 'reject'])->name('sp.reject');
    });
 
    // Role Campuran  

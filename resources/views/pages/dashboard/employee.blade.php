@@ -21,13 +21,13 @@ Dashboard
    </div>
    <div class="row">
       <div class="col-md-4">
-         <div class="card">
+         {{-- <div class="card">
             <div class="card-body">
                @if (auth()->user()->hasRole('HRD-Recruitment'))
                  Hak Akses :  HRD Recruitment
                @endif
             </div>
-         </div>
+         </div> --}}
          {{-- ANNOUNCE --}}
          <div class="d-block d-sm-none">
             <div class="alert alert-info shadow-sm">
@@ -131,7 +131,7 @@ Dashboard
                      @foreach ($spHistories as $spHis)
                      <tr>
                         <td>
-                           <a href="">{{$spHis->code}}</a>
+                           <a href="{{route('sp.detail', enkripRambo($spHis->id))}}">{{$spHis->code}} - SP {{$spHis->level}}</a>
                         </td>
                         
                      </tr>

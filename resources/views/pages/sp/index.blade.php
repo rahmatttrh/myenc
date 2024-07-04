@@ -42,18 +42,21 @@ SP
          <hr>
          <form action="{{route('sp.store')}}" method="POST">
             @csrf
-            <div class="form-group form-group-default">
-               <label>Employee</label>
-               <select class="form-control employee" required id="employee" name="employee">
-                  <option value="" selected disabled>Select Employee</option>
-                  @foreach ($employees as $emp)
-                  <option value="{{$emp->id}}">{{$emp->biodata->first_name}} {{$emp->biodata->last_name}} </option>
-                  @endforeach
-               </select>
-
-            </div>
+            
             <div class="row">
-               <div class="col-md-6">
+               <div class="col-md-8">
+                  <div class="form-group form-group-default">
+                     <label>Employee</label>
+                     <select class="form-control employee" required id="employee" name="employee">
+                        <option value="" selected disabled>Select Employee</option>
+                        @foreach ($employees as $emp)
+                        <option value="{{$emp->id}}">{{$emp->biodata->first_name}} {{$emp->biodata->last_name}} </option>
+                        @endforeach
+                     </select>
+      
+                  </div>
+               </div>
+               <div class="col-md-4">
                   <div class="form-group form-group-default">
                      <label>Level</label>
                      <select class="form-control" required id="level" name="level">
@@ -65,12 +68,12 @@ SP
 
                   </div>
                </div>
-               <div class="col-md-6">
+               {{-- <div class="col-md-6">
                   <div class="form-group form-group-default">
                      <label>Berlaku dari</label>
                      <input type="date" class="form-control" name="date_from" id="date_from">
                   </div>
-               </div>
+               </div> --}}
 
                {{-- <div class="col-md-6">
                   <small class="text-muted">Masa berlaku SP adalah 6 bulan</small>
@@ -84,14 +87,18 @@ SP
                </div> --}}
             </div>
 
-            <div class="form-group form-group-default">
+            {{-- <div class="form-group form-group-default">
                <label>Peraturan Perusahaan</label>
                <input type="text" class="form-control" name="rule" id="rule">
+            </div> --}}
+            <div class="form-group form-group-default">
+               <label>Alasan</label>
+               <input type="text" class="form-control" name="reason" id="reason">
             </div>
 
             <div class="form-group form-group-default">
-               <label>Desc</label>
-               <textarea class="form-control" name="desc" id="desc"></textarea>
+               <label>Kronologi</label>
+               <textarea class="form-control" name="desc" id="desc" rows="5"></textarea>
             </div>
             <hr>
             <button type="submit" class="btn btn-block btn-primary">Submit</button>

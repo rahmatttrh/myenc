@@ -100,6 +100,41 @@ class EmployeeController extends Controller
       ])->with('i');
    }
 
+   public function publishSingle($id){
+      $employee = Employee::find(dekripRambo($id));
+
+         try {
+            $user = User::create([
+               'name' => $employee->biodata->first_name . ' ' . $employee->biodata->last_name,
+               'email' => $employee->biodata->email,
+               'username' => $employee->nik,
+               'password' => Hash::make('12345678')
+            ]);
+         } catch (Exception $e) {
+            return redirect()->back()->with('danger', 'Can not activate employee  ' . $employee->biodata->first_name . ' ' . $employee->biodata->last_name . ', Error log : ' . $e->getMessage());
+         }
+
+         $employee->update([
+            'status' => 1,
+            'user_id' => $user->id
+         ]);
+
+         $employee->biodata->update([
+            'status' => 1,
+         ]);
+
+         $user->assignRole('Karyawan');
+
+         $user = Employee::find(auth()->user()->getEmployeeId());
+         Log::create([
+            'department_id' => $user->department_id,
+            'user_id' => auth()->user()->id,
+            'action' => 'Publish',
+            'desc' => 'Employee ' . $employee->nik . ' ' . $employee->biodata->fullname()
+         ]);
+         return redirect()->back()->with('success', 'Employee successfully activated and Email Verification has ben sent.');
+   }
+
    public function publish(Request $req)
    {
       $req->validate([
@@ -144,6 +179,14 @@ class EmployeeController extends Controller
             // $user->sendEmailVerificationNotification();
          }
       }
+
+      $user = Employee::find(auth()->user()->getEmployeeId());
+      Log::create([
+         'department_id' => $user->department_id,
+         'user_id' => auth()->user()->id,
+         'action' => 'Publish',
+         'desc' => 'Employees Data'
+      ]);
       return redirect()->route('employee', enkripRambo('active'))->with('success', 'Employee successfully activated and Email Verification has ben sent.');
    }
 
@@ -220,6 +263,7 @@ class EmployeeController extends Controller
    public function create()
    {
       $departments = Department::get();
+      $subdepts = SubDept::get();
       $designations = Designation::get();
       $shifts = Shift::get();
       $units = Unit::get();
@@ -228,6 +272,7 @@ class EmployeeController extends Controller
 
       return view('pages.employee.create', [
          'departments' => $departments,
+         'subdepts' => $subdepts,
          'designations' => $designations,
          'shifts' => $shifts,
          'units' => $units,
@@ -239,7 +284,7 @@ class EmployeeController extends Controller
    public function store(Request $req)
    {
       $req->validate([
-         'id' => 'required',
+         'nik' => 'required|unique:employees',
          'first_name' => 'required',
          'last_name' => 'required',
          'department' => 'required',
@@ -263,7 +308,7 @@ class EmployeeController extends Controller
 
 
       $contract = Contract::create([
-         'id_no' => $req->id,
+         'id_no' => $req->nik,
          'type' => $req->type,
          'unit_id' => $req->unit,
          'department_id' => $req->department,
@@ -283,6 +328,7 @@ class EmployeeController extends Controller
 
       $employee = Employee::create([
          'status' => 0,
+         'nik' => $req->nik,
          'role' => $req->role,
          // 'unit_id' => $req->unit,
          'department_id' => $req->department,
@@ -293,11 +339,13 @@ class EmployeeController extends Controller
          'picture' => request('picture') ? request()->file('picture')->store('employee/picture') : '',
       ]);
 
-      Log::create([
-         'user_id' => auth()->user()->id,
-         'action' => 'Create',
-         'desc' => 'Employee ' . $employee->nik . ' ' . $employee->biodata->fullname()
-      ]);
+      $user = Employee::find(auth()->user()->getEmployeeId());
+         Log::create([
+            'department_id' => $user->department_id,
+            'user_id' => auth()->user()->id,
+            'action' => 'Create',
+            'desc' => 'Employee ' . $employee->nik . ' ' . $employee->biodata->fullname()
+         ]);
 
       
 
@@ -323,7 +371,9 @@ class EmployeeController extends Controller
 
    public function update(Request $req)
    {
-      $req->validate([]);
+      $req->validate([
+
+      ]);
 
       $employee = Employee::find($req->employee);
 
@@ -361,7 +411,9 @@ class EmployeeController extends Controller
          'email' => $req->email
       ]);
 
+      $user = Employee::find(auth()->user()->getEmployeeId());
       Log::create([
+         'department_id' => $user->department_id,
          'user_id' => auth()->user()->id,
          'action' => 'Update',
          'desc' => 'Biodata ' . $employee->nik . ' ' . $employee->biodata->fullname()
@@ -385,7 +437,9 @@ class EmployeeController extends Controller
          'no_bpjs_kesehatan' => $req->no_bpjs_kesehatan
       ]);
 
+      $user = Employee::find(auth()->user()->getEmployeeId());
       Log::create([
+         'department_id' => $user->department_id,
          'user_id' => auth()->user()->id,
          'action' => 'Update',
          'desc' => 'Document Data ' . $employee->nik . ' ' . $employee->biodata->fullname()
@@ -404,7 +458,9 @@ class EmployeeController extends Controller
          'experience' => $req->experience
       ]);
 
+      $user = Employee::find(auth()->user()->getEmployeeId());
       Log::create([
+         'department_id' => $user->department_id,
          'user_id' => auth()->user()->id,
          'action' => 'Update',
          'desc' => 'Bio ' . $employee->nik . ' ' . $employee->biodata->fullname()
@@ -434,7 +490,9 @@ class EmployeeController extends Controller
          'picture' => $picture
       ]);
 
+      $user = Employee::find(auth()->user()->getEmployeeId());
       Log::create([
+         'department_id' => $user->department_id,
          'user_id' => auth()->user()->id,
          'action' => 'Update',
          'desc' => 'Profile Picture ' . $employee->nik . ' ' . $employee->biodata->fullname()
@@ -453,7 +511,10 @@ class EmployeeController extends Controller
       $user->roles()->detach();
       $user->assignRole($role->name);
       // dd($req->role);
+
+      $user = Employee::find(auth()->user()->getEmployeeId());
       Log::create([
+         'department_id' => $user->department_id,
          'user_id' => auth()->user()->id,
          'action' => 'Update',
          'desc' => 'Role ' . $employee->nik . ' ' . $employee->biodata->fullname()
