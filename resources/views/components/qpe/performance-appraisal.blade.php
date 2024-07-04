@@ -44,6 +44,20 @@
                 <br><br>
                 {{$kpa->pe->nd_dibuat}} : <i> {{$kpa->pe->nd_alasan}} </i>
                 <br><br>
+
+                Yang di Undang :
+                <br>
+                @if($kpa->pe->nd_for == '1')
+                Team Leader atau Supervisor
+                @elseif ($kpa->pe->nd_for == '2')
+                Karyawan yang bersangkutan
+                @elseif ($kpa->pe->nd_for == '3')
+                Karyawan & Atasan Langsung
+                @endif
+
+
+                <br>
+                <br><br>
                 Tanggal : {{formatDate($kpa->pe->nd_date)}}
 
 

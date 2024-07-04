@@ -32,6 +32,7 @@ class CreatePesTable extends Migration
             $table->text('alasan_reject')->nullable();  // Alasan Reject dari manager
             $table->string('nd_dibuat', 50)->nullable();
             $table->string('nd_from', 50)->nullable();
+            $table->string('nd_for', 1)->nullable();  // Status : [1] atasan langsung [2] karyawan tersebut [3] keduanya 
             $table->text('nd_alasan')->nullable();  // Alasan Need Discuss
             $table->date('nd_date')->nullable();
             $table->string('complained', 1)->default('0');
