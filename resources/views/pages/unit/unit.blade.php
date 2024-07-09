@@ -36,15 +36,15 @@
                   <form action="{{route('unit.store')}}" method="POST">
                      @csrf
                      <div class="form-group form-group-default">
-                        <label>Name</label>
+                        <label>Business Unit Name</label>
                         <input id="name" name="name" type="text" class="form-control" placeholder="Fill Name">
                      </div>
-                     <button type="submit" class="btn btn-block btn-primary">Add</button>
+                     <button type="submit" class="btn btn-block btn-primary">Add New Business Unit</button>
 
                   </form>
                </div>
                <div class="card-footer">
-                  <small>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni at neque inventore vel.</small>
+                  {{-- <small>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni at neque inventore vel.</small> --}}
                </div>
             </div>
          </div>
