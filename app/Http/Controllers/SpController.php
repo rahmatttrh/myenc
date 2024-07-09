@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Models\Log;
 use App\Models\Pe;
 use App\Models\Sp;
 use App\Models\SpApproval;
@@ -56,6 +57,10 @@ class SpController extends Controller
       $date = Carbon::now();
       $employee = Employee::find($req->employee);
 
+      $req->validate([
+         'file' => request('file') ? 'image|mimes:pdf,jpg,jpeg,png|max:5120' : '',
+      ]);
+
       $sp = Sp::orderBy("created_at", "desc")->first();
       if (isset($sp)) {
          $code = "SP/" . $employee->department->id . '/' . $date->format('dmy') . '/' . ($sp->id + 1);
@@ -74,6 +79,13 @@ class SpController extends Controller
          }
       } else {
          $level = 'I';
+      }
+
+      if (request('file')) {
+         
+         $file = request()->file('file')->store('sp/file');
+      }  else {
+         $file = null;
       }
 
       // dd($req->date_from);
@@ -106,6 +118,15 @@ class SpController extends Controller
          'reason' => $req->reason,
          'desc' => $req->desc,
          // 'rule' => $req->rule,
+         'file' => $file
+      ]);
+
+      $user = Employee::find(auth()->user()->getEmployeeId());
+      Log::create([
+         'department_id' => $user->department_id,
+         'user_id' => auth()->user()->id,
+         'action' => 'Create',
+         'desc' => 'SP ' . $sp->level . ' ' . $sp->code . ' ' . $employee->nik . ' ' . $employee->biodata->fullName()
       ]);
 
       
@@ -129,10 +150,10 @@ class SpController extends Controller
          $employees = [];
       }
 
-      $user = SpApproval::where('status', 1)->where('type', 'Release')->first();
-      $hrd = SpApproval::where('status', 1)->where('type', 'Approve')->where('level', 'hrd')->first();
-      $manager = SpApproval::where('status', 1)->where('type', 'Approve')->where('level', 'manager')->first();
-      $suspect = SpApproval::where('status', 1)->where('type', 'Approve')->where('level', 'employee')->first();
+      $user = SpApproval::where('sp_id', $sp->id)->where('status', 1)->where('type', 'Submit')->first();
+      $hrd = SpApproval::where('sp_id', $sp->id)->where('status', 1)->where('type', 'Approve')->where('level', 'hrd')->first();
+      $manager = SpApproval::where('sp_id', $sp->id)->where('status', 1)->where('type', 'Approve')->where('level', 'manager')->first();
+      $suspect = SpApproval::where('sp_id', $sp->id)->where('status', 1)->where('type', 'Approve')->where('level', 'employee')->first();
       // dd($sp->created_by->biodata->fullName());
       // dd();
 
@@ -146,7 +167,7 @@ class SpController extends Controller
 
       $approvals = SpApproval::where('sp_id', $sp->id)->get();
 
-
+      // dd($employees);
       return view('pages.sp.detail', [
          'spkl' => $spkl,
          'sp' => $sp,
@@ -165,12 +186,21 @@ class SpController extends Controller
    {
       $sp = Sp::find($req->id);
       // dd($sp->code);
+      $employee = Employee::find($req->employee);
 
       $sp->update([
          'employee_id' => $req->employee,
          'level' => $req->level,
          'reason' => $req->reason,
          'desc' => $req->desc
+      ]);
+
+      $user = Employee::find(auth()->user()->getEmployeeId());
+      Log::create([
+         'department_id' => $user->department_id,
+         'user_id' => auth()->user()->id,
+         'action' => 'Update',
+         'desc' => 'SP ' . $sp->level . ' ' . $sp->code . ' ' . $employee->nik . ' ' . $employee->biodata->fullName()
       ]);
 
       return redirect()->back()->with('success', 'SP updated.');
@@ -180,10 +210,48 @@ class SpController extends Controller
    {
       // dd('delete');
       $sp = Sp::find(dekripRambo($id));
+      $employee = Employee::find($sp->employee_id);
+
+      $user = Employee::find(auth()->user()->getEmployeeId());
+      Log::create([
+         'department_id' => $user->department_id,
+         'user_id' => auth()->user()->id,
+         'action' => 'Delete',
+         'desc' => 'SP ' . $sp->level . ' ' . $sp->code . ' ' . $employee->nik . ' ' . $employee->biodata->fullName()
+      ]);
 
       $sp->delete();
 
       return redirect()->route('sp')->with('success', 'SP deleted');
+   }
+
+   public function close($id)
+   {
+      // dd('delete');
+      $sp = Sp::find(dekripRambo($id));
+      $employee = Employee::find($sp->employee_id);
+
+      $sp->update([
+         'status' => 4
+      ]);
+
+      SpApproval::create([
+         'status' => 1,
+         'sp_id' => $sp->id,
+         'type' => 'Approve',
+         'level' => 'employee',
+         'employee_id' => $sp->employee_id,
+      ]);
+
+      $user = Employee::find(auth()->user()->getEmployeeId());
+      Log::create([
+         'department_id' => $user->department_id,
+         'user_id' => auth()->user()->id,
+         'action' => 'Close',
+         'desc' => 'SP ' . $sp->level . ' ' . $sp->code . ' ' . $employee->nik . ' ' . $employee->biodata->fullName()
+      ]);
+
+      return redirect()->back()->with('success', 'SP complain proccess completed ');
    }
 
    

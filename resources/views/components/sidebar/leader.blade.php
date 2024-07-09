@@ -6,7 +6,7 @@
    </a>
    <div class="collapse" id="kpi">
       <ul class="nav nav-collapse">
-         @if (auth()->user()->hasRole('Administrator|HRD'))
+         {{-- @if (auth()->user()->hasRole('Administrator|HRD')) --}}
          <li>
             <a href="{{route('pe.component')}}">
                <span class="sub-item">Component</span>
@@ -17,7 +17,7 @@
                <span class="sub-item">Discipline</span>
             </a>
          </li>
-         @endif
+         {{-- @endif --}}
          <li>
             <a href="{{route('kpi')}}">
                <span class="sub-item">KPI</span>
@@ -71,7 +71,7 @@
    </a>
 </li>
 
-<li class="nav-item {{ (request()->is('supervisor/spkl/*')) ? 'active' : '' }}">
+{{-- <li class="nav-item {{ (request()->is('supervisor/spkl/*')) ? 'active' : '' }}">
    <a href="{{route('supervisor.spkl')}}">
       <i class="fas fa-clock"></i>
       <p>SPKL</p>
@@ -83,7 +83,7 @@
       <i class="fas fa-briefcase"></i>
       <p>SPT</p>
    </a>
-</li>
+</li> --}}
 {{-- <li class="nav-item {{ (request()->is('sp/*')) ? 'active' : '' }}">
 <a href="{{route('sp')}}">
    <i class="fas fa-file-code"></i>

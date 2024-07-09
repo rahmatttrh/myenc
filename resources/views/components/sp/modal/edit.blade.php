@@ -20,7 +20,7 @@
                         <select class="form-control employee" required id="employee" name="employee">
                            <option value="" selected disabled>Select Employee</option>
                            @foreach ($employees as $emp)
-                           <option {{$sp->employee_id == $emp->id ? 'selected' : '' }} value="{{$emp->id}}">{{$emp->biodata->first_name}} {{$emp->biodata->last_name}} </option>
+                           <option {{$sp->employee_id == $emp->id ? 'selected' : '' }} value="{{$emp->id}}">{{$emp->biodata->first_name ?? ''}} {{$emp->biodata->last_name ?? ''}} </option>
                            @endforeach
                         </select>
 

@@ -80,7 +80,7 @@ Detail Employee
                      </div>
                   </div>
                   <small class="badge badge-white text-uppercase">{{$employee->contract->type ?? 'Kontrak/Tetap'}}</small>
-                  <small class="badge badge-white text-uppercase">{{$employee->contract->unit->name}}</small>
+                  <small class="badge badge-white text-uppercase">{{$employee->contract->unit->name ?? '-'}}</small>
                   <small class="badge badge-white text-uppercase">{{$employee->contract->loc ?? 'Lokasi'}}</small>
                </div>
                <div class="card-body">

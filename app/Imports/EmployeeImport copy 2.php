@@ -25,12 +25,11 @@ class EmployeeImport implements ToCollection, WithHeadingRow
 {
    public function collection(Collection $rows)
    {
-      
+      dd('ok');
       foreach ($rows as $key => $row) {
-         
+
          // Cari bis nis unid 
-         // dd($row['business_unit']);
-         $unit = Unit::where('name', $row['business_unit'])->first();
+         // $unit = Unit::where('name', $row['business_unit'])->first();
 
          // Jika tidak ada insert baru
          // if ($unit == null) {
@@ -40,12 +39,11 @@ class EmployeeImport implements ToCollection, WithHeadingRow
          //       'updated_at' => NOW()
          //    ]);
          // }
-         // dd($unit->name);
 
          // Cari departement
-         $department = Department::where('name', $row['department'])
-            ->where('unit_id', $unit->id)
-            ->first();
+         // $department = Department::where('name', $row['department'])
+         //    ->where('unit_id', $unit->id)
+         //    ->first();
          // Jika tidak ada insert baru
          // if ($department == null) {
 
@@ -56,8 +54,6 @@ class EmployeeImport implements ToCollection, WithHeadingRow
          //       'updated_at' => NOW()
          //    ]);
          // }
-
-         // dd($department->name);
 
          // Cari sub departement
          // $sub_dept = SubDept::where('name', $row['sub_dept'])
@@ -109,7 +105,7 @@ class EmployeeImport implements ToCollection, WithHeadingRow
 
          // // Insert
          try {
-            
+
             $biodata = Biodata::create([
                'status' => 0,
                'first_name' => $row['first_name'],
@@ -117,37 +113,32 @@ class EmployeeImport implements ToCollection, WithHeadingRow
                'email' => $row['email'],
                'phone' => $row['phone'],
                'gender' => $row['gender'],
-               // 'religion' => $row['agama'], //agama
-               // 'birth_place' => $row['tempat_lahir'], //
-               // 'birth_date' => $row['tanggal_lahir'], //tanggal lahir
-               // 'no_ktp' => $row['no_ktp'],
-               // 'no_npwp' => $row['no_npwp'], //
-               // 'no_kk' => $row['no_kk'], //
-               // 'no_bpjs_kesehatan' => $row['no_bpjs_kesehatan'], // bpjs
-               // 'no_jamsostek' => $row['no_jamsostek'], //
-               // 'marital' => $row['status_nikah'], // status nikah 
-               // 'last_education' => $row['pendidikan_terakhir'], //pendidikan terakhir
-               // 'institution_name' => $row['nama_institusi'], // nama institusi
-               // 'vocational' => $row['jurusan'], //jurusan
-               // 'status_pajak' => $row['status_pajak'], //
-               // 'blood' => $row['gol_darah'], //golongan darah
-               // 'address' => $row['alamat_domisili'], //alamat domisili
-               // 'alamat_ktp' => $row['alamat_ktp'], //alamat ktp
+               'religion' => $row['agama'], //agama
+               'birth_place' => $row['tempat_lahir'], //
+               'birth_date' => $row['tanggal_lahir'], //tanggal lahir
+               'no_ktp' => $row['no_ktp'],
+               'no_npwp' => $row['no_npwp'], //
+               'no_kk' => $row['no_kk'], //
+               'no_bpjs_kesehatan' => $row['no_bpjs_kesehatan'], // bpjs
+               'no_jamsostek' => $row['no_jamsostek'], //
+               'marital' => $row['status_nikah'], // status nikah 
+               'last_education' => $row['pendidikan_terakhir'], //pendidikan terakhir
+               'institution_name' => $row['nama_institusi'], // nama institusi
+               'vocational' => $row['jurusan'], //jurusan
+               'status_pajak' => $row['status_pajak'], //
+               'blood' => $row['gol_darah'], //golongan darah
+               'address' => $row['alamat_domisili'], //alamat domisili
+               'alamat_ktp' => $row['alamat_ktp'], //alamat ktp
                'status' => $row['status'],
                'created_at' => NOW(),
                'updated_at' => NOW() //
 
             ]);
 
-            // dd($biodata->id);
-
-            // dd($row['nik']);
-            // dd('ok');
-
             $contract = Contract::create([
-               'id_no' => $row['id'],
+               'id_no' => $row['nik'],
                // 'unit_id' => $unit->id,
-               'department_id' => $department->id,
+               // 'department_id' => $department->id,
                // 'designation_id' => $designation->id,
                // 'location' => $row['lokasi'],
                // 'project' => $row['project'],
@@ -158,9 +149,6 @@ class EmployeeImport implements ToCollection, WithHeadingRow
                'created_at' => NOW(),
                'updated_at' => NOW()
             ]);
-            
-
-            // dd('ok');
 
             // Insert Contract udah Oke
             // $emergency = Emergency::create([
@@ -174,28 +162,25 @@ class EmployeeImport implements ToCollection, WithHeadingRow
             $employee = Employee::create([
                'status' => 0,
                // 'role' => $role,
-               'department_id' => $department->id,
+               // 'department_id' => $department->id,
                // 'sub_dept_id' => $sub_dept->id,
                // 'designation_id' => $designation->id,
                // 'position_id' => $position->id,
                'biodata_id' => $biodata->id,
                'contract_id' => $contract->id,
                // 'emergency_id' => $emergency->id,
-               'nik' => $row['id'],
+               'nik' => $row['nik'],
                // 'entry_date' => $row['tanggal_masuk'],
                // 'determination_date' => $row['tanggal_penetapan'],
                'created_at' => NOW(),
                'updated_at' => NOW()
 
             ]);
-            // dd($employee->id);
-            // dd('ok');
 
             DB::commit();
-            // dd($employee->biodata->fullName());
 
-            // dd('ok');
-            // return redirect()->route('employee.draft')->with('success', 'Data berhasil disimpan.');
+
+            return redirect()->route('success')->with('message', 'Data berhasil disimpan.');
          } catch (\Exception $e) {
             // Jika terjadi kesalahan, kita rollback transaksi
             DB::rollback();

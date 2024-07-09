@@ -169,7 +169,7 @@ class EmployeeController extends Controller
 
          
 
-         $user->assignRole($employee->role->name);
+         $user->assignRole('Karyawan');
 
          // Cek email apakah ada atau belum 
 
@@ -540,20 +540,22 @@ class EmployeeController extends Controller
 
    public function import(Request $req)
    {
+      // dd('ok');
       $req->validate([
          'excel' => 'required'
       ]);
+      // dd('ok');
       $file = $req->file('excel');
       $fileName = $file->getClientOriginalName();
       $file->move('EmployeeData', $fileName);
 
-      // try {
-      //    Excel::import(new EmployeeImport, public_path('/EmployeeData/' . $fileName));
-      // } catch (Exception $e) {
-      //    return redirect()->back()->with('danger', 'Import Failed ' . $e->getMessage());
-      // }
+      try {
+         Excel::import(new EmployeeImport, public_path('/EmployeeData/' . $fileName));
+      } catch (Exception $e) {
+         return redirect()->back()->with('danger', 'Import Failed ' . $e->getMessage());
+      }
 
-      Excel::import(new EmployeeImport, public_path('/EmployeeData/' . $fileName));
+      // Excel::import(new EmployeeImport, public_path('/EmployeeData/' . $fileName));
 
 
 

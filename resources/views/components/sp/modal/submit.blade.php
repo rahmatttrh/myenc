@@ -16,13 +16,14 @@
                Send to HRD
 
 
-         </div>
-         <div class="modal-footer">
-            <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-dark ">
-               Submit
-            </button>
-         </div>
-      </form>
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+               <button type="submit" class="btn btn-dark ">
+                  Submit
+               </button>
+            </div>
+         </form>
+      </div>
    </div>
 </div>

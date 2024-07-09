@@ -65,16 +65,24 @@
                         <div class="col-8 pr-0">
                            {{-- <h3 class="fw-bold mb-1">{{$employee->id}}</h3> --}}
                            <div class="text-small text-uppercase fw-bold op-8">{{$employee->contract->id_no}} </div>
-                           <div class="text-small text-uppercase fw-bold op-8"> {{$employee->position->name}} </div>
+                           <div class="text-small text-uppercase fw-bold op-8"> {{$employee->position->name ?? '-'}} </div>
                            {{-- <div class="text-small text-uppercase fw-bold op-8"> </div> --}}
-                           <div class="text-small text-uppercase fw-bold op-8">{{$employee->department->name}} Department</div>
-                           <div class="text-small text-uppercase fw-bold op-8">{{$employee->contract->unit->name}}</div>
+                           <div class="text-small text-uppercase fw-bold op-8">{{$employee->department->name ?? '-'}} Department</div>
+                           <div class="text-small text-uppercase fw-bold op-8">{{$employee->contract->unit->name ?? '-'}}</div>
                            <div class="text-small text-uppercase fw-bold op-8">Lokasi Kerja {{$employee->contract->loc ?? '-'}}</div>
                         </div>
                         <div class="col-4 pl-0 text-right">
                            {{-- <h3 class="fw-bold mb-1"> 2023 - 2024</h3> --}}
-                           <div class="text-small text-uppercase fw-bold op-8">{{$employee->contract->shift->name}} {{formatTime($employee->contract->shift->in)}} - {{formatTime($employee->contract->shift->out)}}</div>
-                           <div class="text-small text-uppercase fw-bold op-8">Salary {{formatRupiah($employee->contract->salary)}} </div>
+                           <div class="text-small text-uppercase fw-bold op-8">{{$employee->contract->shift->name ?? '-'}}
+                              @if ($employee->contract->shift)
+                              {{formatTime($employee->contract->shift->in )}}
+                              @endif
+                              @if ($employee->contract->shift)
+                              - {{formatTime($employee->contract->shift->out )}}
+                              @endif
+                                
+                              </div>
+                           <div class="text-small text-uppercase fw-bold op-8">Salary {{formatRupiah($employee->contract->salary ?? '0')}} </div>
                            
                         </div>
                      </div>
@@ -90,7 +98,7 @@
                            
                         </div>
                         <div class="col-6 pl-0 text-right">
-                           <h3 class="fw-bold mb-1">{{formatDate($employee->contract->determination)}}</h3>
+                           <h3 class="fw-bold mb-1">{{formatDate($employee->contract->determination ?? '-')}}</h3>
                            <div class="text-small text-uppercase fw-bold op-8">Penetapan</div>
                           
                            

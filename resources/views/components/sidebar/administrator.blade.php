@@ -1,3 +1,4 @@
+{{-- Master Data --}}
 <li class="nav-item">
    <a data-toggle="collapse" href="#vessel">
       <i class="fas fa-server"></i>
@@ -35,6 +36,7 @@
    </div>
 </li>
 
+{{-- Performance --}}
 <li class="nav-item">
    <a data-toggle="collapse" href="#kpi">
       <i class="fas fa-file-contract"></i>
@@ -78,6 +80,8 @@
       </ul>
    </div>
 </li>
+
+{{-- QPE --}}
 <li class="nav-item">
    <a data-toggle="collapse" href="#qpe">
       <!-- <a  href="{{route('qpe')}}"> -->
@@ -101,6 +105,7 @@
    </div>
 </li>
 
+{{-- Employee --}}
 <li class="nav-item">
    <a data-toggle="collapse" href="#employee">
       <i class="fas fa-users"></i>
@@ -121,6 +126,11 @@
          </li>
          <li>
             <a href="{{route('employee.draft')}}">
+               <span class="sub-item">Draft</span>
+            </a>
+         </li>
+         <li>
+            <a href="{{route('employee.import')}}">
                <span class="sub-item">Import</span>
             </a>
          </li>
@@ -129,6 +139,7 @@
    </div>
 </li>
 
+{{-- SP --}}
 <li class="nav-item {{ (request()->is('sp/*')) ? 'active' : '' }}">
    <a href="{{route('sp')}}">
       <i class="fas fa-file-code"></i>

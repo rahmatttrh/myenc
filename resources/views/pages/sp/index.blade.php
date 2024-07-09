@@ -38,19 +38,19 @@ SP
 
    <div class="row">
       <div class="col-md-4">
-         <h4>Form Create</h4>
+         <h4>Form Pengajuan SP</h4>
          <hr>
-         <form action="{{route('sp.store')}}" method="POST">
+         <form action="{{route('sp.store')}}" method="POST" enctype="multipart/form-data">
             @csrf
             
             <div class="row">
                <div class="col-md-8">
                   <div class="form-group form-group-default">
-                     <label>Employee</label>
+                     <label>Employee*</label>
                      <select class="form-control employee" required id="employee" name="employee">
                         <option value="" selected disabled>Select Employee</option>
                         @foreach ($employees as $emp)
-                        <option value="{{$emp->id}}">{{$emp->biodata->first_name}} {{$emp->biodata->last_name}} </option>
+                        <option value="{{$emp->id}}">{{$emp->biodata->first_name ?? ''}} {{$emp->biodata->last_name ?? ''}} </option>
                         @endforeach
                      </select>
       
@@ -58,7 +58,7 @@ SP
                </div>
                <div class="col-md-4">
                   <div class="form-group form-group-default">
-                     <label>Level</label>
+                     <label>Level*</label>
                      <select class="form-control" required id="level" name="level">
                         <option value="" selected disabled>Select level</option>
                         <option value="I">SP I</option>
@@ -92,13 +92,17 @@ SP
                <input type="text" class="form-control" name="rule" id="rule">
             </div> --}}
             <div class="form-group form-group-default">
-               <label>Alasan</label>
-               <input type="text" class="form-control" name="reason" id="reason">
+               <label>Alasan*</label>
+               <input type="text" required class="form-control" name="reason" id="reason">
             </div>
 
             <div class="form-group form-group-default">
-               <label>Kronologi</label>
-               <textarea class="form-control" name="desc" id="desc" rows="5"></textarea>
+               <label>Kronologi*</label>
+               <textarea class="form-control" required name="desc" id="desc" rows="4"></textarea>
+            </div>
+            <div class="form-group form-group-default">
+               <label>File attachment</label>
+               <input type="file" class="form-control" name="file" id="file">
             </div>
             <hr>
             <button type="submit" class="btn btn-block btn-primary">Submit</button>

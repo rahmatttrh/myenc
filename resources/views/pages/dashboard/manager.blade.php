@@ -16,8 +16,8 @@ Dashboard
    </div> --}}
    <div class="row">
       <div class="col-md-4">
-         <div class="btn btn-primary btn-block">Manager</div>
-         <hr>
+         {{-- <div class="btn btn-primary btn-block">Manager</div>
+         <hr> --}}
          <div class="d-block d-sm-none">
             <div class="alert alert-info shadow-sm">
 
@@ -37,9 +37,8 @@ Dashboard
                      </div> --}}
                {{-- </div> --}}
             </div>
-            <hr>
          </div>
-         <div class="card card-profile card-secondary ">
+         {{-- <div class="card card-profile card-secondary ">
             <div class="card-header" style="background-image: url({{asset('img/blogpost.jpg')}})">
                <div class="profile-picture">
                   <div class="avatar avatar-xl">
@@ -54,37 +53,48 @@ Dashboard
                <div class="user-profile text-center">
                   <div class="name">{{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</div>
                   <div class="job">{{$employee->position->name}}</div>
-                  {{-- <div class="desc">15/08/2023 - 15/08/24</div> --}}
-                  
                </div>
                
                
             </div>
-             <hr>
-             {{--
-            <div class="card-footer d-flex justify-content-between">
-
-               <div>
-                  {{$employee->contract->shift->name ?? '-'}} <br>
-                  Sisa Cuti <br>
-                  Overtime <br>
-                  Absen <br>
-               </div>
-               <div class="text-right">
-                  {{formatTime($employee->contract->shift->in)}} - {{formatTime($employee->contract->shift->out)}} <br>
-                  2 <br>
-                  4 Hours
-               </div>
-            </div> --}}
             
+         </div> --}}
+         <div class="card card-primary">
+            <div class="card-body text-center">
+               <h1>Manager</h1>
+            </div>
+         </div>
+         <div class="card">
+            <div class="card-header bg-primary text-white p-2">
+               <small>Employee</small>
+            </div>
+            <div class="card-body p-0">
+               <table class=" ">
+                  <thead>
+                     <tr>
+                        <th>NIK</th>
+                        <th>Name</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     @foreach ($teams as $employee)
+                         <tr>
+                           <td>{{$employee->nik}} </td>
+                           <td>{{$employee->biodata->fullName()}}</td>
+                         </tr>
+                     @endforeach
+                     
+                     
+                  </tbody>
+               </table>
+            </div>
          </div>
       </div>
       <div class="col-md-8">
          {{-- <div class="alert alert-info">You have 2 Notification !</div> --}}
-         <div class="d-none d-sm-block">
+         {{-- <div class="d-none d-sm-block">
             <div class="alert alert-info shadow-sm">
 
-               {{-- <div class="card-body"> --}}
                   <div class="card-opening">
                      <h4>
                         <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1">
@@ -95,13 +105,9 @@ Dashboard
                   <div class="card-desc">
                      Tanggal 8 & 9 Februari Libur Nasional dan Cuti Bersama
                   </div>
-                  {{-- <div class="card-detail">
-                        <div class="btn btn-light btn-rounded">Download Template</div>
-                     </div> --}}
-               {{-- </div> --}}
             </div>
             <hr>
-         </div>
+         </div> --}}
 
          <div class="card">
             <div class="card-header p-2 bg-primary text-white">
@@ -148,7 +154,7 @@ Dashboard
          @if (count($sps) > 0)
          <div class="card">
             <div class="card-header p-2 bg-danger text-white">
-               <small>SP Approval Manager</small>
+               <small>Recent SP</small>
             </div>
             <div class="card-body p-0">
                <table class=" ">
@@ -157,8 +163,9 @@ Dashboard
                      <tr class="">
                         {{-- <th scope="col">#</th> --}}
                         <th scope="col">ID</th>
-                        <th>Name</th>
                         <th>NIK</th>
+                        <th>Name</th>
+                        
                         <th>Level</th>
                         <th scope="col">Status</th>
                      </tr>
@@ -167,8 +174,9 @@ Dashboard
                      @foreach ($sps as $sp)
                          <tr>
                            <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->code}}</a></td>
-                           <td>{{$sp->employee->biodata->first_name}} {{$sp->employee->biodata->last_name}}</td>
                            <td>{{$sp->employee->nik}}</td>
+                           <td>{{$sp->employee->biodata->first_name}} {{$sp->employee->biodata->last_name}}</td>
+                           
                            <td>SP {{$sp->level}}</td>
                            <td>
                               <x-status.sp :sp="$sp" />

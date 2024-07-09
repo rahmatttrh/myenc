@@ -99,7 +99,7 @@ Employee
                <td>{{$employee->department->unit->name ?? ''}}</td>
                <td>{{$employee->department->name ?? ''}}</td>
                {{-- <td>{{$employee->contract->designation->name ?? ''}}</td> --}}
-               <td>{{$employee->position->name}}</td>
+               <td>{{$employee->position->name ?? '-'}}</td>
                <td>
                   @if ($employee->contract->type == 'Kontrak')
                   <span class="badge badge-info">Kontrak</span>

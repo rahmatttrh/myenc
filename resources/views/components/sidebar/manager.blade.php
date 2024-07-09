@@ -71,7 +71,7 @@
    </a>
 </li>
 
-<li class="nav-item {{ (request()->is('employee/detail/*')) ? 'active' : '' }}">
+{{-- <li class="nav-item {{ (request()->is('employee/detail/*')) ? 'active' : '' }}">
    <a href="{{route('employee.detail', [enkripRambo(auth()->user()->employee->id), enkripRambo('contract')])}}">
       <i class="fas fa-user"></i>
       <p>My Profile</p>
@@ -102,4 +102,4 @@
       <i class="fas fa-hospital"></i>
       <p>Permit</p>
    </a>
-</li>
+</li> --}}

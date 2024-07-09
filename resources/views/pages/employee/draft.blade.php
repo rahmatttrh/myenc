@@ -52,108 +52,63 @@
          @error('id_item')
             <div class="alert alert-danger mt-2">{{ $message }}</div>
          @enderror
-         <div class="card card-with-nav">
-            <div class="card-header"> 
-               <div class="row row-nav-line">
-                  <ul class="nav nav-tabs nav-line nav-color-secondary" role="tablist">
-                     <li class="nav-item"> <a class="nav-link active show " id="pills-draft-tab-nobd" data-toggle="pill" href="#pills-draft-nobd" role="tab" aria-controls="pills-draft-nobd" aria-selected="true">Draft</a> </li>
-                     <li class="nav-item"> <a class="nav-link" id="pills-import-tab-nobd" data-toggle="pill" href="#pills-import-nobd" role="tab" aria-controls="pills-import-nobd" aria-selected="false">Import</a> </li>
-                  </ul>
-               </div>
-            </div> 
+         <div class="card ">
+            {{-- <div class="card-header"> 
+               <div class="card-title">Draft</div>
+            </div>  --}}
             <div class="card-body">
-               <div class="tab-content mt-2 mb-3" id="pills-without-border-tabContent">
-                  <div class="tab-pane fade show active" id="pills-draft-nobd" role="tabpanel" aria-labelledby="pills-draft-tab-nobd">
-                     <div class="d-inline-flex align-items-center">
-                        <button type="submit" name="submit" class="btn btn-sm btn-primary mr-3">Publish</button>
-                        <div class="d-inline-flex align-items-center">
-                              <span class="badge badge-muted badge-counter">
-                                 <span id="total">0</span>
-                              </span>
-                        </div>
-                     </div>
-                     <hr>
-                     <div class="table-responsive">
-                        <table id="multi-filter-select" class="display basic-datatables table table-striped " >
-                           <thead>
-                              <tr>
-                                 <th>&nbsp; <input type="checkbox" id="selectall" /></th>
-                                 <th>No</th>
-                                 <th>Name</th>
-                                 <th>ID</th>
-                                 <th>Email</th>
-                                 <th>Department</th>
-                                 <th>Designation</th>
-                                 <th>Status</th>
-                                 {{-- <th class="text-right">Action</th> --}}
-                              </tr>
-                           </thead>
-                           <tbody>
-                              @foreach ($employees as $employee)
-                                 <tr>
-                                    <td class="text-center"><input type="checkbox" class="case" name="id_item[]" value="{{$employee->id}}" /> </td>
-                                    <td>{{++$i}}</td>
-                                    {{-- <td><a href="{{route('employee.detail', enkripRambo($employee->id))}}">{{$employee->name}}</a> </td> --}}
-                                    <td >
-                                       <div class="text-nowrap">
-                                          <a href="{{route('employee.detail', [enkripRambo($employee->id), enkripRambo('contract')])}}">{{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</a><br>
-                                          {{-- <small class="text-muted">{{$employee->biodata->email}}</small> --}}
-                                       </div>
-                                             
-                                          {{-- <div class="info-user ml-3">
-                                             <div class="username">Jimmy Denis</div>
-                                             <div class="status">Graphic Designer</div>
-                                          </div> --}}
-                                    </td>
-                                    <td>{{$employee->contract->id_no}}</td>
-                                    <td>{{$employee->biodata->email}}</td>
-                                    <td>{{$employee->contract->department->name ?? ''}}</td>
-                                    <td>{{$employee->contract->designation->name ?? ''}}</td>
-                                    <td>
-                                       <span class="badge badge-muted">Off</span>
-                                    </td>
-                                 </tr>
-                              @endforeach
-                           </tbody>
-                        </table>
-                     </div>
+               <div class="d-inline-flex align-items-center">
+                  <button type="submit" name="submit" class="btn btn-sm btn-primary mr-3">Publish</button>
+                  <div class="d-inline-flex align-items-center">
+                        <span class="badge badge-muted badge-counter">
+                           <span id="total">0</span>
+                        </span>
                   </div>
-                  <div class="tab-pane fade" id="pills-import-nobd" role="tabpanel" aria-labelledby="pills-import-tab-nobd">
-                   
-                     <div class="row">
-                        <div class="col-md-5">
-                           <img src="{{asset('img/xls-file.png')}}" class="img mb-4" height="110" alt="">
-                           <form action="{{route('employee.import')}}" method="POST" enctype="multipart/form-data">
-                              @csrf
-                              <div class="form-group ">
-                                 <label>File Excel</label>
-                                 <input id="excel" name="excel" type="file" class="form-control-file">
-                                 @error('excel')
-                                    <small class="text-danger"><i>{{ $message }}</i></small>
-                                 @enderror
-                              </div>
-                              <hr>
-                              <div class="form-group">
-                                 <button type="submit" class="btn btn-primary">Import</button>
-                              </div>
-                              
-                           </form>
-                        </div>
-                        <div class="col-md-7">
-                           <div class="card card-light card-annoucement card-round shadow-none border">
-                              <div class="card-body text-center">
-                                 <div class="card-opening">Import Excel</div>
-                                 <div class="card-desc">
-                                    Make sure your document format is the same as the system requirements. Or you can download the template in the link below
+               </div>
+               <hr>
+               <div class="table-responsive">
+                  <table id="multi-filter-select" class="display basic-datatables table table-striped " >
+                     <thead>
+                        <tr>
+                           <th>&nbsp; <input type="checkbox" id="selectall" /></th>
+                           <th>No</th>
+                           <th>Name</th>
+                           <th>ID</th>
+                           <th>Email</th>
+                           <th>Department</th>
+                           <th>Designation</th>
+                           <th>Status</th>
+                           {{-- <th class="text-right">Action</th> --}}
+                        </tr>
+                     </thead>
+                     <tbody>
+                        @foreach ($employees as $employee)
+                           <tr>
+                              <td class="text-center"><input type="checkbox" class="case" name="id_item[]" value="{{$employee->id}}" /> </td>
+                              <td>{{++$i}}</td>
+                              {{-- <td><a href="{{route('employee.detail', enkripRambo($employee->id))}}">{{$employee->name}}</a> </td> --}}
+                              <td >
+                                 <div class="text-nowrap">
+                                    <a href="{{route('employee.detail', [enkripRambo($employee->id), enkripRambo('contract')])}}">{{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</a><br>
+                                    {{-- <small class="text-muted">{{$employee->biodata->email}}</small> --}}
                                  </div>
-                                 <div class="card-detail">
-                                    <a href="/documents/template-employee.xlsx" class="btn btn-success btn-rounded">Download Template</a>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
+                                       
+                                    {{-- <div class="info-user ml-3">
+                                       <div class="username">Jimmy Denis</div>
+                                       <div class="status">Graphic Designer</div>
+                                    </div> --}}
+                              </td>
+                              <td>{{$employee->contract->id_no}}</td>
+                              <td>{{$employee->biodata->email}}</td>
+                              <td>{{$employee->contract->department->name ?? ''}}</td>
+                              <td>{{$employee->contract->designation->name ?? ''}}</td>
+                              <td>
+                                 <span class="badge badge-muted">Off</span>
+                              </td>
+                           </tr>
+                        @endforeach
+                     </tbody>
+                  </table>
                </div>
                
             </div>

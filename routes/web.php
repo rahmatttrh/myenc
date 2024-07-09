@@ -87,7 +87,7 @@ Route::middleware(["auth"])->group(function () {
          Route::get('export', [EmployeeController::class, 'export'])->name('employee.export');
          Route::get('export/simple', [EmployeeController::class, 'exportSimple'])->name('employee.export.simple');
          Route::get('import', [EmployeeController::class, 'formImport'])->name('employee.import');
-         Route::post('import', [EmployeeController::class, 'import'])->name('employee.import');
+         Route::post('import', [EmployeeController::class, 'import'])->name('employee.import.data');
 
          Route::prefix('draft')->group(function () {
             Route::get('/', [EmployeeController::class, 'draft'])->name('employee.draft');
@@ -250,16 +250,20 @@ Route::middleware(["auth"])->group(function () {
 
 
    Route::prefix('sp')->group(function () {
-      Route::get('/', [SpController::class, 'index'])->name('sp');
+      Route::get('/index', [SpController::class, 'index'])->name('sp');
       Route::post('store', [SpController::class, 'store'])->name('sp.store');
       Route::get('detail/{id}', [SpController::class, 'detail'])->name('sp.detail');
       Route::put('update', [SpController::class, 'update'])->name('sp.update');
       Route::get('delete/{id}', [SpController::class, 'delete'])->name('sp.delete');
+      Route::get('close/{id}', [SpController::class, 'close'])->name('sp.close');
 
       Route::put('/submit/{id}', [SpApprovalController::class, 'submit'])->name('sp.submit');
       Route::put('/app/hrd/{id}', [SpApprovalController::class, 'appHrd'])->name('sp.app.hrd');
       Route::put('/app/manager/{id}', [SpApprovalController::class, 'appManager'])->name('sp.app.manager');
+      Route::put('/release/{id}', [SpApprovalController::class, 'release'])->name('sp.release');
+      Route::put('/discuss/manager', [SpApprovalController::class, 'discussManager'])->name('sp.discuss.manager');
       Route::put('/app/employee/{id}', [SpApprovalController::class, 'appEmployee'])->name('sp.app.employee');
+      Route::put('/complain/employee', [SpApprovalController::class, 'complainEmployee'])->name('sp.complain.employee');
       
       
       Route::put('/app/employee/{id}', [SpApprovalController::class, 'appEmployee'])->name('sp.app.employee');

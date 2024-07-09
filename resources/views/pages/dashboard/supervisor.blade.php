@@ -34,7 +34,7 @@ Dashboard
             </div>
             <hr>
          </div> --}}
-         <div class="card card-profile card-secondary ">
+         {{-- <div class="card card-profile card-secondary ">
             <div class="card-header" style="background-image: url({{asset('img/blogpost.jpg')}})">
                <div class="profile-picture">
                   <div class="avatar avatar-xl">
@@ -55,36 +55,31 @@ Dashboard
                
             </div>
              
-            {{-- <div class="card-footer d-flex justify-content-between">
-               
-               @if ($employee->contract_id != null)
-               <div>
-                  {{$employee->contract->shift->name ?? '-'}} <br>
-                  Sisa Cuti <br>
-                  
-               </div>
-               <div class="text-right">
-                  {{formatTime($employee->contract->shift->in)}} - {{formatTime($employee->contract->shift->out)}} <br>
-                  4
-               </div>
-               @endif
-               
-            </div> --}}
+           
             
+         </div> --}}
+         <div class="card card-primary">
+            <div class="card-body text-center">
+               <h1>Supervisor</h1>
+            </div>
          </div>
-
          <div class="card">
             <div class="card-header bg-primary text-white p-2">
-               <small>My Team</small>
+               <small>Employee</small>
             </div>
             <div class="card-body p-0">
                <table class=" ">
-                  
+                  <thead>
+                     <tr>
+                        <th>NIK</th>
+                        <th>Name</th>
+                     </tr>
+                  </thead>
                   <tbody>
                      @foreach ($teams as $employee)
                          <tr>
-                           <td>{{$employee->nik}} {{$employee->biodata->fullName()}}</td>
-                           {{-- <td></td> --}}
+                           <td>{{$employee->nik}} </td>
+                           <td>{{$employee->biodata->fullName()}}</td>
                          </tr>
                      @endforeach
                      

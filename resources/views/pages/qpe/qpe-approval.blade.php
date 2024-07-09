@@ -18,8 +18,8 @@ PE
         Silahkan isi nilai behavior !
     </div>
     @endif
-    <div class="row mr-6">
-
+    <div class="row ">
+      <div class="col">
         @if (auth()->user()->hasRole('Karyawan'))
         <!-- Awal Action Karyawan -->
 
@@ -147,90 +147,8 @@ PE
         <!-- Akhir Action Karyawan  -->
         @endif
 
-        @if (auth()->user()->hasRole('Manager') && ($kpa->pe->status == '1' || $kpa->pe->status == '202') )
-        <div class="btn-group ml-auto">
-            @if($kpa->pe->status == '1')
-            <button data-target="#modalDiscuss" data-toggle="modal" class="btn btn-sm btn-success "><i class="fa fa-users"></i> Need Discuss</button>
-
-            <!-- Modal Discuss  -->
-            <div class="modal fade" id="modalDiscuss" data-bs-backdrop="static">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-
-                        <!-- Bagian header modal -->
-                        <div class="modal-header">
-                            <h3 class="modal-title"> </h3>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        </div>
-                        <form method="POST" action="{{route('qpe.discuss.patch', $pe->id) }}" enctype="multipart/form-data">
-                            @csrf
-                            @method('patch')
-                            <input type="hidden" name="id" value="{{$pe->id}}">
-                            <input type="hidden" name="nd_dibuat" value="{{ $user ? $user->biodata->fullName() : ''}}">
-                            <input type="hidden" name="nd_from" value="Manager">
-
-                            <!-- Bagian konten modal -->
-                            <div class="modal-body">
-
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="card shadow-none border">
-                                            <div class="card-header d-flex">
-                                                <div class="d-flex  align-items-center">
-                                                    <div class="card-title">Konfirmasi </div>
-                                                </div>
-
-                                            </div>
-                                            <div class="card-body">
-                                                <div class="form-group">
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <label for="" class="label-control">Tetapkan Tanggal Diskusi <span class="text-danger">*</span></label>
-                                                            <input required name="nd_date" type="date" class="form-control" min="<?php echo date('Y-m-d'); ?>">
-                                                            <br>
-                                                            <label for="" class="label-control">Di Tunjukan untuk <span class="text-danger">*</span></label>
-                                                            <select name="nd_for" id="" class="form-control">
-                                                                <option value="3">Karyawan dan Team Leader/Spv</option>
-                                                                <option value="2">Karyawan</option>
-                                                                <option value="1">TL/Spv</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <label for="" class="label-control">Alasan <span class="text-danger">*</span></label>
-                                                            <textarea name="nd_alasan" class="form-control" id="" rows="5" placeholder="isi alasan untuk berdiskusi disini" required></textarea>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Bagian footer modal -->
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-success"><i class="fa fa-send"></i> Submit</button>
-                            </div>
-                        </form>
-
-                    </div>
-                </div>
-            </div>
-
-            <!-- End Modal Discuss  -->
-
-            @endif
-
-            @if($pba != null)
-            <button onclick="doneVerifikasi({{$kpa->id}})" class=" btn btn-sm btn-warning  "><i class="fa fa-check"></i> Approved</button>
-            <form id="done-validasi" action="{{route('qpe.approved', $pe->id)}}" method="POST"> @csrf @method('patch')</form>
-            @endif
-            <button data-target="#modalReject" data-toggle="modal" class="btn btn-sm btn-danger "><i class="fa fa-reply"></i> Reject</button>
-
-        </div>
-        @endif
+        
+      </div>
     </div>
 
     <div class="row" id="boxCreate">
@@ -238,6 +156,93 @@ PE
             <x-qpe.performance-appraisal :kpa="$kpa" />
         </div>
         <div class="col-md-9">
+         @if (auth()->user()->hasRole('Manager') && ($kpa->pe->status == '1' || $kpa->pe->status == '202') )
+         <div class="text-right">
+            <div class="btn-group mr-auto">
+               @if($kpa->pe->status == '1')
+               <button data-target="#modalDiscuss" data-toggle="modal" class="btn btn-sm btn-success "><i class="fa fa-users"></i> Need Discuss</button>
+
+               <!-- Modal Discuss  -->
+               <div class="modal fade" id="modalDiscuss" data-bs-backdrop="static">
+                  <div class="modal-dialog modal-lg">
+                     <div class="modal-content">
+
+                           <!-- Bagian header modal -->
+                           <div class="modal-header">
+                              <h3 class="modal-title"> </h3>
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                           </div>
+                           <form method="POST" action="{{route('qpe.discuss.patch', $pe->id) }}" enctype="multipart/form-data">
+                              @csrf
+                              @method('patch')
+                              <input type="hidden" name="id" value="{{$pe->id}}">
+                              <input type="hidden" name="nd_dibuat" value="{{ $user ? $user->biodata->fullName() : ''}}">
+                              <input type="hidden" name="nd_from" value="Manager">
+
+                              <!-- Bagian konten modal -->
+                              <div class="modal-body">
+
+                                 <div class="row">
+                                       <div class="col-md-12">
+                                          <div class="card shadow-none border">
+                                             <div class="card-header d-flex">
+                                                   <div class="d-flex  align-items-center">
+                                                      <div class="card-title">Konfirmasi </div>
+                                                   </div>
+
+                                             </div>
+                                             <div class="card-body">
+                                                   <div class="form-group">
+                                                      <div class="row">
+                                                         <div class="col-md-6">
+                                                               <label for="" class="label-control">Tetapkan Tanggal Diskusi <span class="text-danger">*</span></label>
+                                                               <input required name="nd_date" type="date" class="form-control" min="<?php echo date('Y-m-d'); ?>">
+                                                               <br>
+                                                               <label for="" class="label-control">Di Tunjukan untuk <span class="text-danger">*</span></label>
+                                                               <select name="nd_for" id="" class="form-control">
+                                                                  <option value="3">Karyawan dan Leader</option>
+                                                                  <option value="2">Karyawan</option>
+                                                                  <option value="1">Leader</option>
+                                                               </select>
+                                                         </div>
+                                                         <div class="col-md-6">
+                                                               <label for="" class="label-control">Alasan <span class="text-danger">*</span></label>
+                                                               <textarea name="nd_alasan" class="form-control" id="" rows="5" placeholder="isi alasan untuk berdiskusi disini" required></textarea>
+                                                         </div>
+
+                                                      </div>
+                                                   </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                 </div>
+                              </div>
+
+                              <!-- Bagian footer modal -->
+                              <div class="modal-footer">
+                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                 <button type="submit" class="btn btn-success"><i class="fa fa-send"></i> Submit</button>
+                              </div>
+                           </form>
+
+                     </div>
+                  </div>
+               </div>
+
+               <!-- End Modal Discuss  -->
+
+               @endif
+
+               @if($pba != null)
+               <button onclick="doneVerifikasi({{$kpa->id}})" class=" btn btn-sm btn-warning  "><i class="fa fa-check"></i> Approved</button>
+               <form id="done-validasi" action="{{route('qpe.approved', $pe->id)}}" method="POST"> @csrf @method('patch')</form>
+               @endif
+               <button data-target="#modalReject" data-toggle="modal" class="btn btn-sm btn-danger "><i class="fa fa-reply"></i> Reject</button>
+
+            </div>
+         </div>
+            
+         @endif
             <x-qpe.kpi-table :kpa="$kpa" :datas="$datas" :valueAvg="$valueAvg" :addtional="$addtional" :i="$i" />
         </div>
     </div>

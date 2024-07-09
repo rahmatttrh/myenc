@@ -36,7 +36,7 @@
             </a>
          </div> --}}
          <div class="col-sm-6 col-md-3">
-            <a href="" style="text-decoration: none" data-toggle="tooltip" data-placement="top" title="Total Vessel">
+            {{-- <a href="" style="text-decoration: none" data-toggle="tooltip" data-placement="top" title="Total Vessel">
                <div class="card card-stats card-primary card-round">
                   <div class="card-body">
                      <div class="row">
@@ -54,10 +54,10 @@
                      </div>
                   </div>
                </div>
-            </a>
-            <div class="card">
-               <div class="card-body">
-                    Hak Akses :  HRD SPV
+            </a> --}}
+            <div class="card card-primary">
+               <div class="card-body text-center">
+                  <h1>HRD Supervisor</h1>
                </div>
             </div>
             {{-- <div class="table-responsive"> --}}
@@ -70,7 +70,7 @@
                   <table class="display  table-sm table-bordered  table-striped ">
                      <thead>
                         <tr>
-                           <th colspan="2">Employee Status</th>
+                           <th colspan="2">Employee</th>
                         </tr>
                         <tr>
                            <th scope="col">Status</th>
@@ -89,8 +89,12 @@
                            <td class="text-center">{{$tetap}}</td>
                         </tr>
                         <tr>
-                           <td>Empty</td>
+                           <td>Pending</td>
                            <td class="text-center">{{$empty}}</td>
+                        </tr>
+                        <tr>
+                           <td>Total</td>
+                           <td class="text-center">{{count($employees)}}</td>
                         </tr>
                      </tbody>
                   </table>
@@ -99,7 +103,7 @@
          </div>
          <div class="col-md-9">
             <div class="row">
-               <div class="col-md-6">
+               <div class="col-md-12">
                   <div class="card">
                      <div class="card-header p-2 bg-primary text-white">
                         <small>Contract End This Month</small>
@@ -126,21 +130,23 @@
                      </div>
                   </div>
                </div>
-               <div class="col-md-6">
+               <div class="col-md-12">
                   <div class="card">
                      <div class="card-header p-2 bg-danger text-white">
-                        <small>SP Approval</small>
+                        <small>Recent SP</small>
                      </div>
                      <div class="card-body p-0">
                         <table class="display  table-sm table-bordered  table-striped ">
                            <thead>
                               
                               <tr>
-                                 <th scope="col">ID</th>
+                                 <th>ID</th>
+                                 <th scope="col">Level</th>
+                                 <th>NIK</th>
                                  <th scope="col" >Name</th>
                                  {{-- <th>Unit</th>
                                  <th>Department</th> --}}
-                                 <th>Level</th>
+                                 <th>Status</th>
                               </tr>
                               
                            </thead>
@@ -149,8 +155,10 @@
                                  @foreach ($sps as $sp)
                                  <tr>
                                     <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->code}}</a></td>
-                                    <td>{{$sp->employee->biodata->fullName()}}</td>
                                     <td>SP {{$sp->level}}</td>
+                                    <td>{{$sp->employee->nik}}</td>
+                                    <td>{{$sp->employee->biodata->fullName()}}</td>
+                                    <td><x-status.sp :sp="$sp" /> </td>
                                  </tr>
                                  @endforeach
                                   @else

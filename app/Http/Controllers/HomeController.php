@@ -153,16 +153,18 @@ class HomeController extends Controller
             'sps' => $sps
          ]);
       } elseif (auth()->user()->hasRole('HRD-Spv')) {
+         $user = Employee::find(auth()->user()->getEmployeeId());
          $units = Unit::get()->count();
          $employees = Employee::get();
          $male = Biodata::where('gender', 'Male')->count();
          $female = Biodata::where('gender', 'Female')->count();
          $spkls = Spkl::orderBy('updated_at', 'desc')->paginate(5);
-         $sps = Sp::where('status', 1)->get();
+         $sps = Sp::where('status', '>' ,1)->orderBy('created_at', 'desc')->paginate('5');
          $kontrak = Contract::where('status', 1)->where('type', 'Kontrak')->get()->count();
          $tetap = Contract::where('status', 1)->where('type', 'Tetap')->get()->count();
          $empty = Contract::where('type', null)->get()->count();
-         $logs = Log::orderBy('created_at', 'desc')->paginate(5);
+
+         $logs = Log::where('department_id', $user->department_id)->orderBy('created_at', 'desc')->paginate(5);
          return view('pages.dashboard.hrd-spv', [
             'units' => $units,
             'employees' => $employees,
@@ -204,16 +206,17 @@ class HomeController extends Controller
          // dd($biodata->employee->id);
 
          $spkls = Spkl::where('status', 1)->orWhere('status', 2)->where('department_id', $employee->department_id)->get();
-         $sps = Sp::where('status', 1)->where('department_id', $employee->department_id)->get();
+         $sps = Sp::where('status', '>', 2)->where('department_id', $employee->department_id)->orderBy('updated_at', 'desc')->paginate('5');
          // dd($spkls);
+         $teams = Employee::where('manager_id', auth()->user()->getEmployeeId())->get();
          return view('pages.dashboard.manager', [
             'employee' => $biodata->employee,
             'dates' => $dates,
             'presences' => $presences,
             'pending' => $pending,
-
             'spkls' => $spkls,
-            'sps' => $sps
+            'sps' => $sps,
+            'teams' => $teams
          ]);
       } elseif (auth()->user()->hasRole('Supervisor')) {
          $employee = Employee::where('nik', auth()->user()->username)->first();
@@ -225,7 +228,7 @@ class HomeController extends Controller
          $spkls = Spkl::where('status', '>=', 1)->where('department_id', $employee->department_id)->orderBy('created_at', 'desc')->paginate(5);
          // dd($spkls);
          $teams = Employee::where('direct_leader_id', auth()->user()->getEmployeeId())->get();
-         $spRecents = Sp::where('by_id',auth()->user()->getEmployeeId())->paginate('5');
+         $spRecents = Sp::where('by_id',auth()->user()->getEmployeeId())->orderBy('updated_at', 'desc')->paginate('5');
          return view('pages.dashboard.supervisor', [
             'employee' => $biodata->employee,
             'teams' => $teams,
@@ -247,7 +250,7 @@ class HomeController extends Controller
 
          $spkls = Spkl::where('employee_id',)->orderBy('updated_at', 'desc')->paginate(3);
          $sps = Sp::where('employee_id', auth()->user()->getEmployeeId())->where('status', 2)->get();
-         $spHistories = Sp::where('employee_id', auth()->user()->getEmployeeId())->where('status', '>', 2)->get();
+         $spHistories = Sp::where('employee_id', auth()->user()->getEmployeeId())->where('status', '>', 3)->get();
          // dd(auth()->user()->getEmployeeId());
          return view('pages.dashboard.employee', [
             'now' => $now,

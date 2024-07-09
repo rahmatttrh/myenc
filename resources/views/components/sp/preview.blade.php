@@ -36,7 +36,7 @@
                <div class="col-10">: {{$sp->employee->department->name}}</div>
             </div>
             <div class="row mt-4">
-               <div class="col-12">Sehubugan dengan pelanggaran yang {{$gen}} lakukan, yaitu :</div>
+               <div class="col-12">Sehubungan dengan pelanggaran yang {{$gen}} lakukan, yaitu :</div>
             </div>
             <br>
             <div class="row mb-4 mt-2">
@@ -48,7 +48,7 @@
       </div>
 
       <br>
-      <p>Maka sesuai dengan peraturan yang berlaku (Peraturan Perusahaan {{$sp->rule}}) kepada {{$gen}} diberikan sanksi berupa SURAT PERINGATAN {{$sp->level}}.</p>
+      <p>Maka sesuai dengan peraturan yang berlaku ( <b>Peraturan Perusahaan {{$sp->rule}}</b> ) kepada {{$gen}} diberikan sanksi berupa <b>SURAT PERINGATAN {{$sp->level}}</b>.</p>
 
       <p>Setelah {{$gen}} menerima SURAT PERINGATAN {{$sp->level}} ini, diharapkan {{$gen}} dapat merubah sikap {{$gen}} dan kembali bekerja dengan baik.</p>
 
@@ -142,4 +142,14 @@
       </table>
    </div>
    <br><br>
+   <div class="card-footer">
+      @if ($sp->complain_reason)
+      {{-- <div class=" col-12 col-lg-10 col-xl-11 text-muted master "> --}}
+         #Note dari Karyawan <br>
+
+         <b>{{$sp->complain_reason}}</b>
+
+      {{-- </div> --}}
+      @endif
+   </div>
 </div>
