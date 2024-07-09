@@ -45,7 +45,7 @@
                 {{$kpa->pe->nd_dibuat}} : <i> {{$kpa->pe->nd_alasan}} </i>
                 <br><br>
 
-                Yang di Undang :
+                Undangan :
                 <br>
                 @if($kpa->pe->nd_for == '1')
                 Team Leader atau Supervisor
@@ -58,14 +58,14 @@
 
                 <br>
                 <br><br>
-                Tanggal : {{formatDate($kpa->pe->nd_date)}}
+                Ditanggal : {{formatDate($kpa->pe->nd_date)}}
 
 
                 @endif
             </div>
             @if($kpa->pe->complained == '1')
             <div class="form-group form-group-default">
-                <label for="" class="text-danger">Karyawan Komplain</label>
+                <label for="" class="text-danger">Komentar Karyawan</label>
                 <br>
                 [{{formatDate($kpa->pe->complain_date)}}] {{$kpa->employe->biodata->fullName()}} :
                 <br>

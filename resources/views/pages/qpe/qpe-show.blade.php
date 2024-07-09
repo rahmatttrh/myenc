@@ -20,10 +20,10 @@ PE
 
         <!-- Hanya karyawan tersebut yang bisa komplen -->
 
-        @if(auth()->user()->employee->id == $pe->employe_id && ($kpa->pe->status == '1'|| $kpa->pe->status == '101' || $kpa->pe->status == '202') && $pe->complained == '0' )
+        @if(auth()->user()->employee->id == $pe->employe_id && ($kpa->pe->status == '1'|| $kpa->pe->status == '2' || $kpa->pe->status == '101' || $kpa->pe->status == '202') && $pe->complained == '0' )
 
         <div class="btn-group ml-auto">
-            <button data-target="#modalKomplain" data-toggle="modal" class="btn btn-md btn-warning "><i class="fa fa-comments"></i> Ajukan Komplain</button>
+            <button data-target="#modalKomplain" data-toggle="modal" class="btn btn-md btn-warning "><i class="fa fa-comments"></i> Komentar Karyawan</button>
         </div>
 
         <!-- Modal Komplain  -->
