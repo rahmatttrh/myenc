@@ -54,11 +54,11 @@
                   <small>Bisnis Unit</small>
                </div>
                <div class="card-body p-0">
-                  <table class="display  table-sm table-bordered  table-striped ">
+                  <table class="display  table-sm table-bordered   ">
                      <thead>
                         
                         <tr>
-                           <th scope="col">#</th>
+                           {{-- <th scope="col">#</th> --}}
                            <th scope="col">Unit Name</th>
                            <th scope="col" class="text-right">Action</th>
                         </tr>
@@ -67,11 +67,11 @@
                         @if (count($units) > 0)
                               @foreach ($units as $unit)
                               <tr>
-                                 <td>{{++$i}}</td>
+                                 {{-- <td>{{++$i}}</td> --}}
                                  <td><a href="{{route('unit.detail', enkripRambo($unit->id))}}">{{$unit->name}}</a></td>
 
                               <td class="text-right">
-                                    <a href="{{route('unit.edit', enkripRambo($unit->id) )}}">Edit</a>
+                                    {{-- <a href="{{route('unit.edit', enkripRambo($unit->id) )}}">Edit</a> --}}
                                     <a href="#" data-toggle="modal" data-target="#modal-delete-{{$unit->id}}">Delete</a>
                                  </td>
                               </tr>
@@ -125,7 +125,7 @@
                                  <td>{{$unit->name}}</td>
 
                                 <td class="text-right">
-                                    <a href="{{route('unit.edit', enkripRambo($unit->id) )}}">Edit</a>
+                                    {{-- <a href="{{route('unit.edit', enkripRambo($unit->id) )}}">Edit</a> --}}
                                     <a href="#" data-toggle="modal" data-target="#modal-delete-{{$unit->id}}">Delete</a>
                                  </td>
                               </tr>

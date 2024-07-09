@@ -65,4 +65,17 @@ class UnitController extends Controller
       ])->with('i');
       // dd($unit->id);
     }
+
+    public function delete($id){
+      $unit = Unit::find(dekripRambo($id));
+      $departments = Department::where('unit_id', $unit->id)->get();
+      // dd($unit->name);
+      if (count($departments) > 0) {
+         return redirect()->back()->with('danger', 'Bisnis Unit delete fail, this unit have department');
+      } else {
+         $unit->delete();
+         return redirect()->back()->with('success', 'Bisnis Unit successfully deleted');
+      }
+
+    }
 }

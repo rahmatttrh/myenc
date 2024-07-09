@@ -79,7 +79,7 @@
                                     @foreach ($depart->sub_depts as $sub)
                                     <tr>
                                        {{-- <td class="text-center">{{++$i}}</td> --}}
-                                       <td><a href="{{route('unit.detail', enkripRambo($sub->id))}}">{{$sub->name}}</a></td>
+                                       <td>{{$sub->name}}</td>
                                        <td>
                                           @foreach ($sub->positions as $pos)
                                               {{$pos->name}} <br>
