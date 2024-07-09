@@ -16,4 +16,16 @@ class PositionController extends Controller
             'positions' => $positions
         ])->with('i');
     }
+
+    public function store(Request $req){
+      $req->validate([]);
+
+      Position::create([
+         'sub_dept_id' => $req->subdept,
+         'designation_id' => $req->designation,
+         'name' => $req->name
+      ]);
+
+      return redirect()->back()->with('success', 'Position successfully added');
+    }
 }

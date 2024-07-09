@@ -22,7 +22,9 @@ class DepartmentController extends Controller
       $req->validate([]);
 
       Department::create([
+         'unit_id' => $req->unit,
          'name' => $req->name
+
       ]);
 
       return redirect()->back()->with('success', 'Department successfully added');
@@ -47,16 +49,22 @@ class DepartmentController extends Controller
          'name' => $req->name
       ]);
 
-      return redirect()->route('department')->with('success', 'Department successfully updated');
+      return redirect()->back()->with('success', 'Department successfully updated');
    }
 
    public function delete($id)
    {
       $dekripId = dekripRambo($id);
       $department = Department::find($dekripId);
+      $subs = SubDept::where('department_id', $department->id)->get();
 
-      $department->delete();
-      return redirect()->route('department')->with('success', 'Department successfully deleted');
+      if (count($subs) > 0) {
+         return redirect()->back()->with('danger', 'Department delete fail, this department have Sub Department');
+      } else {
+         $department->delete();
+         return redirect()->route('department')->with('success', 'Department successfully deleted');
+      }
+      
    }
 
 

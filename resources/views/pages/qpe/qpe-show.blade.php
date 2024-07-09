@@ -39,7 +39,7 @@ PE
             @if(auth()->user()->employee->id == $pe->employe_id && ($kpa->pe->status == '2'|| $kpa->pe->status == '101' || $kpa->pe->status == '202') && $pe->complained == '0' )
 
             <div class="btn-group ml-auto">
-                  <button data-target="#modalKomplain" data-toggle="modal" class="btn btn-md btn-warning "><i class="fa fa-comments"></i> Krikit & Saran</button>
+                  <button data-target="#modalKomplain" data-toggle="modal" class="btn btn-md btn-warning "><i class="fa fa-comments"></i> Komentar</button>
             </div>
 
             <!-- Modal Komplain  -->
@@ -73,8 +73,8 @@ PE
                                                 <div class="form-group">
                                                       <div class="row">
                                                          <div class="col-md-12">
-                                                            <label for="" class="label-control">Kritik & Saran <span class="text-danger">*</span></label>
-                                                            <textarea name="complain_alasan" class="form-control" id="" rows="5" placeholder="isi kritik & saran" required></textarea>
+                                                            <label for="" class="label-control">Komentar <span class="text-danger">*</span></label>
+                                                            <textarea name="complain_alasan" class="form-control" id="" rows="5" placeholder="isi komentar" required></textarea>
                                                          </div>
                                                       </div>
                                                 </div>

@@ -12,21 +12,21 @@
                <span class="sub-item">Bisnis Unit</span>
             </a>
          </li>
-         <li>
+         {{-- <li>
             <a href="{{route('department')}}">
                <span class="sub-item">Department</span>
             </a>
-         </li>
+         </li> --}}
          <li>
             <a href="{{route('designation')}}">
                <span class="sub-item">Level</span>
             </a>
          </li>
-         <li>
+         {{-- <li>
             <a href="{{route('position')}}">
                <span class="sub-item">Jabatan</span>
             </a>
-         </li>
+         </li> --}}
          <li>
             <a href="{{route('so')}}">
                <span class="sub-item">Struktur Organisasi</span>

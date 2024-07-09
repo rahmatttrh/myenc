@@ -22,7 +22,7 @@ class PeKpiController extends Controller
         // Data KPI
         if (auth()->user()->hasRole('Administrator|HRD')) {
             $kpis = PeKpi::get();
-        } else if (auth()->user()->hasRole('Leader|Manager')) {
+        } else if (auth()->user()->hasRole('Leader|Manager|Supervisor')) {
             $kpis = PeKpi::where('departement_id', $employee->department_id)->get();
         }
 
@@ -31,14 +31,14 @@ class PeKpiController extends Controller
         // Data Unit
         if (auth()->user()->hasRole('Administrator|HRD')) {
             $units = Unit::orderBy('name')->get();
-        } else if (auth()->user()->hasRole('Leader|Manager')) {
+        } else if (auth()->user()->hasRole('Leader|Manager|Supervisor')) {
             $units = Unit::where('id', $employee->department->unit->id)->get();
         }
 
         // Data Department
         if (auth()->user()->hasRole('Administrator|HRD')) {
             $departements = Department::orderBy('name')->get();
-        } else if (auth()->user()->hasRole('Leader|Manager')) {
+        } else if (auth()->user()->hasRole('Leader|Manager|Supervisor')) {
             $departements = Department::where('id', $employee->department_id)->get();
         }
 

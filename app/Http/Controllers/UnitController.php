@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Department;
+use App\Models\Designation;
 use App\Models\Unit;
 use Illuminate\Http\Request;
 
@@ -36,5 +37,32 @@ class UnitController extends Controller
             'data' => $data,
             'departments' => $departments
         ]);
+    }
+
+    public function store(Request $req){
+      $req->validate([]);
+
+      Unit::create([
+         'name' => $req->name
+      ]);
+
+      return redirect()->back()->with('success', 'Bisnis Unit successfully added');
+    }
+
+    public function detail($id){
+      $dekripId = dekripRambo($id);
+      $unit = Unit::find($dekripId);
+      $departments = Department::where('unit_id', $unit->id)->orderBy('created_at', 'desc')->get();
+      $firstDept = Department::where('unit_id', $unit->id)->orderBy('created_at', 'desc')->first();
+      $panel = 1;
+      $designations = Designation::get();
+      return view('pages.unit.detail', [
+         'unit' => $unit,
+         'departments' => $departments,
+         'panel' => $panel,
+         'firstDept' => $firstDept,
+         'designations' => $designations
+      ])->with('i');
+      // dd($unit->id);
     }
 }

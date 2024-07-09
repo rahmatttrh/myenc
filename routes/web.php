@@ -117,6 +117,7 @@ Route::middleware(["auth"])->group(function () {
 
          // Belum
          Route::post('store', [UnitController::class, 'store'])->name('unit.store');
+         Route::get('detail/{id}', [UnitController::class, 'detail'])->name('unit.detail');
          Route::get('edit/{unit:id}', [UnitController::class, 'edit'])->name('unit.edit');
          Route::put('update', [UnitController::class, 'update'])->name('unit.update');
          Route::get('delete/{unit:id}', [UnitController::class, 'delete'])->name('unit.delete');
@@ -128,6 +129,14 @@ Route::middleware(["auth"])->group(function () {
          Route::get('edit/{department:id}', [DepartmentController::class, 'edit'])->name('department.edit');
          Route::put('update', [DepartmentController::class, 'update'])->name('department.update');
          Route::get('delete/{department:id}', [DepartmentController::class, 'delete'])->name('department.delete');
+      });
+
+      Route::prefix('master/subdept')->group(function () {
+         // Route::get('/', [DepartmentController::class, 'index'])->name('department');
+         Route::post('store', [SubDeptController::class, 'store'])->name('subdept.store');
+         // Route::get('edit/{department:id}', [DepartmentController::class, 'edit'])->name('department.edit');
+         Route::put('update', [SubDeptController::class, 'update'])->name('subdept.update');
+         Route::get('delete/{id}', [SubDeptController::class, 'delete'])->name('subdept.delete');
       });
 
       Route::prefix('<master>sub-dept')->group(function () {
@@ -143,7 +152,7 @@ Route::middleware(["auth"])->group(function () {
 
       Route::prefix('master/position')->group(function () {
          Route::get('/', [PositionController::class, 'index'])->name('position');
-         //    Route::post('store', [DesignationController::class, 'store'])->name('position.store');
+            Route::post('store', [PositionController::class, 'store'])->name('position.store');
          //    Route::get('edit/{position:id}', [DesignationController::class, 'edit'])->name('position.edit');
          //    Route::put('update', [DesignationController::class, 'update'])->name('position.update');
          //    Route::get('delete/{position:id}', [DesignationController::class, 'delete'])->name('position.delete');

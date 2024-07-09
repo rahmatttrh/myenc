@@ -32,6 +32,7 @@ class AppServiceProvider extends ServiceProvider
 
             if (auth()->user()->hasRole('HRD|HRD-Spv')) {
                $spNotifs = Sp::where('status', 1)->orderBy('updated_at', 'desc')->get();
+               $peNotifs = [];
             } elseif(auth()->user()->hasRole('Manager')){
                $id = auth()->user()->getEmployeeId();
                $manager = Employee::find($id);
