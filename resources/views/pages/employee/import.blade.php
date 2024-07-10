@@ -66,12 +66,15 @@ Import Employee
             <div class="col-md-7">
                <div class="card card-light card-annoucement card-round shadow-none border">
                   <div class="card-body text-center">
-                     <div class="card-opening">Import Excel</div>
-                     <div class="card-desc">
+                     {{-- <div class="card-opening">Import Excel</div> --}}
+                     {{-- <div class="card-desc">
                         Make sure your document format is the same as the system requirements. Or you can download the template in the link below
-                     </div>
+                     </div> --}}
                      <div class="card-detail">
                         <a href="/documents/new-template-employee.xlsx" class="btn btn-success btn-rounded">Download Template</a>
+                     </div>
+                     <div class="card-desc text-left">
+                        Kolom Business Unit, Department, Sub Department, Position diisi dengan angka ID yang bisa dilihat di Master Data
                      </div>
                   </div>
                </div>
@@ -79,7 +82,7 @@ Import Employee
          </div>
       </div>
       <div class="card-footer">
-         <small>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quo, autem laborum?</small>
+         {{-- <small>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quo, autem laborum?</small> --}}
       </div>
    </div>
 </div>

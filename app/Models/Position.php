@@ -31,4 +31,8 @@ class Position extends Model
     {
         return $this->subdept->department->unit->name;
     }
+
+    public function employees(){
+      return $this->hasMany(Employee::class);
+    }
 }

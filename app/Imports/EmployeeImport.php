@@ -25,12 +25,11 @@ class EmployeeImport implements ToCollection, WithHeadingRow
 {
    public function collection(Collection $rows)
    {
-      
+      // dd('ok');
       foreach ($rows as $key => $row) {
-         
+         if($row->filter()->isNotEmpty()){
          // Cari bis nis unid 
-         // dd($row['business_unit']);
-         $unit = Unit::where('name', $row['business_unit'])->first();
+         // $unit = Unit::where('name', $row['business_unit'])->first();
 
          // Jika tidak ada insert baru
          // if ($unit == null) {
@@ -40,12 +39,11 @@ class EmployeeImport implements ToCollection, WithHeadingRow
          //       'updated_at' => NOW()
          //    ]);
          // }
-         // dd($unit->name);
 
          // Cari departement
-         $department = Department::where('name', $row['department'])
-            ->where('unit_id', $unit->id)
-            ->first();
+         // $department = Department::where('name', $row['department'])
+         //    ->where('unit_id', $unit->id)
+         //    ->first();
          // Jika tidak ada insert baru
          // if ($department == null) {
 
@@ -56,8 +54,6 @@ class EmployeeImport implements ToCollection, WithHeadingRow
          //       'updated_at' => NOW()
          //    ]);
          // }
-
-         // dd($department->name);
 
          // Cari sub departement
          // $sub_dept = SubDept::where('name', $row['sub_dept'])
@@ -105,21 +101,21 @@ class EmployeeImport implements ToCollection, WithHeadingRow
          //    $role = 5;
          // }
 
-         DB::beginTransaction();
+         // DB::beginTransaction();
 
-         // // Insert
-         try {
-            
+         // // // Insert
+         // try {
+
             $biodata = Biodata::create([
                'status' => 0,
-               'first_name' => $row['first_name'],
-               'last_name' => $row['last_name'],
+               'first_name' => $row['first'],
+               'last_name' => $row['last'],
                'email' => $row['email'],
                'phone' => $row['phone'],
                'gender' => $row['gender'],
-               // 'religion' => $row['agama'], //agama
-               // 'birth_place' => $row['tempat_lahir'], //
-               // 'birth_date' => $row['tanggal_lahir'], //tanggal lahir
+               // 'religion' => $row['religion'], //agama
+               // 'birth_place' => $row['birth_place'], //
+               // 'birth_date' => $row['birth_date'], //tanggal lahir
                // 'no_ktp' => $row['no_ktp'],
                // 'no_npwp' => $row['no_npwp'], //
                // 'no_kk' => $row['no_kk'], //
@@ -131,23 +127,20 @@ class EmployeeImport implements ToCollection, WithHeadingRow
                // 'vocational' => $row['jurusan'], //jurusan
                // 'status_pajak' => $row['status_pajak'], //
                // 'blood' => $row['gol_darah'], //golongan darah
-               // 'address' => $row['alamat_domisili'], //alamat domisili
+               'address' => $row['address'], //alamat domisili
                // 'alamat_ktp' => $row['alamat_ktp'], //alamat ktp
-               'status' => $row['status'],
+               // 'status' => $row['status'],
                'created_at' => NOW(),
                'updated_at' => NOW() //
 
             ]);
-
-            // dd($biodata->id);
-
-            // dd($row['nik']);
             // dd('ok');
-
             $contract = Contract::create([
                'id_no' => $row['id'],
-               // 'unit_id' => $unit->id,
-               'department_id' => $department->id,
+               'unit_id' => $row['business_unit'],
+               'department_id' => $row['department'],
+               'sub_dept_id' => $row['sub_department'],
+               'position_id' => $row['position'],
                // 'designation_id' => $designation->id,
                // 'location' => $row['lokasi'],
                // 'project' => $row['project'],
@@ -158,9 +151,6 @@ class EmployeeImport implements ToCollection, WithHeadingRow
                'created_at' => NOW(),
                'updated_at' => NOW()
             ]);
-            
-
-            // dd('ok');
 
             // Insert Contract udah Oke
             // $emergency = Emergency::create([
@@ -173,11 +163,12 @@ class EmployeeImport implements ToCollection, WithHeadingRow
 
             $employee = Employee::create([
                'status' => 0,
+               'unit_id' => $row['business_unit'],
+               'department_id' => $row['department'],
+               'sub_dept_id' => $row['sub_department'],
+               'position_id' => $row['position'],
                // 'role' => $role,
-               'department_id' => $department->id,
-               // 'sub_dept_id' => $sub_dept->id,
                // 'designation_id' => $designation->id,
-               // 'position_id' => $position->id,
                'biodata_id' => $biodata->id,
                'contract_id' => $contract->id,
                // 'emergency_id' => $emergency->id,
@@ -188,21 +179,19 @@ class EmployeeImport implements ToCollection, WithHeadingRow
                'updated_at' => NOW()
 
             ]);
-            // dd($employee->id);
-            // dd('ok');
 
-            DB::commit();
-            // dd($employee->biodata->fullName());
+            // DB::commit();
 
-            // dd('ok');
-            // return redirect()->route('employee.draft')->with('success', 'Data berhasil disimpan.');
-         } catch (\Exception $e) {
-            // Jika terjadi kesalahan, kita rollback transaksi
-            DB::rollback();
 
-            return back()->with('message', 'Terjadi kesalahan, data tidak dapat disimpan.');
+            // return redirect()->route('success')->with('message', 'Data berhasil disimpan.');
+         // } catch (\Exception $e) {
+         //    // Jika terjadi kesalahan, kita rollback transaksi
+         //    DB::rollback();
 
-            // Handle atau laporkan kesalahan
+         //    return back()->with('message', 'Terjadi kesalahan, data tidak dapat disimpan.');
+
+         //    // Handle atau laporkan kesalahan
+         // }
          }
       }
    }

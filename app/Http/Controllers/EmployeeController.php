@@ -33,11 +33,14 @@ class EmployeeController extends Controller
    {
       $tab = dekripRambo($enkripTab);
       // dd($tab);
-      $employees = Employee::where('status', 1)
-         ->orderBy('department_id')
-         ->orderBy('sub_dept_id')
-         ->orderBy('designation_id')
-         ->orderBy('position_id')
+      // $employees = Employee::where('status', 1)
+      //    ->orderBy('department_id')
+      //    ->orderBy('sub_dept_id')
+      //    ->orderBy('designation_id')
+      //    ->orderBy('position_id')
+      //    ->get();
+         $employees = Employee::where('status', 1)
+         ->orderBy('updated_at', 'desc')
          ->get();
       $draftEmployees = Employee::where('status', 0)->get();
       return view('pages.employee.index', [
@@ -550,6 +553,7 @@ class EmployeeController extends Controller
       $file->move('EmployeeData', $fileName);
 
       try {
+         // Excel::import(new CargoItemImport($parent->id), $req->file('file-cargo'));
          Excel::import(new EmployeeImport, public_path('/EmployeeData/' . $fileName));
       } catch (Exception $e) {
          return redirect()->back()->with('danger', 'Import Failed ' . $e->getMessage());

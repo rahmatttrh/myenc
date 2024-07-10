@@ -78,4 +78,13 @@ class UnitController extends Controller
       }
 
     }
+
+    public function update(Request $req){
+      $unit = Unit::find($req->unit);
+      $unit->update([
+         'name' => $req->name
+      ]);
+
+      return redirect()->back()->with('success', 'Bisnis Unit successfully updated');
+    }
 }

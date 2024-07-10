@@ -18,7 +18,7 @@
             <div class="card shadow-none border">
                <div class="card-header  d-flex"> 
                   <div class="d-flex  align-items-center">
-                     <div class="card-title"><b>{{$unit->name}}</b></div> 
+                     <div class="card-title"><b>{{$unit->id}} - {{$unit->name}}</b></div> 
                   </div>
                   
                </div> 
@@ -39,7 +39,7 @@
                         @foreach ($departments as $depart)
                            <a class="nav-link {{$firstDept->id == $depart->id ? 'active' : ''}} text-left pl-3" id="v-pills-{{$depart->id}}-tab" data-toggle="pill" href="#v-pills-{{$depart->id}}" role="tab" aria-controls="v-pills-{{$depart->id}}" aria-selected="true">
                               
-                              {{$depart->name}}
+                              {{$depart->id}} - {{$depart->name}}
                            </a>
                         @endforeach
                         
@@ -58,9 +58,10 @@
                      <div class="card-header d-flex justify-content-between p-2 bg-primary text-white">
                         <small>{{$depart->name}} Department</small>
                         <div>
+                           <a href="#" data-toggle="modal" class="text-white" data-target="#modal-add-subdept-{{$depart->id}}">Add Sub</a> |
                            <a href="#" class="text-white" data-toggle="modal" data-target="#modal-edit-department-{{$depart->id}}">Edit</a> |
                            <a href="#" class="text-white" data-toggle="modal" data-target="#modal-delete-{{$depart->id}}">Delete</a>
-                           | <a href="#" data-toggle="modal" class="text-white" data-target="#modal-add-subdept-{{$depart->id}}">Add Sub</a>
+                        
                         </div>
                      </div>
                      <div class="card-body p-0">
@@ -68,9 +69,9 @@
                            <thead>
                               
                               <tr>
-                                 {{-- <th scope="col" class="text-center">#</th> --}}
-                                 <th scope="col">Sub Department Name</th>
-                                 <th>Position</th>
+                                 <th scope="col" class="text-center"></th>
+                                 {{-- <th scope="col">Sub Department Name</th> --}}
+                                 <th>Sub / Position</th>
                                  <th scope="col" class="text-right">Action</th>
                               </tr>
                            </thead>
@@ -79,25 +80,33 @@
                                     @foreach ($depart->sub_depts as $sub)
                                     <tr>
                                        {{-- <td class="text-center">{{++$i}}</td> --}}
-                                       <td>{{$sub->name}}</td>
-                                       <td>
-                                          @foreach ($sub->positions as $pos)
-                                              {{$pos->name}} <br>
-                                          @endforeach
-                                       </td>
+                                       <td colspan="2">{{$sub->id}} - {{$sub->name}}</td>
+                                       
       
-                                    <td class="text-right">
-                                       {{-- <div class="btn-group"> --}}
-                                          <a href="#"  data-toggle="modal" data-target="#modal-edit-subdept-{{$sub->id}}">Edit</a> |
-                                          <a href="#"  data-toggle="modal" data-target="#modal-delete-{{$sub->id}}">Delete</a> |
-                                          <a href="#"  data-toggle="modal" data-target="#modal-add-position-{{$sub->id}}">Add Position</a>
-                                       {{-- </div> --}}
+                                       <td class="text-right">
+                                          {{-- <div class="btn-group"> --}}
+                                             <a href="#"  data-toggle="modal" data-target="#modal-add-position-{{$sub->id}}">Add Position</a> |
+                                             <a href="#"  data-toggle="modal" data-target="#modal-edit-subdept-{{$sub->id}}">Edit</a> |
+                                             <a href="#"  data-toggle="modal" data-target="#modal-delete-{{$sub->id}}">Delete</a> 
+                                             
+                                          {{-- </div> --}}
                                           
                                        </td>
                                     </tr>
-                                    <x-modal.delete :id="$sub->id" :body="$sub->name" url="{{route('subdept.delete', enkripRambo($sub->id))}}" />
+                                    @foreach ($sub->positions as $pos)
+                                        <tr>
+                                          <td></td>
+                                          <td>{{$pos->id}} - {{$pos->name}} </td>
+                                          <td class="text-right">
+                                             <a href="#" data-toggle="modal" data-target="#modal-edit-position-{{$pos->id}}">Edit</a> | <a href="#" data-toggle="modal" data-target="#modal-delete-{{$pos->id}}">Delete</a>
+                                          </td>
+                                       </tr> 
+                                       <x-modal.delete :id="$pos->id" :body="$pos->name" url="{{route('position.delete', enkripRambo($pos->id))}}" />
+                                       <x-modal.edit-position :id="$pos->id" :pos="$pos"  />
+                                    @endforeach
+                                       <x-modal.delete :id="$sub->id" :body="$sub->name" url="{{route('subdept.delete', enkripRambo($sub->id))}}" />
                                        <x-modal.edit-subdept :id="$sub->id" :sub="$sub"  />
-                                    <x-modal.add-position :id="$sub->id" :sub="$sub" :designations="$designations"  />
+                                       <x-modal.add-position :id="$sub->id" :sub="$sub" :designations="$designations"  />
                                  @endforeach
                                  @else
                                  <tr>

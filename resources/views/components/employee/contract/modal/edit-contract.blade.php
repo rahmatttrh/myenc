@@ -20,6 +20,7 @@
                               <div class="form-group form-group-default">
                                  <label>Type</label>
                                  <select class="form-control type"  id="type" name="type" <?= auth()->user()->hasRole('Administrator|HRD|HRD-Recruitment') ? '' : 'readonly' ?>>
+                                    <option value="" {{$employee->contract->type == null ? 'selected' : ''}} disabled>Select</option>
                                     <option {{$employee->contract->type == 'Kontrak' ? 'selected' : ''}} value="Kontrak">Kontrak</option>
                                     <option {{$employee->contract->type == 'Tetap' ? 'selected' : ''}} value="Tetap">Tetap</option>
                                  </select>
@@ -60,6 +61,7 @@
                               <div class="form-group form-group-default">
                                  <label>Work Hour</label>
                                  <select class="form-control" id="shift" <?= auth()->user()->hasRole('Administrator|HRD|HRD-Recruitment') ? '' : 'readonly' ?> name="shift">
+                                    <option value="" {{$employee->contract->shift_id == null ? 'selected' : ''}} disabled>Select</option>
                                     @foreach ($shifts as $shift)
                                     <option {{$employee->contract->shift_id == $shift->id ? 'selected' : ''}} value="{{$shift->id}}">{{formatTime($shift->in)}} - {{formatTime($shift->out)}}</option>
                                     @endforeach
@@ -70,7 +72,7 @@
                               <div class="form-group form-group-default">
                                  <label>Lokasi</label>
                                  <select class="form-control" id="loc" <?= auth()->user()->hasRole('Administrator|HRD|HRD-Recruitment') ? '' : 'readonly' ?> name="loc">
-                                    <option value="">Select</option>
+                                    <option value="" disabled {{$employee->contract->loc == null ? 'selected' : ''}}>Select</option>
                                     <option {{$employee->contract->loc == 'hw' ? 'selected' : ''}} value="hw">HW</option>
                                     <option {{$employee->contract->loc == 'jgc' ? 'selected' : ''}} value="jgc">JGC</option>
                                     <option {{$employee->contract->loc == 'kj1-2' ? 'selected' : ''}} value="kj1-2">KJ 1-2</option>
@@ -88,6 +90,7 @@
                               <div class="form-group form-group-default">
                                  <label>Bisnis Unit</label>
                                  <select class="form-control unit" id="unit" name="unit" <?= auth()->user()->hasRole('Administrator|HRD|HRD-Recruitment') ? '' : 'readonly' ?>>
+                                    <option value="" disabled {{$employee->contract->unit_id == null ? 'selected' : ''}}>Select</option>
                                     @foreach ($units as $unit)
                                     <option {{$employee->contract->unit_id == $unit->id ? 'selected' : ''}} value="{{$unit->id}}">{{$unit->name}}</option>
                                     @endforeach
@@ -102,6 +105,7 @@
                               <div class="form-group form-group-default">
                                  <label>Level</label>
                                  <select class="form-control" id="designation" name="designation" <?= auth()->user()->hasRole('Administrator|HRD|HRD-Recruitment') ? '' : 'readonly' ?> >
+                                    <option value="" {{$employee->contract->designation_id == null ? 'selected' : ''}}>Select</option>
                                     @foreach ($designations as $designation)
                                     <option {{$employee->contract->designation_id == $designation->id ? 'selected' : ''}} value="{{$designation->id}}">{{$designation->name}}</option>
                                     @endforeach
@@ -116,6 +120,7 @@
                               <div class="form-group form-group-default">
                                  <label>Department</label>
                                  <select class="form-control department" id="department" name="department" <?= auth()->user()->hasRole('Administrator|HRD|HRD-Recruitment') ? '' : 'readonly' ?>>
+                                    <option value="" disabled {{$employee->contract->department_id == null ? 'selected' : ''}}>Select</option>
                                     @foreach ($departments as $department)
                                     <option {{$employee->contract->department_id == $department->id ? 'selected' : ''}} value="{{$department->id}}">{{$department->name}}</option>
                                     @endforeach
@@ -130,6 +135,7 @@
                               <div class="form-group form-group-default">
                                  <label>Sub Department</label>
                                  <select class="form-control subdept" id="subdept" name="subdept" <?= auth()->user()->hasRole('Administrator|HRD|HRD-Recruitment') ? '' : 'readonly' ?>>
+                                    <option value="" disabled {{$employee->contract->sub_dept_id == null ? 'selected' : ''}}>Select</option>
                                     @foreach ($subdepts as $sub)
                                     <option {{$employee->sub_dept_id == $sub->id ? 'selected' : ''}} value="{{$sub->id}}">{{$sub->name}}</option>
                                     @endforeach
@@ -145,6 +151,7 @@
                               <div class="form-group form-group-default">
                                  <label>Posisi</label>
                                  <select class="form-control position" id="position" name="position" <?= auth()->user()->hasRole('Administrator|HRD|HRD-Recruitment') ? '' : 'readonly' ?>>
+                                    <option value="" disabled {{$employee->contract->position_id == null ? 'selected' : ''}}>Select</option>
                                     @foreach ($allpositions as $position)
                                     {{--<option {{$employee->contract->designation_id == $designation->id ? 'selected' : ''}} value="{{$designation->id}}">{{$designation->name}}</option>--}}
                                     <option {{$employee->position_id == $position->id ? 'selected' : ''}} value="{{$position->id}}">{{$position->name}} </option>

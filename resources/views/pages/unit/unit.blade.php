@@ -17,7 +17,7 @@
             <div class="card shadow-none border">
                <div class="card-header d-flex"> 
                   <div class="d-flex  align-items-center">
-                     <div class="card-title">Form Create</div> 
+                     <div class="card-title">Form Add Level</div> 
                   </div>
                   {{-- <div class="btn-group btn-group-page-header ml-auto">
                      <button type="button" class="btn btn-light btn-round btn-page-header-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -58,8 +58,9 @@
                      <thead>
                         
                         <tr>
-                           {{-- <th scope="col">#</th> --}}
+                           {{-- <th scope="col" class="text-center">ID</th> --}}
                            <th scope="col">Unit Name</th>
+                           <th>Dpartment</th>
                            <th scope="col" class="text-right">Action</th>
                         </tr>
                      </thead>
@@ -67,14 +68,16 @@
                         @if (count($units) > 0)
                               @foreach ($units as $unit)
                               <tr>
-                                 {{-- <td>{{++$i}}</td> --}}
-                                 <td><a href="{{route('unit.detail', enkripRambo($unit->id))}}">{{$unit->name}}</a></td>
+                                 {{-- <td class="text-center">{{$unit->id}}</td> --}}
+                                 <td><a href="{{route('unit.detail', enkripRambo($unit->id))}}">{{$unit->id}} - {{$unit->name}}</a></td>
+                                 <td>{{count($unit->departments)}} Department</td>
 
                               <td class="text-right">
-                                    {{-- <a href="{{route('unit.edit', enkripRambo($unit->id) )}}">Edit</a> --}}
+                                    <a href="" data-toggle="modal" data-target="#modal-edit-unit-{{$unit->id}}">Edit</a> |
                                     <a href="#" data-toggle="modal" data-target="#modal-delete-{{$unit->id}}">Delete</a>
                                  </td>
                               </tr>
+                              <x-modal.edit-unit :id="$unit->id" :unit="$unit"  />
                               <x-modal.delete :id="$unit->id" :body="$unit->name" url="{{route('unit.delete', enkripRambo($unit->id))}}" />
                            @endforeach
                            @else

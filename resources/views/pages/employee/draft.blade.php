@@ -67,16 +67,18 @@
                </div>
                <hr>
                <div class="table-responsive">
-                  <table id="multi-filter-select" class="display basic-datatables table table-striped " >
+                  <table id="multi-filter-select" class="display basic-datatables table-sm table-striped " >
                      <thead>
                         <tr>
                            <th>&nbsp; <input type="checkbox" id="selectall" /></th>
-                           <th>No</th>
-                           <th>Name</th>
+                           {{-- <th>No</th> --}}
                            <th>ID</th>
+                           <th>Name</th>
+                           
                            <th>Email</th>
+                           <th>Unit</th>
                            <th>Department</th>
-                           <th>Designation</th>
+                           {{-- <th>Designation</th> --}}
                            <th>Status</th>
                            {{-- <th class="text-right">Action</th> --}}
                         </tr>
@@ -85,8 +87,9 @@
                         @foreach ($employees as $employee)
                            <tr>
                               <td class="text-center"><input type="checkbox" class="case" name="id_item[]" value="{{$employee->id}}" /> </td>
-                              <td>{{++$i}}</td>
+                              {{-- <td>{{++$i}}</td> --}}
                               {{-- <td><a href="{{route('employee.detail', enkripRambo($employee->id))}}">{{$employee->name}}</a> </td> --}}
+                              <td>{{$employee->contract->id_no}}</td>
                               <td >
                                  <div class="text-nowrap">
                                     <a href="{{route('employee.detail', [enkripRambo($employee->id), enkripRambo('contract')])}}">{{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</a><br>
@@ -98,12 +101,14 @@
                                        <div class="status">Graphic Designer</div>
                                     </div> --}}
                               </td>
-                              <td>{{$employee->contract->id_no}}</td>
+                              
                               <td>{{$employee->biodata->email}}</td>
+                              <td>{{$employee->contract->unit->name ?? ''}}</td>
                               <td>{{$employee->contract->department->name ?? ''}}</td>
-                              <td>{{$employee->contract->designation->name ?? ''}}</td>
+                              {{-- <td>{{$employee->contract->designation->name ?? ''}}</td> --}}
                               <td>
-                                 <span class="badge badge-muted">Off</span>
+                                 OFF
+                                 {{-- <span class="badge badge-muted">Off</span> --}}
                               </td>
                            </tr>
                         @endforeach

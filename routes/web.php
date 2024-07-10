@@ -154,8 +154,8 @@ Route::middleware(["auth"])->group(function () {
          Route::get('/', [PositionController::class, 'index'])->name('position');
             Route::post('store', [PositionController::class, 'store'])->name('position.store');
          //    Route::get('edit/{position:id}', [DesignationController::class, 'edit'])->name('position.edit');
-         //    Route::put('update', [DesignationController::class, 'update'])->name('position.update');
-         //    Route::get('delete/{position:id}', [DesignationController::class, 'delete'])->name('position.delete');
+            Route::put('update', [PositionController::class, 'update'])->name('position.update');
+            Route::get('delete/{position:id}', [PositionController::class, 'delete'])->name('position.delete');
       });
 
       Route::prefix('contract')->group(function () {
