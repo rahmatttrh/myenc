@@ -71,7 +71,7 @@ Import Employee
                         Make sure your document format is the same as the system requirements. Or you can download the template in the link below
                      </div> --}}
                      <div class="card-detail">
-                        <a href="/documents/new-template-employee.xlsx" class="btn btn-success btn-rounded">Download Template</a>
+                        <a href="/documents/template-employee-import.xlsx" class="btn btn-success btn-rounded">Download Template</a>
                      </div>
                      <div class="card-desc text-left">
                         Kolom Business Unit, Department, Sub Department, Position diisi dengan angka ID yang bisa dilihat di Master Data
