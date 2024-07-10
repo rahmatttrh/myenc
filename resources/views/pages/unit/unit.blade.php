@@ -91,7 +91,7 @@
                   </table>
                </div>
             </div>
-            <div class="card shadow-none border" >
+            {{-- <div class="card shadow-none border" >
                <div class="card-header d-flex"> 
                   <div class="d-flex  align-items-center">
                      <div class="card-title">Bisnis Unit List</div> 
@@ -104,7 +104,6 @@
                         
                         
                         <a  class="dropdown-item" style="text-decoration: none" href="{{route('employee.create')}}">Create</a>
-                        {{-- <div class="dropdown-divider"></div>            --}}
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" style="text-decoration: none" href="" target="_blank">Print Preview</a>
                      </div>
@@ -113,7 +112,6 @@
                <div class="card-body">
                   <div class="table-responsive">
                      <table id="" class="  table table-striped " >
-                        {{-- id="basic-datatables" class="display table table-striped table-hover" --}}
                         <thead>
                            <tr>
                               <th>No</th>
@@ -128,7 +126,6 @@
                                  <td>{{$unit->name}}</td>
 
                                 <td class="text-right">
-                                    {{-- <a href="{{route('unit.edit', enkripRambo($unit->id) )}}">Edit</a> --}}
                                     <a href="#" data-toggle="modal" data-target="#modal-delete-{{$unit->id}}">Delete</a>
                                  </td>
                               </tr>
@@ -138,7 +135,7 @@
                      </table>
                   </div>
                </div>
-            </div>
+            </div> --}}
          </div>
       </div>
    </div>

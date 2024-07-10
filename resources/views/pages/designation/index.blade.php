@@ -91,7 +91,7 @@ Designation
          </table>
       </div>
    </div>
-   <div class="card shadow-none border">
+   {{-- <div class="card shadow-none border">
       <div class="card-header d-flex">
          <div class="d-flex  align-items-center">
             <div class="card-title">Level List</div>
@@ -104,7 +104,7 @@ Designation
 
 
                <a class="dropdown-item" style="text-decoration: none" href="{{route('employee.create')}}">Create</a>
-               {{-- <div class="dropdown-divider"></div>            --}}
+               
                <div class="dropdown-divider"></div>
                <a class="dropdown-item" style="text-decoration: none" href="" target="_blank">Print Preview</a>
             </div>
@@ -113,7 +113,6 @@ Designation
       <div class="card-body">
          <div class="table-responsive">
             <table id="basic-datatables" class="display basic-datatables table table-striped ">
-               {{-- id="basic-datatables" class="display table table-striped table-hover" --}}
                <thead>
                   <tr>
                      <th>No</th>
@@ -139,7 +138,7 @@ Designation
             </table>
          </div>
       </div>
-   </div>
+   </div> --}}
 </div>
 </div>
 </div>
