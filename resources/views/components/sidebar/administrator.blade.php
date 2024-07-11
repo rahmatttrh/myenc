@@ -22,11 +22,11 @@
                <span class="sub-item">Level</span>
             </a>
          </li>
-         {{-- <li>
-            <a href="{{route('shift.loc')}}">
-               <span class="sub-item">Shift & Location</span>
+         <li>
+            <a href="{{route('shift')}}">
+               <span class="sub-item">Shift</span>
             </a>
-         </li> --}}
+         </li>
          {{-- <li>
             <a href="{{route('position')}}">
                <span class="sub-item">Jabatan</span>

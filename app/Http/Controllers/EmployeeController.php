@@ -216,7 +216,7 @@ class EmployeeController extends Controller
       $dekripId = dekripRambo($id);
       $employee = Employee::find($dekripId);
 
-      $departments = Department::get();
+      $departments = Department::where('unit_id', $employee->unit_id)->get();
       $positions = Position::where('sub_dept_id', $employee->sub_dept_id)->get();
       $allPositions = Position::get();
 

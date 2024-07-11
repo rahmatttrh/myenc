@@ -160,11 +160,11 @@ Route::middleware(["auth"])->group(function () {
       });
 
       Route::prefix('master/shift')->group(function () {
-         Route::get('/loc', [ShiftController::class, 'index'])->name('shift.loc');
-         Route::post('store', [SubDeptController::class, 'store'])->name('subdept.store');
+         Route::get('/', [ShiftController::class, 'index'])->name('shift');
+         Route::post('store', [ShiftController::class, 'store'])->name('shift.store');
          // Route::get('edit/{department:id}', [DepartmentController::class, 'edit'])->name('department.edit');
-         Route::put('update', [SubDeptController::class, 'update'])->name('subdept.update');
-         Route::get('delete/{id}', [SubDeptController::class, 'delete'])->name('subdept.delete');
+         Route::put('update', [ShiftController::class, 'update'])->name('shift.update');
+         Route::get('delete/{id}', [ShiftController::class, 'delete'])->name('shift.delete');
       });
 
       Route::prefix('contract')->group(function () {
