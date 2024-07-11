@@ -58,9 +58,14 @@ class ContractController extends Controller
          'direct_leader_id' => $contract->direct_leader_id,
       ]);
 
-      $user = Employee::find(auth()->user()->getEmployeeId());
+      if (auth()->user()->hasRole('Administrator')) {
+         $departmentId = null;
+      } else {
+         $user = Employee::find(auth()->user()->getEmployeeId());
+         $departmentId = $user->department_id;
+      }
       Log::create([
-         'department_id' => $user->department_id,
+         'department_id' => $departmentId,
          'user_id' => auth()->user()->id,
          'action' => 'Create',
          'desc' => 'Contract ' . $employee->nik . ' ' . $employee->biodata->fullname()
@@ -133,9 +138,14 @@ class ContractController extends Controller
       //    $user->assignRole('Karyawan');
       // }
 
-      $user = Employee::find(auth()->user()->getEmployeeId());
+      if (auth()->user()->hasRole('Administrator')) {
+         $departmentId = null;
+      } else {
+         $user = Employee::find(auth()->user()->getEmployeeId());
+         $departmentId = $user->department_id;
+      }
       Log::create([
-         'department_id' => $user->department_id,
+         'department_id' => $departmentId,
          'user_id' => auth()->user()->id,
          'action' => 'Update',
          'desc' => 'Contract ' . $employee->nik . ' ' . $employee->biodata->fullname()
