@@ -27,6 +27,7 @@ use App\Http\Controllers\PekpiDetailController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\PresenceController;
 use App\Http\Controllers\QuickPEController;
+use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\SocialAccountController;
 use App\Http\Controllers\SoController;
 use App\Http\Controllers\SpApprovalController;
@@ -156,6 +157,14 @@ Route::middleware(["auth"])->group(function () {
          //    Route::get('edit/{position:id}', [DesignationController::class, 'edit'])->name('position.edit');
             Route::put('update', [PositionController::class, 'update'])->name('position.update');
             Route::get('delete/{position:id}', [PositionController::class, 'delete'])->name('position.delete');
+      });
+
+      Route::prefix('master/shift')->group(function () {
+         Route::get('/loc', [ShiftController::class, 'index'])->name('shift.loc');
+         Route::post('store', [SubDeptController::class, 'store'])->name('subdept.store');
+         // Route::get('edit/{department:id}', [DepartmentController::class, 'edit'])->name('department.edit');
+         Route::put('update', [SubDeptController::class, 'update'])->name('subdept.update');
+         Route::get('delete/{id}', [SubDeptController::class, 'delete'])->name('subdept.delete');
       });
 
       Route::prefix('contract')->group(function () {

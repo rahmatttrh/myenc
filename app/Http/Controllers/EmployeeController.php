@@ -128,9 +128,14 @@ class EmployeeController extends Controller
 
          $user->assignRole('Karyawan');
 
-         $user = Employee::find(auth()->user()->getEmployeeId());
+         if (auth()->user()->hasRole('Administrator')) {
+            $departmentId = null;
+         } else {
+            $user = Employee::find(auth()->user()->getEmployeeId());
+            $departmentId = $user->department_id;
+         }
          Log::create([
-            'department_id' => $user->department_id,
+            'department_id' => $departmentId,
             'user_id' => auth()->user()->id,
             'action' => 'Publish',
             'desc' => 'Employee ' . $employee->nik . ' ' . $employee->biodata->fullname()
@@ -183,9 +188,14 @@ class EmployeeController extends Controller
          }
       }
 
-      $user = Employee::find(auth()->user()->getEmployeeId());
+      if (auth()->user()->hasRole('Administrator')) {
+         $departmentId = null;
+      } else {
+         $user = Employee::find(auth()->user()->getEmployeeId());
+         $departmentId = $user->department_id;
+      }
       Log::create([
-         'department_id' => $user->department_id,
+         'department_id' => $departmentId,
          'user_id' => auth()->user()->id,
          'action' => 'Publish',
          'desc' => 'Employees Data'
@@ -342,9 +352,14 @@ class EmployeeController extends Controller
          'picture' => request('picture') ? request()->file('picture')->store('employee/picture') : '',
       ]);
 
-      $user = Employee::find(auth()->user()->getEmployeeId());
+      if (auth()->user()->hasRole('Administrator')) {
+         $departmentId = null;
+      } else {
+         $user = Employee::find(auth()->user()->getEmployeeId());
+         $departmentId = $user->department_id;
+      }
          Log::create([
-            'department_id' => $user->department_id,
+            'department_id' => $departmentId,
             'user_id' => auth()->user()->id,
             'action' => 'Create',
             'desc' => 'Employee ' . $employee->nik . ' ' . $employee->biodata->fullname()
@@ -414,9 +429,14 @@ class EmployeeController extends Controller
          'email' => $req->email
       ]);
 
-      $user = Employee::find(auth()->user()->getEmployeeId());
+      if (auth()->user()->hasRole('Administrator')) {
+         $departmentId = null;
+      } else {
+         $userNow = Employee::find(auth()->user()->getEmployeeId());
+         $departmentId = $userNow->department_id;
+      }
       Log::create([
-         'department_id' => $user->department_id,
+         'department_id' => $departmentId,
          'user_id' => auth()->user()->id,
          'action' => 'Update',
          'desc' => 'Biodata ' . $employee->nik . ' ' . $employee->biodata->fullname()
@@ -440,9 +460,14 @@ class EmployeeController extends Controller
          'no_bpjs_kesehatan' => $req->no_bpjs_kesehatan
       ]);
 
-      $user = Employee::find(auth()->user()->getEmployeeId());
+      if (auth()->user()->hasRole('Administrator')) {
+         $departmentId = null;
+      } else {
+         $user = Employee::find(auth()->user()->getEmployeeId());
+         $departmentId = $user->department_id;
+      }
       Log::create([
-         'department_id' => $user->department_id,
+         'department_id' => $departmentId,
          'user_id' => auth()->user()->id,
          'action' => 'Update',
          'desc' => 'Document Data ' . $employee->nik . ' ' . $employee->biodata->fullname()
@@ -461,9 +486,14 @@ class EmployeeController extends Controller
          'experience' => $req->experience
       ]);
 
-      $user = Employee::find(auth()->user()->getEmployeeId());
+      if (auth()->user()->hasRole('Administrator')) {
+         $departmentId = null;
+      } else {
+         $user = Employee::find(auth()->user()->getEmployeeId());
+         $departmentId = $user->department_id;
+      }
       Log::create([
-         'department_id' => $user->department_id,
+         'department_id' => $departmentId,
          'user_id' => auth()->user()->id,
          'action' => 'Update',
          'desc' => 'Bio ' . $employee->nik . ' ' . $employee->biodata->fullname()
@@ -493,9 +523,14 @@ class EmployeeController extends Controller
          'picture' => $picture
       ]);
 
-      $user = Employee::find(auth()->user()->getEmployeeId());
+      if (auth()->user()->hasRole('Administrator')) {
+         $departmentId = null;
+      } else {
+         $user = Employee::find(auth()->user()->getEmployeeId());
+         $departmentId = $user->department_id;
+      }
       Log::create([
-         'department_id' => $user->department_id,
+         'department_id' => $departmentId,
          'user_id' => auth()->user()->id,
          'action' => 'Update',
          'desc' => 'Profile Picture ' . $employee->nik . ' ' . $employee->biodata->fullname()
@@ -515,9 +550,16 @@ class EmployeeController extends Controller
       $user->assignRole($role->name);
       // dd($req->role);
 
-      $user = Employee::find(auth()->user()->getEmployeeId());
+      
+      // $user = Employee::find(auth()->user()->getEmployeeId());
+      if (auth()->user()->hasRole('Administrator')) {
+         $departmentId = null;
+      } else {
+         $user = Employee::find(auth()->user()->getEmployeeId());
+         $departmentId = $user->department_id;
+      }
       Log::create([
-         'department_id' => $user->department_id,
+         'department_id' => $departmentId,
          'user_id' => auth()->user()->id,
          'action' => 'Update',
          'desc' => 'Role ' . $employee->nik . ' ' . $employee->biodata->fullname()

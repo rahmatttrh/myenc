@@ -23,6 +23,11 @@
             </a>
          </li>
          {{-- <li>
+            <a href="{{route('shift.loc')}}">
+               <span class="sub-item">Shift & Location</span>
+            </a>
+         </li> --}}
+         {{-- <li>
             <a href="{{route('position')}}">
                <span class="sub-item">Jabatan</span>
             </a>
