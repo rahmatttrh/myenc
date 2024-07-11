@@ -37,7 +37,7 @@ Employee
    </div>
 
    <div class="table-responsive">
-      <table id="" class="display basic-datatables table-sm table-bordered  table-striped ">
+      <table id="" class="display basic-datatables table-sm table-bordered   ">
          <thead>
             <tr>
                <th class="text-center">No</th>
@@ -96,7 +96,7 @@ Employee
                </td>
                <td class="text-truncate">{{$employee->contract->id_no}}</td>
                {{-- <td>{{$employee->biodata->phone}}</td> --}}
-               <td>{{$employee->department->unit->name ?? ''}}</td>
+               <td class="text-truncate">{{$employee->department->unit->name ?? ''}}</td>
                <td>{{$employee->department->name ?? ''}}</td>
                {{-- <td>{{$employee->contract->designation->name ?? ''}}</td> --}}
                <td>{{$employee->position->name ?? '-'}}</td>
