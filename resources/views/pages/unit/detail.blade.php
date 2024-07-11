@@ -68,12 +68,12 @@
                         <table class="display  table-sm table-bordered  ">
                            <thead>
                               <tr>
-                                 <th colspan="3">Sub Department</th>
+                                 <th colspan="3">ID - Sub Department</th>
                               </tr>
                               <tr>
                                  <th scope="col" class="text-center"></th>
                                  {{-- <th scope="col">Sub Department Name</th> --}}
-                                 <th>Position</th>
+                                 <th>ID - Position</th>
                                  <th scope="col" class="text-right">Action</th>
                               </tr>
                               

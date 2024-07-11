@@ -59,8 +59,8 @@
                         
                         <tr>
                            {{-- <th scope="col" class="text-center">ID</th> --}}
-                           <th scope="col">Unit Name</th>
-                           <th>Dpartment</th>
+                           <th scope="col">ID - Unit Name</th>
+                           <th>Department</th>
                            <th scope="col" class="text-right">Action</th>
                         </tr>
                      </thead>
