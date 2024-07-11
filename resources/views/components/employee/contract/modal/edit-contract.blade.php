@@ -118,7 +118,7 @@
       
                            <div class="col-md-6">
                               <div class="form-group form-group-default">
-                                 <label>Department - {{$employee->contract->department_id}}</label>
+                                 <label>Department</label>
                                  <select class="form-control department" id="department" name="department" <?= auth()->user()->hasRole('Administrator|HRD|HRD-Recruitment') ? '' : 'readonly' ?>>
                                     <option value="" disabled {{$employee->contract->department_id == null ? 'selected' : ''}}>Select</option>
                                     @foreach ($departments as $department)
