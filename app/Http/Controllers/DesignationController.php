@@ -20,7 +20,8 @@ class DesignationController extends Controller
       $req->validate([]);
 
       Designation::create([
-         'name' => $req->name
+         'name' => $req->name,
+         'golongan' => $req->gol
       ]);
 
       return redirect()->back()->with('success', 'Position successfully added');
