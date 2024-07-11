@@ -60,7 +60,7 @@
                         <div class="col col-stats">
                            <div class="numbers">
                               <p class="card-category">TETAP</p>
-                               <h4 class="card-title">{{$male}}</h4> 
+                               <h4 class="card-title">{{$tetap}}</h4> 
                            </div>
                         </div>
                      </div>
@@ -75,13 +75,13 @@
                      <div class="row">
                         <div class="col-5">
                            <div class="icon-big text-center">
-                              <i class="flaticon-like"></i>
+                              <i class="flaticon-user"></i>
                            </div>
                         </div>
                         <div class="col col-stats">
                            <div class="numbers">
                               <p class="card-category">KONTRAK</p>
-                              <h4 class="card-title">{{$female}}</h4>
+                              <h4 class="card-title">{{$kontrak}}</h4>
                            </div>
                         </div>
                      </div>
@@ -101,8 +101,8 @@
                         </div>
                         <div class="col col-stats">
                            <div class="numbers">
-                              <p class="card-category">Retired</p>
-                              <h4 class="card-title">{{count($employees->where('status', 202))}}</h4> 
+                              <p class="card-category">Off</p>
+                              <h4 class="card-title">{{$off}}</h4> 
                            </div>
                         </div>
                      </div>

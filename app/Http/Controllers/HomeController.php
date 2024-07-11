@@ -128,6 +128,10 @@ class HomeController extends Controller
 
       if (auth()->user()->hasRole('Administrator')) {
          $employees = Employee::get();
+         $tetap = Contract::where('status', 1)->where('type', 'Tetap')->get()->count();
+         $kontrak = Contract::where('status', 1)->where('type', 'Kontrak')->get()->count();
+         $off = Employee::where('status', 3)->get()->count();
+         // dd($tetap);
          $male = Biodata::where('gender', 'Male')->count();
          $female = Biodata::where('gender', 'Female')->count();
          $spkls = Spkl::orderBy('updated_at', 'desc')->paginate(5);
@@ -137,7 +141,10 @@ class HomeController extends Controller
             'male' => $male,
             'female' => $female,
             'spkls' => $spkls,
-            'sps' => $sps
+            'sps' => $sps,
+            'tetap' => $tetap,
+            'kontrak' => $kontrak,
+            'off' => $off
          ]);
       } elseif (auth()->user()->hasRole('HRD')) {
          $employees = Employee::get();
