@@ -125,7 +125,7 @@
                </div>
 
                <x-modal.delete :id="$depart->id" :body="$depart->name" url="{{route('department.delete', enkripRambo($depart->id))}}" />
-                  <x-modal.add-subdept :id="$depart->id" :body="$depart->name" url="" />
+                  <x-modal.add-subdept :id="$depart->id" :department="$depart" url="" />
                   <x-modal.edit-department :id="$depart->id" :department="$depart"  />
                @endforeach
             </div>
