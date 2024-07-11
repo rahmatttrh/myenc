@@ -276,18 +276,18 @@ class QuickPEController extends Controller
             // Mengonfirmasi transaksi
             DB::commit();
 
-            if (auth()->user()->hasRole('Administrator')) {
-               $departmentId = null;
-            } else {
-               $user = Employee::find(auth()->user()->getEmployeeId());
-               $departmentId = $user->department_id;
-            }
-            Log::create([
-               'department_id' => $departmentId,
-               'user_id' => auth()->user()->id,
-               'action' => 'Create',
-               'desc' => 'QPE KPI ' . $employe->nik . ' ' . $employe->biodata->fullName() . ' Semester ' . $req->semester . ' Tahun ' . $req->tahun 
-            ]);
+            // if (auth()->user()->hasRole('Administrator')) {
+            //    $departmentId = null;
+            // } else {
+            //    $user = Employee::find(auth()->user()->getEmployeeId());
+            //    $departmentId = $user->department_id;
+            // }
+            // Log::create([
+            //    'department_id' => $departmentId,
+            //    'user_id' => auth()->user()->id,
+            //    'action' => 'Create',
+            //    'desc' => 'QPE KPI ' . $employe->nik . ' ' . $employe->biodata->fullName() . ' Semester ' . $req->semester . ' Tahun ' . $req->tahun 
+            // ]);
 
             return redirect('/qpe/edit/' . $kpaId)->with('success', 'KPI successfully added');
         } catch (\Exception $e) {
@@ -525,18 +525,18 @@ class QuickPEController extends Controller
 
         $this->calculatePe($pba->pe_id);
 
-        if (auth()->user()->hasRole('Administrator')) {
-         $departmentId = null;
-         } else {
-            $user = Employee::find(auth()->user()->getEmployeeId());
-            $departmentId = $user->department_id;
-         }
-         Log::create([
-            'department_id' => $departmentId,
-            'user_id' => auth()->user()->id,
-            'action' => 'Create',
-            'desc' => 'QPE Behavior ' . $employe->nik . ' ' . $employe->biodata->fullName() . ' Semester ' . $pe->semester . ' Tahun ' . $pe->tahun 
-         ]);
+      //   if (auth()->user()->hasRole('Administrator')) {
+      //    $departmentId = null;
+      //    } else {
+      //       $user = Employee::find(auth()->user()->getEmployeeId());
+      //       $departmentId = $user->department_id;
+      //    }
+      //    Log::create([
+      //       'department_id' => $departmentId,
+      //       'user_id' => auth()->user()->id,
+      //       'action' => 'Create',
+      //       'desc' => 'QPE Behavior ' . $employe->nik . ' ' . $employe->biodata->fullName() . ' Semester ' . $pe->semester . ' Tahun ' . $pe->tahun 
+      //    ]);
 
         return back()->with('success', 'Behavior berhasil di Create');
         // } catch (\Exception $e) {
@@ -590,18 +590,18 @@ class QuickPEController extends Controller
             'status' => '1'
         ]);
 
-        if (auth()->user()->hasRole('Administrator')) {
-         $departmentId = null;
-      } else {
-         $user = Employee::find(auth()->user()->getEmployeeId());
-         $departmentId = $user->department_id;
-      }
-         Log::create([
-            'department_id' => $departmentId,
-            'user_id' => auth()->user()->id,
-            'action' => 'Submit',
-            'desc' => 'QPE ' . $pe->employe->nik . ' ' . $pe->employe->biodata->fullName() . ' Semester ' . $pe->semester . ' Tahun ' . $pe->tahun 
-         ]);
+      //   if (auth()->user()->hasRole('Administrator')) {
+      //    $departmentId = null;
+      // } else {
+      //    $user = Employee::find(auth()->user()->getEmployeeId());
+      //    $departmentId = $user->department_id;
+      // }
+      //    Log::create([
+      //       'department_id' => $departmentId,
+      //       'user_id' => auth()->user()->id,
+      //       'action' => 'Submit',
+      //       'desc' => 'QPE ' . $pe->employe->nik . ' ' . $pe->employe->biodata->fullName() . ' Semester ' . $pe->semester . ' Tahun ' . $pe->tahun 
+      //    ]);
 
         return redirect('qpe')->with('success', 'Perfomance Evaluation berhasil di Sumbit');
     }
@@ -649,18 +649,18 @@ class QuickPEController extends Controller
             // Commit transaksi jika semua operasi berhasil
             DB::commit();
 
-            if (auth()->user()->hasRole('Administrator')) {
-               $departmentId = null;
-            } else {
-               $user = Employee::find(auth()->user()->getEmployeeId());
-               $departmentId = $user->department_id;
-            }
-            Log::create([
-               'department_id' => $departmentId,
-               'user_id' => auth()->user()->id,
-               'action' => 'Approve',
-               'desc' => 'QPE ' . $pe->employe->nik . ' ' . $pe->employe->biodata->fullName() . ' Semester ' . $pe->semester . ' Tahun ' . $pe->tahun 
-            ]);
+            // if (auth()->user()->hasRole('Administrator')) {
+            //    $departmentId = null;
+            // } else {
+            //    $user = Employee::find(auth()->user()->getEmployeeId());
+            //    $departmentId = $user->department_id;
+            // }
+            // Log::create([
+            //    'department_id' => $departmentId,
+            //    'user_id' => auth()->user()->id,
+            //    'action' => 'Approve',
+            //    'desc' => 'QPE ' . $pe->employe->nik . ' ' . $pe->employe->biodata->fullName() . ' Semester ' . $pe->semester . ' Tahun ' . $pe->tahun 
+            // ]);
 
             // Redirect dengan pesan sukses
             return redirect('qpe')->with('success', 'PE Verifikasi successfully');
@@ -711,18 +711,18 @@ class QuickPEController extends Controller
             // Commit transaksi jika semua operasi berhasil
             DB::commit();
 
-            if (auth()->user()->hasRole('Administrator')) {
-               $departmentId = null;
-            } else {
-               $user = Employee::find(auth()->user()->getEmployeeId());
-               $departmentId = $user->department_id;
-            }
-            Log::create([
-               'department_id' => $departmentId,
-               'user_id' => auth()->user()->id,
-               'action' => 'Create',
-               'desc' => 'QPE Comment Training & Development ' . $pe->employe->nik . ' ' . $pe->employe->biodata->fullName() . ' Semester ' . $pe->semester . ' Tahun ' . $pe->tahun 
-            ]);
+            // if (auth()->user()->hasRole('Administrator')) {
+            //    $departmentId = null;
+            // } else {
+            //    $user = Employee::find(auth()->user()->getEmployeeId());
+            //    $departmentId = $user->department_id;
+            // }
+            // Log::create([
+            //    'department_id' => $departmentId,
+            //    'user_id' => auth()->user()->id,
+            //    'action' => 'Create',
+            //    'desc' => 'QPE Comment Training & Development ' . $pe->employe->nik . ' ' . $pe->employe->biodata->fullName() . ' Semester ' . $pe->semester . ' Tahun ' . $pe->tahun 
+            // ]);
 
             // Redirect dengan pesan sukses
             return back()->with('success', 'Komentar berhasil disimpan');
@@ -767,13 +767,13 @@ class QuickPEController extends Controller
             // Commit transaksi jika semua operasi berhasil
             DB::commit();
             
-            $user = Employee::find(auth()->user()->getEmployeeId());
-            Log::create([
-               'department_id' => $user->department_id,
-               'user_id' => auth()->user()->id,
-               'action' => 'Need Discuss',
-               'desc' => 'QPE ' . $pe->employe->nik . ' ' . $pe->employe->biodata->fullName() . ' Semester ' . $pe->semester . ' Tahun ' . $pe->tahun 
-            ]);
+            // $user = Employee::find(auth()->user()->getEmployeeId());
+            // Log::create([
+            //    'department_id' => $user->department_id,
+            //    'user_id' => auth()->user()->id,
+            //    'action' => 'Need Discuss',
+            //    'desc' => 'QPE ' . $pe->employe->nik . ' ' . $pe->employe->biodata->fullName() . ' Semester ' . $pe->semester . ' Tahun ' . $pe->tahun 
+            // ]);
 
             // dd($pe->id);
 
@@ -814,13 +814,13 @@ class QuickPEController extends Controller
             // Commit transaksi jika semua operasi berhasil
             DB::commit();
 
-            $user = Employee::find(auth()->user()->getEmployeeId());
-            Log::create([
-               'department_id' => $user->department_id,
-               'user_id' => auth()->user()->id,
-               'action' => 'Complain',
-               'desc' => 'QPE ' . $pe->employe->nik . ' ' . $pe->employe->biodata->fullName() . ' Semester ' . $pe->semester . ' Tahun ' . $pe->tahun 
-            ]);
+            // $user = Employee::find(auth()->user()->getEmployeeId());
+            // Log::create([
+            //    'department_id' => $user->department_id,
+            //    'user_id' => auth()->user()->id,
+            //    'action' => 'Complain',
+            //    'desc' => 'QPE ' . $pe->employe->nik . ' ' . $pe->employe->biodata->fullName() . ' Semester ' . $pe->semester . ' Tahun ' . $pe->tahun 
+            // ]);
 
             // Redirect dengan pesan sukses
             return back()->with('success', 'Komplain berhasil di kirim');
@@ -852,13 +852,13 @@ class QuickPEController extends Controller
 
             // Commit transaksi jika semua operasi berhasil
             DB::commit();
-            $user = Employee::find(auth()->user()->getEmployeeId());
-            Log::create([
-               'department_id' => $user->department_id,
-               'user_id' => auth()->user()->id,
-               'action' => 'Close',
-               'desc' => 'QPE ' . $pe->employe->nik . ' ' . $pe->employe->biodata->fullName() . ' Semester ' . $pe->semester . ' Tahun ' . $pe->tahun 
-            ]);
+            // $user = Employee::find(auth()->user()->getEmployeeId());
+            // Log::create([
+            //    'department_id' => $user->department_id,
+            //    'user_id' => auth()->user()->id,
+            //    'action' => 'Close',
+            //    'desc' => 'QPE ' . $pe->employe->nik . ' ' . $pe->employe->biodata->fullName() . ' Semester ' . $pe->semester . ' Tahun ' . $pe->tahun 
+            // ]);
 
             // Redirect dengan pesan sukses
             return back()->with('success', 'Komplain berhasil di tutup');
