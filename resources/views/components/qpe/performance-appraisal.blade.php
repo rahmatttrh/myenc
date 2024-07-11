@@ -3,7 +3,7 @@
 <div class="card shadow-none border">
     <div class="card-header d-flex">
         <div class="d-flex  align-items-center">
-            <div class="card-title">Performance Apprasial</div>
+            <small class="">Performance Apprasial</small>
         </div>
     </div>
     <div class="card-body">

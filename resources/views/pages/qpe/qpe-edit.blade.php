@@ -38,14 +38,14 @@ PE
         <div class="card shadow-none border">
             <div class="card-header d-flex bg-primary">
                 <div class="d-flex  align-items-center">
-                    <div class="card-title text-white">KPI</div>
+                    <small class=" text-white">KPI</small>
                 </div>
 
                 @if(($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202') && (auth()->user()->hasRole('Leader') || auth()->user()->hasRole('Supervisor') || auth()->user()->hasRole('Administrator') ) )
                 <div class="btn-group btn-group-page-header ml-auto">
                     <div class="button-group">
                         @if(isset($pd) && $pd->pdds->count() == 6)
-                        <button class="btn btn-xs btn-warning" data-toggle="modal" data-target="#modal-submit-{{$kpa->id}}"><i class="fas fa-rocket"></i> Submit </button>
+                        <button class="btn btn-xs btn-light" data-toggle="modal" data-target="#modal-submit-{{$kpa->id}}"><i class="fas fa-rocket"></i> Submit </button>
                         <!-- <x-modal.submit :id="$pe->id" :body="'KPI ' . $kpa->employe->biodata->fullName() . ' semester '. $kpa->semester.' '. $pe->tahun " url="{{route('qpe.submit', enkripRambo($pe->id))}}" /> -->
 
                         <div class="modal fade" id="modal-submit-{{$kpa->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -68,7 +68,7 @@ PE
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-warning ">
+                                            <button type="submit" class="btn btn-primary ">
                                                 Submit
                                             </button>
                                         </div>
@@ -117,9 +117,9 @@ PE
             <input type="hidden" id="kpi_id" name="kpi_id">
             <input type="hidden" id="employee_id" name="employe_id">
             <input type="hidden" id="date" name="date">
-            <div class="card-body">
+            <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table id="tableCreate" class="displays table table-striped ">
+                    <table id="tableCreate" class="displays table-sm">
                         <thead>
                             <tr>
                                 <th>No</th>
@@ -503,7 +503,7 @@ PE
         <div class="card shadow-none border">
             <div class="card-header d-flex bg-primary">
                 <div class="d-flex  align-items-center">
-                    <div class="card-title text-white">Discipline</div>
+                    <small class=" text-white">Discipline</small>
                 </div>
 
             </div>
@@ -543,7 +543,7 @@ PE
     <div class="col-md-9">
         <div class="card shadow-none border">
             <div class="card-header bg-primary">
-                <div class="card-title text-white">Behavior</div>
+                <small class=" text-white">Behavior</small>
             </div>
             @if($pba == null)
 
@@ -555,9 +555,9 @@ PE
                 <input type="hidden" name="employe_id" value="{{$kpa->employe_id}}">
                 <input type="hidden" name="kpa_id" value="{{$kpa->id}}">
                 <input type="hidden" name="pe_id" value="{{$kpa->pe_id}}">
-                <div class="card-body">
+                <div class="card-body p-0">
                     <div class="table-responsive">
-                        <table class="displays table table-striped ">
+                        <table class="displays table-sm ">
                             <thead>
                                 <tr>
                                     <th>No</th>

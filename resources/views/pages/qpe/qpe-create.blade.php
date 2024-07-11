@@ -17,7 +17,7 @@ Create PE
             <div class="card shadow-none border">
                 <div class="card-header d-flex">
                     <div class="d-flex  align-items-center">
-                        <div class="card-title">Give Performance Evaluation</div>
+                        <small class="">Give Performance Evaluation</small>
                     </div>
 
                 </div>
@@ -66,10 +66,11 @@ Create PE
             </div>
         </div>
         <div class="col-md-9" id="boxKpi">
-            
+
             <div class="card shadow-none border">
                 <div class="card-header bg-primary">
-                    <div class="card-title text-white">Objective KPI</div>
+                    {{-- <div class="card-title text-white"</div> --}}
+                     <small class="text-white">Objective KPI</small>
                 </div>
                 @php
                 use Carbon\Carbon;
@@ -83,7 +84,7 @@ Create PE
                     <input type="hidden" id="semester_id" name="semester">
                     <input type="hidden" id="tahun_id" name="tahun">
                     <input type="hidden" name="date" value="{{$today}}">
-                    <div class="card-body">
+                    <div class="card-body p-0">
                         <div class="table-responsive">
                             <table id="tableCreate" class="displays table-sm table-striped ">
                                 <thead>
@@ -92,8 +93,8 @@ Create PE
                                         <th>Objective</th>
                                         <th>Weight</th>
                                         <th>Target</th>
-                                        <th>Value</th>
-                                        <th>Achievement</th>
+                                        <th style="width: 80px" >Value</th>
+                                        <th style="width: 80px">Achievement</th>
                                         <th>Attachment (PDF)</th> <!-- Kolom Attachment -->
                                     </tr>
                                 </thead>
@@ -124,7 +125,7 @@ Create PE
             <div class="card shadow-none border">
                 <div class="card-header d-flex bg-primary">
                     <div class="d-flex  align-items-center">
-                        <div class="card-title text-white">Discipline</div>
+                        <small class=" text-white">Discipline</small>
                     </div>
 
                 </div>
@@ -164,13 +165,13 @@ Create PE
         <div class="col-md-9">
             <div class="card shadow-none border">
                 <div class="card-header bg-primary">
-                    <div class="card-title text-white">Behavior</div>
+                    <small class="text-white">Behavior</small>
                 </div>
                 <form action="" name="formBehavior" method="POST" enctype="multipart/form-data" accept=".jpg, .jpeg, .png, .pdf">
                     @csrf
                     <input type="hidden" name="employe_id">
                     <input type="hidden" name="date">
-                    <div class="card-body">
+                    <div class="card-body p-0">
                         <div class="table-responsive">
                             <table class="displays table-sm table-striped ">
                                 <thead>
@@ -189,13 +190,13 @@ Create PE
                                         <td>{{++$i}}</td>
                                         <td>{{$behavior->objective}}</td>
                                         <td>{{$behavior->description}}</td>
-                                        <td>{{$behavior->bobot}}</td>
+                                        <td class="text-center">{{$behavior->bobot}}</td>
                                         <td>
-                                            <input type="text" name="valBehavior#{{$behavior->id}}" value="0" min="0.01" max="4" step="0.01">
+                                            <input type="text" style="width: 80px" name="valBehavior#{{$behavior->id}}" value="0" min="0.01" max="4" step="0.01">
                                             <br><span><small>*Max 4 point</small></span>
                                         </td>
                                         <td>
-                                            <input type="text" name="acvBehavior#{{$behavior->id}}" readonly>
+                                            <input type="text" style="width: 50px" name="acvBehavior#{{$behavior->id}}" readonly>
                                             <br><span>-</span>
                                         </td>
                                     </tr>
@@ -212,7 +213,7 @@ Create PE
                     </div>
                     <div class="card-footer">
                         <div class="col-md-3 float-right mb-3">
-                            <button type="submit" class="btn btn-block btn-primary ">Save</button>
+                            <button type="submit" class="btn btn-block btn-sm btn-primary ">Save</button>
                         </div>
                     </div>
                 </form>

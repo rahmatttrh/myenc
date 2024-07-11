@@ -9,7 +9,7 @@
         <input type="hidden" id="kpi_id" name="kpi_id">
         <input type="hidden" id="employee_id" name="employe_id">
         <input type="hidden" id="date" name="date">
-        <div class="card-body">
+        <div class="card-body p-0">
             <div class="table-responsive">
                 <table id="tableCreate" class="displays table table-striped ">
                     <thead>

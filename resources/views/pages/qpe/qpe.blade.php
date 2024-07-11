@@ -32,9 +32,9 @@ QPE
                 </div>
                 <div class="card-header d-flex">
                     <div class="d-flex  align-items-center">
-                        <div class="card-title">List All Performance Evaluation</div>
+                        <small class="">List All Performance Evaluation</small>
                     </div>
-                    <div class="btn-group btn-group-page-header ml-auto">
+                    {{-- <div class="btn-group btn-group-page-header ml-auto">
                         <button type="button" class="btn btn-light btn-round btn-page-header-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-ellipsis-h"></i>
                         </button>
@@ -43,14 +43,14 @@ QPE
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" style="text-decoration: none" href="" target="_blank">Print Preview</a>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
-                <div class="card-body">
+                <div class="card-body p-0 py-2">
                     <div class="table-responsive">
-                        <table id="basic-datatables" class="display basic-datatables table table-striped ">
+                        <table id="basic-datatables" class="display basic-datatables table-sm table-striped ">
                             <thead>
                                 <tr>
-                                    <th class="text-white">No</th>
+                                    <th class="text-white text-center">No</th>
                                     <th class="text-white">Employe</th>
                                     <th class="text-white">Semester / Tahun</th>
                                     <th class="text-white">Achievement</th>
@@ -61,7 +61,7 @@ QPE
                             <tbody>
                                 @foreach ($pes as $pe)
                                 <tr>
-                                    <td>{{++$i}}</td>
+                                    <td class="text-center">{{++$i}}</td>
                                     <td>
                                         @if($pe->status == '0' || $pe->status == '101')
                                         <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->biodata->fullName()}} </a>
@@ -96,7 +96,7 @@ QPE
                                         @if($pe->status == 0)
                                         <!-- <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-delete-{{$pe->id}}"><i class="fas fa-trash"></i> Delete</button> -->
                                         @elseif(($pe->status == '1' || $pe->status == '2' || $pe->status == '101' || $pe->status == '202') && $pe->behavior > 0)
-                                        <a href="{{ route('export.qpe', $pe->id) }}" target="_blank"><button class="btn btn-sm btn-success text-dark"> Preview PDF </button></a>
+                                        <a href="{{ route('export.qpe', $pe->id) }}" target="_blank"> Preview PDF</a>
                                         @elseif(($pe->status == 0 || $pe->status == 101 || $pe->status == 202) && auth()->user()->hasRole('Leader'))
                                         <!-- <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-submit-{{$pe->id}}"><i class="fas fa-rocket"></i> Submit</button> -->
                                         @endif
