@@ -59,13 +59,13 @@ Designation
                     </form>
                 </div>
                 <div class="card-footer">
-                    <small>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni at neque inventore vel.</small>
+                    {{-- <small>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni at neque inventore vel.</small> --}}
                 </div>
             </div>
         </div>
         <div class="col-md-8">
             <div class="card shadow-none border">
-                <div class="card-header d-flex">
+                {{-- <div class="card-header d-flex">
                     <div class="d-flex  align-items-center">
                         <div class="card-title">KPI List</div>
                     </div>
@@ -81,13 +81,13 @@ Designation
                             <a class="dropdown-item" style="text-decoration: none" href="" target="_blank">Print Preview</a>
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table id="basic-datatables" class="display basic-datatables table table-striped ">
+                        <table id="basic-datatables" class="display basic-datatables table-sm table-striped ">
                             <thead>
                                 <tr>
-                                    <th>No</th>
+                                    <th class="text-center">No</th>
                                     <th>Title</th>
                                     <th>Divisi</th>
                                     <th>Jabatan</th>
@@ -97,7 +97,7 @@ Designation
                             <tbody>
                                 @foreach ($kpis as $kpi)
                                 <tr>
-                                    <td>{{++$i}}</td>
+                                    <td class="text-center">{{++$i}}</td>
                                     <td><a href="{{'kpi/'. enkripRambo($kpi->id)}}"> {{$kpi->title}} </a></td>
                                     <td>{{$kpi->departement->name}}</td>
                                     <td>{{$kpi->position->name ?? '-'}}</td>

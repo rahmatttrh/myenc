@@ -35,7 +35,7 @@ class PositionController extends Controller
       $position = Position::find(dekripRambo($id));
       $employees = Employee::where('position_id', $position->id)->get();
       if (count($employees) > 0) {
-         return redirect()->back()->with('danger', 'Position delete fail, this position have relation on Employee data');
+         return redirect()->back()->with('danger', 'Position delete fail, data ini memiliki relasi ke data lain');
       } else {
          $position->delete();
          return redirect()->back()->with('success', 'Position successfully deleted');

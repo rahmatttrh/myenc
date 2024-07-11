@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Department;
 use App\Models\Designation;
+use App\Models\Employee;
 use App\Models\Unit;
 use Illuminate\Http\Request;
 
@@ -52,8 +53,8 @@ class UnitController extends Controller
     public function detail($id){
       $dekripId = dekripRambo($id);
       $unit = Unit::find($dekripId);
-      $departments = Department::where('unit_id', $unit->id)->orderBy('created_at', 'desc')->get();
-      $firstDept = Department::where('unit_id', $unit->id)->orderBy('created_at', 'desc')->first();
+      $departments = Department::where('unit_id', $unit->id)->orderBy('name', 'asc')->get();
+      $firstDept = Department::where('unit_id', $unit->id)->orderBy('name', 'asc')->first();
       $panel = 1;
       $designations = Designation::get();
       return view('pages.unit.detail', [
@@ -69,9 +70,10 @@ class UnitController extends Controller
     public function delete($id){
       $unit = Unit::find(dekripRambo($id));
       $departments = Department::where('unit_id', $unit->id)->get();
+      $employees = Employee::where('unit_id', $unit->id)->get();
       // dd($unit->name);
-      if (count($departments) > 0) {
-         return redirect()->back()->with('danger', 'Bisnis Unit delete fail, this unit have department');
+      if (count($departments) > 0 || count($employees) > 0) {
+         return redirect()->back()->with('danger', 'Bisnis Unit delete fail, data ini memiliki relasi ke data lain');
       } else {
          $unit->delete();
          return redirect()->back()->with('success', 'Bisnis Unit successfully deleted');

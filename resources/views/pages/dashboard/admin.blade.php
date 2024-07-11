@@ -27,7 +27,7 @@
       </div>
       <div class="row">
          <div class="col-sm-6 col-md-3">
-            <a href="" style="text-decoration: none" data-toggle="tooltip" data-placement="top" title="Total Vessel">
+            <a href="" style="text-decoration: none" data-toggle="tooltip" data-placement="top" title="Total Karyawan">
                <div class="card card-stats card-primary card-round">
                   <div class="card-body">
                      <div class="row">
@@ -48,7 +48,7 @@
             </a>
          </div>
          <div class="col-sm-6 col-md-3">
-            <a href="#" style="text-decoration: none" data-toggle="tooltip" data-placement="top" title="Total Office">
+            <a href="#" style="text-decoration: none" data-toggle="tooltip" data-placement="top" title="Total Karyawan Tetap">
                <div class="card card-stats card-info card-round">
                   <div class="card-body">
                      <div class="row">
@@ -59,7 +59,7 @@
                         </div>
                         <div class="col col-stats">
                            <div class="numbers">
-                              <p class="card-category">Male</p>
+                              <p class="card-category">TETAP</p>
                                <h4 class="card-title">{{$male}}</h4> 
                            </div>
                         </div>
@@ -69,8 +69,8 @@
             </a>
          </div>
          <div class="col-sm-6 col-md-3">
-            <a href="" style="text-decoration: none" data-toggle="tooltip" data-placement="top" title="Total Material">
-               <div class="card card-stats card-secondary card-round">
+            <a href="" style="text-decoration: none" data-toggle="tooltip" data-placement="top" title="Total Karyawan Kontrak">
+               <div class="card card-stats card-primary card-round">
                   <div class="card-body">
                      <div class="row">
                         <div class="col-5">
@@ -80,7 +80,7 @@
                         </div>
                         <div class="col col-stats">
                            <div class="numbers">
-                              <p class="card-category">Female</p>
+                              <p class="card-category">KONTRAK</p>
                               <h4 class="card-title">{{$female}}</h4>
                            </div>
                         </div>
@@ -90,7 +90,7 @@
             </a>
          </div>
          <div class="col-sm-6 col-md-3">
-            <a href="#" style="text-decoration: none" data-toggle="tooltip" data-placement="top" title="Total Material Request">
+            <a href="#" style="text-decoration: none" data-toggle="tooltip" data-placement="top" title="Total Karyawan Pensiun   ">
                <div class="card card-stats card-danger card-round">
                   <div class="card-body">
                      <div class="row">

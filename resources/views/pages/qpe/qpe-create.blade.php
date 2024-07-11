@@ -66,6 +66,7 @@ Create PE
             </div>
         </div>
         <div class="col-md-9" id="boxKpi">
+            
             <div class="card shadow-none border">
                 <div class="card-header bg-primary">
                     <div class="card-title text-white">Objective KPI</div>
@@ -84,7 +85,7 @@ Create PE
                     <input type="hidden" name="date" value="{{$today}}">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table id="tableCreate" class="displays table table-striped ">
+                            <table id="tableCreate" class="displays table-sm table-striped ">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -111,7 +112,7 @@ Create PE
                     </div>
                     <div class="card-footer">
                         <div class="col-md-3 float-right mb-3">
-                            <button type="submit" class="btn btn-block btn-primary ">Save</button>
+                            <button type="submit" class="btn btn-block btn-sm btn-primary ">Save</button>
                         </div>
                     </div>
                 </form>
@@ -171,7 +172,7 @@ Create PE
                     <input type="hidden" name="date">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="displays table table-striped ">
+                            <table class="displays table-sm table-striped ">
                                 <thead>
                                     <tr>
                                         <th>No</th>

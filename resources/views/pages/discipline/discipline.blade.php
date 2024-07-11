@@ -17,7 +17,7 @@ Discipline
                 <div class="card-header">
                     <x-tab-discipline :activeTab="request()->route()->getName()" />
                 </div>
-                <div class="card-header d-flex">
+                {{-- <div class="card-header d-flex">
                     <div class="d-flex  align-items-center">
                         <div class="card-title">List All Discipline assessment</div>
                     </div>
@@ -31,10 +31,10 @@ Discipline
                             <a class="dropdown-item" style="text-decoration: none" href="" target="_blank">Print Preview</a>
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table id="basic-datatables" class="display basic-datatables table table-striped ">
+                        <table id="basic-datatables" class="display basic-datatables table-sm table-striped ">
                             <thead>
                                 <tr>
                                     <th>No</th>

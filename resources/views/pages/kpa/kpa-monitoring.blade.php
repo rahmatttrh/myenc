@@ -952,12 +952,10 @@ KPA
                 </form>
             </div>
         </div> -->
-        <div class="col-md-12">
+        {{-- <div class="col-md-12">
             <div class="card shadow-none border">
                 <div class="card-header">
-                    <div class="col-md-1 float-right mb-3">
-                        <!-- <button type="button" id="hide" class="btn btn-block btn-danger"><i class="fa fa-minus"></i> Hide </button> -->
-                    </div>
+                    <div class="col-md-1 float-right mb-3"> </div>
                     <div class="card-title">Monitoring Outstanding Penilaian KPI </div>
                 </div>
                 <form action="{{route('kpa.store')}}" method="POST" enctype="multipart/form-data" accept=".jpg, .jpeg, .png, .pdf">
@@ -1019,9 +1017,7 @@ KPA
                                         @foreach($dept->sub_depts as $sub_dept)
 
                                         <td>{{$sub_dept->name}} </td>
-
-                                        <!-- Looping nilai outstanding -->
-                                        <?php
+                                       <?php
                                         $outs = $modelSubDept->outstandingKPI($sub_dept->id, '2024');
 
                                         foreach ($outs as $key => $value) {
@@ -1057,7 +1053,7 @@ KPA
                     </div>
                 </form>
             </div>
-        </div>
+        </div> --}}
     </div>
 </div>
 

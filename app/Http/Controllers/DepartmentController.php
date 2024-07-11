@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Department;
+use App\Models\Employee;
 use App\Models\Position;
 use App\Models\SubDept;
 use Illuminate\Http\Request;
@@ -57,9 +58,10 @@ class DepartmentController extends Controller
       $dekripId = dekripRambo($id);
       $department = Department::find($dekripId);
       $subs = SubDept::where('department_id', $department->id)->get();
+      $employees = Employee::where('department_id', $department->id)->get();
 
-      if (count($subs) > 0) {
-         return redirect()->back()->with('danger', 'Department delete fail, this department have Sub Department');
+      if (count($subs) > 0 || count($employees) > 0) {
+         return redirect()->back()->with('danger', 'Department delete fail, data ini memiliki relasi ke data lain');
       } else {
          $department->delete();
          return redirect()->route('department')->with('success', 'Department successfully deleted');
