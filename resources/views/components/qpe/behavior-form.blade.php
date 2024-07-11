@@ -1,7 +1,7 @@
 <!-- resources/views/components/behavior-form.blade.php -->
 <div class="card shadow-none border">
     <div class="card-header bg-primary">
-        <div class="card-title text-white">Behavior</div>
+        <small class=" text-white">Behavior</small>
     </div>
     @if($pba == null)
     <form action="{{ route('qpe.behavior.store') }}" name="formBehavior" method="POST" enctype="multipart/form-data" accept=".jpg, .jpeg, .png, .pdf">
@@ -10,9 +10,9 @@
         <input type="hidden" name="employe_id" value="{{ $kpa->employe_id }}">
         <input type="hidden" name="kpa_id" value="{{ $kpa->id }}">
         <input type="hidden" name="pe_id" value="{{ $kpa->pe_id }}">
-        <div class="card-body">
+        <div class="card-body p-0">
             <div class="table-responsive">
-                <table class="displays table table-striped">
+                <table class="displays table-sm">
                     <thead>
                         <tr>
                             <th>No</th>

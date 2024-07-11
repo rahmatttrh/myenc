@@ -64,6 +64,45 @@ Create PE
                     <!-- <a href="{{route('export.kpi')}}" target="_blank">Preview</a> -->
                 </div>
             </div>
+            <div class="card shadow-none border">
+               <div class="card-header d-flex bg-primary">
+                   <div class="d-flex  align-items-center">
+                       <small class=" text-white">Discipline</small>
+                   </div>
+
+               </div>
+               <div class="card-body">
+                   <form>
+                       @csrf
+                       <div class="form-group form-group-default">
+                           <label>Alpa</label>
+                           <label for="" class="float-right">0</label>
+                       </div>
+                       <div class="form-group form-group-default">
+                           <label>Ijin</label>
+                           <label for="" class="float-right">0</label>
+                       </div>
+                       <div class="form-group form-group-default">
+                           <label>Terlambat</label>
+                           <label for="" class="float-right">0</label>
+                       </div>
+                       <div class="form-group form-group-default bg-success">
+                           <label>Value</label>
+                           <label for="" class="float-right">4</label>
+                       </div>
+                       <div class="form-group form-group-default bg-warning">
+                           <label>Bobot</label>
+                           <label for="" class="float-right">15</label>
+                       </div>
+                       <div class="form-group form-group-default bg-success">
+                           <label> <b>Achievement</b></label>
+                           <label for="" class="float-right">
+                               <h3>15</h3>
+                           </label>
+                       </div>
+                   </form>
+               </div>
+           </div>
         </div>
         <div class="col-md-9" id="boxKpi">
 
@@ -86,7 +125,7 @@ Create PE
                     <input type="hidden" name="date" value="{{$today}}">
                     <div class="card-body p-0">
                         <div class="table-responsive">
-                            <table id="tableCreate" class="displays table-sm table-striped ">
+                            <table id="tableCreate" class="displays table-sm  ">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -118,108 +157,72 @@ Create PE
                     </div>
                 </form>
             </div>
+
+            <div class="card shadow-none border">
+               <div class="card-header bg-primary">
+                   <small class="text-white">Behavior</small>
+               </div>
+               <form action="" name="formBehavior" method="POST" enctype="multipart/form-data" accept=".jpg, .jpeg, .png, .pdf">
+                   @csrf
+                   <input type="hidden" name="employe_id">
+                   <input type="hidden" name="date">
+                   <div class="card-body p-0">
+                       <div class="table-responsive">
+                           <table class="displays table-sm  ">
+                               <thead>
+                                   <tr>
+                                       <th>No</th>
+                                       <th>Objective</th>
+                                       <th>Description</th>
+                                       <th>Bobot</th>
+                                       <th>Value</th>
+                                       <th>Achievement</th>
+                                   </tr>
+                               </thead>
+                               <tbody>
+                                   @foreach($behaviors as $behavior)
+                                   <tr>
+                                       <td>{{++$i}}</td>
+                                       <td>{{$behavior->objective}}</td>
+                                       <td>{{$behavior->description}}</td>
+                                       <td class="text-center">{{$behavior->bobot}}</td>
+                                       <td>
+                                           <input type="text" style="width: 80px" name="valBehavior#{{$behavior->id}}" value="0" min="0.01" max="4" step="0.01">
+                                           <br><span><small>*Max 4 point</small></span>
+                                       </td>
+                                       <td>
+                                           <input type="text" style="width: 50px" name="acvBehavior#{{$behavior->id}}" readonly>
+                                           <br><span>-</span>
+                                       </td>
+                                   </tr>
+                                   @endforeach
+                               </tbody>
+                               <tfoot>
+                                   <tr>
+                                       <th colspan="5" class="text-right">Achievement</th>
+                                       <th><span id="totalAcvBehavior" name="totalAcvBehavior"></span></th>
+                                   </tr>
+                               </tfoot>
+                           </table>
+                       </div>
+                   </div>
+                   <div class="card-footer">
+                       <div class="col-md-3 float-right mb-3">
+                           <button type="submit" class="btn btn-block btn-sm btn-primary ">Save</button>
+                       </div>
+                   </div>
+               </form>
+           </div>
         </div>
     </div>
-    <div class="row" id="boxDetail">
+    {{-- <div class="row" id="boxDetail">
         <div class="col-md-3">
-            <div class="card shadow-none border">
-                <div class="card-header d-flex bg-primary">
-                    <div class="d-flex  align-items-center">
-                        <small class=" text-white">Discipline</small>
-                    </div>
-
-                </div>
-                <div class="card-body">
-                    <form>
-                        @csrf
-                        <div class="form-group form-group-default">
-                            <label>Alpa</label>
-                            <label for="" class="float-right">0</label>
-                        </div>
-                        <div class="form-group form-group-default">
-                            <label>Ijin</label>
-                            <label for="" class="float-right">0</label>
-                        </div>
-                        <div class="form-group form-group-default">
-                            <label>Terlambat</label>
-                            <label for="" class="float-right">0</label>
-                        </div>
-                        <div class="form-group form-group-default bg-success">
-                            <label>Value</label>
-                            <label for="" class="float-right">4</label>
-                        </div>
-                        <div class="form-group form-group-default bg-warning">
-                            <label>Bobot</label>
-                            <label for="" class="float-right">15</label>
-                        </div>
-                        <div class="form-group form-group-default bg-success">
-                            <label> <b>Achievement</b></label>
-                            <label for="" class="float-right">
-                                <h3>15</h3>
-                            </label>
-                        </div>
-                    </form>
-                </div>
-            </div>
+            
         </div>
         <div class="col-md-9">
-            <div class="card shadow-none border">
-                <div class="card-header bg-primary">
-                    <small class="text-white">Behavior</small>
-                </div>
-                <form action="" name="formBehavior" method="POST" enctype="multipart/form-data" accept=".jpg, .jpeg, .png, .pdf">
-                    @csrf
-                    <input type="hidden" name="employe_id">
-                    <input type="hidden" name="date">
-                    <div class="card-body p-0">
-                        <div class="table-responsive">
-                            <table class="displays table-sm table-striped ">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Objective</th>
-                                        <th>Description</th>
-                                        <th>Bobot</th>
-                                        <th>Value</th>
-                                        <th>Achievement</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($behaviors as $behavior)
-                                    <tr>
-                                        <td>{{++$i}}</td>
-                                        <td>{{$behavior->objective}}</td>
-                                        <td>{{$behavior->description}}</td>
-                                        <td class="text-center">{{$behavior->bobot}}</td>
-                                        <td>
-                                            <input type="text" style="width: 80px" name="valBehavior#{{$behavior->id}}" value="0" min="0.01" max="4" step="0.01">
-                                            <br><span><small>*Max 4 point</small></span>
-                                        </td>
-                                        <td>
-                                            <input type="text" style="width: 50px" name="acvBehavior#{{$behavior->id}}" readonly>
-                                            <br><span>-</span>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th colspan="5" class="text-right">Achievement</th>
-                                        <th><span id="totalAcvBehavior" name="totalAcvBehavior"></span></th>
-                                    </tr>
-                                </tfoot>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <div class="col-md-3 float-right mb-3">
-                            <button type="submit" class="btn btn-block btn-sm btn-primary ">Save</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
+            
         </div>
-    </div>
+    </div> --}}
 </div>
 
 @endsection

@@ -29,6 +29,7 @@ PE
                 app/View/Components/File.php
             -->
             <x-qpe.performance-appraisal :kpa="$kpa" />
+            <x-discipline :pd="$pd" />
         </div>
         <div class="col-md-9">
          @if (auth()->user()->hasRole('Karyawan'))
@@ -161,19 +162,20 @@ PE
         @endif
             <!-- KPI table component -->
             <x-qpe.kpi-table :kpa="$kpa" :valueAvg="$valueAvg" :datas="$datas" :addtional="$addtional" :i="$i" />
-        </div>
-    </div>
-
-    <div class="row" id="boxDetail">
-        <div class="col-md-3">
-            <!-- Discipline component -->
-            <x-discipline :pd="$pd" />
-        </div>
-        <div class="col-md-9">
-            <!-- Behavior form component -->
             <x-behavior-form :kpa="$kpa" :pba="$pba" :behaviors="$behaviors" :pbads="$pbads" />
         </div>
     </div>
+
+    {{-- <div class="row" id="boxDetail">
+        <div class="col-md-3">
+            <!-- Discipline component -->
+            
+        </div>
+        <div class="col-md-9">
+            <!-- Behavior form component -->
+            
+        </div>
+    </div> --}}
 
 
     <div class="row">

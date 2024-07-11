@@ -1,9 +1,8 @@
-<div>
-    <!-- Nothing in life is to be feared, it is only to be understood. Now is the time to understand more, so that we may fear less. - Marie Curie -->'
-    <div class="card shadow-none border">
+
+<div class="card shadow-none border">
         <div class="card-header d-flex bg-primary">
             <div class="d-flex  align-items-center">
-                <div class="card-title text-white">KPI</div>
+                <small class=" text-white">KPI</small>
             </div>
         </div>
         <input type="hidden" id="kpi_id" name="kpi_id">
@@ -11,7 +10,7 @@
         <input type="hidden" id="date" name="date">
         <div class="card-body p-0">
             <div class="table-responsive">
-                <table id="tableCreate" class="displays table table-striped ">
+                <table id="tableCreate" class="displays table-sm ">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -320,4 +319,3 @@
             </div>
         </div>
     </div>
-</div>

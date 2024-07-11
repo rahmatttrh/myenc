@@ -577,7 +577,7 @@ PE
                                     <td>{{ $behavior->description }}</td>
                                     <td>{{ $behavior->bobot }}</td>
                                     <td>
-                                        <input style="width: 50px" type="text" name="valBehavior[{{ $behavior->id }}]" value="0" min="0.01" max="4" step="0.01">
+                                        <input style="width: 80px" type="text" name="valBehavior[{{ $behavior->id }}]" value="0" min="0.01" max="4" step="0.01">
                                         <br><span><small>*Max 4</small></span>
                                     </td>
                                     <td>
