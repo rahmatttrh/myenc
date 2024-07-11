@@ -67,13 +67,16 @@
                      <div class="card-body p-0">
                         <table class="display  table-sm table-bordered  ">
                            <thead>
-                              
+                              <tr>
+                                 <th colspan="3">Sub Department</th>
+                              </tr>
                               <tr>
                                  <th scope="col" class="text-center"></th>
                                  {{-- <th scope="col">Sub Department Name</th> --}}
-                                 <th>Sub / Position</th>
+                                 <th>Position</th>
                                  <th scope="col" class="text-right">Action</th>
                               </tr>
+                              
                            </thead>
                            <tbody>
                               @if (count($depart->sub_depts) > 0)
