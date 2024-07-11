@@ -11,10 +11,12 @@ use App\Models\Employee;
 use App\Models\Position;
 use App\Models\SubDept;
 use App\Models\Unit;
+use App\Models\User;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -178,6 +180,13 @@ class EmployeeImport implements ToCollection, WithHeadingRow
                'created_at' => NOW(),
                'updated_at' => NOW()
 
+            ]);
+
+            $user = User::create([
+               'name' => $employee->biodata->first_name . ' ' . $employee->biodata->last_name,
+               'email' => $employee->biodata->email,
+               'username' => $employee->nik,
+               'password' => Hash::make('12345678')
             ]);
 
             // DB::commit();

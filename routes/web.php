@@ -230,7 +230,7 @@ Route::middleware(["auth"])->group(function () {
 
    Route::group(['middleware' => ['role:Administrator|HRD|HRD-Recruitment|HRD-Spv|Karyawan|Manager|Supervisor|Leader']], function () {
       
-      Route::prefix('qpe')->group(function () {
+      Route::prefix('employee')->group(function () {
          Route::put('update', [EmployeeController::class, 'update'])->name('employee.update');
          Route::put('update/doc', [EmployeeController::class, 'updateDoc'])->name('employee.update.doc');
          Route::put('update/bio', [EmployeeController::class, 'updateBio'])->name('employee.update.bio');

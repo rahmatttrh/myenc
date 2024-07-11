@@ -106,27 +106,27 @@ class EmployeeController extends Controller
    public function publishSingle($id){
       $employee = Employee::find(dekripRambo($id));
 
-         try {
-            $user = User::create([
-               'name' => $employee->biodata->first_name . ' ' . $employee->biodata->last_name,
-               'email' => $employee->biodata->email,
-               'username' => $employee->nik,
-               'password' => Hash::make('12345678')
-            ]);
-         } catch (Exception $e) {
-            return redirect()->back()->with('danger', 'Can not activate employee  ' . $employee->biodata->first_name . ' ' . $employee->biodata->last_name . ', Error log : ' . $e->getMessage());
-         }
+         // try {
+         //    $user = User::create([
+         //       'name' => $employee->biodata->first_name . ' ' . $employee->biodata->last_name,
+         //       'email' => $employee->biodata->email,
+         //       'username' => $employee->nik,
+         //       'password' => Hash::make('12345678')
+         //    ]);
+         // } catch (Exception $e) {
+         //    return redirect()->back()->with('danger', 'Can not activate employee  ' . $employee->biodata->first_name . ' ' . $employee->biodata->last_name . ', Error log : ' . $e->getMessage());
+         // }
 
          $employee->update([
             'status' => 1,
-            'user_id' => $user->id
+            // 'user_id' => $user->id
          ]);
 
          $employee->biodata->update([
             'status' => 1,
          ]);
 
-         $user->assignRole('Karyawan');
+         // $user->assignRole('Karyawan');
 
          if (auth()->user()->hasRole('Administrator')) {
             $departmentId = null;
@@ -155,20 +155,20 @@ class EmployeeController extends Controller
       for ($i = 0; $i < $jumlah; $i++) {
          $employee = Employee::find($arrayItem[$i]);
 
-         try {
-            $user = User::create([
-               'name' => $employee->biodata->first_name . ' ' . $employee->biodata->last_name,
-               'email' => $employee->biodata->email,
-               'username' => $employee->nik,
-               'password' => Hash::make('12345678')
-            ]);
-         } catch (Exception $e) {
-            return redirect()->back()->with('danger', 'Can not activate employee  ' . $employee->biodata->first_name . ' ' . $employee->biodata->last_name . ', Error log : ' . $e->getMessage());
-         }
+         // try {
+         //    $user = User::create([
+         //       'name' => $employee->biodata->first_name . ' ' . $employee->biodata->last_name,
+         //       'email' => $employee->biodata->email,
+         //       'username' => $employee->nik,
+         //       'password' => Hash::make('12345678')
+         //    ]);
+         // } catch (Exception $e) {
+         //    return redirect()->back()->with('danger', 'Can not activate employee  ' . $employee->biodata->first_name . ' ' . $employee->biodata->last_name . ', Error log : ' . $e->getMessage());
+         // }
 
          $employee->update([
             'status' => 1,
-            'user_id' => $user->id
+            // 'user_id' => $user->id
          ]);
 
          $employee->biodata->update([
@@ -177,7 +177,7 @@ class EmployeeController extends Controller
 
          
 
-         $user->assignRole('Karyawan');
+         // $user->assignRole('Karyawan');
 
          // Cek email apakah ada atau belum 
 
@@ -217,6 +217,7 @@ class EmployeeController extends Controller
       $employee = Employee::find($dekripId);
 
       $departments = Department::where('unit_id', $employee->unit_id)->get();
+      // dd($employee->id);
       $positions = Position::where('sub_dept_id', $employee->sub_dept_id)->get();
       $allPositions = Position::get();
 
@@ -232,9 +233,9 @@ class EmployeeController extends Controller
       // $spvs = Employee::where('department_id', $employee->department_id)->where('designation_id', 4)->get();
       // $leaders = Employee::where('department_id', $employee->department_id)->where('designation_id', 3)->get();
 
-      $managers = Employee::where('designation_id', 6)->get();
-      $spvs = Employee::where('designation_id', 4)->get();
-      $leaders = Employee::where('designation_id', 3)->get();
+      $managers = Employee::where('designation_id', 6)->where('department_id', $employee->department_id)->get();
+      $spvs = Employee::where('designation_id', 4)->where('department_id', $employee->department_id)->get();
+      $leaders = Employee::where('designation_id', 3)->where('department_id', $employee->department_id)->get();
 
       // dd($employee->documents);
       // $panel = 'contract';
@@ -305,6 +306,7 @@ class EmployeeController extends Controller
          'picture' => request('picture') ? 'image|mimes:jpg,jpeg,png|max:5120' : '',
       ]);
 
+      // dd($req->department);
       try {
          $biodata = Biodata::create([
             'status' => 0,
@@ -343,8 +345,9 @@ class EmployeeController extends Controller
          'status' => 0,
          'nik' => $req->nik,
          'role' => $req->role,
-         // 'unit_id' => $req->unit,
+         'unit_id' => $req->unit,
          'department_id' => $req->department,
+         'sub_dept_id' => $req->subdept,
          'designation_id' => $req->designation,
          'position_id' => $req->position,
          'contract_id' => $contract->id,
@@ -352,11 +355,18 @@ class EmployeeController extends Controller
          'picture' => request('picture') ? request()->file('picture')->store('employee/picture') : '',
       ]);
 
+      $user = User::create([
+         'name' => $employee->biodata->first_name . ' ' . $employee->biodata->last_name,
+         'email' => $employee->biodata->email,
+         'username' => $employee->nik,
+         'password' => Hash::make('12345678')
+      ]);
+
       if (auth()->user()->hasRole('Administrator')) {
          $departmentId = null;
       } else {
-         $user = Employee::find(auth()->user()->getEmployeeId());
-         $departmentId = $user->department_id;
+         $userNow = Employee::find(auth()->user()->getEmployeeId());
+         $departmentId = $userNow->department_id;
       }
          Log::create([
             'department_id' => $departmentId,

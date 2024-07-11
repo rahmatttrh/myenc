@@ -95,7 +95,7 @@ class ContractController extends Controller
          'designation_id' => $req->designation,
          'unit_id' => $req->unit,
          'department_id' => $req->department,
-         'sub_dept_id' => $req->sub_dept_id,
+         'sub_dept_id' => $req->subdept,
          'position_id' => $req->position,
          
          
@@ -110,7 +110,7 @@ class ContractController extends Controller
          'designation_id' => $req->designation,
          'unit_id' => $req->unit,
          'department_id' => $req->department,
-         'sub_dept_id' => $req->sub_dept_id,
+         'sub_dept_id' => $req->subdept,
          'position_id' => $req->position,
          'salary' => $req->salary,
          'hourly_rate' => $req->hourly_rate,
