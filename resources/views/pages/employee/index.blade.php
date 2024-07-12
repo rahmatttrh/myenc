@@ -75,7 +75,9 @@ Employee
                      {{-- <td><a href="{{route('employee.detail', enkripRambo($employee->id))}}">{{$employee->name}}</a> </td> --}}
                      <td class="text-truncate">
                         <div>
-                           <a href="{{route('employee.detail', [enkripRambo($employee->id), enkripRambo('basic')])}}">{{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</a>
+                           <a href="{{route('employee.detail', [enkripRambo($employee->id), enkripRambo('basic')])}}"> {{$employee->id}} - {{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</a> <br>
+                           Contract - {{$employee->contract_id}} <br>
+                           Biodata - {{$employee->biodata_id}}
                            {{-- <small class="text-muted">{{$employee->biodata->email}}</small> --}}
                         </div>
                         {{-- <div class="profile-picture mr-3">
