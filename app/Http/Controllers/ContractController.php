@@ -15,8 +15,9 @@ class ContractController extends Controller
    public function store(Request $req)
    {
       $req->validate([
-         'nik' => 'required|unique:employees'
+         'nik' => 'required'
       ]);
+      // dd('ok');
       $employee = Employee::find($req->employee);
       $currentContract = Contract::find($employee->contract_id);
       $currentContract->update([
@@ -58,18 +59,18 @@ class ContractController extends Controller
          'direct_leader_id' => $contract->direct_leader_id,
       ]);
 
-      if (auth()->user()->hasRole('Administrator')) {
-         $departmentId = null;
-      } else {
-         $user = Employee::find(auth()->user()->getEmployeeId());
-         $departmentId = $user->department_id;
-      }
-      Log::create([
-         'department_id' => $departmentId,
-         'user_id' => auth()->user()->id,
-         'action' => 'Create',
-         'desc' => 'Contract ' . $employee->nik . ' ' . $employee->biodata->fullname()
-      ]);
+      // if (auth()->user()->hasRole('Administrator')) {
+      //    $departmentId = null;
+      // } else {
+      //    $user = Employee::find(auth()->user()->getEmployeeId());
+      //    $departmentId = $user->department_id;
+      // }
+      // Log::create([
+      //    'department_id' => $departmentId,
+      //    'user_id' => auth()->user()->id,
+      //    'action' => 'Create',
+      //    'desc' => 'Contract ' . $employee->nik . ' ' . $employee->biodata->fullname()
+      // ]);
 
       return redirect()->route('employee.detail', [enkripRambo($req->employee), enkripRambo('contract')])->with('success', 'Contract successfully added');
    }
@@ -104,6 +105,7 @@ class ContractController extends Controller
       $contract->update([
          'status' => 1,
          'id_no' => $req->nik,
+         'employee_id' => $employee->id,
          'type' => $req->type,
          'date' => $req->date,
          'shift_id' => $req->shift,

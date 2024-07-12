@@ -91,6 +91,8 @@ Route::middleware(["auth"])->group(function () {
          Route::get('import', [EmployeeController::class, 'formImport'])->name('employee.import');
          Route::post('import', [EmployeeController::class, 'import'])->name('employee.import.data');
 
+         Route::get('import/edit', [EmployeeController::class, 'formImportEdit'])->name('employee.import.edit');
+
          Route::prefix('draft')->group(function () {
             Route::get('/', [EmployeeController::class, 'draft'])->name('employee.draft');
             Route::post('/publish', [EmployeeController::class, 'publish'])->name('employee.publish');
@@ -223,6 +225,7 @@ Route::middleware(["auth"])->group(function () {
       });
 
       Route::get('/log', [LogController::class, 'index'])->name('log');
+      Route::get('/log/auth', [LogController::class, 'auth'])->name('log.auth');
 
    });
 

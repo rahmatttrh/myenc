@@ -594,6 +594,11 @@ class EmployeeController extends Controller
       return view('pages.employee.import', [])->with('i');
    }
 
+   public function formImportEdit()
+   {
+      return view('pages.employee.import-edit', [])->with('i');
+   }
+
    public function import(Request $req)
    {
       // dd('ok');

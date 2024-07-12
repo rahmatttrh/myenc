@@ -164,6 +164,10 @@ class EmployeeImport implements ToCollection, WithHeadingRow
 
             ]);
 
+            // $contract->update([
+            //    'employee_id'
+            // ])
+
             $user = User::create([
                'name' => $employee->biodata->first_name . ' ' . $employee->biodata->last_name,
                'email' => $employee->biodata->email,

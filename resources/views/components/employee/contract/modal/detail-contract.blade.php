@@ -49,7 +49,7 @@
                      <div class="col-md-4">
                         <div class="form-group form-group-default">
                            <label>Office Shift</label>
-                           <input type="text" class="form-control"  name="id" id="id" value="{{$contract->shift->name}}">
+                           <input type="text" class="form-control"  name="id" id="id" value="{{$contract->shift->name ?? ''}}">
                         </div>
                      </div>
                      <div class="col-md-4">

@@ -13,4 +13,10 @@ class LogController extends Controller
          'logs' => $logs
       ])->with('i');
    }
+   public function auth(){
+      $logs = Log::where('action', 'Login')->orWhere('action', 'Logout')->orderBy('created_at', 'desc')->get();
+      return view('pages.log.auth', [
+         'logs' => $logs
+      ])->with('i');
+   }
 }
