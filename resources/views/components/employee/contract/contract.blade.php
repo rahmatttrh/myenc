@@ -311,7 +311,7 @@
 
             <div class="tab-pane fade s" id="pills-history-nobd" role="tabpanel" aria-labelledby="pills-history-tab-nobd">
                {{-- <h3>Histories</h3> --}}
-               @foreach ($employee->contracts as $contract)
+               @foreach ($contracts as $contract)
                   @if ($contract->status == 0)
                   <div class="card  shadow-none border">
                      <div class="card-body ">

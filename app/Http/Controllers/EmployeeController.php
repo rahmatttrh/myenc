@@ -215,6 +215,7 @@ class EmployeeController extends Controller
 
       $dekripId = dekripRambo($id);
       $employee = Employee::find($dekripId);
+      $contracts = Contract::where('id_no', $employee->nik)->get();
 
       $departments = Department::where('unit_id', $employee->unit_id)->get();
       // dd($employee->id);
@@ -269,7 +270,8 @@ class EmployeeController extends Controller
          'allSpvs' => $allSpvs,
          'allLeaders' => $allLeaders,
 
-         'subdepts' => $subdepts
+         'subdepts' => $subdepts,
+         'contracts' => $contracts
          // 'tab' => $tab
       ]);
    }
