@@ -7,6 +7,7 @@ use App\Models\Employee;
 use App\Models\Position;
 use App\Models\SubDept;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class DepartmentController extends Controller
 {
@@ -24,7 +25,8 @@ class DepartmentController extends Controller
 
       Department::create([
          'unit_id' => $req->unit,
-         'name' => $req->name
+         'name' => $req->name,
+         'slug' => Str::slug($req->name)
 
       ]);
 
@@ -47,7 +49,8 @@ class DepartmentController extends Controller
    {
       $department = Department::find($req->department);
       $department->update([
-         'name' => $req->name
+         'name' => $req->name,
+         'slug' => Str::slug($req->name)
       ]);
 
       return redirect()->back()->with('success', 'Department successfully updated');

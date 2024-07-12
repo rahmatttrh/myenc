@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Designation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class DesignationController extends Controller
 {
@@ -21,7 +22,8 @@ class DesignationController extends Controller
 
       Designation::create([
          'name' => $req->name,
-         'golongan' => $req->gol
+         'golongan' => $req->gol,
+         'slug' => Str::slug($req->name)
       ]);
 
       return redirect()->back()->with('success', 'Position successfully added');
@@ -43,7 +45,8 @@ class DesignationController extends Controller
    {
       $designation = Designation::find($req->designation);
       $designation->update([
-         'name' => $req->name
+         'name' => $req->name,
+         'slug' => Str::slug($req->name)
       ]);
 
       return redirect()->route('designation')->with('success', 'Position successfully updated');

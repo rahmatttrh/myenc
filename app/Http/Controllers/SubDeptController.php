@@ -6,6 +6,7 @@ use App\Models\Employee;
 use App\Models\Position;
 use App\Models\SubDept;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class SubDeptController extends Controller
 {
@@ -29,7 +30,8 @@ class SubDeptController extends Controller
 
       SubDept::create([
          'department_id' => $req->department,
-         'name' => $req->name
+         'name' => $req->name,
+         'slug' => Str::slug($req->name)
       ]);
 
       return redirect()->back()->with('success', 'Sub Department successfully added');
@@ -42,7 +44,8 @@ class SubDeptController extends Controller
 
       $subdept = SubDept::find($req->subdept);
       $subdept->update([
-         'name' => $req->name
+         'name' => $req->name,
+         'slug' => Str::slug($req->name)
       ]);
 
       return redirect()->back()->with('success', 'Sub Department successfully updated');

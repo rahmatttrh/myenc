@@ -7,6 +7,8 @@ use App\Models\Designation;
 use App\Models\Employee;
 use App\Models\Unit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+
 
 class UnitController extends Controller
 {
@@ -43,8 +45,11 @@ class UnitController extends Controller
     public function store(Request $req){
       $req->validate([]);
 
+      // dd(Str::slug($req->name));
+
       Unit::create([
-         'name' => $req->name
+         'name' => $req->name,
+         'slug' => Str::slug($req->name)
       ]);
 
       return redirect()->back()->with('success', 'Bisnis Unit successfully added');
@@ -84,7 +89,8 @@ class UnitController extends Controller
     public function update(Request $req){
       $unit = Unit::find($req->unit);
       $unit->update([
-         'name' => $req->name
+         'name' => $req->name,
+         'slug' => Str::slug($req->name)
       ]);
 
       return redirect()->back()->with('success', 'Bisnis Unit successfully updated');

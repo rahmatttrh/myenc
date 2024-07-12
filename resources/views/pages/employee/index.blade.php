@@ -36,86 +36,91 @@ Employee
       </div>
    </div>
 
-   <div class="table-responsive">
-      <table id="" class="display basic-datatables table-sm table-bordered   ">
-         <thead>
-            <tr>
-               <th class="text-center">No</th>
-               <th>Name</th>
-               <th>ID</th>
-               {{-- <th>Phone</th> --}}
-               <th class="text-truncate">Bisnis Unit</th>
-               <th>Department</th>
-               {{-- <th>Level</th> --}}
-               <th  >Posisi</th>
-               <th>Kontrak/Tetap</th>
-               {{-- <th class="text-right">Action</th> --}}
-            </tr>
-         </thead>
-         <tfoot>
-            <tr>
-               <th class=""></th>
-               <td @disabled(true)></td>
-               {{-- <th></th>
-               <th></th> --}}
-               <th></th>
-               <th></th>
-               <th></th>
-               <th></th>
-               <th></th>
-               {{-- <th class="text-right">Action</th> --}}
-            </tr>
-         </tfoot>
-         <tbody>
-            @foreach ($employees as $employee)
-            <tr>
-               <td class="text-center">{{++$i}}</td>
-               {{-- <td><a href="{{route('employee.detail', enkripRambo($employee->id))}}">{{$employee->name}}</a> </td> --}}
-               <td class="text-truncate">
-                  <div>
-                     <a href="{{route('employee.detail', [enkripRambo($employee->id), enkripRambo('basic')])}}">{{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</a>
-                     {{-- <small class="text-muted">{{$employee->biodata->email}}</small> --}}
-                  </div>
-                  {{-- <div class="profile-picture mr-3">
-                     @if ($employee->biodata->status == 1)
-                     <div class="avatar avatar-sm avatar-online">
-                        @else
-                        <div class="avatar avatar-sm avatar-offline">
-                           @endif
-                           @if ($employee->picture)
-                           <img src="{{asset('storage/' . $employee->picture)}}" alt="..." class="avatar-img rounded-circle">
-                           @else
-                           <img src="{{asset('img/user.png')}}" alt="..." class="avatar-img rounded-circle">
-                           @endif
+   <div class="card">
+      <div class="card-body">
+         <div class="table-responsive">
+            <table id="" class="display basic-datatables table-sm    ">
+               <thead>
+                  <tr>
+                     <th class="text-center">No</th>
+                     <th>Name</th>
+                     <th>ID</th>
+                     {{-- <th>Phone</th> --}}
+                     <th class="text-truncate">Bisnis Unit</th>
+                     <th>Department</th>
+                     {{-- <th>Level</th> --}}
+                     <th  >Posisi</th>
+                     <th>Kontrak/Tetap</th>
+                     {{-- <th class="text-right">Action</th> --}}
+                  </tr>
+               </thead>
+               <tfoot>
+                  <tr>
+                     <th class=""></th>
+                     <td @disabled(true)></td>
+                     {{-- <th></th>
+                     <th></th> --}}
+                     <th></th>
+                     <th></th>
+                     <th></th>
+                     <th></th>
+                     <th></th>
+                     {{-- <th class="text-right">Action</th> --}}
+                  </tr>
+               </tfoot>
+               <tbody>
+                  @foreach ($employees as $employee)
+                  <tr>
+                     <td class="text-center">{{++$i}}</td>
+                     {{-- <td><a href="{{route('employee.detail', enkripRambo($employee->id))}}">{{$employee->name}}</a> </td> --}}
+                     <td class="text-truncate">
+                        <div>
+                           <a href="{{route('employee.detail', [enkripRambo($employee->id), enkripRambo('basic')])}}">{{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</a>
+                           {{-- <small class="text-muted">{{$employee->biodata->email}}</small> --}}
                         </div>
-                     </div>
-                     <div>
-                        <a href="{{route('employee.detail', [enkripRambo($employee->id), enkripRambo('contract')])}}">{{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</a><br>
-                        <small class="text-muted">{{$employee->biodata->email}}</small>
-                     </div> --}}
-               </td>
-               <td class="text-truncate">{{$employee->contract->id_no}}</td>
-               {{-- <td>{{$employee->biodata->phone}}</td> --}}
-               <td class="text-truncate">{{$employee->department->unit->name ?? ''}}</td>
-               <td>{{$employee->department->name ?? ''}}</td>
-               {{-- <td>{{$employee->contract->designation->name ?? ''}}</td> --}}
-               <td>{{$employee->position->name ?? '-'}}</td>
-               <td>
-                  @if ($employee->contract->type == 'Kontrak')
-                  <span class="badge badge-info">Kontrak</span>
-                  @elseif($employee->contract->type == 'Tetap')
-                  <span class="badge badge-info">Tetap</span>
-                  @else
-                  <span class="badge badge-muted">Empty</span>
-                  @endif
-
-               </td>
-            </tr>
-            @endforeach
-         </tbody>
-         
-      </table>
+                        {{-- <div class="profile-picture mr-3">
+                           @if ($employee->biodata->status == 1)
+                           <div class="avatar avatar-sm avatar-online">
+                              @else
+                              <div class="avatar avatar-sm avatar-offline">
+                                 @endif
+                                 @if ($employee->picture)
+                                 <img src="{{asset('storage/' . $employee->picture)}}" alt="..." class="avatar-img rounded-circle">
+                                 @else
+                                 <img src="{{asset('img/user.png')}}" alt="..." class="avatar-img rounded-circle">
+                                 @endif
+                              </div>
+                           </div>
+                           <div>
+                              <a href="{{route('employee.detail', [enkripRambo($employee->id), enkripRambo('contract')])}}">{{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</a><br>
+                              <small class="text-muted">{{$employee->biodata->email}}</small>
+                           </div> --}}
+                     </td>
+                     <td class="text-truncate">{{$employee->contract->id_no}}</td>
+                     {{-- <td>{{$employee->biodata->phone}}</td> --}}
+                     <td class="text-truncate">{{$employee->department->unit->name ?? ''}}</td>
+                     <td>{{$employee->department->name ?? ''}}</td>
+                     {{-- <td>{{$employee->contract->designation->name ?? ''}}</td> --}}
+                     <td>{{$employee->position->name ?? '-'}}</td>
+                     <td>
+                        @if ($employee->contract->type == 'Kontrak')
+                        <span class="badge badge-info">Kontrak</span>
+                        @elseif($employee->contract->type == 'Tetap')
+                        <span class="badge badge-info">Tetap</span>
+                        @else
+                        <span class="badge badge-muted">Empty</span>
+                        @endif
+      
+                     </td>
+                  </tr>
+                  @endforeach
+               </tbody>
+               
+            </table>
+         </div>
+      </div>
    </div>
+   
 </div>
 
 <div class="modal fade" id="modal-export" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

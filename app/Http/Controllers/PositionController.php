@@ -6,6 +6,7 @@ use App\Models\Employee;
 use App\Models\Position;
 use Illuminate\Http\Request;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx\Rels;
+use Illuminate\Support\Str;
 
 class PositionController extends Controller
 {
@@ -25,7 +26,8 @@ class PositionController extends Controller
       Position::create([
          'sub_dept_id' => $req->subdept,
          'designation_id' => $req->designation,
-         'name' => $req->name
+         'name' => $req->name,
+         'slug' => Str::slug($req->name)
       ]);
 
       return redirect()->back()->with('success', 'Position successfully added');
@@ -46,7 +48,8 @@ class PositionController extends Controller
       $position = Position::find($req->position);
 
       $position->update([
-         'name' => $req->name
+         'name' => $req->name,
+         'slug' => Str::slug($req->name)
       ]);
 
       return redirect()->back()->with('success', 'Position successfully updated');

@@ -78,9 +78,11 @@
                            <th>ID</th>
                            <th>Name</th>
                            
-                           <th>Email</th>
+                           {{-- <th>Email</th> --}}
                            <th>Unit</th>
                            <th>Department</th>
+                           <th>Sub</th>
+                           <th>Position</th>
                            <th></th>
                            {{-- <th>Designation</th> --}}
                            {{-- <th>Status</th> --}}
@@ -106,9 +108,11 @@
                                     </div> --}}
                               </td>
                               
-                              <td>{{$employee->biodata->email}}</td>
+                              {{-- <td>{{$employee->biodata->email}}</td> --}}
                               <td>{{$employee->contract->unit->name ?? ''}}</td>
                               <td>{{$employee->contract->department->name ?? ''}}</td>
+                              <td>{{$employee->contract->sub_dept->name ?? ''}}</td>
+                              <td>{{$employee->contract->position->name ?? ''}}</td>
                               {{-- <td>{{$employee->contract->designation->name ?? ''}}</td> --}}
                               <td>
                                  <a href="#" data-toggle="modal" data-target="#modal-delete-{{$employee->id}}">Delete</a>

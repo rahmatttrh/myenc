@@ -327,6 +327,7 @@ class EmployeeController extends Controller
          'type' => $req->type,
          'unit_id' => $req->unit,
          'department_id' => $req->department,
+         'sub_dept_id' => $req->subdept,
          'designation_id' => $req->designation,
          'position_id' => $req->position,
          'shift_id' => $req->shift,
@@ -622,7 +623,24 @@ class EmployeeController extends Controller
    public function delete($id){
       $dekripId = dekripRambo($id);
       $employee = Employee::find($dekripId);
-      
-      dd($employee->biodata->id);
+      $user = User::where('username', $employee->nik)->first();
+      $contract = Contract::find($employee->contract_id);
+      $biodata = Biodata::find($employee->biodata_id);
+      // dd($biodata->id);
+
+      if ($contract) {
+         $contract->delete();
+      }
+
+      if ($biodata) {
+         $biodata->delete();
+      }
+
+      if($user){
+         $user->delete();
+      }
+
+      $employee->delete();
+      return redirect()->back()->with('success', 'Employee successfully deleted');
    }
 }
