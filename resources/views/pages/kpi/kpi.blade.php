@@ -82,9 +82,9 @@ Designation
                         </div>
                     </div>
                 </div> --}}
-                <div class="card-body">
+                <div class="card-body p-0 py-2">
                     <div class="table-responsive">
-                        <table id="basic-datatables" class="display basic-datatables table-sm table-striped ">
+                        <table id="basic-datatables" class="display basic-datatables table-sm  ">
                             <thead>
                                 <tr>
                                     <th class="text-center">No</th>

@@ -98,9 +98,9 @@ KPI
                         </div>
                     </div>
                 </div>
-                <div class="card-body">
+                <div class="card-body p-0">
                     <div class="table-responsive">
-                        <table id="basic-datatables" class="display basic-datatables table table-striped ">
+                        <table id="basic-datatables" class="display  table-sm ">
                             <thead>
                                 <tr>
                                     <th>No</th>
@@ -280,9 +280,9 @@ KPI
                                 <div class="card-title">Employees With This KPI</div>
                             </div>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body p-0">
                             <div class="table-responsive">
-                                <table id="basic-datatables" class="display  table table-striped ">
+                                <table id="basic-datatables" class="display  table-sm ">
                                     <thead>
                                         <tr>
                                             <th>No</th>

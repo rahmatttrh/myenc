@@ -6,6 +6,7 @@ use App\Models\Biodata;
 use App\Models\Contract;
 use App\Models\Employee;
 use App\Models\Log;
+use App\Models\Pe;
 use App\Models\Presence;
 use App\Models\Sp;
 use App\Models\Spkl;
@@ -135,7 +136,9 @@ class HomeController extends Controller
          $male = Biodata::where('gender', 'Male')->count();
          $female = Biodata::where('gender', 'Female')->count();
          $spkls = Spkl::orderBy('updated_at', 'desc')->paginate(5);
-         $sps = Sp::where('status', 2)->get();
+         $sps = Sp::orderBy('updated_at', 'desc')->paginate(4);
+         $logins = Log::where('action', 'Login')->orWhere('action', 'Logout')->orderBy('created_at', 'desc')->paginate(10);
+         $qpes = Pe::orderBy('updated_at', 'desc')->paginate(4);
          return view('pages.dashboard.admin', [
             'employees' => $employees,
             'male' => $male,
@@ -144,7 +147,9 @@ class HomeController extends Controller
             'sps' => $sps,
             'tetap' => $tetap,
             'kontrak' => $kontrak,
-            'off' => $off
+            'off' => $off,
+            'logins' => $logins,
+            'qpes' => $qpes
          ]);
       } elseif (auth()->user()->hasRole('HRD')) {
          $employees = Employee::get();

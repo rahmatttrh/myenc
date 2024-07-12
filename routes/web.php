@@ -84,6 +84,7 @@ Route::middleware(["auth"])->group(function () {
 
          Route::get('create', [EmployeeController::class, 'create'])->name('employee.create');
          Route::post('store', [EmployeeController::class, 'store'])->name('employee.store');
+         Route::get('delete/{id}', [EmployeeController::class, 'delete'])->name('employee.delete');
 
          Route::get('export', [EmployeeController::class, 'export'])->name('employee.export');
          Route::get('export/simple', [EmployeeController::class, 'exportSimple'])->name('employee.export.simple');

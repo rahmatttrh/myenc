@@ -56,7 +56,7 @@
             {{-- <div class="card-header"> 
                <div class="card-title">Draft</div>
             </div>  --}}
-            <div class="card-body">
+            <div class="card-header">
                <div class="d-inline-flex align-items-center">
                   <button type="submit" name="submit" class="btn btn-sm btn-primary mr-3">Publish</button>
                   <div class="d-inline-flex align-items-center">
@@ -65,9 +65,12 @@
                         </span>
                   </div>
                </div>
-               <hr>
+            </div>
+            <div class="card-body px-0">
+               
+               
                <div class="table-responsive">
-                  <table id="multi-filter-select" class="display basic-datatables table-sm table-striped " >
+                  <table id="multi-filter-select" class="display basic-datatables table-sm  " >
                      <thead>
                         <tr>
                            <th>&nbsp; <input type="checkbox" id="selectall" /></th>
@@ -78,8 +81,9 @@
                            <th>Email</th>
                            <th>Unit</th>
                            <th>Department</th>
+                           <th></th>
                            {{-- <th>Designation</th> --}}
-                           <th>Status</th>
+                           {{-- <th>Status</th> --}}
                            {{-- <th class="text-right">Action</th> --}}
                         </tr>
                      </thead>
@@ -107,10 +111,10 @@
                               <td>{{$employee->contract->department->name ?? ''}}</td>
                               {{-- <td>{{$employee->contract->designation->name ?? ''}}</td> --}}
                               <td>
-                                 OFF
-                                 {{-- <span class="badge badge-muted">Off</span> --}}
+                                 <a href="#" data-toggle="modal" data-target="#modal-delete-{{$employee->id}}">Delete</a>
                               </td>
                            </tr>
+                           <x-modal.delete :id="$employee->id" :body="$employee->biodata->fullName()" url="{{route('employee.delete', enkripRambo($employee->id))}}" />
                         @endforeach
                      </tbody>
                   </table>

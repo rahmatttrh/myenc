@@ -59,7 +59,7 @@
                         </div>
                         <div class="col col-stats">
                            <div class="numbers">
-                              <p class="card-category">TETAP</p>
+                              <p class="card-category">Tetap</p>
                                <h4 class="card-title">{{$tetap}}</h4> 
                            </div>
                         </div>
@@ -80,7 +80,7 @@
                         </div>
                         <div class="col col-stats">
                            <div class="numbers">
-                              <p class="card-category">KONTRAK</p>
+                              <p class="card-category">Kontrak</p>
                               <h4 class="card-title">{{$kontrak}}</h4>
                            </div>
                         </div>
@@ -112,38 +112,49 @@
          </div>
       </div>
       <div class="row">
-         <div class="col-md-7">
+         <div class="col-md-8">
             {{-- <div class="table-responsive"> --}}
                {{-- table table-bordered table-sm table-head-bg-info table-bordered-bd-info --}}
             <div class="card">
-               <div class="card-header p-2 bg-primary text-white">
-                  <small>SPKL Request</small>
+               <div class="card-header d-flex justify-content-between p-2 bg-primary text-white">
+                  <small>Recent QPE</small>
+                  <a href="{{route('qpe')}}" class="text-white">More..</a>
                </div>
                <div class="card-body p-0">
-                  <table class="display  table-sm table-bordered  table-striped ">
+                  <table class="display  table-sm table-bordered  ">
                      <thead>
                         
                         <tr>
                            {{-- <th scope="col">#</th> --}}
                            <th scope="col">ID</th>
-                           <th scope="col">Date</th>
-                           <th>Name</th>
+                           <th scope="col">Employee</th>
+                           <th>Semester/Tahun</th>
                            {{-- <th>Desc</th> --}}
                            <th scope="col">Status</th>
+                           {{-- <th></th> --}}
                         </tr>
                      </thead>
                      <tbody>
-                        @if (count($spkls) > 0)
-                              @foreach ($spkls as $spkl)
-                              <tr>
-                              <td><a href="{{route('spkl.detail', enkripRambo($spkl->id))}}">{{$spkl->code}}</a></td>
-                              <td>{{formatDate($spkl->date)}}</td>
-                              <td>{{$spkl->employee->biodata->first_name}} {{$spkl->employee->biodata->last_name}}</td>
-                              {{-- <td style="max-width: 190px" class="text-truncate">{{$spkl->desc}}</td> --}}
-                              <td>
-                                 <x-status.spkl :spkl="$spkl" />
-                              </td>
-                           </tr>
+                        @if (count($qpes) > 0)
+                              @foreach ($qpes as $pe)
+                               <tr>
+                                 <td>{{$pe->employe->nik}}</td>
+                                 <td>{{$pe->employe->biodata->fullName()}}</td>
+                                 <td>{{$pe->semester}} / {{$pe->tahun}}</td>
+                                 <td class="text-muted">
+                                    <x-status.qpe-plain :pe="$pe" />
+                                 </td>
+                                
+                                {{-- <td class="text-right">
+                                    @if($pe->status == 0)
+                                    <!-- <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-delete-{{$pe->id}}"><i class="fas fa-trash"></i> Delete</button> -->
+                                    @elseif(($pe->status == '1' || $pe->status == '2' || $pe->status == '101' || $pe->status == '202') && $pe->behavior > 0)
+                                    <a href="{{ route('export.qpe', $pe->id) }}" target="_blank"> Preview PDF</a>
+                                    @elseif(($pe->status == 0 || $pe->status == 101 || $pe->status == 202) && auth()->user()->hasRole('Leader'))
+                                    <!-- <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-submit-{{$pe->id}}"><i class="fas fa-rocket"></i> Submit</button> -->
+                                    @endif
+                                </td> --}}
+                               </tr>
                               @endforeach
                            @else
                            <tr>
@@ -157,8 +168,9 @@
                </div>
             </div>
             <div class="card">
-               <div class="card-header p-2 bg-danger text-white">
-                  <small>SP Approval</small>
+               <div class="card-header d-flex justify-content-between p-2 bg-danger text-white">
+                  <small>SP Recent</small>
+                  <a href="{{route('sp')}}" class="text-white">More..</a>
                </div>
                <div class="card-body p-0">
                   <table class="display  table-sm table-bordered  table-striped ">
@@ -186,6 +198,48 @@
                               {{-- <td style="max-width: 190px" class="text-truncate">{{$sp->desc}}</td> --}}
                               <td>
                                  <x-status.sp :sp="$sp" />
+                              </td>
+                           </tr>
+                              @endforeach
+                           @else
+                           <tr>
+                              <td colspan="5" class="text-center">Empty</td>
+                           </tr>
+                        @endif
+                        
+                        
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+
+            <div class="card">
+               <div class="card-header p-2 bg-primary text-white">
+                  <small>SPKL Request</small>
+               </div>
+               <div class="card-body p-0">
+                  <table class="display  table-sm table-bordered  table-striped ">
+                     <thead>
+                        
+                        <tr>
+                           {{-- <th scope="col">#</th> --}}
+                           <th scope="col">ID</th>
+                           <th scope="col">Date</th>
+                           <th>Name</th>
+                           {{-- <th>Desc</th> --}}
+                           <th scope="col">Status</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        @if (count($spkls) > 0)
+                              @foreach ($spkls as $spkl)
+                              <tr>
+                              <td><a href="{{route('spkl.detail', enkripRambo($spkl->id))}}">{{$spkl->code}}</a></td>
+                              <td>{{formatDate($spkl->date)}}</td>
+                              <td>{{$spkl->employee->biodata->first_name}} {{$spkl->employee->biodata->last_name}}</td>
+                              {{-- <td style="max-width: 190px" class="text-truncate">{{$spkl->desc}}</td> --}}
+                              <td>
+                                 <x-status.spkl :spkl="$spkl" />
                               </td>
                            </tr>
                               @endforeach
@@ -321,7 +375,40 @@
             </div>
             
          </div>
-         <div class="col-md-5">
+         <div class="col-md-4">
+            <div class="card">
+               <div class="card-header p-2 bg-dark text-white">
+                  <small>Login Activity</small>
+               </div>
+               <div class="card-body p-0">
+                  <table class="display  table-sm table-bordered   ">
+                     {{-- <thead>
+                        
+                        <tr>
+                           <th scope="col">User</th>
+                           <th scope="col">Time</th>
+                        </tr>
+                     </thead> --}}
+                     <tbody>
+                        @if (count($logins) > 0)
+                              @foreach ($logins as $log)
+                              <tr>
+                                 <td class="text-truncate" style="max-width: 110px;">{{$log->user->name}}</td>
+                                 <td>{{$log->action}}</td>
+                                 <td >{{$log->desc}}</td>
+                              </tr>
+                              @endforeach
+                           @else
+                           <tr>
+                              <td colspan="5" class="text-center">Empty</td>
+                           </tr>
+                        @endif
+                        
+                        
+                     </tbody>
+                  </table>
+               </div>
+            </div>
             <div class="card">
                <div class="card-header">
                   <div class="badge badge-danger">

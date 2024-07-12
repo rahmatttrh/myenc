@@ -32,9 +32,9 @@ Discipline
                         </div>
                     </div>
                 </div> --}}
-                <div class="card-body">
+                <div class="card-body px-0">
                     <div class="table-responsive">
-                        <table id="basic-datatables" class="display basic-datatables table-sm table-striped ">
+                        <table id="basic-datatables" class="display basic-datatables table-sm  ">
                             <thead>
                                 <tr>
                                     <th>No</th>

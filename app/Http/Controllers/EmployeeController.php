@@ -618,4 +618,11 @@ class EmployeeController extends Controller
 
       return redirect()->route('employee.draft')->with('success', 'Employee Data successfully imported');
    }
+
+   public function delete($id){
+      $dekripId = dekripRambo($id);
+      $employee = Employee::find($dekripId);
+      
+      dd($employee->biodata->id);
+   }
 }
