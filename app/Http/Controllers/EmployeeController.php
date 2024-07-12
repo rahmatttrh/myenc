@@ -175,6 +175,11 @@ class EmployeeController extends Controller
             'status' => 1,
          ]);
 
+         $contract = Contract::find($employee->contract_id);
+         $contract->update([
+            'status' => 1
+         ]);
+
          
 
          // $user->assignRole('Karyawan');
@@ -188,18 +193,18 @@ class EmployeeController extends Controller
          }
       }
 
-      if (auth()->user()->hasRole('Administrator')) {
-         $departmentId = null;
-      } else {
-         $user = Employee::find(auth()->user()->getEmployeeId());
-         $departmentId = $user->department_id;
-      }
-      Log::create([
-         'department_id' => $departmentId,
-         'user_id' => auth()->user()->id,
-         'action' => 'Publish',
-         'desc' => 'Employees Data'
-      ]);
+      // if (auth()->user()->hasRole('Administrator')) {
+      //    $departmentId = null;
+      // } else {
+      //    $user = Employee::find(auth()->user()->getEmployeeId());
+      //    $departmentId = $user->department_id;
+      // }
+      // Log::create([
+      //    'department_id' => $departmentId,
+      //    'user_id' => auth()->user()->id,
+      //    'action' => 'Publish',
+      //    'desc' => 'Employees Data'
+      // ]);
       return redirect()->route('employee', enkripRambo('active'))->with('success', 'Employee successfully activated and Email Verification has ben sent.');
    }
 
@@ -215,7 +220,8 @@ class EmployeeController extends Controller
 
       $dekripId = dekripRambo($id);
       $employee = Employee::find($dekripId);
-      $contracts = Contract::where('id_no', $employee->nik)->get();
+      $contracts = Contract::where('id_no', $employee->nik)->where('status', 0)->get();
+      // dd($contracts);
 
       $departments = Department::where('unit_id', $employee->unit_id)->get();
       // dd($employee->id);

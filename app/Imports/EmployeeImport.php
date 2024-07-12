@@ -125,6 +125,7 @@ class EmployeeImport implements ToCollection, WithHeadingRow
             // dd('ok');
             $contract = Contract::create([
                // 'type' => $row['status'],
+               'status' => 1,
                'id_no' => $row['id'],
                'unit_id' => $unit->id,
                'department_id' => $department->id,
