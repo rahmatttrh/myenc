@@ -119,12 +119,14 @@
                                  
                                  @if (auth()->user()->hasRole('Administrator'))
                                     <img src="{{asset('img/businessman.png')}}" alt="image profile" class="avatar-img bg-muted">
-                                    @else
+                                    @elseif(auth()->user()->hasRole('Karyawan'))
                                     @if (auth()->user()->getEmployee()->picture == null)
                                     <img src="{{asset('img/businessman.png')}}" alt="..." class="avatar-img bg-muted  ">
                                     @else
                                     <img src="{{asset('storage/' . auth()->user()->getEmployee()->picture)}}" alt="..." class="avatar-img bg-muted  ">
                                     @endif
+                                    @else
+                                    <img src="{{asset('img/businessman.png')}}" alt="..." class="avatar-img bg-muted  ">
                                  @endif
                                  
                               </div>
