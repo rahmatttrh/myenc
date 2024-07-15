@@ -45,7 +45,7 @@ Update Employee
       </div>
       <div class="card-body">
          <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-5">
                <img src="{{asset('img/xls-file.png')}}" class="img mb-4" height="110" alt="">
                <form action="{{route('employee.import')}}" method="POST" enctype="multipart/form-data">
                   @csrf
@@ -58,10 +58,13 @@ Update Employee
                   </div>
                   <hr>
                   <div class="form-group">
-                     <button type="submit" class="btn btn-primary" disabled>Update</button>
+                     <button type="submit" class="btn btn-muted border" disabled>Update</button>
                   </div>
 
                </form>
+            </div>
+            <div class="col-md-7">
+               <h1>Fitur Update by Excel <br> masih dalam tahap pengembangan..</h1>
             </div>
             
          </div>
