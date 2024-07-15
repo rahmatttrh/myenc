@@ -49,7 +49,8 @@
 									<div class="">
 										{{-- <h4 class="text-gray-900">Welcome Back!</h4> --}}
 										<h1 class="" style="font-weight: 900">MY<span class="text-primary">ENC</span></h1>
-                              <small>Ekanuri Human Resource Management System</small>
+                              <small>Ekanuri Human Resource Management System</small> <br>
+                              
 									</div>
 									<hr>
                            {{-- @error('email')
@@ -92,6 +93,8 @@
 									</form>
 									<hr>
 									<div class="login-account">
+                              <small>Sistem KPI & Penerbitan SP</small>
+                              <hr>
 										<span class="msg">Copyright &copy; 2024 ENC IT</span>
 									</div>
 								</div>
