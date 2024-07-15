@@ -20,6 +20,10 @@ class SubDept extends Model
       return $this->hasMany(Position::class);
     }
 
+    public function employees(){
+      return $this->hasMany(Employee::class);
+    }
+
     public function outstandingKPI($subDeptId = 2, $tahun = '2024')
     {
         // Memanggil ModelA dan salah satu metodenya

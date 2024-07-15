@@ -16,10 +16,11 @@
       <div class="row">
          <div class="col-md-4">
             <div class="card shadow-none border">
-               <div class="card-header  d-flex"> 
-                  <div class="d-flex  align-items-center">
-                     <div class="card-title"><b>{{$unit->id}} - {{$unit->name}}</b></div> 
-                  </div>
+               <div class="card-header  "> 
+                  
+                     <div class="card-title"><b>{{$unit->name}}</b></div> 
+                     <small>Total {{count($unit->employees)}} Karyawan</small>
+                  
                   
                </div> 
                <div class="card-body">
@@ -39,7 +40,7 @@
                         @foreach ($departments as $depart)
                            <a class="nav-link {{$firstDept->id == $depart->id ? 'active' : ''}} text-left pl-3" id="v-pills-{{$depart->id}}-tab" data-toggle="pill" href="#v-pills-{{$depart->id}}" role="tab" aria-controls="v-pills-{{$depart->id}}" aria-selected="true">
                               
-                              {{$depart->id}} - {{$depart->name}}
+                              {{$depart->name}}
                            </a>
                         @endforeach
                         
@@ -56,7 +57,9 @@
                <div class="tab-pane fade {{$firstDept->id == $depart->id ? 'show active' : ''}} " id="v-pills-{{$depart->id}}" role="tabpanel" aria-labelledby="v-pills-{{$depart->id}}-tab">
                   <div class="card">
                      <div class="card-header d-flex justify-content-between p-2 bg-primary text-white">
-                        <small>{{$depart->name}} Department</small>
+                        <small>{{$depart->name}} Department <br>
+                           {{count($depart->employees)}} Karyawan
+                        </small> 
                         <div>
                            <a href="#" data-toggle="modal" class="text-white" data-target="#modal-add-subdept-{{$depart->id}}">Add Sub</a> |
                            <a href="#" class="text-white" data-toggle="modal" data-target="#modal-edit-department-{{$depart->id}}">Edit</a> |
@@ -68,12 +71,13 @@
                         <table class="display  table-sm table-bordered  ">
                            <thead>
                               <tr>
-                                 <th colspan="3">ID - Sub Department</th>
+                                 <th colspan="4">ID - Sub Department</th>
                               </tr>
                               <tr>
                                  <th scope="col" class="text-center"></th>
                                  {{-- <th scope="col">Sub Department Name</th> --}}
                                  <th>ID - Position</th>
+                                 <th>Total Karyawan</th>
                                  <th scope="col" class="text-right">Action</th>
                               </tr>
                               
@@ -83,8 +87,8 @@
                                     @foreach ($depart->sub_depts as $sub)
                                     <tr>
                                        {{-- <td class="text-center">{{++$i}}</td> --}}
-                                       <td colspan="2">{{$sub->id}} - {{$sub->name}}</td>
-                                       
+                                       <td colspan="2">{{$sub->name}}</td>
+                                       <td>{{count($sub->employees)}} Karyawan</td>
       
                                        <td class="text-right">
                                           {{-- <div class="btn-group"> --}}
@@ -99,7 +103,8 @@
                                     @foreach ($sub->positions as $pos)
                                         <tr>
                                           <td></td>
-                                          <td>{{$pos->id}} - {{$pos->name}} </td>
+                                          <td>{{$pos->name}} </td>
+                                          <td>{{count($pos->employees)}} Karyawan</td>
                                           <td class="text-right">
                                              <a href="#" data-toggle="modal" data-target="#modal-edit-position-{{$pos->id}}">Edit</a> | <a href="#" data-toggle="modal" data-target="#modal-delete-{{$pos->id}}">Delete</a>
                                           </td>

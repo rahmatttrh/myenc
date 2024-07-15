@@ -16,6 +16,10 @@ class Unit extends Model
         return $this->hasMany(Department::class);
     }
 
+    public function employees(){
+      return $this->hasMany(Employee::class);
+    }
+
     public function totalSubDept($unitId = 2)
     {
         // Memanggil ModelA dan salah satu metodenya

@@ -181,7 +181,16 @@ class EmployeeController extends Controller
          ]);
 
          
-
+         $user = User::where('username', $employee->nik)->first();
+         if ($employee->contract->designation_id == 1) {
+            $user->assignRole('Manager');
+         } elseif ($employee->contract->designation_id == 2) {
+            $user->assignRole('Asst. Manager');
+         } elseif ($employee->contract->designation_id == 3) {
+            $user->assignRole('Supervisor');
+         } else {
+            $user->assignRole('Karyawan');
+         }
          // $user->assignRole('Karyawan');
 
          // Cek email apakah ada atau belum 
@@ -240,7 +249,7 @@ class EmployeeController extends Controller
       // $spvs = Employee::where('department_id', $employee->department_id)->where('designation_id', 4)->get();
       // $leaders = Employee::where('department_id', $employee->department_id)->where('designation_id', 3)->get();
 
-      $managers = Employee::where('designation_id', 6)->where('department_id', $employee->department_id)->get();
+      $managers = Employee::where('designation_id', 6)->get();
       $spvs = Employee::where('designation_id', 4)->where('department_id', $employee->department_id)->get();
       $leaders = Employee::where('designation_id', 3)->where('department_id', $employee->department_id)->get();
 

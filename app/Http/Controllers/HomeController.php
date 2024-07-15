@@ -125,6 +125,17 @@ class HomeController extends Controller
       //    }
       // }
 
+      // Aktifkan sekali
+      $employees = Employee::get();
+      foreach($employees as $emp){
+         $contract = Contract::find($emp->contract_id);
+         $emp->update([
+            'unit_id' => $contract->unit_id
+         ]);
+      }
+
+      
+
 
 
       $employeeUsers = User::where('');

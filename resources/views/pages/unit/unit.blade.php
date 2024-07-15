@@ -61,6 +61,7 @@
                            {{-- <th scope="col" class="text-center">ID</th> --}}
                            <th scope="col">ID - Unit Name</th>
                            <th>Department</th>
+                           <th>Employee</th>
                            <th scope="col" class="text-right">Action</th>
                         </tr>
                      </thead>
@@ -69,8 +70,9 @@
                               @foreach ($units as $unit)
                               <tr>
                                  {{-- <td class="text-center">{{$unit->id}}</td> --}}
-                                 <td><a href="{{route('unit.detail', enkripRambo($unit->id))}}">{{$unit->id}} - {{$unit->name}}</a></td>
+                                 <td><a href="{{route('unit.detail', enkripRambo($unit->id))}}">{{$unit->name}}</a></td>
                                  <td>{{count($unit->departments)}} Department</td>
+                                 <td>{{count($unit->employees)}}</td>
 
                               <td class="text-right">
                                     <a href="" data-toggle="modal" data-target="#modal-edit-unit-{{$unit->id}}">Edit</a> |
