@@ -17,30 +17,35 @@ class PeKpiController extends Controller
 {
     public function index()
     {
-        $employee = auth()->user()->getEmployee();
+      //   $employee = auth()->user()->getEmployee();
 
         // Data KPI
-        if (auth()->user()->hasRole('Administrator|HRD')) {
+        if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv')) {
             $kpis = PeKpi::get();
+            $units = Unit::orderBy('name')->get();
+            $departements = Department::orderBy('name')->get();
         } else if (auth()->user()->hasRole('Leader|Manager|Supervisor')) {
+            $employee = auth()->user()->getEmployee();
             $kpis = PeKpi::where('departement_id', $employee->department_id)->get();
+            $units = Unit::where('id', $employee->department->unit->id)->get();
+            $departements = Department::where('id', $employee->department_id)->get();
         }
 
         //   dd($kpis);
 
         // Data Unit
-        if (auth()->user()->hasRole('Administrator|HRD')) {
-            $units = Unit::orderBy('name')->get();
-        } else if (auth()->user()->hasRole('Leader|Manager|Supervisor')) {
-            $units = Unit::where('id', $employee->department->unit->id)->get();
-        }
+      //   if (auth()->user()->hasRole('Administrator|HRD')) {
+      //       $units = Unit::orderBy('name')->get();
+      //   } else if (auth()->user()->hasRole('Leader|Manager|Supervisor')) {
+      //       $units = Unit::where('id', $employee->department->unit->id)->get();
+      //   }
 
-        // Data Department
-        if (auth()->user()->hasRole('Administrator|HRD')) {
-            $departements = Department::orderBy('name')->get();
-        } else if (auth()->user()->hasRole('Leader|Manager|Supervisor')) {
-            $departements = Department::where('id', $employee->department_id)->get();
-        }
+      //   // Data Department
+      //   if (auth()->user()->hasRole('Administrator|HRD')) {
+      //       $departements = Department::orderBy('name')->get();
+      //   } else if (auth()->user()->hasRole('Leader|Manager|Supervisor')) {
+      //       $departements = Department::where('id', $employee->department_id)->get();
+      //   }
 
         return view('pages.kpi.kpi', [
             'units' => $units,
