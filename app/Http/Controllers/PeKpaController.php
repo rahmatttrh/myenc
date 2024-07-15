@@ -18,9 +18,9 @@ class PeKpaController extends Controller
 {
     public function index()
     {
-        $employee = auth()->user()->getEmployee();
+        
         // Data KPI
-        if (auth()->user()->hasRole('Administrator|HRD')) {
+        if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv')) {
             $kpas = PeKpa::orderBy('date', 'desc')
                 ->where('status', '!=', '0')
                 ->orderBy('employe_id')
@@ -35,8 +35,8 @@ class PeKpaController extends Controller
             $outAssesments = $this->outstandingAssessment();
 
             // 
-        } else if (auth()->user()->hasRole('Leader|Manager')) {
-
+        } else if (auth()->user()->hasRole('Leader|Manager|Supervisor')) {
+             $employee = auth()->user()->getEmployee();
             $kpas = DB::table('pe_kpas')
                 ->join('pe_kpis', 'pe_kpas.kpi_id', '=', 'pe_kpis.id')
                 ->where('pe_kpis.departement_id', $employee->department_id)

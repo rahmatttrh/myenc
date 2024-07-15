@@ -31,7 +31,7 @@ class QuickPEController extends Controller
      */
     public function index()
     {
-        $employee = auth()->user()->getEmployee();
+        
 
         $pes = Pe::get();
 
@@ -48,7 +48,7 @@ class QuickPEController extends Controller
 
             // 
         } else if (auth()->user()->hasRole('Manager')) {
-
+         $employee = auth()->user()->getEmployee();
             $pes = Pe::join('employees', 'pes.employe_id', '=', 'employees.id')
                 ->where('employees.manager_id', $employee->id)
                 ->where('pes.status', '>', '0')
@@ -98,7 +98,7 @@ class QuickPEController extends Controller
 
     public function create()
     {
-        $employee = auth()->user()->getEmployee();
+        
 
         // Menggunakan request() helper
         $fullUrl = request()->fullUrl();
@@ -127,7 +127,7 @@ class QuickPEController extends Controller
 
             // 
         } else if (auth()->user()->hasRole('Leader|Manager|Supervisor')) {
-
+         $employee = auth()->user()->getEmployee();
             $kpas = DB::table('pe_kpas')
                 ->join('pe_kpis', 'pe_kpas.kpi_id', '=', 'pe_kpis.id')
                 ->where('pe_kpis.departement_id', $employee->department_id)
