@@ -50,9 +50,10 @@ SP
                      <select class="form-control employee" required id="employee" name="employee">
                         <option value="" selected disabled>Select Employee</option>
                         @foreach ($employees as $emp)
-                        <option value="{{$emp->id}}">{{$emp->biodata->first_name ?? ''}} {{$emp->biodata->last_name ?? ''}} </option>
+                        <option value="{{$emp->id}}">{{$emp->nik}} {{$emp->biodata->fullName()}} </option>
                         @endforeach
                      </select>
+                     
       
                   </div>
                </div>

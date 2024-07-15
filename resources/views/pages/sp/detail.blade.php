@@ -471,11 +471,13 @@ SP Detail
                               
                               <div class="row">
                                  <div class="col-md-2">
+                                    {{-- <span>Employee</span><br> --}}
                                     <span>Date</span><br>
                                     <span>Reason</span><br>
                                     <span>Desc</span>
                                  </div>
                                  <div class="col-md-10">
+                                    {{-- <span>{{$sp->employee->fullName()}}</span> <br> --}}
                                     <span>{{formatDate($sp->created_at)}}</span><br>
                                     <span>{{$sp->reason}}</span><br>
                                     <span>{{$sp->desc}}</span>
@@ -491,11 +493,15 @@ SP Detail
                            
                            <div class="row">
                               <div class="col-md-2">
+                                 <span>NIK</span><br>
+                                 <span>Name</span><br>
                                  <span>Date</span><br>
                                  <span>Reason</span><br>
                                  <span>Desc</span>
                               </div>
                               <div class="col-md-10">
+                                 <span>{{$sp->employee->nik}}</span> <br>
+                                 <span>{{$sp->employee->biodata->fullname()}}</span> <br>
                                  <span>{{formatDate($sp->created_at)}}</span><br>
                                  <span>{{$sp->reason}}</span><br>
                                  <span>{{$sp->desc}}</span>

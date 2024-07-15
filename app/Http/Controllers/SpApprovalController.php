@@ -101,14 +101,16 @@ class SpApprovalController extends Controller
          $semester =  2; // Semester 2: Juli sampai Desember
       }
 
+
+      $sp = Sp::find($req->id);
       if (request('file')) {
          
          $file = request()->file('file')->store('sp/file');
       }  else {
-         $file = null;
+         $file = $sp->file;
       }
 
-      $sp = Sp::find($req->id);
+      
       $sp->update([
          'tahun' => $tahun,
          'semester' => $semester,

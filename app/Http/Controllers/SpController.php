@@ -102,7 +102,9 @@ class SpController extends Controller
 
 
 
-
+      if (auth()->user()->id == 1) {
+         return redirect()->back()->with('danger', 'SP Create Fail, Administrator cannot create SP');
+      }
 
       Sp::create([
          'department_id' => $employee->department_id,
