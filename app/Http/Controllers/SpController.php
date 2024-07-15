@@ -58,7 +58,7 @@ class SpController extends Controller
       $employee = Employee::find($req->employee);
 
       $req->validate([
-         'file' => request('file') ? 'image|mimes:pdf,jpg,jpeg,png|max:5120' : '',
+         'file' => request('file') ? 'mimes:pdf,jpg,jpeg,png|max:5120' : '',
       ]);
 
       $sp = Sp::orderBy("created_at", "desc")->first();

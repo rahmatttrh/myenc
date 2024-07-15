@@ -128,19 +128,19 @@ class EmployeeController extends Controller
 
          // $user->assignRole('Karyawan');
 
-         if (auth()->user()->hasRole('Administrator')) {
-            $departmentId = null;
-         } else {
-            $user = Employee::find(auth()->user()->getEmployeeId());
-            $departmentId = $user->department_id;
-         }
-         Log::create([
-            'department_id' => $departmentId,
-            'user_id' => auth()->user()->id,
-            'action' => 'Publish',
-            'desc' => 'Employee ' . $employee->nik . ' ' . $employee->biodata->fullname()
-         ]);
-         return redirect()->back()->with('success', 'Employee successfully activated and Email Verification has ben sent.');
+         // if (auth()->user()->hasRole('Administrator')) {
+         //    $departmentId = null;
+         // } else {
+         //    $user = Employee::find(auth()->user()->getEmployeeId());
+         //    $departmentId = $user->department_id;
+         // }
+         // Log::create([
+         //    'department_id' => $departmentId,
+         //    'user_id' => auth()->user()->id,
+         //    'action' => 'Publish',
+         //    'desc' => 'Employee ' . $employee->nik . ' ' . $employee->biodata->fullname()
+         // ]);
+         return redirect()->back()->with('success', 'Employee successfully activated');
    }
 
    public function publish(Request $req)
@@ -205,7 +205,7 @@ class EmployeeController extends Controller
       //    'action' => 'Publish',
       //    'desc' => 'Employees Data'
       // ]);
-      return redirect()->route('employee', enkripRambo('active'))->with('success', 'Employee successfully activated and Email Verification has ben sent.');
+      return redirect()->route('employee', enkripRambo('active'))->with('success', 'Employee successfully activated');
    }
 
    public function detail($id, $enkripPanel)
@@ -371,18 +371,18 @@ class EmployeeController extends Controller
          'password' => Hash::make('12345678')
       ]);
 
-      if (auth()->user()->hasRole('Administrator')) {
-         $departmentId = null;
-      } else {
-         $userNow = Employee::find(auth()->user()->getEmployeeId());
-         $departmentId = $userNow->department_id;
-      }
-         Log::create([
-            'department_id' => $departmentId,
-            'user_id' => auth()->user()->id,
-            'action' => 'Create',
-            'desc' => 'Employee ' . $employee->nik . ' ' . $employee->biodata->fullname()
-         ]);
+      // if (auth()->user()->hasRole('Administrator')) {
+      //    $departmentId = null;
+      // } else {
+      //    $userNow = Employee::find(auth()->user()->getEmployeeId());
+      //    $departmentId = $userNow->department_id;
+      // }
+      //    Log::create([
+      //       'department_id' => $departmentId,
+      //       'user_id' => auth()->user()->id,
+      //       'action' => 'Create',
+      //       'desc' => 'Employee ' . $employee->nik . ' ' . $employee->biodata->fullname()
+      //    ]);
 
       
 
@@ -448,18 +448,18 @@ class EmployeeController extends Controller
          'email' => $req->email
       ]);
 
-      if (auth()->user()->hasRole('Administrator')) {
-         $departmentId = null;
-      } else {
-         $userNow = Employee::find(auth()->user()->getEmployeeId());
-         $departmentId = $userNow->department_id;
-      }
-      Log::create([
-         'department_id' => $departmentId,
-         'user_id' => auth()->user()->id,
-         'action' => 'Update',
-         'desc' => 'Biodata ' . $employee->nik . ' ' . $employee->biodata->fullname()
-      ]);
+      // if (auth()->user()->hasRole('Administrator')) {
+      //    $departmentId = null;
+      // } else {
+      //    $userNow = Employee::find(auth()->user()->getEmployeeId());
+      //    $departmentId = $userNow->department_id;
+      // }
+      // Log::create([
+      //    'department_id' => $departmentId,
+      //    'user_id' => auth()->user()->id,
+      //    'action' => 'Update',
+      //    'desc' => 'Biodata ' . $employee->nik . ' ' . $employee->biodata->fullname()
+      // ]);
 
       return redirect()->route('employee.detail', [enkripRambo($employee->id), enkripRambo('basic')])->with('success', 'Employee successfully updated');
    }
