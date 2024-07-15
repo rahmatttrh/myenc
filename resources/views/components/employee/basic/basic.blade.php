@@ -230,13 +230,13 @@
                      <div class="col-md-6">
                         <div class="form-group form-group-default">
                            <label>No. NPWP</label>
-                           <input type="text" class="form-control" value="{{$employee->biodata->no_kk}}" name="no_kk" id="no_kk">
+                           <input type="text" class="form-control" value="{{$employee->biodata->no_npwp}}" name="no_npwp" id="no_npwp">
                         </div>
                      </div>
                      <div class="col-md-6">
                         <div class="form-group form-group-default">
                            <label>Status Pajak</label>
-                           <input type="text" class="form-control" value="{{$employee->biodata->no_kk}}" name="no_kk" id="no_kk">
+                           <input type="text" class="form-control" value="{{$employee->biodata->status_pajak}}" name="status_pajak" id="status_pajak">
                         </div>
                      </div>
                      
@@ -246,13 +246,13 @@
                      <div class="col-md-6">
                         <div class="form-group form-group-default">
                            <label>No. JAMSOSTEK</label>
-                           <input type="text" class="form-control" value="{{$employee->biodata->no_kk}}" name="no_kk" id="no_kk">
+                           <input type="text" class="form-control" value="{{$employee->biodata->no_jamsostek}}" name="no_jamsostek" id="no_jamsostek">
                         </div>
                      </div>
                      <div class="col-md-6">
                         <div class="form-group form-group-default">
                            <label>No. BPJS Kesehatan</label>
-                           <input type="text" class="form-control" value="{{$employee->biodata->no_kk}}" name="no_kk" id="no_kk">
+                           <input type="text" class="form-control" value="{{$employee->biodata->no_bpjs_kesehatan}}" name="no_bpjs_kesehatan" id="no_bpjs_kesehatan">
                         </div>
                      </div>
                   </div>

@@ -110,19 +110,20 @@ class HomeController extends Controller
 
       // Aktifkan sekali
       // Set Role user
-      $employees = Employee::get();
-      foreach($employees as $emp){
-         $user = User::where('username', $emp->nik)->first();
-         if ($emp->designation_id == 1) {
-            $user->assignRole('Manager');
-         } elseif ($emp->designation_id == 2) {
-            $user->assignRole('Asst. Manager');
-         } elseif ($emp->designation_id == 3) {
-            $user->assignRole('Supervisor');
-         } else {
-            $user->assignRole('Karyawan');
-         }
-      }
+      // $employees = Employee::get();
+      // foreach($employees as $emp){
+      //    // dd('ok');
+      //    $user = User::where('username', $emp->nik)->first();
+      //    if ($emp->designation_id == 1) {
+      //       $user->assignRole('Manager');
+      //    } elseif ($emp->designation_id == 2) {
+      //       $user->assignRole('Asst. Manager');
+      //    } elseif ($emp->designation_id == 3) {
+      //       $user->assignRole('Supervisor');
+      //    } else {
+      //       $user->assignRole('Karyawan');
+      //    }
+      // }
 
 
 
