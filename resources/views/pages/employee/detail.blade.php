@@ -54,7 +54,7 @@ Detail Employee
                    @elseif($employee->status == 0)
                    <small class="badge badge-muted ">Draft</small>
                    @else
-                   <small class="badge badge-muted ">Non Active</small>
+                   <small class="badge badge-muted "><a href="#"  data-toggle="modal" data-target="#modal-activate-employee">Non Aktif</a></small>
                @endif
                
                <div class="card-list">
@@ -205,6 +205,50 @@ Detail Employee
             <div class="modal-footer">
                <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
                <button type="submit" class="btn btn-dark ">Update</button>
+            </div>
+         </form>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="modal-activate-employee" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Deactivate Employee</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <form action="{{route('activate')}}" method="POST">
+            <div class="modal-body">
+               @csrf
+               <input type="number" name="employee" id="employee" value="{{$employee->id}}" hidden>
+               {{-- <div class="row"> --}}
+                  <small>Activate {{$employee->nik}} {{$employee->biodata->fullName()}}</small>
+                  {{-- <div class="col-md-8">
+                     <div class="form-group form-group-default">
+                        <label>Reason</label>
+                        <input type="text" class="form-control" name="reason" id="reason"  required>
+                        @error('reason')
+                           <small class="text-danger"><i>{{ $message }}</i></small>
+                        @enderror
+                     </div>
+                  </div>
+                  <div class="col-md-4">
+                     <div class="form-group form-group-default">
+                        <label>Date</label>
+                        <input type="date" class="form-control"  name="date" name="date"  required>
+                        @error('date')
+                           <small class="text-danger"><i>{{ $message }}</i></small>
+                        @enderror
+                     </div>
+                  </div> --}}
+               {{-- </div> --}}
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+               <button type="submit" class="btn btn-primary ">Acitvate</button>
             </div>
          </form>
       </div>

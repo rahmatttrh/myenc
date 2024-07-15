@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Employee;
 use App\Models\Pe;
 use App\Models\Sp;
+use App\Models\User;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -29,6 +30,7 @@ class AppServiceProvider extends ServiceProvider
       view()->composer(
          'layouts.header',
          function ($view) {
+            
 
             if (auth()->user()->hasRole('HRD|HRD-Spv')) {
                $spNotifs = Sp::where('status', 1)->orderBy('updated_at', 'desc')->get();

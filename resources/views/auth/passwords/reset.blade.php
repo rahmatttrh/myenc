@@ -64,7 +64,7 @@
 </div>
 @endsection --}}
 
-@extends('layouts.app')
+@extends('layouts.app-old')
    @section('title')
       Reset Password
    @endsection

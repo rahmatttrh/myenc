@@ -176,6 +176,7 @@ Route::middleware(["auth"])->group(function () {
       });
 
       Route::post('deactivate', [DeactivateController::class, 'deactivate'])->name('deactivate');
+      Route::post('activate', [DeactivateController::class, 'activate'])->name('activate');
 
       Route::prefix('emergency')->group(function () {
          Route::post('store', [EmergencyController::class, 'store'])->name('emergency.store');
