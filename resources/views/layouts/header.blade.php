@@ -146,7 +146,7 @@
                            @if (auth()->user()->hasRole('Administrator'))
                            
                            @else
-                           <a class="dropdown-item" href="{{route('employee.detail', [enkripRambo(auth()->user()->employee->id), enkripRambo('contract')])}}">
+                           <a class="dropdown-item" href="{{route('employee.detail', [enkripRambo(auth()->user()->getEmployeeId()), enkripRambo('contract')])}}">
                               My Profile
                            </a>
                            @endif
