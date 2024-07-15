@@ -152,11 +152,14 @@
                            @endif
                            
                            
-                           @if (Route::has('password.request'))
+                           {{-- @if (Route::has('password.request'))
                               <a class="dropdown-item" href="{{ route('password.request') }}">
                                     Reset Password
                               </a>
-                           @endif
+                           @endif --}}
+                           <a class="dropdown-item" href="{{ route('pass.reset') }}">
+                              Reset Password
+                           </a>
                            
                            {{-- <a class="dropdown-item" href="{{route('change.password')}}">Change Password</a> --}}
                            <div class="dropdown-divider"></div>

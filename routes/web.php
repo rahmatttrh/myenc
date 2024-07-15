@@ -19,6 +19,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\MutationController;
 use App\Http\Controllers\OvertimeController;
+use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\PeComponentController;
 use App\Http\Controllers\PeDisciplineController;
 use App\Http\Controllers\PeKpaController;
@@ -52,6 +53,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware(["auth"])->group(function () {
+   Route::prefix('pass')->group(function () {
+      Route::get('reset', [PasswordController::class, 'index'])->name('pass.reset');
+      Route::put('reset/update', [PasswordController::class, 'update'])->name('pass.reset.update');
+      // Route::get('department/{id}', [FetchController::class, 'fetchDepartment']);
+      // Route::get('subdept/{id}', [FetchController::class, 'fetchSubdept']);
+      // Route::get('position/{id}', [FetchController::class, 'fetchPosition']);
+   });
+
    Route::prefix('fetch')->group(function () {
       Route::get('sp/active/{id}', [FetchController::class, 'fetchSpActive']);
       Route::get('schedule/{date}/{id}', [FetchController::class, 'fetchSchedule']);

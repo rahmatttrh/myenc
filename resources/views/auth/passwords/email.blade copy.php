@@ -77,29 +77,21 @@
                         </div>
                     @endif
 
-                    <form method="POST" action="{{ route('pass.reset.update') }}">
+                    <form method="POST" action="{{ route('password.email') }}">
                         @csrf
-                        @method('PUT')
                         <div class="row">
                            <div class="col-md-6">
                               {{-- <img src="{{asset('img/undraw/password.png')}}" class="img-thumbnail" alt=""> --}}
                               <div class="form-group form-group-default">
-                                 <label>New Password *</label>
-                                 <input id="password" name="password"  type="password" required class="form-control">
-                                 @error('password')
-                                    <small class="text-danger"><i>{{ $message }}</i></small>
-                                 @enderror
-                              </div>
-                              <div class="form-group form-group-default">
-                                 <label>Confirm Password *</label>
-                                 <input id="password_confirmation" name="password_confirmation"  type="password" required class="form-control">
-                                 @error('password_confirmation')
+                                 <label>Email *</label>
+                                 <input id="email" name="email" readonly type="text" value="{{auth()->user()->email}}" class="form-control">
+                                 @error('email')
                                     <small class="text-danger"><i>{{ $message }}</i></small>
                                  @enderror
                               </div>
                               <hr>
                               <button type="submit" class="btn btn-primary">
-                                 Update
+                                 {{ __('Send Password Reset Link') }}
                              </button>
                            </div>
                            <div class="col-md-6">
