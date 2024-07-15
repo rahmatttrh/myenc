@@ -249,9 +249,9 @@ class EmployeeController extends Controller
       // $spvs = Employee::where('department_id', $employee->department_id)->where('designation_id', 4)->get();
       // $leaders = Employee::where('department_id', $employee->department_id)->where('designation_id', 3)->get();
 
-      $managers = Employee::where('designation_id', 6)->get();
-      $spvs = Employee::where('designation_id', 4)->where('department_id', $employee->department_id)->get();
-      $leaders = Employee::where('designation_id', 3)->where('department_id', $employee->department_id)->get();
+      $managers = Employee::where('status', 1)->where('designation_id', 6)->get();
+      $spvs = Employee::where('status', 1)->where('designation_id', 4)->where('department_id', $employee->department_id)->get();
+      $leaders = Employee::where('status', 1)->where('designation_id', 3)->where('department_id', $employee->department_id)->get();
 
       // dd($employee->documents);
       // $panel = 'contract';
