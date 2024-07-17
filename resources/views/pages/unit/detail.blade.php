@@ -103,7 +103,7 @@
                                     @foreach ($sub->positions as $pos)
                                         <tr>
                                           <td></td>
-                                          <td>{{$pos->name}} </td>
+                                          <td>{{$pos->id}} - {{$pos->name}} </td>
                                           <td>{{count($pos->employees)}} Karyawan</td>
                                           <td class="text-right">
                                              <a href="#" data-toggle="modal" data-target="#modal-edit-position-{{$pos->id}}">Edit</a> | <a href="#" data-toggle="modal" data-target="#modal-delete-{{$pos->id}}">Delete</a>

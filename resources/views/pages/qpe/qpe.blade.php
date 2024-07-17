@@ -60,6 +60,7 @@ QPE
                             </thead>
                             <tbody>
                                 @foreach ($pes as $pe)
+                                    @if($pe->kpa != null)
                                 <tr>
                                     <td class="text-center">{{++$i}}</td>
                                     <td>
@@ -104,6 +105,7 @@ QPE
                                 </tr>
                                 <x-modal.submit :id="$pe->id" :body="'KPI ' . $pe->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($pe->date))   " url="" />
                                 <x-modal.delete :id="$pe->id" :body="'KPI ' . $pe->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($pe->date))   " url="qpe/delete/{{$pe->id}}" />
+                                    @endif
                                 @endforeach
                                 <!-- <tr>
                                     <td>

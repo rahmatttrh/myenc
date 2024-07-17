@@ -67,11 +67,11 @@
                <span class="sub-item">KPI</span>
             </a>
          </li>
-         <li>
+         <!-- <li>
             <a href="{{route('kpa')}}">
                <span class="sub-item">KPI Apprasial</span>
             </a>
-         </li>
+         </li> -->
          {{-- <li>
             <a href="{{route('kpi')}}">
                <span class="sub-item">Behavior</span>
