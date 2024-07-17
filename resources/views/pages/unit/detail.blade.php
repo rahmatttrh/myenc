@@ -19,7 +19,7 @@
                <div class="card-header  "> 
                   
                      <div class="card-title"><b>{{$unit->name}}</b></div> 
-                     <small>Total {{count($unit->employees)}} Karyawan</small>
+                     <small>Total {{count($unit->employees->where('status', 1))}} Karyawan</small>
                   
                   
                </div> 
@@ -58,7 +58,7 @@
                   <div class="card">
                      <div class="card-header d-flex justify-content-between p-2 bg-primary text-white">
                         <small>{{$depart->name}} Department <br>
-                           {{count($depart->employees)}} Karyawan
+                           {{count($depart->employees->where('status', 1))}} Karyawan
                         </small> 
                         <div>
                            <a href="#" data-toggle="modal" class="text-white" data-target="#modal-add-subdept-{{$depart->id}}">Add Sub</a> |
@@ -88,7 +88,7 @@
                                     <tr>
                                        {{-- <td class="text-center">{{++$i}}</td> --}}
                                        <td colspan="2">{{$sub->name}}</td>
-                                       <td>{{count($sub->employees)}} Karyawan</td>
+                                       <td>{{count($sub->employees->where('status', 1))}} Karyawan</td>
       
                                        <td class="text-right">
                                           {{-- <div class="btn-group"> --}}
@@ -104,7 +104,7 @@
                                         <tr>
                                           <td></td>
                                           <td>{{$pos->name}} </td>
-                                          <td>{{count($pos->employees)}} Karyawan</td>
+                                          <td>{{count($pos->employees->where('status', 1))}} Karyawan</td>
                                           <td class="text-right">
                                              <a href="#" data-toggle="modal" data-target="#modal-edit-position-{{$pos->id}}">Edit</a> | <a href="#" data-toggle="modal" data-target="#modal-delete-{{$pos->id}}">Delete</a>
                                           </td>

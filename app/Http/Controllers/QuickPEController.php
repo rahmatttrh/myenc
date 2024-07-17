@@ -409,7 +409,12 @@ class QuickPEController extends Controller
         // Berikut Behavior  Staff
         $behaviors = PeBehavior::where('level', 's')->get();
 
-        $user = auth()->user()->getEmployee();
+        if (auth()->user()->hasRole('Administrator')) {
+         $user = null;
+        } else {
+         $user = auth()->user()->getEmployee();
+        }
+        
 
         // $pcc = new PeComponentController();
         // $pcs = $pcc->getComponentDesignation($kpa->employe->contract->designation->id); // Memanggil fungsi show dari ProfileController
