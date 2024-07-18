@@ -168,6 +168,7 @@ class HomeController extends Controller
          $sps = Sp::orderBy('updated_at', 'desc')->paginate(4);
          $logins = Log::where('action', 'Login')->orWhere('action', 'Logout')->orderBy('created_at', 'desc')->paginate(10);
          $qpes = Pe::orderBy('updated_at', 'desc')->paginate(4);
+         // Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit culpa tenetur sed
          return view('pages.dashboard.admin', [
             'employees' => $employees,
             'male' => $male,
