@@ -36,4 +36,22 @@ class Department extends Model
    {
       return $this->hasMany(PeKpi::class);
    }
+
+   public function positions(){
+      return $this->hasMany(Position::class);
+   }
+
+   public function getManagers(){
+      $managers = Employee::where('department_id', $this->id)->where('designation_id', 5)->orWhere('designation_id', 6)->orWhere('designation_id', 7)->get();
+      // dd($managers);
+      return $managers;
+   }
+
+   public function sps(){
+      return $this->hasMany(Sp::class);
+   }
+
+   public function pes(){
+      return $this->hasMany(Pe::class);
+   }
 }

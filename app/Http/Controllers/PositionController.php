@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Position;
 use Illuminate\Http\Request;
@@ -24,13 +25,31 @@ class PositionController extends Controller
       $req->validate([]);
 
       Position::create([
+         'type' => 'subdept',
          'sub_dept_id' => $req->subdept,
          'designation_id' => $req->designation,
          'name' => $req->name,
          'slug' => Str::slug($req->name)
       ]);
 
-      return redirect()->back()->with('success', 'Position successfully added');
+      return redirect()->back()->with('success', 'Position of Sub Department successfully added');
+    }
+
+    public function departmentStore(Request $req){
+      $req->validate([]);
+      $department = Department::find($req->department);
+      // dd($department->name);
+
+      // dd($req->designation);
+      Position::create([
+         'type' => 'dept',
+         'department_id' => $req->department,
+         'designation_id' => $req->designation,
+         'name' => $req->name,
+         'slug' => Str::slug($req->name)
+      ]);
+
+      return redirect()->back()->with('success', 'Position of Department successfully added');
     }
 
     public function delete($id){
@@ -54,4 +73,34 @@ class PositionController extends Controller
 
       return redirect()->back()->with('success', 'Position successfully updated');
     }
+
+    public function departUpdate(Request $req){
+      $position = Position::find($req->position);
+      $employee = Employee::find($req->employee);
+      $department = Department::find($position->department_id);
+      // dd($employee->biodata->fullName());
+      $employee->update([
+         'unit_id' => $department->unit_id,
+         'department_id' => $position->department_id,
+         'position_id' => $position->id,
+         'designation_id' => $position->designation_id
+      ]);
+
+      $position->employees()->sync($employee->id);
+
+      return redirect()->back()->with('success', 'Position Department successfully updated');
+    }
+
+    public function departDelete($id){
+      // dd('ok');
+
+      $position = Position::find(dekripRambo($id));
+      $position->employees()->detach();
+      $position->delete();
+
+      return redirect()->back()->with('success', 'Position Department successfully deleted');
+
+    }
+
+
 }

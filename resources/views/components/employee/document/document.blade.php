@@ -13,10 +13,12 @@
          </div>
       </div>
       <div class="card-body">
+         @if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment'))
          <a class="" data-toggle="collapse" href="#addDocuments" role="button" aria-expanded="false" aria-controls="addDocuments">
             <i class="fas fa-plus mr-1"></i>
             Add ...
          </a>
+         @endif
          <div class="collapse" id="addDocuments">
             <form action="{{route('employee.document.store')}}" method="POST" enctype="multipart/form-data">
                @csrf

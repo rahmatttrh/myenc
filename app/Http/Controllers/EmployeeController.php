@@ -12,6 +12,7 @@ use App\Models\Contract;
 use App\Models\Department;
 use App\Models\Designation;
 use App\Models\Employee;
+use App\Models\EmployeeLeader;
 use App\Models\Log;
 use App\Models\Position;
 use App\Models\Role;
@@ -229,6 +230,47 @@ class EmployeeController extends Controller
 
       $dekripId = dekripRambo($id);
       $employee = Employee::find($dekripId);
+      if ($employee->designation->name == 'Manager') {
+         if (count($employee->positions) > 0) {
+            $employee->contract->update([
+               'type' => 'Tetap'
+            ]);
+         }
+      } else {
+         // $department = Department::find($employee->department_id);
+         // $subdept = SubDept::find($employee->sub_dept_id);
+         // $subManager = Position::where('designation_id', 6)->where('sub_dept_id', $subdept->id)->first();
+
+         // if ($subManager != null) {
+         //    // dd('ada sub manager');
+         //    $manager = Employee::where('position_id', $subManager->id)->first();
+         //    // dd($manager->biodata->fullName());
+         // } else {
+         //    // dd($department->id);
+         //    $deptManager = Position::where('designation_id', 6)->where('department_id', $department->id)->first();
+         //    // $deptManager->employees()->first()
+         //    // dd($department->id);
+         //    $manager = $deptManager->employees()->first();
+         //    // dd($manager->biodata->fullName());
+         //    // dd('kosong');
+         }
+
+         // $pos = Position::where('designation_id', 6)->orWhere('designation_id', 7)->get();
+         // $position = $pos->where('department_id', $department->id)->first();
+         // // dd($position->name);
+         // // dd($position->name);
+         // // dd($position->employees()->first()->biodata->fullName());
+         // // dd($employee->contract_id);
+         // // $contract = Contract::find($employee->contract_id);
+         // if (count($position->employees) > 0) {
+         //    $employee->update([
+         //       'manager_id' => $position->employees()->first()->id,
+         //       'direct_leader_id' => null
+         //    ]);
+         // }
+      // }
+      
+      
       $contracts = Contract::where('id_no', $employee->nik)->where('status', 0)->get();
       // dd($contracts);
 
@@ -251,8 +293,9 @@ class EmployeeController extends Controller
 
       $managers = Employee::where('status', 1)->where('designation_id', 6)->get();
       $spvs = Employee::where('status', 1)->where('designation_id', 4)->where('department_id', $employee->department_id)->get();
-      $leaders = Employee::where('status', 1)->where('designation_id', 3)->where('department_id', $employee->department_id)->get();
-
+      $leaders = Employee::where('role', 4)->orWhere('role', 8)->get();
+      $finalLeaders = $leaders->where('status', 1)->where('department_id', $employee->department_id);
+      // dd($finalLeaders);
       // dd($employee->documents);
       // $panel = 'contract';
       // $tab = 'contract';
@@ -262,6 +305,7 @@ class EmployeeController extends Controller
       // dd($spvs);
       $allLeaders = Employee::where('designation_id', 3)->get();
       $subdepts = SubDept::where('department_id', $employee->department_id)->get();
+      $employeeLeaders = EmployeeLeader::where('employee_id', $employee->id)->get();
 
 
       return view('pages.employee.detail', [
@@ -279,15 +323,16 @@ class EmployeeController extends Controller
 
          'managers' => $managers,
          'spvs' => $spvs,
-         'leaders' => $leaders,
+         'leaders' => $finalLeaders,
 
          'allManagers' => $allManagers,
          'allSpvs' => $allSpvs,
          'allLeaders' => $allLeaders,
 
          'subdepts' => $subdepts,
-         'contracts' => $contracts
-         // 'tab' => $tab
+         'contracts' => $contracts,
+         // 'tab' => $tab,
+         'employeeLeaders' => $employeeLeaders
       ]);
    }
 

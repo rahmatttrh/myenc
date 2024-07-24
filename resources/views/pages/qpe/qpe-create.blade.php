@@ -29,7 +29,7 @@ Create PE
                             <select class="form-control" name="employe_id" id="employe_id">
                                 <option value="">--- Choose Employe ---</option>
                                 @foreach ($employes as $employe)
-                                <option value="{{$employe->id}}">{{$employe->biodata->first_name}} {{$employe->biodata->last_name}}</option>
+                                <option value="{{$employe->employee->id}}">{{$employe->employee->biodata->fullName()}} </option>
                                 @endforeach
                             </select>
                         </div>

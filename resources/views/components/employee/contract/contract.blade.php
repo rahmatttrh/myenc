@@ -18,294 +18,249 @@
 
             <div class="tab-pane fade show active" id="pills-contract-nobd" role="tabpanel" aria-labelledby="pills-contract-tab-nobd">
                <div class="card card-dark bg-secondary-gradient shadow-none">
-                  <div class="card-body bubble-shadow text-white">
-                     <div class="row">
-                        <div class="col-md-8">
-                           {{-- <img src="{{asset('img/visa.svg')}}" height="12.5" alt="Visa Logo"> --}}
-                           <h1 style="font-weight: bolder" class="text-uppercase">
-                              @if ($employee->contract->type == 'Kontrak')
-                              {{-- {{$employee->contract->type}}  --}}
-                              Kontrak
-                              @elseif($employee->contract->type == 'Tetap')
-                              Tetap
-                              @else
-                              Kontrak/Tetap
-                              @endif
-                              
-                              <br> 
-                              @if ($employee->contract->type == 'Kontrak')
-                                 {{formatDate($employee->contract->start)}} - {{formatDate($employee->contract->end)}} 
-                              @endif
-                           </h1>
-                        </div>
-                        <div class="col text-right">
-                           <div class=" ml-auto">
-                              <a href="#" type="button" class="text-white dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fa fa-ellipsis-h"></i>
-                              </a>
-                              <div class="dropdown-menu">
+                  
+                  @if (count($employee->positions) > 0)
+                     <div class="card-body bubble-shadow text-white">
+                        <div class="row">
+                           <div class="col-md-8">
+                              {{-- <img src="{{asset('img/visa.svg')}}" height="12.5" alt="Visa Logo"> --}}
+                              <h4 style="font-weight: bolder" class="text-uppercase">
                                  @if ($employee->contract->type == 'Kontrak')
-                                 <a  class="dropdown-item" style="text-decoration: none" href="" data-toggle="modal" data-target="#modal-add-contract">Create New</a>
-                                 
+                                 {{-- {{$employee->contract->type}}  --}}
+                                 Kontrak
+                                 @elseif($employee->contract->type == 'Tetap')
+                                 Tetap
+                                 @else
+                                 Kontrak/Tetap
                                  @endif
-                                 <a  class="dropdown-item" style="text-decoration: none" href="" data-toggle="modal" data-target="#modal-create-mutation">Add Mutation</a>
-                                 <hr>
-                                 <a  class="dropdown-item" style="text-decoration: none" href="" data-toggle="modal" data-target="#modal-edit-contract">Edit</a>
                                  
-                                 @if ($employee->contract->type == 'PKWT')
-                                 <a  class="dropdown-item" style="text-decoration: none" href="" data-toggle="modal" data-target="#modal-delete-bank-{{$employee->id}}">Delete</a>
+                                 <br> 
+                                 @if ($employee->contract->type == 'Kontrak')
+                                    {{formatDate($employee->contract->start)}} - {{formatDate($employee->contract->end)}} 
                                  @endif
+                              </h4>
+                           </div>
+                           @if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment'))
+                              
+                           @if (count($employee->positions) > 0)
+                               @else
+                           
+                           <div class="col text-right">
+                              <div class=" ml-auto">
+                                 <a href="#" type="button" class="text-white dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                       <i class="fa fa-ellipsis-h"></i>
+                                 </a>
+                                 <div class="dropdown-menu">
+                                    <a  class="dropdown-item" style="text-decoration: none" href="" data-toggle="modal" data-target="#modal-add-leader">Add Leader</a>
+                                    <hr>
+                                    @if ($employee->contract->type == 'Kontrak')
+                                    <a  class="dropdown-item" style="text-decoration: none" href="" data-toggle="modal" data-target="#modal-add-contract">Create New</a>
+                                    
+                                    @endif
+                                    
+                                    <a  class="dropdown-item" style="text-decoration: none" href="" data-toggle="modal" data-target="#modal-create-mutation">Add Mutation</a>
+                                    <hr>
+                                    <a  class="dropdown-item" style="text-decoration: none" href="" data-toggle="modal" data-target="#modal-edit-contract">Edit</a>
+                                    
+                                    @if ($employee->contract->type == 'PKWT')
+                                    <a  class="dropdown-item" style="text-decoration: none" href="" data-toggle="modal" data-target="#modal-delete-bank-{{$employee->id}}">Delete</a>
+                                    @endif
+                                 </div>
                               </div>
                            </div>
+                           @endif
+                           @endif
                         </div>
+                        
+                        {{-- <h2 class="py-3 mb-0">{{$acc->account_no}}</h2> --}}
+                        
+                        
+                        <div class="row mt-2">
+                           <div class="col-6 pr-0">
+                              <div class="text-small text-uppercase fw-bold op-8">NIK </div>
+                              <small class="fw-bold mt-1 ">{{$employee->nik ?? '-'}} </small>
+                              <hr>
+                              @foreach ($employee->positions as $pos)
+                              <div class="text-small text-uppercase fw-bold op-8">{{$pos->department->unit->name}}  {{$pos->department->name}}</div>
+                              <small class="fw-bold mt-1">{{$pos->name ?? '-'}} </small><br><br>
+                              @endforeach
+                              
+                              
+                              
+                           </div>
+                           
+                        </div>
+                        
+                        
+                        
+
+                       
+                        
                      </div>
-                     
-                     {{-- <h2 class="py-3 mb-0">{{$acc->account_no}}</h2> --}}
-                     <div class="row">
-                        <div class="col-8 pr-0">
-                           {{-- <h3 class="fw-bold mb-1">{{$employee->id}}</h3> --}}
-                           <div class="text-small text-uppercase fw-bold op-8">{{$employee->contract->id_no}} </div>
-                           <div class="text-small text-uppercase fw-bold op-8"> {{$employee->position->name ?? '-'}} </div>
-                           {{-- <div class="text-small text-uppercase fw-bold op-8"> </div> --}}
-                           <div class="text-small text-uppercase fw-bold op-8">{{$employee->department->name ?? '-'}} Department</div>
-                           <div class="text-small text-uppercase fw-bold op-8">{{$employee->contract->unit->name ?? '-'}}</div>
-                           <div class="text-small text-uppercase fw-bold op-8">Lokasi Kerja {{$employee->contract->loc ?? '-'}}</div>
-                        </div>
-                        <div class="col-4 pl-0 text-right">
-                           {{-- <h3 class="fw-bold mb-1"> 2023 - 2024</h3> --}}
-                           <div class="text-small text-uppercase fw-bold op-8">{{$employee->contract->shift->name ?? '-'}}
-                              @if ($employee->contract->shift)
-                              {{formatTime($employee->contract->shift->in )}}
-                              @endif
-                              @if ($employee->contract->shift)
-                              - {{formatTime($employee->contract->shift->out )}}
-                              @endif
-                                
+                      @else
+                      <div class="card-body bubble-shadow text-white">
+                        <div class="row">
+                           <div class="col-md-8">
+                              {{-- <img src="{{asset('img/visa.svg')}}" height="12.5" alt="Visa Logo"> --}}
+                              <h4 style="font-weight: bolder" class="text-uppercase">
+                                 @if ($employee->contract->type == 'Kontrak')
+                                 {{-- {{$employee->contract->type}}  --}}
+                                 Kontrak
+                                 @elseif($employee->contract->type == 'Tetap')
+                                 Tetap
+                                 @else
+                                 Kontrak/Tetap
+                                 @endif
+                                 
+                                 <br> 
+                                 @if ($employee->contract->type == 'Kontrak')
+                                    {{formatDate($employee->contract->start)}} - {{formatDate($employee->contract->end)}} 
+                                 @endif
+                              </h4>
+                           </div>
+                           @if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment'))
+                              
+                           
+                           <div class="col text-right">
+                              <div class=" ml-auto">
+                                 <a href="#" type="button" class="text-white dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                       <i class="fa fa-ellipsis-h"></i>
+                                 </a>
+                                 <div class="dropdown-menu">
+                                    <a  class="dropdown-item" style="text-decoration: none" href="" data-toggle="modal" data-target="#modal-add-leader">Add Leader</a>
+                                    <hr>
+                                    @if ($employee->contract->type == 'Kontrak')
+                                    <a  class="dropdown-item" style="text-decoration: none" href="" data-toggle="modal" data-target="#modal-add-contract">Create New</a>
+                                    
+                                    @endif
+                                    
+                                    <a  class="dropdown-item" style="text-decoration: none" href="" data-toggle="modal" data-target="#modal-create-mutation">Add Mutation</a>
+                                    <hr>
+                                    <a  class="dropdown-item" style="text-decoration: none" href="" data-toggle="modal" data-target="#modal-edit-contract">Edit</a>
+                                    
+                                    @if ($employee->contract->type == 'PKWT')
+                                    <a  class="dropdown-item" style="text-decoration: none" href="" data-toggle="modal" data-target="#modal-delete-bank-{{$employee->id}}">Delete</a>
+                                    @endif
+                                 </div>
                               </div>
-                           <div class="text-small text-uppercase fw-bold op-8">Salary {{formatRupiah($employee->contract->salary ?? '0')}} </div>
-                           
+                           </div>
+                           @endif
                         </div>
+                        
+                        {{-- <h2 class="py-3 mb-0">{{$acc->account_no}}</h2> --}}
+                        <div class="row">
+                           <div class="col-8 pr-0">
+                              {{-- <h3 class="fw-bold mb-1">{{$employee->id}}</h3> --}}
+                              {{-- <div class="text-small text-uppercase fw-bold op-8">{{$employee->contract->id_no}} </div> --}}
+                              {{-- <div class="text-small text-uppercase fw-bold op-8"> {{$employee->position->name ?? '-'}} </div> --}}
+                              {{-- <div class="text-small text-uppercase fw-bold op-8"> </div> --}}
+                              {{-- <div class="text-small text-uppercase fw-bold op-8">{{$employee->department->name ?? '-'}} Department</div> --}}
+                              {{-- <div class="text-small text-uppercase fw-bold op-8">{{$employee->contract->unit->name ?? '-'}}</div> --}}
+                              <div class="text-small text-uppercase fw-bold op-8">Lokasi Kerja {{$employee->contract->loc ?? '-'}}</div>
+                           </div>
+                           <div class="col-4 pl-0 text-right">
+                              {{-- <h3 class="fw-bold mb-1"> 2023 - 2024</h3> --}}
+                              <div class="text-small text-uppercase fw-bold op-8">{{$employee->contract->shift->name ?? '-'}}
+                                 @if ($employee->contract->shift)
+                                 {{formatTime($employee->contract->shift->in )}}
+                                 @endif
+                                 @if ($employee->contract->shift)
+                                 - {{formatTime($employee->contract->shift->out )}}
+                                 @endif
+                                 
+                                 </div>
+                              {{-- <div class="text-small text-uppercase fw-bold op-8">Salary {{formatRupiah($employee->contract->salary ?? '0')}} </div> --}}
+                              
+                           </div>
+                        </div>
+                        
+                        <div class="row mt-2">
+                           <div class="col-6 pr-0">
+                              <div class="text-small text-uppercase fw-bold op-8">NIK </div>
+                              <small class="fw-bold mt-1 ">{{$employee->nik ?? '-'}} </small>
+                              <div class="mt-2"></div>
+                              <div class="text-small text-uppercase fw-bold op-8">Position </div>
+                              <small class="fw-bold mt-1">{{$employee->position->name ?? '-'}} </small>
+                              
+                              
+                           </div>
+                           <div class="col-6 pl-0 text-right">
+                              <div class="text-small text-uppercase fw-bold op-8">Department </div>
+                              <small class="fw-bold mt-1">{{$employee->department->name ?? '-'}} Department - {{$employee->sub_dept->name ?? '-'}}  </small>
+                              <div class="mt-2"></div>
+                              <div class="text-small text-uppercase fw-bold op-8">Unit </div>
+                              <small class="fw-bold mt-1">{{$employee->contract->unit->name ?? '-'}}  </small>
+                              
+                           </div>
+                        </div>
+                        <hr class="bg-white">
+                        <div class="text-small text-uppercase fw-bold op-8"> {{$employee->contract->desc ?? 'Jobdesk Empty'}} </div>
+                        <hr class="bg-white">
+                        
+                           @if ($employee->designation->name == 'Manager')
+                               @else
+                               <div class="row">
+                                 {{-- <div class="col-6 pr-0">
+                                    <div class="text-small text-uppercase fw-bold op-8">Manager </div>
+                                    <small class="fw-bold mt-1">{{$employee->manager->biodata->fullName() ?? '-'}} </small>
+                                    
+                                    
+                                 </div> --}}
+                                 <div class="col-6 pr-0 ">
+                                    <div class="text-small text-uppercase fw-bold op-8">Direct Leader</div>
+                                    <small class="fw-bold mt-1">
+                                       
+                                       @foreach ($empleaders as $empleader)
+                                          {{$empleader->leader->biodata->fullName()}} <br>
+                                       @endforeach
+                                    </small>
+                                    
+                                 
+                                    
+                                 </div>
+                              </div>
+                           @endif
+                           
+                        
+                        
+                        
+                        @if ($employee->contract->type == 'Kontrak')
+                        <div class="row mt-2">
+                           <div class="col-12 pl-0 text-right">
+                              <div class="text-small text-uppercase fw-bold op-8">{{formatDate($employee->join)}}</div>
+                              <div class="text-small text-uppercase fw-bold op-8">Join Date</div>
+                           
+                              
+                           </div>
+                        </div>
+                        @endif
+   
+                        @if ($employee->contract->type == 'Tetap')
+                        <hr class="bg-white">
+                        <div class="row">
+                           <div class="col-6 pr-0">
+                              <div class="text-small text-uppercase fw-bold op-8">Join Date </div>
+                              <small class="fw-bold mb-1">{{formatDate($employee->join)}}</small>
+                              
+                              
+                           </div>
+                           <div class="col-6 pl-0 text-right">
+                              <div class="text-small text-uppercase fw-bold op-8">Penetapan</div>
+                              <small class="fw-bold mb-1">{{formatDate($employee->contract->determination ?? '-')}}</small>
+                              
+                           
+                              
+                           </div>
+                        </div>
+                        
+                        @endif
+                        
                      </div>
-                     <hr class="bg-white">
-                     <div class="text-small text-uppercase fw-bold op-8"> {{$employee->contract->desc ?? 'Jobdesk Empty'}} </div>
-                     <hr class="bg-white">
-                     @if ($employee->contract->type == 'Tetap')
-                     
-                     <div class="row">
-                        <div class="col-6 pr-0">
-                           <h3 class="fw-bold mb-1">{{formatDate($employee->join)}}</h3>
-                           <div class="text-small text-uppercase fw-bold op-8">Join Date </div>
-                           
-                        </div>
-                        <div class="col-6 pl-0 text-right">
-                           <h3 class="fw-bold mb-1">{{formatDate($employee->contract->determination)}}</h3>
-                           <div class="text-small text-uppercase fw-bold op-8">Penetapan</div>
-                          
-                           
-                        </div>
-                     </div>
-                     <hr class="bg-white">
-                     @endif
-                     
-                     <div class="row">
-                        <div class="col-6 pr-0">
-                           <h3 class="fw-bold mb-1">{{$employee->manager->biodata->first_name ?? '-'}} {{$employee->manager->biodata->last_name ?? '-'}}</h3>
-                           <div class="text-small text-uppercase fw-bold op-8">Manager </div>
-                           
-                        </div>
-                        <div class="col-6 pl-0 text-right">
-                           <h3 class="fw-bold mb-1">{{$employee->direct_leader->biodata->first_name ?? '-'}} {{$employee->direct_leader->biodata->last_name ?? '-'}}</h3>
-                           <div class="text-small text-uppercase fw-bold op-8">Direct Leader</div>
-                          
-                           
-                        </div>
-                     </div>
-                     <hr>
-                     @if ($employee->contract->type == 'Kontrak')
-                     <div class="row">
-                        <div class="col-12 pl-0 text-right">
-                           <div class="text-small text-uppercase fw-bold op-8">{{formatDate($employee->join)}}</div>
-                           <div class="text-small text-uppercase fw-bold op-8">Join Date</div>
-                          
-                           
-                        </div>
-                     </div>
-                     @endif
-                     
-                  </div>
+                  @endif
+                  
                </div>
-               {{-- <x-employee.personal.modal.edit-bank :acc="$acc" :banks="$banks" />
-               <x-employee.personal.modal.delete-bank :acc="$acc"/> --}}
-               {{-- <hr>
-               <form action="{{route('contract.update')}}" method="POST">
-                  @csrf
-                  @method('PUT')
-                  <input type="number" name="employee" id="employee" value="{{$employee->id}}" hidden>
-                  <input type="number" name="contract" id="contract" value="{{$employee->contract_id}}" hidden>
-                  <div class="row">
-                     <div class="col-md-4">
-                        <div class="form-group form-group-default">
-                           <label>Type</label>
-                           <select class="form-control type"  id="type" name="type" <?= auth()->user()->hasRole('Administrator|HRD') ? '' : 'readonly' ?>>
-                              <option value="PKWT">PKWT</option>
-                              <option value="Tetap">Tetap</option>
-                           </select>
-                           @error('type')
-                           <small class="text-danger"><i>{{ $message }}</i></small>
-                           @enderror
-                        </div>
-                     </div>
-                     <div class="col-md-4">
-                        <div class="form-group form-group-default">
-                           <label>Start</label>
-                           <input type="date" class="form-control" <?= auth()->user()->hasRole('Administrator|HRD') ? '' : 'readonly' ?> name="start" id="start" value="{{$employee->contract->start}}">
-                        </div>
-                     </div>
-                     <div class="col-md-4 end">
-                        <div class="form-group form-group-default">
-                           <label>End</label>
-                           <input type="date" class="form-control" <?= auth()->user()->hasRole('Administrator|HRD') ? '' : 'readonly' ?> name="end" id="end" value="{{$employee->contract->end}}" >
-                        </div>
-                     </div>
-                     <div class="col-md-4 determination">
-                        <div class="form-group form-group-default">
-                           <label>Penetapan</label>
-                           <input type="date" class="form-control" <?= auth()->user()->hasRole('Administrator|HRD') ? '' : 'readonly' ?> name="penetapan" id="penetapan" value="{{$employee->contract->deterination}}" >
-                        </div>
-                     </div>
-                     
-                  </div>
-                  <div class="row">
-
-                     <div class="col-md-4">
-                        <div class="form-group form-group-default">
-                           <label>ID Employee</label>
-                           <input type="text" class="form-control" <?= auth()->user()->hasRole('Administrator|HRD') ? '' : 'readonly' ?> name="id" id="id" value="{{$employee->contract->id_no}}">
-                        </div>
-                     </div>
-                     <div class="col-md-4">
-                        <div class="form-group form-group-default">
-                           <label>Office Shift</label>
-                           <select class="form-control" id="shift" <?= auth()->user()->hasRole('Administrator|HRD') ? '' : 'readonly' ?> name="shift">
-                              @foreach ($shifts as $shift)
-                              <option {{$employee->contract->shift_id == $shift->id ? 'selected' : ''}} value="{{$shift->id}}">{{$shift->name}}</option>
-                              @endforeach
-                           </select>
-                        </div>
-                     </div>
-                     <div class="col-md-4">
-                        <div class="form-group form-group-default">
-                           <label>Level</label>
-                           <select class="form-control" id="designation" name="designation" <?= auth()->user()->hasRole('Administrator|HRD') ? '' : 'readonly' ?> >
-                              @foreach ($designations as $designation)
-                              <option {{$employee->contract->designation_id == $designation->id ? 'selected' : ''}} value="{{$designation->id}}">{{$designation->name}}</option>
-                              @endforeach
-                           </select>
-                           @error('designation')
-                           <small class="text-danger"><i>{{ $message }}</i></small>
-                           @enderror
-                        </div>
-                     </div>
-                  </div>
-                  <div class="row">
-                     <div class="col-md-4">
-                        <div class="form-group form-group-default">
-                           <label>Department</label>
-                           <select class="form-control" id="department" name="department" <?= auth()->user()->hasRole('Administrator|HRD') ? '' : 'readonly' ?>>
-                              @foreach ($departments as $department)
-                              <option {{$employee->contract->department_id == $department->id ? 'selected' : ''}} value="{{$department->id}}">{{$department->name}}</option>
-                              @endforeach
-                           </select>
-                           @error('department')
-                           <small class="text-danger"><i>{{ $message }}</i></small>
-                           @enderror
-                        </div>
-                     </div>
-                     
-                     <div class="col-md-4">
-                        <div class="form-group form-group-default">
-                           <label>Jabatan</label>
-                           <select class="form-control" id="position" name="position" <?= auth()->user()->hasRole('Administrator|HRD') ? '' : 'readonly' ?>>
-                              @foreach ($positions as $position)
-                              <option {{$employee->position_id == $position->id ? 'selected' : ''}} value="{{$position->id}}">{{$position->name}} </option>
-                              @endforeach
-                           </select>
-                           @error('position')
-                           <small class="text-danger"><i>{{ $message }}</i></small>
-                           @enderror
-                        </div>
-                     </div>
-                     <div class="col-md-4">
-                        <div class="form-group form-group-default">
-                           <label>Salary</label>
-                           <input type="text" class="form-control" <?= auth()->user()->hasRole('Administrator|HRD') ? '' : 'readonly' ?> name="salary" id="salary" value="{{$employee->contract->salary}}">
-                        </div>
-                     </div>
-                     
-                     
-                  </div>
-                  <div class="row">
-                     
-                     <div class="col-md-4">
-                        <div class="form-group form-group-default">
-                           <label>Cuti Tahunan</label>
-                           <input type="text" class="form-control" <?= auth()->user()->hasRole('Administrator|HRD') ? '' : 'readonly' ?> name="cuti" id="cuti" value="{{$employee->contract->cuti}}" >
-                        </div>
-                     </div>
-                     <div class="col-md-8">
-                        <div class="form-group form-group-default">
-                           <label>Role Description</label>
-                           <input type="text" class="form-control" name="desc" id="desc" value="{{$employee->contract->desc}}" >
-
-                        </div>
-                     </div>
-                  </div>
-
-                  
-
-         
-                  
-                  <hr>
-                  <div class="row">
-                     <div class="col-md-4">
-                        <div class="form-group form-group-default">
-                           <label>Manager</label>
-                           <select class="form-control" id="manager" name="manager" <?= auth()->user()->hasRole('Administrator|HRD') ? '' : 'readonly' ?>>
-                              @foreach ($managers as $man)
-                              <option {{$employee->manager_id == $man->id ? 'selected' : ''}} value="{{$man->id}}">{{$man->biodata->first_name}} {{$man->biodata->last_name}}</option>
-                              @endforeach
-                           </select>
-                           @error('manager')
-                           <small class="text-danger"><i>{{ $message }}</i></small>
-                           @enderror
-                        </div>
-                     </div>
-                     <div class="col-md-8">
-                        <div class="form-group form-group-default">
-                           <label>Direct Leader</label>
-                           <select class="form-control" id="leader" name="leader" <?= auth()->user()->hasRole('Administrator|HRD') ? '' : 'readonly' ?>>
-                              @foreach ($spvs as $spv)
-                              <option {{$employee->direct_leader_id == $spv->id ? 'selected' : ''}} value="{{$spv->id}}">  {{$spv->designation->name}} | {{$spv->biodata->first_name}} {{$spv->biodata->last_name}}</option>
-                              @endforeach
-                              @foreach ($leaders as $lead)
-                              <option {{$employee->direct_leader_id == $lead->id ? 'selected' : ''}} value="{{$lead->id}}">  {{$lead->designation->name}} | {{$lead->biodata->first_name}} {{$lead->biodata->last_name}}</option>
-                              @endforeach
-                           </select>
-                           @error('leader')
-                           <small class="text-danger"><i>{{ $message }}</i></small>
-                           @enderror
-                        </div>
-                     </div>
-                  </div>
-
-
-                  <div class="text-right mt-3 mb-3">
-                  @if(auth()->user()->hasRole('Administrator|HRD'))
-                     <button type="submit" class="btn btn-dark" {{$employee->status == 0 ? 'disabled' : ''}}>Update </button>
-                  @endif  
-                  </div>
-               </form>
-               <hr> --}}
+               
+              
                <hr>
             </div>
 
@@ -710,7 +665,7 @@
 <x-employee.contract.modal.add-contract :employee="$employee" :shifts="$shifts" :designations="$designations" :departments="$departments" :positions="$positions" :managers="$managers" :spvs="$spvs"  :leaders="$leaders" :subdepts="$subdepts" :units="$units" :allpositions="$allpositions" />
 
 <x-employee.contract.modal.create-mutation :employee="$employee" :shifts="$shifts" :designations="$designations" :departments="$departments" :positions="$positions" :managers="$managers" :spvs="$spvs"  :leaders="$leaders" :allmanagers="$allmanagers" :allspvs="$allspvs"  :allleaders="$allleaders" :subdepts="$subdepts" :units="$units" :allpositions="$allpositions" />
-
+<x-employee.contract.modal.add-leader :employee="$employee" :leaders="$leaders" />
 
 @push('js_footer')
     

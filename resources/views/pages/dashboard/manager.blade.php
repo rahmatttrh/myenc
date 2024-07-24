@@ -60,8 +60,28 @@ Dashboard
             
          </div> --}}
          <div class="card card-primary">
-            <div class="card-body text-center">
-               <h1>Manager</h1>
+            <div class="card-body ">
+               @if (count($employee->positions) > 0)
+                     @foreach ($positions as $pos)
+                     <b>{{$pos->department->unit->name ?? '-'}} - {{$pos->department->name}}</b><br>
+                     <small>{{$pos->name}}</small>
+                     <hr>
+                     {{-- <div class="row">
+                        <div class="col-md-4">
+                           {{$pos->department->name}} 
+                        </div>
+                        <div class="col">
+                           {{$pos->name}}
+                        </div>
+                     </div> --}}
+                        {{-- <small>- {{$pos->name}}</small> <br> --}}
+                     @endforeach
+
+                   @else
+                   <b>{{$employee->unit->name ?? '-'}} - {{$employee->department->name}}</b><br>
+                     <small>{{$employee->position->name}}</small>
+               @endif
+               
             </div>
          </div>
          <div class="card">
@@ -70,19 +90,39 @@ Dashboard
             </div>
             <div class="card-body p-0">
                <table class=" ">
-                  <thead>
+                  {{-- <thead>
                      <tr>
+                        <th></th>
                         <th>NIK</th>
                         <th>Name</th>
                      </tr>
-                  </thead>
+                  </thead> --}}
                   <tbody>
-                     @foreach ($teams as $employee)
-                         <tr>
-                           <td>{{$employee->nik}} </td>
-                           <td>{{$employee->biodata->fullName()}}</td>
-                         </tr>
-                     @endforeach
+                     @if (count($employee->positions) > 0)
+                           @foreach ($positions as $pos)
+                                 <tr>
+                                 {{-- <td></td> --}}
+                                 <td colspan="3">{{$pos->department->unit->name}} {{$pos->department->name}} ({{count($pos->department->employees)}}) </td>
+                                 {{-- <td>{{$employee->biodata->fullName()}}</td> --}}
+                                 </tr>
+                                 @foreach ($pos->department->employees as $emp)
+                                    <tr>
+                                    <td></td>
+                                    <td>{{$emp->nik}}</td>
+                                    <td>{{$emp->biodata->fullName()}}</td>
+                                    </tr>
+                                 @endforeach
+                           @endforeach
+                         @else
+                         @foreach ($teams as $emp)
+                           <tr>
+                           <td></td>
+                           <td>{{$emp->nik}}</td>
+                           <td>{{$emp->biodata->fullName()}}</td>
+                           </tr>
+                        @endforeach
+                     @endif
+                     
                      
                      
                   </tbody>
@@ -109,7 +149,7 @@ Dashboard
             <hr>
          </div> --}}
 
-         <div class="card">
+         {{-- <div class="card">
             <div class="card-header p-2 bg-primary text-white">
                <small>SPKL Request</small>
             </div>
@@ -118,7 +158,6 @@ Dashboard
                   <thead>
                      
                      <tr>
-                        {{-- <th scope="col">#</th> --}}
                         <th scope="col">ID</th>
                         <th scope="col">Date</th>
                         <th>Name</th>
@@ -149,9 +188,60 @@ Dashboard
                   </tbody>
                </table>
             </div>
+         </div> --}}
+
+         <div class="card">
+            <div class="card-header p-2 bg-primary text-white">
+               <small>Recent QPE</small>
+            </div>
+            <div class="card-body p-0">
+               <table class=" ">
+                  <thead>
+                     
+                     <tr class="">
+                        {{-- <th scope="col">#</th> --}}
+                        <th></th>
+                        <th>Employee</th>
+                        <th>Semester/Tahun</th>
+                        <th>Achievement</th>
+                        <th>Status</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     @foreach ($positions as $pos)
+                         <tr>
+                           <td colspan="6">{{$pos->department->unit->name}} {{$pos->department->name}}</td>
+                         </tr>
+                         @foreach ($pos->department->pes()->paginate(5) as $pe)
+                         <tr>
+                           <th></th>
+                           <td>
+                              {{-- <a href="{{route('sp.detail', enkripRambo($pe->id))}}">{{$pe->code}}</a> --}}
+                              @if($pe->status == '0' || $pe->status == '101')
+                              <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
+                              @elseif($pe->status == '1' || $pe->status == '202' )
+                              <a href="/qpe/approval/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
+                              @else
+                              <a href="/qpe/show/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
+                              @endif
+                           </td>
+                           <td>{{$pe->semester}} / {{$pe->tahun}}</td>
+                           <td>{{$pe->achievement}}</td>
+                           <td>
+                              <x-status.pe :pe="$pe" />
+                           </td>
+                        </tr>
+                         @endforeach
+                     @endforeach
+                     {{-- @foreach ($sps as $sp)
+                         
+                     @endforeach --}}
+                  </tbody>
+               </table>
+            </div>
          </div>
          
-         @if (count($sps) > 0)
+         
          <div class="card">
             <div class="card-header p-2 bg-danger text-white">
                <small>Recent SP</small>
@@ -162,32 +252,48 @@ Dashboard
                      
                      <tr class="">
                         {{-- <th scope="col">#</th> --}}
-                        <th scope="col">ID</th>
-                        <th>NIK</th>
-                        <th>Name</th>
+                        <th></th>
+                        <th >Name</th>
+                        <th>ID</th>
+                        {{-- <th>Name</th> --}}
                         
                         <th>Level</th>
                         <th scope="col">Status</th>
                      </tr>
                   </thead>
                   <tbody>
-                     @foreach ($sps as $sp)
+                     {{-- @if (count($sps) > 0) --}}
+                     @foreach ($positions as $pos)
                          <tr>
-                           <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->code}}</a></td>
-                           <td>{{$sp->employee->nik}}</td>
-                           <td>{{$sp->employee->biodata->first_name}} {{$sp->employee->biodata->last_name}}</td>
+                           <td colspan="6">{{$pos->department->unit->name}} {{$pos->department->name}}</td>
+                         </tr>
+                         @foreach ($pos->department->sps()->paginate(3) as $sp)
+                         <tr>
+                           <th></th>
+                           <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->employee->nik}} {{$sp->employee->biodata->fullName()}}</a></td>
+                           <td>{{$sp->code}}</td>
+                           {{-- <td>{{$sp->employee->biodata->first_name}} {{$sp->employee->biodata->last_name}}</td> --}}
                            
                            <td>SP {{$sp->level}}</td>
                            <td>
                               <x-status.sp :sp="$sp" />
                            </td>
                         </tr>
+                         @endforeach
                      @endforeach
+                     {{-- @else
+                     <tr>
+                        <td colspan="5" class="text-center">Empty</td>
+                     </tr> --}}
+                     {{-- @endif --}}
+                     {{-- @foreach ($sps as $sp)
+                         
+                     @endforeach --}}
                   </tbody>
                </table>
             </div>
          </div>
-         @endif
+         
          
       </div>
    </div>

@@ -34,7 +34,9 @@
                      @endif
                </div>
                <div class="col-md-2">
+                  @if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment'))
                   <button type="submit" class="btn btn-block btn-dark" {{$employee->status == 0 ? 'disabled' : ''}}>Update</button>
+                  @endif
                </div>
             </div>
 {{--             

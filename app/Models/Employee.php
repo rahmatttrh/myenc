@@ -15,6 +15,11 @@ class Employee extends Model
       return $this->belongsTo(Biodata::class);
    }
 
+   public function unit()
+   {
+      return $this->belongsTo(Unit::class);
+   }
+
    public function department()
    {
       return $this->belongsTo(Department::class);
@@ -140,10 +145,17 @@ class Employee extends Model
       return $this->hasMany(Mutation::class);
    }
 
+   public function sub_dept(){
+      return $this->belongsTo(SubDept::class);
+   }
    // public function shift()
    // {
    //    return $this->belongsTo(Shift::class);
    // }
+
+   public function positions(){
+      return $this->belongsToMany(Position::class);
+   }
 
 
 }

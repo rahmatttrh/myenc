@@ -19,7 +19,7 @@
                <div class="card-header  "> 
                   
                      <div class="card-title"><b>{{$unit->name}}</b></div> 
-                     <small>Total {{count($unit->employees)}} Karyawan</small>
+                     <small>Total {{count($unit->employees->where('status', 1))}} Karyawan</small>
                   
                   
                </div> 
@@ -58,9 +58,10 @@
                   <div class="card">
                      <div class="card-header d-flex justify-content-between p-2 bg-primary text-white">
                         <small>{{$depart->name}} Department <br>
-                           {{count($depart->employees)}} Karyawan
+                           {{count($depart->employees->where('status', 1))}} Karyawan
                         </small> 
                         <div>
+                           <a href="#" data-toggle="modal" class="text-white" data-target="#modal-add-position-dept-{{$depart->id}}">Add Position</a>  |
                            <a href="#" data-toggle="modal" class="text-white" data-target="#modal-add-subdept-{{$depart->id}}">Add Sub</a> |
                            <a href="#" class="text-white" data-toggle="modal" data-target="#modal-edit-department-{{$depart->id}}">Edit</a> |
                            <a href="#" class="text-white" data-toggle="modal" data-target="#modal-delete-{{$depart->id}}">Delete</a>
@@ -70,13 +71,34 @@
                      <div class="card-body p-0">
                         <table class="display  table-sm table-bordered  ">
                            <thead>
+                              @foreach ($depart->positions as $depos)
+                                  <tr>
+                                    <td colspan="2">{{$depos->name}}</td>
+                                    <td colspan="1">
+                                       @if (count($depos->employees) > 0)
+                                       @foreach ($depos->employees as $emp)
+                                       {{$emp->biodata->fullName()}}
+                                   @endforeach
+                                       @endif
+                                       
+                                       
+                                    </td>
+                                    <td class="text-right">
+                                       <a href="" data-toggle="modal" data-target="#modal-change-position-{{$depos->id}}">Add</a> |
+                                       {{-- <a href="">Edit</a> | --}}
+                                       <a href="" data-toggle="modal" data-target="#modal-delete-{{$depos->id}}">Delete</a>
+                                    </td>
+                                  </tr>
+                                  <x-modal.change-position :id="$depos->id" :pos="$depos" :deptemployees="$depart->getManagers()"  />
+                                    <x-modal.delete :id="$depos->id" :body="$depos->name" url="{{route('position.department.delete', enkripRambo($depos->id))}}" />
+                              @endforeach
                               <tr>
-                                 <th colspan="4">ID - Sub Department</th>
+                                 <th colspan="4">Sub Department</th>
                               </tr>
                               <tr>
                                  <th scope="col" class="text-center"></th>
                                  {{-- <th scope="col">Sub Department Name</th> --}}
-                                 <th>ID - Position</th>
+                                 <th>Position</th>
                                  <th>Total Karyawan</th>
                                  <th scope="col" class="text-right">Action</th>
                               </tr>
@@ -88,7 +110,7 @@
                                     <tr>
                                        {{-- <td class="text-center">{{++$i}}</td> --}}
                                        <td colspan="2">{{$sub->name}}</td>
-                                       <td>{{count($sub->employees)}} Karyawan</td>
+                                       <td>{{count($sub->employees->where('status', 1))}} Karyawan</td>
       
                                        <td class="text-right">
                                           {{-- <div class="btn-group"> --}}
@@ -103,8 +125,8 @@
                                     @foreach ($sub->positions as $pos)
                                         <tr>
                                           <td></td>
-                                          <td>{{$pos->id}} - {{$pos->name}} </td>
-                                          <td>{{count($pos->employees)}} Karyawan</td>
+                                          <td>{{$pos->name}} </td>
+                                          <td>{{count($pos->employees->where('status', 1))}} Karyawan</td>
                                           <td class="text-right">
                                              <a href="#" data-toggle="modal" data-target="#modal-edit-position-{{$pos->id}}">Edit</a> | <a href="#" data-toggle="modal" data-target="#modal-delete-{{$pos->id}}">Delete</a>
                                           </td>
@@ -130,6 +152,7 @@
                </div>
 
                <x-modal.delete :id="$depart->id" :body="$depart->name" url="{{route('department.delete', enkripRambo($depart->id))}}" />
+                  <x-modal.add-position-dept :id="$depart->id" :department="$depart" url="" :designations="$designations" />
                   <x-modal.add-subdept :id="$depart->id" :department="$depart" url="" />
                   <x-modal.edit-department :id="$depart->id" :department="$depart"  />
                @endforeach

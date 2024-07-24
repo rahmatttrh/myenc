@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Biodata;
 use App\Models\Contract;
 use App\Models\Employee;
+use App\Models\EmployeeLeader;
+use App\Models\EmployeePosition;
 use App\Models\Log;
 use App\Models\Pe;
 use App\Models\Presence;
@@ -37,7 +39,14 @@ class HomeController extends Controller
       // $contracts = Contract::get();
       // foreach($contracts as $con){
       //    $con->update([
-      //       'shift_id' => 1
+      //       'manager_id' => null
+      //    ]);
+      // }
+
+      // $employees = Employee::get();
+      // foreach($employees as $emp){
+      //    $emp->update([
+      //       'manager_id' => null
       //    ]);
       // }
 
@@ -168,6 +177,7 @@ class HomeController extends Controller
          $sps = Sp::orderBy('updated_at', 'desc')->paginate(4);
          $logins = Log::where('action', 'Login')->orWhere('action', 'Logout')->orderBy('created_at', 'desc')->paginate(10);
          $qpes = Pe::orderBy('updated_at', 'desc')->paginate(4);
+         // Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit culpa tenetur sed
          return view('pages.dashboard.admin', [
             'employees' => $employees,
             'male' => $male,
@@ -240,6 +250,7 @@ class HomeController extends Controller
             'empty' => $empty
          ]);
       } elseif (auth()->user()->hasRole('Manager')) {
+         // dd('ok');
          $employee = Employee::where('nik', auth()->user()->username)->first();
          $biodata = Biodata::where('email', auth()->user()->email)->first();
          $presences = Presence::where('employee_id', $employee->id)->orderBy('created_at', 'desc')->get();
@@ -249,7 +260,22 @@ class HomeController extends Controller
          $spkls = Spkl::where('status', 1)->orWhere('status', 2)->where('department_id', $employee->department_id)->get();
          $sps = Sp::where('status', '>', 2)->where('department_id', $employee->department_id)->orderBy('updated_at', 'desc')->paginate('5');
          // dd($spkls);
-         $teams = Employee::where('manager_id', auth()->user()->getEmployeeId())->get();
+
+         if (count($employee->positions) > 0) {
+            $teams = null;
+         } else {
+            if ($employee->position->sub_dept_id != null) {
+               // dd('ada sub');
+               $teams = Employee::where('sub_dept_id', $employee->position->sub_dept_id)->where('id', '!=', $employee->id)->get();
+            } else {
+               $teams = Employee::where('department_id', $employee->position->department_id)->get();
+            }
+         }
+         
+         
+         // dd(count($final));
+         $employeePositions = $employee->positions;
+         // dd($employeePositions);
          return view('pages.dashboard.manager', [
             'employee' => $biodata->employee,
             'dates' => $dates,
@@ -257,9 +283,10 @@ class HomeController extends Controller
             'pending' => $pending,
             'spkls' => $spkls,
             'sps' => $sps,
-            'teams' => $teams
+            'teams' => $teams,
+            'positions' => $employeePositions
          ]);
-      } elseif (auth()->user()->hasRole('Supervisor')) {
+      } elseif (auth()->user()->hasRole('Supervisor|Leader')) {
          $employee = Employee::where('nik', auth()->user()->username)->first();
          $biodata = Biodata::where('email', auth()->user()->email)->first();
          $presences = Presence::where('employee_id', $employee->id)->orderBy('created_at', 'desc')->get();
@@ -268,8 +295,11 @@ class HomeController extends Controller
 
          $spkls = Spkl::where('status', '>=', 1)->where('department_id', $employee->department_id)->orderBy('created_at', 'desc')->paginate(5);
          // dd($spkls);
-         $teams = Employee::where('direct_leader_id', auth()->user()->getEmployeeId())->get();
+         // $teams = Employee::where('direct_leader_id', auth()->user()->getEmployeeId())->get();
+         $teams = EmployeeLeader::where('leader_id', $employee->id)->get();
+         // dd($teams);
          $spRecents = Sp::where('by_id',auth()->user()->getEmployeeId())->orderBy('updated_at', 'desc')->paginate('5');
+         $peRecents = Pe::where('created_by', $employee->id)->orderBy('updated_at', 'desc')->paginate(5);
          return view('pages.dashboard.supervisor', [
             'employee' => $biodata->employee,
             'teams' => $teams,
@@ -278,7 +308,8 @@ class HomeController extends Controller
             'pending' => $pending,
 
             'spkls' => $spkls,
-            'spRecents' => $spRecents
+            'spRecents' => $spRecents,
+            'peRecents' => $peRecents
          ]);
       } else {
 
