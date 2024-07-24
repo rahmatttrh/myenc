@@ -157,5 +157,15 @@ class Employee extends Model
       return $this->belongsToMany(Position::class);
    }
 
+   public function getLeaders(){
+      $leaders = EmployeeLeader::where('employee_id', $this->id)->get();
+      return $leaders;
+   }
+
+   public function getKpi(){
+      $kpi = PeKpi::find($this->kpi_id);
+      return $kpi;
+   }
+
 
 }
