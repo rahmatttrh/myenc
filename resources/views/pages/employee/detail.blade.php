@@ -75,7 +75,7 @@ Detail Employee
                            <div class="username">
                               <h3>{{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</h3>
                            </div>
-                           <div class="status">{{$employee->contract->designation->name ?? ''}} {{$employee->contract->department->name ?? ''}}</div>
+                           <div class="status"> {{$employee->designation->name ?? '-'}} </div>
                         </div>
                      </div>
                   </div>
@@ -155,7 +155,7 @@ Detail Employee
       @endif --}}
 
       <div class="tab-content" id="v-pills-tabContent">
-         <x-employee.contract.contract :employee="$employee" :departments="$departments" :designations="$designations" :positions="$positions" :roles="$roles" :shifts="$shifts" :panel="$panel" :i="0" :managers="$managers" :spvs="$spvs" :leaders="$leaders" :allmanagers="$allManagers" :allspvs="$allSpvs" :allleaders="$allLeaders" :subdepts="$subdepts" :units="$units" :allpositions="$allPositions" :contracts="$contracts" />
+         <x-employee.contract.contract :employee="$employee" :departments="$departments" :designations="$designations" :positions="$positions" :roles="$roles" :shifts="$shifts" :panel="$panel" :i="0" :managers="$managers" :spvs="$spvs" :leaders="$leaders" :allmanagers="$allManagers" :allspvs="$allSpvs" :allleaders="$allLeaders" :subdepts="$subdepts" :units="$units" :allpositions="$allPositions" :contracts="$contracts" :empleaders="$employeeLeaders" />
          <x-employee.basic.basic :employee="$employee" :departments="$departments" :designations="$designations" :roles="$roles" :panel="$panel" />
          <x-employee.personal.personal :employee="$employee" :departments="$departments" :designations="$designations" :roles="$roles" :socials="$socials" :banks="$banks" :panel="$panel" />
          <x-employee.account.account :employee="$employee" :departments="$departments" :designations="$designations" :roles="$roles" :panel="$panel" />

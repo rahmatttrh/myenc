@@ -50,7 +50,7 @@ Employee
                      <th>Department</th>
                      {{-- <th>Level</th> --}}
                      <th  >Posisi</th>
-                     <th>Kontrak/Tetap</th>
+                     {{-- <th>Kontrak/Tetap</th> --}}
                      {{-- <th class="text-right">Action</th> --}}
                   </tr>
                </thead>
@@ -64,7 +64,7 @@ Employee
                      <th></th>
                      <th></th>
                      <th></th>
-                     <th></th>
+                     {{-- <th></th> --}}
                      {{-- <th class="text-right">Action</th> --}}
                   </tr>
                </tfoot>
@@ -78,31 +78,42 @@ Employee
                            <a href="{{route('employee.detail', [enkripRambo($employee->id), enkripRambo('basic')])}}">  {{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</a> 
                            {{-- <small class="text-muted">{{$employee->biodata->email}}</small> --}}
                         </div>
-                        {{-- <div class="profile-picture mr-3">
-                           @if ($employee->biodata->status == 1)
-                           <div class="avatar avatar-sm avatar-online">
-                              @else
-                              <div class="avatar avatar-sm avatar-offline">
-                                 @endif
-                                 @if ($employee->picture)
-                                 <img src="{{asset('storage/' . $employee->picture)}}" alt="..." class="avatar-img rounded-circle">
-                                 @else
-                                 <img src="{{asset('img/user.png')}}" alt="..." class="avatar-img rounded-circle">
-                                 @endif
-                              </div>
-                           </div>
-                           <div>
-                              <a href="{{route('employee.detail', [enkripRambo($employee->id), enkripRambo('contract')])}}">{{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</a><br>
-                              <small class="text-muted">{{$employee->biodata->email}}</small>
-                           </div> --}}
+                       
                      </td>
                      <td class="text-truncate">{{$employee->contract->id_no}}</td>
                      {{-- <td>{{$employee->biodata->phone}}</td> --}}
-                     <td class="text-truncate">{{$employee->department->unit->name ?? ''}}</td>
-                     <td>{{$employee->department->name ?? ''}}</td>
-                     {{-- <td>{{$employee->contract->designation->name ?? ''}}</td> --}}
-                     <td>{{$employee->position->name ?? '-'}}</td>
+                     
+                     <td class="text-truncate">
+                        @if (count($employee->positions) > 0)
+                              @foreach ($employee->positions as $pos)
+                                  {{$pos->department->unit->name}}
+                              @endforeach
+                            @else
+                            {{$employee->department->unit->name ?? ''}}
+                        @endif
+                        
+                     </td>
                      <td>
+                        {{-- {{$employee->department->name ?? ''}} --}}
+                        @if (count($employee->positions) > 0)
+                              @foreach ($employee->positions as $pos)
+                                  {{$pos->department->name}}
+                              @endforeach
+                            @else
+                            {{$employee->department->name ?? ''}}
+                        @endif
+                     </td>
+                     {{-- <td>{{$employee->contract->designation->name ?? ''}}</td> --}}
+                     <td>
+                        @if (count($employee->positions) > 0)
+                              @foreach ($employee->positions as $pos)
+                                  {{$pos->name}}
+                              @endforeach
+                            @else
+                            {{$employee->position->name ?? ''}}
+                        @endif
+                     </td>
+                     {{-- <td>
                         @if ($employee->contract->type == 'Kontrak')
                         <span class="badge badge-info">Kontrak</span>
                         @elseif($employee->contract->type == 'Tetap')
@@ -111,7 +122,7 @@ Employee
                         <span class="badge badge-muted">Empty</span>
                         @endif
       
-                     </td>
+                     </td> --}}
                   </tr>
                   @endforeach
                </tbody>

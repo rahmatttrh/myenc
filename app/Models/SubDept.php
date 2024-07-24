@@ -11,6 +11,10 @@ class SubDept extends Model
     use HasFactory;
     protected $guarded = [];
 
+   public function pes(){
+      return $this->hasMany(Pe::class);
+   }
+
     public function department()
     {
         return $this->belongsTo(Department::class);

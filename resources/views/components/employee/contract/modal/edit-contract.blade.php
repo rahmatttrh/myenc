@@ -14,7 +14,7 @@
                   <input type="number" name="employee" id="employee" value="{{$employee->id}}" hidden>
                   <input type="number" name="contract" id="contract" value="{{$employee->contract_id}}" hidden>
                   <div class="row">
-                     <div class="col-md-7">
+                     <div class="col-md-8">
                         <div class="row">
                            <div class="col-md-4">
                               <div class="form-group form-group-default">
@@ -86,7 +86,7 @@
                                  </select>
                               </div>
                            </div>
-                           <div class="col-md-8">
+                           <div class="col-md-12">
                               <div class="form-group form-group-default">
                                  <label>Bisnis Unit</label>
                                  <select class="form-control unit" id="unit" name="unit" <?= auth()->user()->hasRole('Administrator|HRD|HRD-Recruitment') ? '' : 'readonly' ?>>
@@ -101,7 +101,7 @@
                               </div>
                            </div>
       
-                           <div class="col-md-4">
+                           {{-- <div class="col-md-4">
                               <div class="form-group form-group-default">
                                  <label>Level</label>
                                  <select class="form-control" id="designation" name="designation" <?= auth()->user()->hasRole('Administrator|HRD|HRD-Recruitment') ? '' : 'readonly' ?> >
@@ -114,7 +114,7 @@
                                  <small class="text-danger"><i>{{ $message }}</i></small>
                                  @enderror
                               </div>
-                           </div>
+                           </div> --}}
       
                            <div class="col-md-6">
                               <div class="form-group form-group-default">
@@ -154,7 +154,7 @@
                                     <option value="" disabled {{$employee->contract->position_id == null ? 'selected' : ''}}>Select</option>
                                     @foreach ($allpositions as $position)
                                     {{--<option {{$employee->contract->designation_id == $designation->id ? 'selected' : ''}} value="{{$designation->id}}">{{$designation->name}}</option>--}}
-                                    <option {{$employee->contract->position_id == $position->id ? 'selected' : ''}} value="{{$position->id}}">{{$position->name}} </option>
+                                    <option {{$employee->position_id == $position->id ? 'selected' : ''}} value="{{$position->id}}">{{$position->name}} </option>
                                     @endforeach
                                  </select>
                                  @error('position')
@@ -198,26 +198,21 @@
                         <div class="row">
                            
                            
-                           <div class="col-md-8">
+                           <div class="col-md-12">
                               <div class="form-group form-group-default">
                                  <label>Job Description</label>
                                  <input type="text" class="form-control" name="desc" id="desc" value="{{$employee->contract->desc}}" >
       
                               </div>
                            </div>
-                           <div class="col-md-4">
-                              <div class="form-group form-group-default">
-                                 <label>Cuti</label>
-                                 <input type="text" class="form-control" <?= auth()->user()->hasRole('Administrator|HRD|HRD-Recruitment') ? '' : 'readonly' ?> name="cuti" id="cuti" value="{{$employee->contract->cuti}}" >
-                              </div>
-                           </div>
+                           
                         </div>
       
                         
                      </div>
 
-                     <div class="col-md-5">
-                        <div class="row">
+                     <div class="col-md-4">
+                        {{-- <div class="row">
                            <div class="col-md-6">
                               <div class="form-group form-group-default">
                                  <label>Manager</label>
@@ -249,6 +244,11 @@
                                  @enderror
                               </div>
                            </div>
+                        </div> --}}
+                        
+                        <div class="form-group form-group-default">
+                           <label>Cuti</label>
+                           <input type="text" class="form-control" <?= auth()->user()->hasRole('Administrator|HRD|HRD-Recruitment') ? '' : 'readonly' ?> name="cuti" id="cuti" value="{{$employee->contract->cuti}}" >
                         </div>
                         <div class="form-group form-group-default">
                            <label>Notes</label>

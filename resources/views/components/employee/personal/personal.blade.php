@@ -17,10 +17,12 @@
          <div class="tab-content mt-2 mb-3" id="pills-without-border-tabContent">
             
             <div class="tab-pane fade show active" id="pills-emergency-nobd" role="tabpanel" aria-labelledby="pills-emergency-tab-nobd">
+               @if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment'))
                <a class="" data-toggle="collapse" href="#addContact" role="button" aria-expanded="false" aria-controls="addBank">
                   <i class="fas fa-plus mr-1"></i>
                   Add Emergency Contact ...
                </a>
+               @endif
                <div class="collapse" id="addContact">
                   <form action="{{route('emergency.store')}}" method="POST">
                      @csrf
@@ -105,10 +107,12 @@
             </div>
 
             <div class="tab-pane fade " id="pills-bank-nobd" role="tabpanel" aria-labelledby="pills-bank-tab-nobd">
+               @if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment'))
                <a class="" data-toggle="collapse" href="#addBank" role="button" aria-expanded="false" aria-controls="addBank">
                   <i class="fas fa-plus mr-1"></i>
                   Add Bank Account ...
                </a>
+               @endif
                <div class="collapse" id="addBank">
                   <form action="{{route('bank.account.store')}}" method="POST">
                      @csrf
@@ -193,10 +197,12 @@
             </div>
 
             <div class="tab-pane fade " id="pills-edu-nobd" role="tabpanel" aria-labelledby="pills-edu-tab-nobd">
+               @if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment'))
                <a class="" data-toggle="collapse" href="#addEdu" role="button" aria-expanded="false" aria-controls="addEdu">
                   <i class="fas fa-plus mr-1"></i>
                   Add Educational Background ...
                </a>
+               @endif
                <div class="collapse" id="addEdu">
                   <form action="{{route('educational.store')}}" method="POST">
                      @csrf
@@ -282,11 +288,12 @@
             </div>
 
             <div class="tab-pane fade " id="pills-social-nobd" role="tabpanel" aria-labelledby="pills-social-tab-nobd">
-             
+               @if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment'))
                   <a class="" data-toggle="collapse" href="#addSocial" role="button" aria-expanded="false" aria-controls="addSocial">
                      <i class="fas fa-plus mr-1"></i>
                     Add Social Account ...
                   </a>
+                  @endif
                <div class="collapse" id="addSocial">
                   <form action="{{route('social.account.store')}}" method="POST">
                      @csrf

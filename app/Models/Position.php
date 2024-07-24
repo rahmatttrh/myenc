@@ -12,6 +12,10 @@ class Position extends Model
 
     // Referensi dari 
 
+    public function employee(){
+      return $this->hasOne(Employee::class);
+    }
+
     public function designation()
     {
         return $this->belongsTo(Designation::class);
@@ -20,6 +24,10 @@ class Position extends Model
     public function subdept()
     {
         return $this->belongsTo(SubDept::class, 'sub_dept_id');
+    }
+
+    public function department(){
+      return $this->belongsTo(Department::class);
     }
 
     public function getDepartmentNameAttribute()
@@ -32,7 +40,16 @@ class Position extends Model
         return $this->subdept->department->unit->name;
     }
 
-    public function employees(){
+    public function getEmployees(){
       return $this->hasMany(Employee::class);
+    }
+
+    public function getEmployee(){
+      $employee = Employee::where('position_id', $this->id)->first();
+      return $employee;
+    }
+
+    public function employees(){
+      return $this->belongsToMany(Employee::class);
     }
 }

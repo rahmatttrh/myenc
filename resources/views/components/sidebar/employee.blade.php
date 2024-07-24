@@ -1,4 +1,4 @@
-<li class="nav-item">
+{{-- <li class="nav-item">
    <a data-toggle="collapse" href="#qpe">
       <!-- <a  href="{{route('qpe')}}"> -->
       <i class="fas fa-file"></i>
@@ -14,6 +14,12 @@
          </li>
       </ul>
    </div>
+</li> --}}
+<li class="nav-item {{ (request()->is('qpe')) ? 'active' : '' }}">
+   <a href="{{route('qpe')}}">
+      <i class="fas fa-file"></i>
+      <p>Quick PE</p>
+   </a>
 </li>
 <li class="nav-item {{ (request()->is('employee/spkl/*')) ? 'active' : '' }}">
    <a href="{{route('employee.spkl')}}">

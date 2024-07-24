@@ -13,6 +13,7 @@ use App\Http\Controllers\DutyController;
 use App\Http\Controllers\EducationalController;
 use App\Http\Controllers\EmergencyController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\EmployeeLeaderController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\FetchController;
 use App\Http\Controllers\HomeController;
@@ -38,6 +39,7 @@ use App\Http\Controllers\SubDeptController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\VerificationController;
 use App\Models\Emergency;
+use App\Models\EmployeeLeader;
 use App\Models\SpApproval;
 use Illuminate\Support\Facades\Route;
 
@@ -166,8 +168,11 @@ Route::middleware(["auth"])->group(function () {
       Route::prefix('master/position')->group(function () {
          Route::get('/', [PositionController::class, 'index'])->name('position');
             Route::post('store', [PositionController::class, 'store'])->name('position.store');
+            Route::post('department/store', [PositionController::class, 'departmentStore'])->name('position.dept.store');
          //    Route::get('edit/{position:id}', [DesignationController::class, 'edit'])->name('position.edit');
             Route::put('update', [PositionController::class, 'update'])->name('position.update');
+            Route::put('department/update', [PositionController::class, 'departUpdate'])->name('position.department.update');
+            Route::get('department/delete/{id}', [PositionController::class, 'departDelete'])->name('position.department.delete');
             Route::get('delete/{position:id}', [PositionController::class, 'delete'])->name('position.delete');
       });
 
@@ -177,6 +182,14 @@ Route::middleware(["auth"])->group(function () {
          // Route::get('edit/{department:id}', [DepartmentController::class, 'edit'])->name('department.edit');
          Route::put('update', [ShiftController::class, 'update'])->name('shift.update');
          Route::get('delete/{id}', [ShiftController::class, 'delete'])->name('shift.delete');
+      });
+
+      Route::prefix('leader')->group(function () {
+         // Route::get('/', [ShiftController::class, 'index'])->name('shift');
+         Route::post('store', [EmployeeLeaderController::class, 'store'])->name('leader.store');
+         // Route::get('edit/{department:id}', [DepartmentController::class, 'edit'])->name('department.edit');
+         // Route::put('update', [ShiftController::class, 'update'])->name('shift.update');
+         // Route::get('delete/{id}', [ShiftController::class, 'delete'])->name('shift.delete');
       });
 
       Route::prefix('contract')->group(function () {

@@ -1,20 +1,19 @@
-@if ($sp->status == 0)
-    <span class="text-muted">Draft</span>
-    @elseif($sp->status == 1)
-    <span class="text-muted">Verifikasi HRD</span> 
-    @elseif($sp->status == 2)
-    <span class="text-muted">Konfirmasi User</span>
-    @elseif($sp->status == 3)
-    <span class="text-muted">Approval Manager</span>
-    @elseif($sp->status == 4)
-    <span class="text-muted">Published</span>
-    @elseif($sp->status == 5)
-    <span class="text-muted">Confirmed</span>
-    @elseif($sp->status == 5)
-    <span class="text-muted">Reject</span>
+@if($pe->status == 0)
+<span class="badge badge-dark badge-lg"><b>Draft</b></span>
+@elseif($pe->status == '1')
 
-    @elseif($sp->status == 101)
-    <span class="text-muted">Discussion Proccess</span>
-    @elseif($sp->status == 202)
-    <span class="text-muted">Complain Proccess</span>
+      @if (auth()->user()->hasRole('Manager'))
+      <span class="badge badge-warning badge-lg"><b>Perlu Diverifikasi</b></span>
+      @else
+      <span class="badge badge-warning badge-lg"><b>Verifikasi Manager</b></span>
+      @endif
+
+@elseif($pe->status == '2')
+<span class="badge badge-success badge-lg"><b>Done</b></span>
+@elseif($pe->status == '3')
+<span class="badge badge-primary badge-lg"><b>Validasi HRD</b></span>
+@elseif($pe->status == '101')
+<span class="badge badge-danger badge-lg"><b>Di Reject Manager</b></span>
+@elseif($pe->status == '202')
+<span class="badge badge-warning badge-lg"><b>Need Discuss</b></span>
 @endif

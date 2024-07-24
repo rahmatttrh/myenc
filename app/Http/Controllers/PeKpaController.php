@@ -531,7 +531,7 @@ class PeKpaController extends Controller
     {
         $employee = auth()->user()->getEmployee();
 
-        if (auth()->user()->hasRole('Administrator|HRD')) {
+        if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment')) {
             $kpas = PeKpa::orderBy('date', 'desc')
                 ->orderBy('employe_id')
                 ->get();
@@ -541,7 +541,7 @@ class PeKpaController extends Controller
                 ->whereNotNull('kpi_id')
                 ->get();
             // 
-        } else if (auth()->user()->hasRole('Leader|Manager')) {
+        } else if (auth()->user()->hasRole('Leader|Manager|Supervisor|Asst. Manager')) {
 
             $kpas = DB::table('pe_kpas')
                 ->join('pe_kpis', 'pe_kpas.kpi_id', '=', 'pe_kpis.id')

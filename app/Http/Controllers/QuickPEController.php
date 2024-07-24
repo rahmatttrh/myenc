@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Department;
 use App\Models\Designation;
 use App\Models\Employee;
+use App\Models\EmployeeLeader;
 use App\Models\Log;
 use App\Models\Pe;
 use App\Models\PeBehavior;
@@ -47,7 +48,7 @@ class QuickPEController extends Controller
             $outAssesments = $this->outstandingAssessment();
 
             // 
-        } else if (auth()->user()->hasRole('Manager')) {
+        } else if (auth()->user()->hasRole('Manager|Asst. Manager')) {
          $employee = auth()->user()->getEmployee();
             $pes = Pe::join('employees', 'pes.employe_id', '=', 'employees.id')
                 ->where('employees.manager_id', $employee->id)
@@ -59,21 +60,22 @@ class QuickPEController extends Controller
             // 
             $outAssesments = $this->outstandingAssessment($employee->department_id);
             // 
-        } else if (auth()->user()->hasRole('Leader|Supervisor ')) {
+        } else if (auth()->user()->hasRole('Leader|Supervisor')) {
+         $employee = auth()->user()->getEmployee();
+         // dd($employee->id);
+            // $pes = Pe::join('employees', 'pes.employe_id', '=', 'employees.id')
+            //     ->where('employees.direct_leader_id', $employee->id)
 
-
-            $pes = Pe::join('employees', 'pes.employe_id', '=', 'employees.id')
-                ->where('employees.direct_leader_id', $employee->id)
-
-                ->select('pes.*')
-                ->orderBy('pes.release_at', 'desc')
-                ->get();
+            //     ->select('pes.*')
+            //     ->orderBy('pes.release_at', 'desc')
+            //     ->get();
+            $pes = Pe::where('created_by', $employee->id)->get();
 
             // 
             $outAssesments = $this->outstandingAssessment($employee->department_id);
             // 
         } else if (auth()->user()->hasRole('Karyawan')) {
-
+         $employee = auth()->user()->getEmployee();
 
             $pes = Pe::join('employees', 'pes.employe_id', '=', 'employees.id')
                 ->where('employees.id', $employee->id)
@@ -126,7 +128,7 @@ class QuickPEController extends Controller
             $outAssesments = $this->outstandingAssessment();
 
             // 
-        } else if (auth()->user()->hasRole('Leader|Manager|Supervisor')) {
+        } else if (auth()->user()->hasRole('Leader|Manager|Asst. Manager|Supervisor')) {
          $employee = auth()->user()->getEmployee();
             $kpas = DB::table('pe_kpas')
                 ->join('pe_kpis', 'pe_kpas.kpi_id', '=', 'pe_kpis.id')
@@ -139,10 +141,12 @@ class QuickPEController extends Controller
             // Convert the query builder result to Order model instances
             $kpas = PeKpa::hydrate($kpas->toArray());
 
-            $employes = Employee::where('department_id', $employee->department_id)
-                ->where('status', '1')
-                ->whereNotNull('kpi_id')
-                ->get();
+            // $employes = Employee::where('department_id', $employee->department_id)
+            //     ->where('status', '1')
+            //     ->whereNotNull('kpi_id')
+            //     ->get();
+
+            $employes = EmployeeLeader::where('leader_id', $employee->id)->get();
             // 
             $outAssesments = $this->outstandingAssessment($employee->department_id);
             // 
@@ -191,6 +195,8 @@ class QuickPEController extends Controller
             'date' => 'required'
         ]);
 
+        $employee = Employee::where('nik', auth()->user()->username)->first();
+
         // Memeriksa apakah PE untuk karyawan pada semester dan tahun tertentu sudah ada
         $cek = Pe::where([
             'employe_id' => $req->employe_id,
@@ -215,11 +221,14 @@ class QuickPEController extends Controller
 
             // Menyisipkan data PE baru ke database
             $pe = Pe::create([
+               'department_id' => $employee->department_id,
+               'sub_dept_id' => $employee->sub_dept_id,
                 'employe_id' => $req->employe_id,
                 'date' => $req->date,
                 'is_semester' => '1',
                 'semester' => $req->semester,
                 'tahun' => $req->tahun,
+                'created_by' => $employee->id,
                 'created_at' => NOW(),
                 'updated_at' => NOW()
             ]);

@@ -10,6 +10,14 @@ class Pe extends Model
     use HasFactory;
     protected $guarded = [];
 
+    public function department(){
+      return $this->belongsTo(Department::class);
+    }
+
+    public function sub_dept(){
+      return $this->belongsTo(SubDept::class);
+    }
+
     public function employe()
     {
         return $this->belongsTo(Employee::class);
