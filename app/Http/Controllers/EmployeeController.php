@@ -155,16 +155,16 @@ class EmployeeController extends Controller
       for ($i = 0; $i < $jumlah; $i++) {
          $employee = Employee::find($arrayItem[$i]);
 
-         // try {
-         //    $user = User::create([
-         //       'name' => $employee->biodata->first_name . ' ' . $employee->biodata->last_name,
-         //       'email' => $employee->biodata->email,
-         //       'username' => $employee->nik,
-         //       'password' => Hash::make('12345678')
-         //    ]);
-         // } catch (Exception $e) {
-         //    return redirect()->back()->with('danger', 'Can not activate employee  ' . $employee->biodata->first_name . ' ' . $employee->biodata->last_name . ', Error log : ' . $e->getMessage());
-         // }
+         try {
+            $user = User::create([
+               'name' => $employee->biodata->first_name . ' ' . $employee->biodata->last_name,
+               'email' => $employee->biodata->email,
+               'username' => $employee->nik,
+               'password' => Hash::make('12345678')
+            ]);
+         } catch (Exception $e) {
+            return redirect()->back()->with('danger', 'Can not activate employee  ' . $employee->biodata->first_name . ' ' . $employee->biodata->last_name . ', Error log : ' . $e->getMessage());
+         }
 
          $employee->update([
             'status' => 1,
@@ -444,8 +444,7 @@ class EmployeeController extends Controller
          'nationality' => $req->nationality,
          'state' => $req->state,
          'city' => $req->city,
-         'no_ktp' => $req->no_ktp,
-         'no_kk' => $req->no_kk
+         
       ]);
 
       $employee->update([

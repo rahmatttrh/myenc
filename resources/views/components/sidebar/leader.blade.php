@@ -7,7 +7,7 @@
    <div class="collapse" id="kpi">
       <ul class="nav nav-collapse">
          {{-- @if (auth()->user()->hasRole('Administrator|HRD')) --}}
-         <li>
+         <!-- <li>
             <a href="{{route('pe.component')}}">
                <span class="sub-item">Component</span>
             </a>
@@ -16,7 +16,7 @@
             <a href="{{route('discipline')}}">
                <span class="sub-item">Discipline</span>
             </a>
-         </li>
+         </li> -->
          {{-- @endif --}}
          <li>
             <a href="{{route('kpi')}}">
@@ -28,7 +28,7 @@
                <span class="sub-item">KPI Apprasial</span>
             </a>
          </li> -->
-         <li>
+         <!-- <li>
             <a href="{{route('kpi')}}">
                <span class="sub-item">Behavior</span>
             </a>
@@ -37,7 +37,7 @@
             <a href="#">
                <span class="sub-item">...</span>
             </a>
-         </li>
+         </li> -->
       </ul>
    </div>
 </li>

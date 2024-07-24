@@ -84,12 +84,15 @@ class ContractController extends Controller
       // try {
       //    DB::transaction(function () use ($req) {
       $contract = Contract::find($req->contract);
+      // dd($contract->id_no);
+
       $employee = Employee::where('nik', $contract->id_no)->first();
+      // dd($employee);
       // dd($req->position);
 
       // dd($req->designation);
       $employee->update([
-         // 'unit_id' => $req->unit,
+         'unit_id' => $req->unit,
          'nik' => $req->nik,
          'manager_id' => $req->manager,
          'direct_leader_id' => $req->leader,

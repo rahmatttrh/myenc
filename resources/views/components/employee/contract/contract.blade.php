@@ -98,7 +98,7 @@
                            
                         </div>
                         <div class="col-6 pl-0 text-right">
-                           <h3 class="fw-bold mb-1">{{formatDate($employee->contract->determination ?? '-')}}</h3>
+                           <h3 class="fw-bold mb-1">{{formatDate($employee->contract->determination)}}</h3>
                            <div class="text-small text-uppercase fw-bold op-8">Penetapan</div>
                           
                            

@@ -9,19 +9,7 @@
          <h5 class="page-title">
             <i class="fa fa-home"></i>
             Dashboard 
-            {{-- @if (auth()->user()->hasRole('Administrator'))
-                Administrator
-                
-            @endif
-            @if (auth()->user()->hasRole('HRD'))
-                HRD
-                
-            @endif --}}
-            @if (auth()->user()->email == 'admin@gmail.com' || auth()->user()->email == 'developer@gmail.com')
-               Administrator
-                @else
-                {{auth()->user()->employee->position->name}}
-            @endif
+           
             
          </h5>
       </div>
