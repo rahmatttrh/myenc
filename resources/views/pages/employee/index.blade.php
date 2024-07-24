@@ -45,6 +45,8 @@ Employee
                      <th class="text-center">No</th>
                      <th>Name</th>
                      <th>ID</th>
+                     <th>KPI</th>
+                     <th>Leader</th>
                      {{-- <th>Phone</th> --}}
                      <th class="text-truncate">Bisnis Unit</th>
                      <th>Department</th>
@@ -58,8 +60,8 @@ Employee
                   <tr>
                      <th class=""></th>
                      <td @disabled(true)></td>
-                     {{-- <th></th>
-                     <th></th> --}}
+                     <th></th>
+                     <th></th>
                      <th></th>
                      <th></th>
                      <th></th>
@@ -72,15 +74,32 @@ Employee
                   @foreach ($employees as $employee)
                   <tr>
                      <td class="text-center">{{++$i}}</td>
+                     <td class="text-truncate">{{$employee->contract->id_no}}</td>
                      {{-- <td><a href="{{route('employee.detail', enkripRambo($employee->id))}}">{{$employee->name}}</a> </td> --}}
                      <td class="text-truncate">
                         <div>
-                           <a href="{{route('employee.detail', [enkripRambo($employee->id), enkripRambo('basic')])}}">  {{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</a> 
+                           <a href="{{route('employee.detail', [enkripRambo($employee->id), enkripRambo('basic')])}}"> {{$employee->contract->id_no}} {{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</a> 
                            {{-- <small class="text-muted">{{$employee->biodata->email}}</small> --}}
                         </div>
                        
                      </td>
-                     <td class="text-truncate">{{$employee->contract->id_no}}</td>
+                     
+                     <td>
+                        @if ($employee->kpi_id != null)
+                        <a href="{{route('kpi.edit', enkripRambo($employee->kpi_id))}}">{{$employee->getKpi()->title}}</a>
+                            
+                            @else
+                            Empty
+                        @endif
+                        
+                     </td>
+                     <td>
+                        @if (count($employee->getLeaders()) > 0)
+                            OK
+                            @else
+                            Empty
+                        @endif
+                     </td>
                      {{-- <td>{{$employee->biodata->phone}}</td> --}}
                      
                      <td class="text-truncate">
