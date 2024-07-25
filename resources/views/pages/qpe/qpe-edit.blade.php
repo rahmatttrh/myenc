@@ -38,10 +38,11 @@ PE
         <div class="card shadow-none border">
             <div class="card-header d-flex bg-primary">
                 <div class="d-flex  align-items-center">
-                    <small class=" text-white">KPI</small>
+                    <small class=" text-white">KPI  {{auth()->user()->getEmployeeId()}}  {{$pe->created_by}}</small>
                 </div>
 
-                @if(($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202') && (auth()->user()->hasRole('Leader') || auth()->user()->hasRole('Supervisor') || auth()->user()->hasRole('Administrator') ) )
+                {{-- @if(($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202') && (auth()->user()->hasRole('Leader') || auth()->user()->hasRole('Supervisor') || auth()->user()->hasRole('Administrator') ) ) --}}
+                @if(($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202') && (auth()->user()->getEmployeeId() == $pe->created_by  ) )
                 <div class="btn-group btn-group-page-header ml-auto">
                     <div class="button-group">
                         @if(isset($pd) && $pd->pdds->count() == 6)
@@ -86,6 +87,7 @@ PE
                         <btn data-target="#modalAddtional" data-toggle="modal" class="dropdown-item" style="text-decoration: none">Addtional Objective</btn>
                     </div>
                 </div>
+                @else
                 @endif
 
                 @if (auth()->user()->hasRole('Administrator|HRD'))

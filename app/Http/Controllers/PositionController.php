@@ -80,10 +80,10 @@ class PositionController extends Controller
       $department = Department::find($position->department_id);
       // dd($employee->biodata->fullName());
       $employee->update([
-         'unit_id' => $department->unit_id,
-         'department_id' => $position->department_id,
-         'position_id' => $position->id,
-         'designation_id' => $position->designation_id
+         'unit_id' => null,
+         'department_id' => null,
+         'position_id' => null,
+         'designation_id' => null
       ]);
 
       $position->employees()->sync($employee->id);

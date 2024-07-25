@@ -39,18 +39,18 @@ Employee
    <div class="card">
       <div class="card-body">
          <div class="table-responsive">
-            <table id="" class="display basic-datatables table-sm    ">
+            <table id="data" class="display basic-datatables table-sm    ">
                <thead>
                   <tr>
                      <th class="text-center">No</th>
-                     <th>Name</th>
                      <th>ID</th>
+                     <th>Name</th>
                      <th>KPI</th>
                      <th>Leader</th>
                      {{-- <th>Phone</th> --}}
                      <th class="text-truncate">Bisnis Unit</th>
                      <th>Department</th>
-                     {{-- <th>Level</th> --}}
+                     {{-- <th>Sub</th> --}}
                      <th  >Posisi</th>
                      {{-- <th>Kontrak/Tetap</th> --}}
                      {{-- <th class="text-right">Action</th> --}}
@@ -59,13 +59,14 @@ Employee
                <tfoot>
                   <tr>
                      <th class=""></th>
-                     <td @disabled(true)></td>
+                     <td @disabled(true) colspan=""></td>
+                     <th ></th>
                      <th></th>
                      <th></th>
                      <th></th>
                      <th></th>
                      <th></th>
-                     <th></th>
+                     {{-- <th></th> --}}
                      {{-- <th></th> --}}
                      {{-- <th class="text-right">Action</th> --}}
                   </tr>
@@ -78,7 +79,7 @@ Employee
                      {{-- <td><a href="{{route('employee.detail', enkripRambo($employee->id))}}">{{$employee->name}}</a> </td> --}}
                      <td class="text-truncate">
                         <div>
-                           <a href="{{route('employee.detail', [enkripRambo($employee->id), enkripRambo('basic')])}}"> {{$employee->contract->id_no}} {{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</a> 
+                           <a href="{{route('employee.detail', [enkripRambo($employee->id), enkripRambo('basic')])}}"> {{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</a> 
                            {{-- <small class="text-muted">{{$employee->biodata->email}}</small> --}}
                         </div>
                        
@@ -86,8 +87,9 @@ Employee
                      
                      <td>
                         @if ($employee->kpi_id != null)
-                        <a href="{{route('kpi.edit', enkripRambo($employee->kpi_id))}}">{{$employee->getKpi()->title}}</a>
-                            
+                        {{-- <a href="{{route('kpi.edit', enkripRambo($employee->kpi_id))}}">{{$employee->getKpi()->title}}</a> --}}
+                            {{-- <span class="text-success">OK</span> --}}
+                            <i class="fa fa-check"></i>
                             @else
                             Empty
                         @endif
@@ -95,7 +97,8 @@ Employee
                      </td>
                      <td>
                         @if (count($employee->getLeaders()) > 0)
-                            OK
+                            {{-- OK --}}
+                            <i class="fa fa-check"></i>
                             @else
                             Empty
                         @endif
@@ -104,30 +107,43 @@ Employee
                      
                      <td class="text-truncate">
                         @if (count($employee->positions) > 0)
-                              @foreach ($employee->positions as $pos)
+                              {{-- @foreach ($employee->positions as $pos)
                                   {{$pos->department->unit->name}}
-                              @endforeach
+                              @endforeach --}}
+                              Multiple
                             @else
                             {{$employee->department->unit->name ?? ''}}
                         @endif
                         
                      </td>
+                     
                      <td>
                         {{-- {{$employee->department->name ?? ''}} --}}
                         @if (count($employee->positions) > 0)
-                              @foreach ($employee->positions as $pos)
+                              {{-- @foreach ($employee->positions as $pos)
                                   {{$pos->department->name}}
-                              @endforeach
+                              @endforeach --}}
+                              Multiple
                             @else
                             {{$employee->department->name ?? ''}}
                         @endif
                      </td>
+                     {{-- <td>
+                        @if (count($employee->positions) > 0)
+                              @foreach ($employee->positions as $pos)
+                                  {{$pos->sub_dept->name ?? ''}}
+                              @endforeach
+                            @else
+                            {{$employee->sub_dept->name ?? ''}}
+                        @endif
+                     </td> --}}
                      {{-- <td>{{$employee->contract->designation->name ?? ''}}</td> --}}
                      <td>
                         @if (count($employee->positions) > 0)
-                              @foreach ($employee->positions as $pos)
+                              {{-- @foreach ($employee->positions as $pos)
                                   {{$pos->name}}
-                              @endforeach
+                              @endforeach --}}
+                              Multiple
                             @else
                             {{$employee->position->name ?? ''}}
                         @endif
@@ -180,6 +196,8 @@ Employee
 
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script>
+   
+
    $(document).ready(function() {
       $('.tanggal').datepicker({
          format: "yyyy-mm-dd",

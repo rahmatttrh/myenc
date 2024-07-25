@@ -41,7 +41,7 @@
 				<div class="card o-hidden border-0 shadow-lg my-5">
 					<div class="card-body p-0">
 						<div class="row">
-							<div class="col-lg-6 d-none d-lg-block " style="background-image: url({{asset('img/bg/kj4.png')}});background-repeat: no-repeat;background-size: cover;border-radius: 5px;">
+							<div class="col-lg-6 d-none d-lg-block " style="background-image: url({{asset('img/bg/kj4_com.png')}});background-repeat: no-repeat;background-size: cover;border-radius: 5px;">
 								<img class="mt-3" src="{{asset('img/logo/enc2.jpg')}}" alt="">
 							</div>
 							<div class="col-lg-6">

@@ -84,6 +84,8 @@ class ContractController extends Controller
          'nik' => 'required'
       ]);
 
+      // dd($req->subdept);
+
       $position = Position::find($req->position);
       // try {
       //    DB::transaction(function () use ($req) {
