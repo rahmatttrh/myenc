@@ -304,6 +304,7 @@ Route::middleware(["auth"])->group(function () {
 
       Route::put('/submit/{id}', [SpApprovalController::class, 'submit'])->name('sp.submit');
       Route::put('/app/hrd/{id}', [SpApprovalController::class, 'appHrd'])->name('sp.app.hrd');
+      Route::put('/reject/hrd', [SpApprovalController::class, 'rejectHrd'])->name('sp.reject.hrd');
       Route::put('/app/manager/{id}', [SpApprovalController::class, 'appManager'])->name('sp.app.manager');
       Route::put('/release/{id}', [SpApprovalController::class, 'release'])->name('sp.release');
       Route::put('/discuss/manager', [SpApprovalController::class, 'discussManager'])->name('sp.discuss.manager');

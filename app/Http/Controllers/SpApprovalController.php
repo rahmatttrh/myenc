@@ -157,6 +157,10 @@ class SpApprovalController extends Controller
       return  back()->with('success', 'SP successfully verified');
    }
 
+   public function rejectHrd(Request $req){
+      dd('reject');
+   }
+
    public function appManager(Request $req, $id)
    {
       // Validasi input
@@ -364,10 +368,12 @@ class SpApprovalController extends Controller
          'id' => 'required',
       ]);
 
+      // dd('ok');
+
       $sp = Sp::find($req->id);
 
       $sp->update([
-         'status' => '5',
+         'status' => '505',
          'alasan_reject' => $req->alasan_reject,
          'reject_at' => NOW()
       ]);
@@ -381,13 +387,13 @@ class SpApprovalController extends Controller
          'employee_id' => auth()->user()->getEmployeeId(),
       ]);
 
-      $employee = Employee::find(auth()->user()->getEmployeeId());
-      Log::create([
-         'department_id' => $employee->department_id,
-         'user_id' => auth()->user()->id,
-         'action' => 'Reject',
-         'desc' => 'SP ' . $sp->level . ' ' . $sp->code . ' ' . $sp->employee->nik . ' ' . $sp->employee->biodata->fullName()
-      ]);
+      // $employee = Employee::find(auth()->user()->getEmployeeId());
+      // Log::create([
+      //    'department_id' => $employee->department_id,
+      //    'user_id' => auth()->user()->id,
+      //    'action' => 'Reject',
+      //    'desc' => 'SP ' . $sp->level . ' ' . $sp->code . ' ' . $sp->employee->nik . ' ' . $sp->employee->biodata->fullName()
+      // ]);
 
       return  back()->with('success', 'SP successfully rejected');
    }

@@ -295,6 +295,7 @@ class EmployeeController extends Controller
       $spvs = Employee::where('status', 1)->where('designation_id', 4)->where('department_id', $employee->department_id)->get();
       $leaders = Employee::where('role', 4)->orWhere('role', 8)->orWhere('role', 5)->orWhere('role', 9)->get();
       $finalLeaders = $leaders->where('status', 1)->where('department_id', $employee->department_id);
+      $managers = Position::where('type', 'dept');
       // $managers = Position::where('');
       // dd($finalLeaders);
       // dd($employee->documents);
@@ -596,18 +597,18 @@ class EmployeeController extends Controller
          'picture' => $picture
       ]);
 
-      if (auth()->user()->hasRole('Administrator')) {
-         $departmentId = null;
-      } else {
-         $user = Employee::find(auth()->user()->getEmployeeId());
-         $departmentId = $user->department_id;
-      }
-      Log::create([
-         'department_id' => $departmentId,
-         'user_id' => auth()->user()->id,
-         'action' => 'Update',
-         'desc' => 'Profile Picture ' . $employee->nik . ' ' . $employee->biodata->fullname()
-      ]);
+      // if (auth()->user()->hasRole('Administrator')) {
+      //    $departmentId = null;
+      // } else {
+      //    $user = Employee::find(auth()->user()->getEmployeeId());
+      //    $departmentId = $user->department_id;
+      // }
+      // Log::create([
+      //    'department_id' => $departmentId,
+      //    'user_id' => auth()->user()->id,
+      //    'action' => 'Update',
+      //    'desc' => 'Profile Picture ' . $employee->nik . ' ' . $employee->biodata->fullname()
+      // ]);
 
       return redirect()->route('employee.detail', [enkripRambo($employee->id), enkripRambo('basic')])->with('success', 'Employee successfully updated');
    }
@@ -625,18 +626,18 @@ class EmployeeController extends Controller
 
       
       // $user = Employee::find(auth()->user()->getEmployeeId());
-      if (auth()->user()->hasRole('Administrator')) {
-         $departmentId = null;
-      } else {
-         $user = Employee::find(auth()->user()->getEmployeeId());
-         $departmentId = $user->department_id;
-      }
-      Log::create([
-         'department_id' => $departmentId,
-         'user_id' => auth()->user()->id,
-         'action' => 'Update',
-         'desc' => 'Role ' . $employee->nik . ' ' . $employee->biodata->fullname()
-      ]);
+      // if (auth()->user()->hasRole('Administrator')) {
+      //    $departmentId = null;
+      // } else {
+      //    $user = Employee::find(auth()->user()->getEmployeeId());
+      //    $departmentId = $user->department_id;
+      // }
+      // Log::create([
+      //    'department_id' => $departmentId,
+      //    'user_id' => auth()->user()->id,
+      //    'action' => 'Update',
+      //    'desc' => 'Role ' . $employee->nik . ' ' . $employee->biodata->fullname()
+      // ]);
 
       return redirect()->route('employee.detail', [enkripRambo($employee->id), enkripRambo('account')])->with('success', 'Employee successfully updated');
    }

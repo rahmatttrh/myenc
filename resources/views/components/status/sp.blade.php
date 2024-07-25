@@ -10,8 +10,8 @@
     <span class="text-muted">Published</span>
     @elseif($sp->status == 5)
     <span class="text-muted">Confirmed</span>
-    @elseif($sp->status == 5)
-    <span class="text-muted">Reject</span>
+    @elseif($sp->status == 505)
+    <span class="text-muted">Rejected</span>
 
     @elseif($sp->status == 101)
     <span class="text-muted">Discussion Proccess</span>
