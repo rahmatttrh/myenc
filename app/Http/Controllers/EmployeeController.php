@@ -27,12 +27,28 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Models\PeKpi;
 
 class EmployeeController extends Controller
 {
    public function index($enkripTab)
    {
       $tab = dekripRambo($enkripTab);
+
+      // $employees = Employee::get();
+      // foreach ($employees as $emp) {
+      //    if($emp->kpi_id != null) {
+      //       $kpi = PeKpi::find($emp->kpi_id);
+      //       if ($kpi == null) {
+      //          $emp->update([
+      //             'kpi_id' => null
+      //          ]);
+      //          // dd($emp->kpi_id);
+      //       }
+      //    }
+        
+      //    # code...
+      // }
       // dd($tab);
       // $employees = Employee::where('status', 1)
       //    ->orderBy('department_id')
@@ -293,7 +309,7 @@ class EmployeeController extends Controller
 
       $managers = Employee::where('status', 1)->where('designation_id', 6)->get();
       $spvs = Employee::where('status', 1)->where('designation_id', 4)->where('department_id', $employee->department_id)->get();
-      $leaders = Employee::where('role', 4)->orWhere('role', 8)->get();
+      $leaders = Employee::where('role', 4)->orWhere('role', 7)->get();
       $finalLeaders = $leaders->where('status', 1)->where('department_id', $employee->department_id);
       // dd($finalLeaders);
       // dd($employee->documents);

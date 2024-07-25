@@ -43,8 +43,8 @@ Employee
                <thead>
                   <tr>
                      <th class="text-center">No</th>
-                     <th>Name</th>
                      <th>ID</th>
+                     <th>Name</th>
                      <th>KPI</th>
                      <th>Leader</th>
                      {{-- <th>Phone</th> --}}
@@ -78,15 +78,16 @@ Employee
                      {{-- <td><a href="{{route('employee.detail', enkripRambo($employee->id))}}">{{$employee->name}}</a> </td> --}}
                      <td class="text-truncate">
                         <div>
-                           <a href="{{route('employee.detail', [enkripRambo($employee->id), enkripRambo('basic')])}}"> {{$employee->contract->id_no}} {{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</a> 
+                           <a href="{{route('employee.detail', [enkripRambo($employee->id), enkripRambo('basic')])}}"> {{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</a> 
                            {{-- <small class="text-muted">{{$employee->biodata->email}}</small> --}}
                         </div>
                        
                      </td>
                      
-                     <td>
+                     <td class="text-truncate">
                         @if ($employee->kpi_id != null)
-                        <a href="{{route('kpi.edit', enkripRambo($employee->kpi_id))}}">{{$employee->getKpi()->title}}</a>
+                      
+                        <a href="{{route('kpi.edit', enkripRambo($employee->kpi_id))}}">{{$employee->getKpi()->title ?? '-'}}</a>
                             
                             @else
                             Empty
