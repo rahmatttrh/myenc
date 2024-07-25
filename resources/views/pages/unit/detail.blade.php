@@ -126,7 +126,11 @@
                                         <tr>
                                           <td></td>
                                           <td>{{$pos->name}} </td>
-                                          <td>{{count($pos->employees->where('status', 1))}} Karyawan</td>
+                                          <td>
+                                             
+                                             {{count($pos->getEmployees()->where('status', 1))}} Karyawan
+                                             
+                                          </td>
                                           <td class="text-right">
                                              <a href="#" data-toggle="modal" data-target="#modal-edit-position-{{$pos->id}}">Edit</a> | <a href="#" data-toggle="modal" data-target="#modal-delete-{{$pos->id}}">Delete</a>
                                           </td>

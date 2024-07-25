@@ -41,13 +41,17 @@ class Position extends Model
     }
 
     public function getEmployees(){
-      return $this->hasMany(Employee::class);
+      $employees = Employee::where('position_id', $this->id)->get();
+      return $employees;
+      // return $this->hasMany(Employee::class);
     }
 
-    public function getEmployee(){
-      $employee = Employee::where('position_id', $this->id)->first();
-      return $employee;
-    }
+   //  public function getEmployeeName(){
+      
+   //    $emp = Employee::where('position_id', 164)->first();
+   //    dd($emp->biodata->fullName());
+   //    return $this->id;
+   //  }
 
     public function employees(){
       return $this->belongsToMany(Employee::class);

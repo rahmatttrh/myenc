@@ -38,6 +38,7 @@ class QuickPEController extends Controller
 
         // Data KPI
         if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv')) {
+         $employee = null;
             $kpas = PeKpa::where('status', '!=', '0')
                 ->orderBy('employe_id')
                 ->get();
@@ -49,12 +50,17 @@ class QuickPEController extends Controller
 
             // 
         } else if (auth()->user()->hasRole('Manager|Asst. Manager')) {
+         // dd('ok');
          $employee = auth()->user()->getEmployee();
-            $pes = Pe::join('employees', 'pes.employe_id', '=', 'employees.id')
-                ->where('employees.manager_id', $employee->id)
-                ->where('pes.status', '>', '0')
-                ->select('pes.*')
-                ->orderBy('pes.release_at', 'desc')
+            // $pes = Pe::join('employees', 'pes.employe_id', '=', 'employees.id')
+            //     ->where('employees.manager_id', $employee->id)
+            //     ->where('pes.status', '>', '0')
+            //     ->select('pes.*')
+            //     ->orderBy('pes.release_at', 'desc')
+            //     ->get();
+
+                $pes = Pe::where('department_id', $employee->department_id)->where('pes.status', '>', '0')
+                ->orderBy('release_at', 'desc')
                 ->get();
 
             // 
@@ -92,6 +98,7 @@ class QuickPEController extends Controller
 
         return view('pages.qpe.qpe', [
             // 'kpas' => $kpas,
+            'employee' => $employee,
             'pes' => $pes,
             'outAssesments' =>  $outAssesments
         ])->with('i');
@@ -632,7 +639,7 @@ class QuickPEController extends Controller
             return back()->with('danger', 'Data Behavior Belum di isi !');
         }
 
-        $verifikasiBy = auth()->user()->name;
+        $verifikasiBy = auth()->user()->getEmployeeId();
 
         if (!$verifikasiBy) {
 

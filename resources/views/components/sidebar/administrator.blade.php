@@ -67,11 +67,11 @@
                <span class="sub-item">KPI</span>
             </a>
          </li>
-         <!-- <li>
+         {{-- <li>
             <a href="{{route('kpa')}}">
                <span class="sub-item">KPI Apprasial</span>
             </a>
-         </li> -->
+         </li> --}}
          {{-- <li>
             <a href="{{route('kpi')}}">
                <span class="sub-item">Behavior</span>
@@ -96,11 +96,11 @@
    </a>
    <div class="collapse" id="qpe">
       <ul class="nav nav-collapse">
-         <li>
+         {{-- <li>
             <a href="{{route('qpe.create')}}">
                <span class="sub-item">Create PE</span>
             </a>
-         </li>
+         </li> --}}
          <li>
             <a href="{{route('qpe')}}">
                <span class="sub-item">Daftar PE</span>

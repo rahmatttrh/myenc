@@ -178,6 +178,8 @@
       @stack('myjs')
 
       <script >
+
+
          $(document).ready(function() {
             
             $('.select2').select2({});
@@ -191,7 +193,7 @@
                "pageLength": 10,
                "ordering": false,
                initComplete: function () {
-                     this.api().columns([4,5,6,7]).every( function () {
+                     this.api().columns([5,6,7]).every( function () {
                         var column = this;
                         var select = $('<select class="form-control-sm "><option value=""></option></select>')
                         .appendTo( $(column.footer()).empty() )

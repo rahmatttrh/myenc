@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Models\EmployeeLeader;
 use App\Models\Log;
 use App\Models\Pe;
 use App\Models\Sp;
@@ -25,15 +26,16 @@ class SpController extends Controller
       } elseif (auth()->user()->hasRole('HRD')) {
          $employees = Employee::get();
          $sps = Sp::orderBy('created_at', 'desc')->get();
-      } elseif (auth()->user()->hasRole('Manager')) {
+      } elseif (auth()->user()->hasRole('Manager|Asst. Manager')) {
          $employees = Employee::where('department_id', auth()->user()->getEmployee()->department_id)->where('designation_id', '<', 6)->get();
 
          $sps = Sp::where('department_id', auth()->user()->getEmployee()->department_id)->orderBy('created_at', 'desc')->get();
       } elseif (auth()->user()->hasRole('Leader') || auth()->user()->hasRole('Supervisor')) {
          // dd(auth()->user()->getEmployeeId());
          // $employees = Employee::where('department_id', auth()->user()->getEmployee()->department_id)->where('designation_id', '<', 4)->get();
-         $employees = Employee::where('direct_leader_id', auth()->user()->getEmployeeId())->get();
-         $sps = Sp::where('department_id', auth()->user()->getEmployee()->department_id)->orderBy('created_at', 'desc')->get();
+         // $employees = Employee::where('direct_leader_id', auth()->user()->getEmployeeId())->get();
+         $employees = EmployeeLeader::where('leader_id', auth()->user()->getEmployee()->id)->get();
+         $sps = Sp::where('by_id', auth()->user()->getEmployee()->id)->orderBy('created_at', 'desc')->get();
       }
       
       // foreach ($sps as $sp) {
@@ -123,13 +125,13 @@ class SpController extends Controller
          'file' => $file
       ]);
 
-      $user = Employee::find(auth()->user()->getEmployeeId());
-      Log::create([
-         'department_id' => $user->department_id,
-         'user_id' => auth()->user()->id,
-         'action' => 'Create',
-         'desc' => 'SP ' . $sp->level . ' ' . $sp->code . ' ' . $employee->nik . ' ' . $employee->biodata->fullName()
-      ]);
+         // $user = Employee::find(auth()->user()->getEmployeeId());
+         // Log::create([
+         //    'department_id' => $user->department_id,
+         //    'user_id' => auth()->user()->id,
+         //    'action' => 'Create',
+         //    'desc' => 'SP ' . $sp->level . ' ' . $sp->code . ' ' . $employee->nik . ' ' . $employee->biodata->fullName()
+         // ]);
 
       
 

@@ -79,7 +79,12 @@ Dashboard
 
                    @else
                    <b>{{$employee->unit->name ?? '-'}} - {{$employee->department->name}}</b><br>
-                     <small>{{$employee->position->name}}</small>
+                   @if ($employee->position->type == 'subdept')
+                       {{$employee->sub_dept->name}} 
+                       <hr>
+                   @endif
+                   
+                  <small>{{$employee->position->name}}</small>
                @endif
                
             </div>
@@ -102,12 +107,13 @@ Dashboard
                            @foreach ($positions as $pos)
                                  <tr>
                                  {{-- <td></td> --}}
-                                 <td colspan="3">{{$pos->department->unit->name}} {{$pos->department->name}} ({{count($pos->department->employees)}}) </td>
+                                 <td colspan="4">{{$pos->department->unit->name}} {{$pos->department->name}} ({{count($pos->department->employees)}}) </td>
                                  {{-- <td>{{$employee->biodata->fullName()}}</td> --}}
                                  </tr>
                                  @foreach ($pos->department->employees as $emp)
                                     <tr>
                                     <td></td>
+                                    <td>{{$emp->sub_dept->name ?? ''}}</td>
                                     <td>{{$emp->nik}}</td>
                                     <td>{{$emp->biodata->fullName()}}</td>
                                     </tr>
@@ -115,12 +121,13 @@ Dashboard
                            @endforeach
                          @else
                          @foreach ($teams as $emp)
-                           <tr>
-                           <td></td>
-                           <td>{{$emp->nik}}</td>
-                           <td>{{$emp->biodata->fullName()}}</td>
-                           </tr>
-                        @endforeach
+                              <tr>
+                              <td></td>
+                              <td>{{$emp->sub_dept->name}}</td>
+                              {{-- <td></td> --}}
+                              <td>{{$emp->nik}} {{$emp->biodata->fullName()}}</td>
+                              </tr>
+                           @endforeach
                      @endif
                      
                      
@@ -233,6 +240,32 @@ Dashboard
                         </tr>
                          @endforeach
                      @endforeach
+
+                     {{-- @if (count($employee->sub_dept->pes) > 0)
+                     @foreach ($employee->sub_dept->pes as $pe)
+                     <tr>
+                        <th></th>
+                        <td>@if($pe->status == '0' || $pe->status == '101')
+                           <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
+                           @elseif($pe->status == '1' || $pe->status == '202' )
+                           <a href="/qpe/approval/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
+                           @else
+                           <a href="/qpe/show/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
+                           @endif
+                        </td>
+                        <td>{{$pe->semester}} / {{$pe->tahun}}</td>
+                        <td>{{$pe->achievement}}</td>
+                        <td>
+                           <x-status.pe :pe="$pe" />
+                        </td>
+                     </tr>
+                     @endforeach
+                     @else
+                     <tr>
+                        <td class="text-center" colspan="5">Empty</td>
+                     </tr>
+                     @endif --}}
+                     
                      {{-- @foreach ($sps as $sp)
                          
                      @endforeach --}}

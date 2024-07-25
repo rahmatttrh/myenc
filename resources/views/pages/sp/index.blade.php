@@ -50,7 +50,7 @@ SP
                      <select class="form-control employee" required id="employee" name="employee">
                         <option value="" selected disabled>Select Employee</option>
                         @foreach ($employees as $emp)
-                        <option value="{{$emp->id}}">{{$emp->nik}} {{$emp->biodata->fullName()}} </option>
+                        <option value="{{$emp->employee->id}}">{{$emp->employee->nik}} {{$emp->employee->biodata->fullName()}} </option>
                         @endforeach
                      </select>
                      
@@ -133,7 +133,7 @@ SP
                      <th class="text-center" style="width: 10px">No</th>
                      <th>ID</th>
                      <th>Name</th>
-                     <th>NIK</th>
+                     {{-- <th>NIK</th> --}}
                      
                      <th>Level</th>
                      <th>Status</th>
@@ -144,8 +144,8 @@ SP
                   <tr>
                      <td class="text-center">{{++$i}}</td>
                      <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->code}}</a> </td>
-                     <td>{{$sp->employee->biodata->first_name}} {{$sp->employee->biodata->last_name}}</td>
-                     <td>{{$sp->employee->nik}}</td>
+                     <td>{{$sp->employee->nik}} {{$sp->employee->biodata->fullName()}}</td>
+                     {{-- <td>{{$sp->employee->nik}}</td> --}}
                      {{-- <td>{{formatDate($sp->date)}}</td> --}}
                      <td>SP {{$sp->level}}</td>
                      <td>

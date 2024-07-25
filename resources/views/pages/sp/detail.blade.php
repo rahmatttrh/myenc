@@ -395,7 +395,7 @@ SP Detail
           <div class=" col-12 col-lg-10 col-xl-11 master">
             <div class="card card-invoice">
                <div class="card-header">
-                  <b>Form Create SP</b>
+                  <b>Form SP {{$sp->level}}</b>
                </div>
                <div class="card-body">
                   @if (auth()->user()->hasRole('HRD|HRD-Spv'))

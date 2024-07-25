@@ -50,7 +50,7 @@ QPE
                         <table id="basic-datatables" class="display basic-datatables table-sm table-striped ">
                             <thead>
                                 <tr>
-                                    <th class="text-white text-center">No</th>
+                                    <th class="text-white text-center">No </th>
                                     <th class="text-white">Employe</th>
                                     <th class="text-white">Semester / Tahun</th>
                                     <th class="text-white">Achievement</th>
@@ -59,69 +59,163 @@ QPE
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($pes as $pe)
-                                    @if($pe->kpa != null)
-                                <tr>
-                                    <td class="text-center">{{++$i}}</td>
-                                    <td>
-                                        @if($pe->status == '0' || $pe->status == '101')
-                                        <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->biodata->fullName()}} </a>
-                                        @elseif($pe->status == '1' || $pe->status == '202' )
-                                        <a href="/qpe/approval/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->biodata->fullName()}} </a>
-                                        @else
-                                        <a href="/qpe/show/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->biodata->fullName()}} </a>
-                                        @endif
-                                    </td>
-                                    <td>{{$pe->semester}} / {{$pe->tahun}}</td>
-                                    <td><span class="badge badge-primary badge-lg"><b>{{$pe->achievement}}</b></span></td>
-                                    @if($pe->status == 0)
-                                    <td><span class="badge badge-dark badge-lg"><b>Draft</b></span></td>
-                                    @elseif($pe->status == '1')
-                                    <td>
-                                        @if (auth()->user()->hasRole('Manager'))
-                                        <span class="badge badge-warning badge-lg"><b>Perlu Diverifikasi</b></span>
-                                        @else
-                                        <span class="badge badge-warning badge-lg"><b>Verifikasi Manager</b></span>
-                                        @endif
-                                    </td>
-                                    @elseif($pe->status == '2')
-                                    <td><span class="badge badge-success badge-lg"><b>Done</b></span></td>
-                                    @elseif($pe->status == '3')
-                                    <td><span class="badge badge-primary badge-lg"><b>Validasi HRD</b></span></td>
-                                    @elseif($pe->status == '101')
-                                    <td><span class="badge badge-danger badge-lg"><b>Di Reject Manager</b></span></td>
-                                    @elseif($pe->status == '202')
-                                    <td><span class="badge badge-warning badge-lg"><b>Need Discuss</b></span></td>
-                                    @endif
-                                    <td class="text-right">
-                                        @if($pe->status == 0)
-                                        <!-- <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-delete-{{$pe->id}}"><i class="fas fa-trash"></i> Delete</button> -->
-                                        @elseif(($pe->status == '1' || $pe->status == '2' || $pe->status == '101' || $pe->status == '202') && $pe->behavior > 0)
-                                        <a href="{{ route('export.qpe', $pe->id) }}" target="_blank"> Preview PDF</a>
-                                        @elseif(($pe->status == 0 || $pe->status == 101 || $pe->status == 202) && auth()->user()->hasRole('Leader'))
-                                        <!-- <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-submit-{{$pe->id}}"><i class="fas fa-rocket"></i> Submit</button> -->
-                                        @endif
-                                    </td>
-                                </tr>
-                                <x-modal.submit :id="$pe->id" :body="'KPI ' . $pe->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($pe->date))   " url="" />
-                                <x-modal.delete :id="$pe->id" :body="'KPI ' . $pe->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($pe->date))   " url="qpe/delete/{{$pe->id}}" />
-                                    @endif
-                                @endforeach
-                                <!-- <tr>
-                                    <td>
-                                        Outstanding Assessment
-                                    </td>
-                                </tr>
-                                @foreach ($outAssesments as $datas)
-                                @foreach($datas as $data)
-                                <tr>
-                                    <td></td>
-                                    <td>{{$data['employe']}}</td>
-                                    <td>{{$data['bulan']}}</td>
-                                    <td colspan="3">{{$data['status']}}</td>
-                                </tr>
-                                @endforeach
-                                @endforeach -->
+                              @if (auth()->user()->hasRole('Administrator'))
+                              @foreach ($pes as $pe)
+                                       <tr>
+                                             <td class="text-center">{{++$i}} </td>
+                                             <td>
+                                                @if($pe->status == '0' || $pe->status == '101')
+                                                <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
+                                                @elseif($pe->status == '1' || $pe->status == '202' )
+                                                <a href="/qpe/approval/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
+                                                @else
+                                                <a href="/qpe/show/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
+                                                @endif
+                                             </td>
+                                             <td>{{$pe->semester}} / {{$pe->tahun}}</td>
+                                             <td><span class="badge badge-primary badge-lg"><b>{{$pe->achievement}}</b></span></td>
+                                             @if($pe->status == 0)
+                                             <td><span class="badge badge-dark badge-lg"><b>Draft</b></span></td>
+                                             @elseif($pe->status == '1')
+                                             <td>
+                                                @if (auth()->user()->hasRole('Manager'))
+                                                <span class="badge badge-warning badge-lg"><b>Perlu Diverifikasi</b></span>
+                                                @else
+                                                <span class="badge badge-warning badge-lg"><b>Verifikasi Manager</b></span>
+                                                @endif
+                                             </td>
+                                             @elseif($pe->status == '2')
+                                             <td><span class="badge badge-success badge-lg"><b>Done</b></span></td>
+                                             @elseif($pe->status == '3')
+                                             <td><span class="badge badge-primary badge-lg"><b>Validasi HRD</b></span></td>
+                                             @elseif($pe->status == '101')
+                                             <td><span class="badge badge-danger badge-lg"><b>Di Reject Manager</b></span></td>
+                                             @elseif($pe->status == '202')
+                                             <td><span class="badge badge-warning badge-lg"><b>Need Discuss</b></span></td>
+                                             @endif
+                                             <td class="text-right">
+                                                @if($pe->status == 0)
+                                                <!-- <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-delete-{{$pe->id}}"><i class="fas fa-trash"></i> Delete</button> -->
+                                                @elseif(($pe->status == '1' || $pe->status == '2' || $pe->status == '101' || $pe->status == '202') && $pe->behavior > 0)
+                                                <a href="{{ route('export.qpe', $pe->id) }}" target="_blank"> Preview PDF</a>
+                                                @elseif(($pe->status == 0 || $pe->status == 101 || $pe->status == 202) && auth()->user()->hasRole('Leader'))
+                                                <!-- <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-submit-{{$pe->id}}"><i class="fas fa-rocket"></i> Submit</button> -->
+                                                @endif
+                                             </td>
+                                       </tr>
+                                       <x-modal.submit :id="$pe->id" :body="'KPI ' . $pe->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($pe->date))   " url="" />
+                                       <x-modal.delete :id="$pe->id" :body="'KPI ' . $pe->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($pe->date))   " url="qpe/delete/{{$pe->id}}" />
+                                       @endforeach
+                                  @else
+                              
+                                 @if ($employee->role == 5 || $employee->role == 9)
+                                       @foreach ($employee->positions as $pos)
+                                           {{-- <tr>
+                                             <td></td>
+                                             <td>{{$pos->name}}</td>
+                                             <td></td>
+                                             <td></td>
+                                             <td></td>
+                                             <td></td>
+                                           </tr> --}}
+                                           @foreach ($pos->department->pes as $pe)
+                                           <tr>
+                                             <td class="text-center">{{++$i}} </td>
+                                             <td>
+                                                @if($pe->status == '0' || $pe->status == '101')
+                                                <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
+                                                @elseif($pe->status == '1' || $pe->status == '202' )
+                                                <a href="/qpe/approval/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
+                                                @else
+                                                <a href="/qpe/show/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
+                                                @endif
+                                             </td>
+                                             <td>{{$pe->semester}} / {{$pe->tahun}}</td>
+                                             <td><span class="badge badge-primary badge-lg"><b>{{$pe->achievement}}</b></span></td>
+                                             @if($pe->status == 0)
+                                             <td><span class="badge badge-dark badge-lg"><b>Draft</b></span></td>
+                                             @elseif($pe->status == '1')
+                                             <td>
+                                                @if (auth()->user()->hasRole('Manager'))
+                                                <span class="badge badge-warning badge-lg"><b>Perlu Diverifikasi</b></span>
+                                                @else
+                                                <span class="badge badge-warning badge-lg"><b>Verifikasi Manager</b></span>
+                                                @endif
+                                             </td>
+                                             @elseif($pe->status == '2')
+                                             <td><span class="badge badge-success badge-lg"><b>Done</b></span></td>
+                                             @elseif($pe->status == '3')
+                                             <td><span class="badge badge-primary badge-lg"><b>Validasi HRD</b></span></td>
+                                             @elseif($pe->status == '101')
+                                             <td><span class="badge badge-danger badge-lg"><b>Di Reject Manager</b></span></td>
+                                             @elseif($pe->status == '202')
+                                             <td><span class="badge badge-warning badge-lg"><b>Need Discuss</b></span></td>
+                                             @endif
+                                             <td class="text-right">
+                                                @if($pe->status == 0)
+                                                <!-- <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-delete-{{$pe->id}}"><i class="fas fa-trash"></i> Delete</button> -->
+                                                @elseif(($pe->status == '1' || $pe->status == '2' || $pe->status == '101' || $pe->status == '202') && $pe->behavior > 0)
+                                                <a href="{{ route('export.qpe', $pe->id) }}" target="_blank"> Preview PDF</a>
+                                                @elseif(($pe->status == 0 || $pe->status == 101 || $pe->status == 202) && auth()->user()->hasRole('Leader'))
+                                                <!-- <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-submit-{{$pe->id}}"><i class="fas fa-rocket"></i> Submit</button> -->
+                                                @endif
+                                             </td>
+                                       </tr>
+                                       <x-modal.submit :id="$pe->id" :body="'KPI ' . $pe->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($pe->date))   " url="" />
+                                       <x-modal.delete :id="$pe->id" :body="'KPI ' . $pe->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($pe->date))   " url="qpe/delete/{{$pe->id}}" />
+                                      
+                                           @endforeach
+                                       @endforeach
+                                     @else
+                                     @foreach ($pes as $pe)
+                                       <tr>
+                                             <td class="text-center">{{++$i}} </td>
+                                             <td>
+                                                @if($pe->status == '0' || $pe->status == '101')
+                                                <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
+                                                @elseif($pe->status == '1' || $pe->status == '202' )
+                                                <a href="/qpe/approval/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
+                                                @else
+                                                <a href="/qpe/show/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
+                                                @endif
+                                             </td>
+                                             <td>{{$pe->semester}} / {{$pe->tahun}}</td>
+                                             <td><span class="badge badge-primary badge-lg"><b>{{$pe->achievement}}</b></span></td>
+                                             @if($pe->status == 0)
+                                             <td><span class="badge badge-dark badge-lg"><b>Draft</b></span></td>
+                                             @elseif($pe->status == '1')
+                                             <td>
+                                                @if (auth()->user()->hasRole('Manager'))
+                                                <span class="badge badge-warning badge-lg"><b>Perlu Diverifikasi</b></span>
+                                                @else
+                                                <span class="badge badge-warning badge-lg"><b>Verifikasi Manager</b></span>
+                                                @endif
+                                             </td>
+                                             @elseif($pe->status == '2')
+                                             <td><span class="badge badge-success badge-lg"><b>Done</b></span></td>
+                                             @elseif($pe->status == '3')
+                                             <td><span class="badge badge-primary badge-lg"><b>Validasi HRD</b></span></td>
+                                             @elseif($pe->status == '101')
+                                             <td><span class="badge badge-danger badge-lg"><b>Di Reject Manager</b></span></td>
+                                             @elseif($pe->status == '202')
+                                             <td><span class="badge badge-warning badge-lg"><b>Need Discuss</b></span></td>
+                                             @endif
+                                             <td class="text-right">
+                                                @if($pe->status == 0)
+                                                <!-- <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-delete-{{$pe->id}}"><i class="fas fa-trash"></i> Delete</button> -->
+                                                @elseif(($pe->status == '1' || $pe->status == '2' || $pe->status == '101' || $pe->status == '202') && $pe->behavior > 0)
+                                                <a href="{{ route('export.qpe', $pe->id) }}" target="_blank"> Preview PDF</a>
+                                                @elseif(($pe->status == 0 || $pe->status == 101 || $pe->status == 202) && auth()->user()->hasRole('Leader'))
+                                                <!-- <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-submit-{{$pe->id}}"><i class="fas fa-rocket"></i> Submit</button> -->
+                                                @endif
+                                             </td>
+                                       </tr>
+                                       <x-modal.submit :id="$pe->id" :body="'KPI ' . $pe->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($pe->date))   " url="" />
+                                       <x-modal.delete :id="$pe->id" :body="'KPI ' . $pe->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($pe->date))   " url="qpe/delete/{{$pe->id}}" />
+                                       @endforeach
+                                 @endif
+                                
+                              @endif
                             </tbody>
                         </table>
                     </div>

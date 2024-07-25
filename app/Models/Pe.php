@@ -28,4 +28,14 @@ class Pe extends Model
     {
         return $this->hasOne(PeKpa::class);
     }
+
+    public function getCreatedBy(){
+      $by = Employee::find($this->created_by);
+      return $by;
+    }
+
+    public function getVerifikasiBy(){
+      $by = Employee::find($this->verifikasi_by);
+      return $by;
+    }
 }
