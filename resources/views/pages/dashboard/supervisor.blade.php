@@ -71,17 +71,17 @@ Dashboard
             </div>
             <div class="card-body p-0">
                <table class=" ">
-                  <thead>
+                  {{-- <thead>
                      <tr>
                         <th>NIK</th>
                         <th>Name</th>
                      </tr>
-                  </thead>
+                  </thead> --}}
                   <tbody>
                      @foreach ($teams as $team)
                          <tr>
-                           <td>{{$team->employee->nik}} </td>
-                           <td>{{$team->employee->biodata->fullName()}}</td>
+                           <td>{{$team->employee->department->name}} </td>
+                           <td>{{$team->employee->nik}} {{$team->employee->biodata->fullName()}}</td>
                          </tr>
                      @endforeach
                      

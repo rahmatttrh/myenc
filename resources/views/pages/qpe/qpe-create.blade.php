@@ -28,9 +28,16 @@ Create PE
                             <label>Employee</label>
                             <select class="form-control" name="employe_id" id="employe_id">
                                 <option value="">--- Choose Employe ---</option>
-                                @foreach ($employes as $employe)
-                                <option value="{{$employe->employee->id}}">{{$employe->employee->biodata->fullName()}} </option>
-                                @endforeach
+                                @if (auth()->user()->hasRole('Manager|Asst. Manager'))
+                                    @foreach ($employes as $employe)
+                                    <option value="{{$employe->id}}">{{$employe->biodata->fullName()}} </option>
+                                    @endforeach
+                                    @else
+                                    @foreach ($employes as $employe)
+                                       <option value="{{$employe->employee->id}}">{{$employe->employee->biodata->fullName()}} </option>
+                                    @endforeach
+                                @endif
+                                
                             </select>
                         </div>
                         <div class="form-group form-group-default">

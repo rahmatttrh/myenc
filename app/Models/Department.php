@@ -42,7 +42,7 @@ class Department extends Model
    }
 
    public function getManagers(){
-      $managers = Employee::where('department_id', $this->id)->where('designation_id', 5)->orWhere('designation_id', 6)->orWhere('designation_id', 7)->get();
+      $managers = Employee::where('designation_id', 5)->orWhere('designation_id', 6)->orWhere('designation_id', 7)->get();
       // dd($managers);
       return $managers;
    }

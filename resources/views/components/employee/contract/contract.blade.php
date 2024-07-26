@@ -19,14 +19,13 @@
             <div class="tab-pane fade show active" id="pills-contract-nobd" role="tabpanel" aria-labelledby="pills-contract-tab-nobd">
                <div class="card card-dark bg-secondary-gradient shadow-none">
                   
-                  @if (count($employee->positions) > 0)
+                  {{-- @if (count($employee->positions) > 0)
                      <div class="card-body bubble-shadow text-white">
                         <div class="row">
                            <div class="col-md-8">
-                              {{-- <img src="{{asset('img/visa.svg')}}" height="12.5" alt="Visa Logo"> --}}
+                              
                               <h4 style="font-weight: bolder" class="text-uppercase">
                                  @if ($employee->contract->type == 'Kontrak')
-                                 {{-- {{$employee->contract->type}}  --}}
                                  Kontrak
                                  @elseif($employee->contract->type == 'Tetap')
                                  Tetap
@@ -71,10 +70,6 @@
                            @endif
                            @endif
                         </div>
-                        
-                        {{-- <h2 class="py-3 mb-0">{{$acc->account_no}}</h2> --}}
-                        
-                        
                         <div class="row mt-2">
                            <div class="col-6 pr-0">
                               <div class="text-small text-uppercase fw-bold op-8">NIK </div>
@@ -97,7 +92,7 @@
                        
                         
                      </div>
-                      @else
+                      @else --}}
                       <div class="card-body bubble-shadow text-white">
                         <div class="row">
                            <div class="col-md-8">
@@ -127,6 +122,8 @@
                                        <i class="fa fa-ellipsis-h"></i>
                                  </a>
                                  <div class="dropdown-menu">
+                                    {{-- <a  class="dropdown-item" style="text-decoration: none" href="" data-toggle="modal" data-target="#modal-add-position">Add Position</a>
+                                    <hr> --}}
                                     <a  class="dropdown-item" style="text-decoration: none" href="" data-toggle="modal" data-target="#modal-add-leader">Add Leader</a>
                                     <hr>
                                     @if ($employee->contract->type == 'Kontrak')
@@ -148,18 +145,35 @@
                         </div>
                         
                         {{-- <h2 class="py-3 mb-0">{{$acc->account_no}}</h2> --}}
-                        <div class="row">
-                           <div class="col-8 pr-0">
-                              {{-- <h3 class="fw-bold mb-1">{{$employee->id}}</h3> --}}
-                              {{-- <div class="text-small text-uppercase fw-bold op-8">{{$employee->contract->id_no}} </div> --}}
-                              {{-- <div class="text-small text-uppercase fw-bold op-8"> {{$employee->position->name ?? '-'}} </div> --}}
-                              {{-- <div class="text-small text-uppercase fw-bold op-8"> </div> --}}
-                              {{-- <div class="text-small text-uppercase fw-bold op-8">{{$employee->department->name ?? '-'}} Department</div> --}}
-                              {{-- <div class="text-small text-uppercase fw-bold op-8">{{$employee->contract->unit->name ?? '-'}}</div> --}}
-                              <div class="text-small text-uppercase fw-bold op-8">Lokasi Kerja {{$employee->contract->loc ?? '-'}}</div>
+                        
+                        
+                        <div class="row mt-2">
+                           <div class="col-6 pr-0">
+                              <div class="text-small text-uppercase fw-bold op-8">NIK </div>
+                              <small class="fw-bold mt-1 ">{{$employee->nik ?? '-'}} </small>
+                              <div class="mt-2"></div>
+                              <div class="text-small text-uppercase fw-bold op-8">Unit </div>
+                              <small class="fw-bold mt-1">{{$employee->contract->unit->name ?? '-'}}  </small>
+                              <div class="mt-2"></div>
+                              <div class="text-small text-uppercase fw-bold op-8">Department </div>
+                              <small class="fw-bold mt-1">{{$employee->department->name ?? '-'}} - {{$employee->sub_dept->name ?? '-'}}  </small>
+                              <div class="mt-2"></div>
+                              <div class="text-small text-uppercase fw-bold op-8">Position </div>
+                              <small class="fw-bold mt-1">{{$employee->position->name ?? ''}} </small>
+                              <small class="fw-bold mt-1">
+                                 @if (count($employee->positions) > 0)
+                                 @foreach ($employee->positions as $pos)
+                                 {{$pos->department->unit->name}}  {{$pos->department->name}}
+                                 {{$pos->name ?? '-'}} <br>
+                                 @endforeach
+                              @endif
+                              </small>
+                              
+                              
                            </div>
-                           <div class="col-4 pl-0 text-right">
-                              {{-- <h3 class="fw-bold mb-1"> 2023 - 2024</h3> --}}
+                           <div class="col-6 pl-0 text-right">
+                              <div class="text-small text-uppercase fw-bold op-8">Lokasi Kerja </div>
+                              <small class="fw-bold mt-1 text-uppercase ">{{$employee->contract->loc ?? '-'}} </small>
                               <div class="text-small text-uppercase fw-bold op-8">{{$employee->contract->shift->name ?? '-'}}
                                  @if ($employee->contract->shift)
                                  {{formatTime($employee->contract->shift->in )}}
@@ -169,36 +183,16 @@
                                  @endif
                                  
                                  </div>
-                              {{-- <div class="text-small text-uppercase fw-bold op-8">Salary {{formatRupiah($employee->contract->salary ?? '0')}} </div> --}}
                               
                            </div>
                         </div>
                         
-                        <div class="row mt-2">
-                           <div class="col-6 pr-0">
-                              <div class="text-small text-uppercase fw-bold op-8">NIK </div>
-                              <small class="fw-bold mt-1 ">{{$employee->nik ?? '-'}} </small>
-                              <div class="mt-2"></div>
-                              <div class="text-small text-uppercase fw-bold op-8">Position </div>
-                              <small class="fw-bold mt-1">{{$employee->position->name ?? '-'}} </small>
-                              
-                              
-                           </div>
-                           <div class="col-6 pl-0 text-right">
-                              <div class="text-small text-uppercase fw-bold op-8">Department </div>
-                              <small class="fw-bold mt-1">{{$employee->department->name ?? '-'}} Department - {{$employee->sub_dept->name ?? '-'}}  </small>
-                              <div class="mt-2"></div>
-                              <div class="text-small text-uppercase fw-bold op-8">Unit </div>
-                              <small class="fw-bold mt-1">{{$employee->contract->unit->name ?? '-'}}  </small>
-                              
-                           </div>
-                        </div>
-                        <hr class="bg-white">
-                        <div class="text-small text-uppercase fw-bold op-8"> {{$employee->contract->desc ?? 'Jobdesk Empty'}} </div>
-                        <hr class="bg-white">
                         
                            @if ($employee->designation->name == 'Manager')
                                @else
+                               <hr class="bg-white">
+                              <div class="text-small text-uppercase fw-bold op-8"> {{$employee->contract->desc ?? 'Jobdesk Empty'}} </div>
+                              <hr class="bg-white">
                                <div class="row">
                                  {{-- <div class="col-6 pr-0">
                                     <div class="text-small text-uppercase fw-bold op-8">Manager </div>
@@ -211,24 +205,35 @@
                                     <small class="fw-bold mt-1">
                                        
                                        @foreach ($empleaders as $empleader)
-                                          {{$empleader->leader->biodata->fullName()}} <br>
+                                         {{$empleader->leader->nik}} {{$empleader->leader->biodata->fullName()}} <br>
                                        @endforeach
                                     </small>
                                     
                                  
                                     
                                  </div>
+
+                                 <div class="col-6 prl-0 text-right ">
+                                    <div class="text-small text-uppercase fw-bold op-8">Manager</div>
+                                    <small class="fw-bold mt-1">
+                                       @foreach ($mymanagers as $man)
+                                         {{$man->nik}} {{$man->biodata->fullName()}} <br>
+                                       @endforeach
+                                    </small>
+                                 </div>
+                                 
                               </div>
                            @endif
                            
-                        
+                           
                         
                         
                         @if ($employee->contract->type == 'Kontrak')
                         <div class="row mt-2">
                            <div class="col-12 pl-0 text-right">
-                              <div class="text-small text-uppercase fw-bold op-8">{{formatDate($employee->join)}}</div>
                               <div class="text-small text-uppercase fw-bold op-8">Join Date</div>
+                              <small class="text-small text-uppercase fw-bold op-8">{{formatDate($employee->join)}}</small>
+                              {{-- <div class="text-small text-uppercase fw-bold op-8">Join Date</div> --}}
                            
                               
                            </div>
@@ -256,9 +261,12 @@
                         @endif
                         
                      </div>
-                  @endif
-                  
+                     
+                  {{-- @endif --}}
+
                </div>
+
+               
                
               
                <hr>
@@ -666,6 +674,7 @@
 
 <x-employee.contract.modal.create-mutation :employee="$employee" :shifts="$shifts" :designations="$designations" :departments="$departments" :positions="$positions" :managers="$managers" :spvs="$spvs"  :leaders="$leaders" :allmanagers="$allmanagers" :allspvs="$allspvs"  :allleaders="$allleaders" :subdepts="$subdepts" :units="$units" :allpositions="$allpositions" />
 <x-employee.contract.modal.add-leader :employee="$employee" :leaders="$leaders" />
+{{-- <x-employee.contract.modal.add-position :employee="$employee" :leaders="$leaders" /> --}}
 
 @push('js_footer')
     

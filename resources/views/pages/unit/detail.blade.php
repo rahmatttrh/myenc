@@ -84,7 +84,7 @@
                                        
                                     </td>
                                     <td class="text-right">
-                                       <a href="" data-toggle="modal" data-target="#modal-change-position-{{$depos->id}}">Add</a> |
+                                       <a href="" data-toggle="modal" data-target="#modal-change-position-{{$depos->id}}">Assign</a> |
                                        {{-- <a href="">Edit</a> | --}}
                                        <a href="" data-toggle="modal" data-target="#modal-delete-{{$depos->id}}">Delete</a>
                                     </td>
@@ -132,9 +132,15 @@
                                              
                                           </td>
                                           <td class="text-right">
-                                             <a href="#" data-toggle="modal" data-target="#modal-edit-position-{{$pos->id}}">Edit</a> | <a href="#" data-toggle="modal" data-target="#modal-delete-{{$pos->id}}">Delete</a>
+                                             @if ($pos->designation_id > 2)
+                                             <a href="" data-toggle="modal" data-target="#modal-change-position-{{$pos->id}}">Assign</a> |
+                                             @endif
+                                             
+                                             <a href="#" data-toggle="modal" data-target="#modal-edit-position-{{$pos->id}}">Edit</a> | 
+                                             <a href="#" data-toggle="modal" data-target="#modal-delete-{{$pos->id}}">Delete</a>
                                           </td>
                                        </tr> 
+                                       <x-modal.change-position :id="$pos->id" :pos="$pos" :deptemployees="$depart->getManagers()"  />
                                        <x-modal.delete :id="$pos->id" :body="$pos->name" url="{{route('position.delete', enkripRambo($pos->id))}}" />
                                        <x-modal.edit-position :id="$pos->id" :pos="$pos"  />
                                     @endforeach

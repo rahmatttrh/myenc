@@ -112,10 +112,10 @@ Dashboard
                                  </tr>
                                  @foreach ($pos->department->employees as $emp)
                                     <tr>
-                                    <td></td>
+                                    {{-- <td></td> --}}
                                     <td>{{$emp->sub_dept->name ?? ''}}</td>
-                                    <td>{{$emp->nik}}</td>
-                                    <td>{{$emp->biodata->fullName()}}</td>
+                                    {{-- <td></td> --}}
+                                    <td>{{$emp->nik}} {{$emp->biodata->fullName()}}</td>
                                     </tr>
                                  @endforeach
                            @endforeach

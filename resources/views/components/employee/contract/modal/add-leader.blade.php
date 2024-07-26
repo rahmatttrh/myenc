@@ -1,5 +1,5 @@
 <div class="modal fade" id="modal-add-leader" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-   <div class="modal-dialog modal-sm" role="document">
+   <div class="modal-dialog " role="document">
       <div class="modal-content">
          <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">Form Add Leader</h5>
@@ -16,7 +16,17 @@
                   <select class="form-control"  id="leader" name="leader" >
                      <option value="" disabled selected>Choose one</option>
                      @foreach ($leaders as $leader)
-                         <option value="{{$leader->id}}">{{$leader->biodata->fullName()}}</option>
+                         <option value="{{$leader->id}}">
+                           {{$leader->nik}} {{$leader->biodata->fullName()}} -
+                           @if (count($leader->positions) > 0)
+                               @foreach ($leader->positions as $pos)
+                                  | {{$pos->name}}
+                               @endforeach
+                               @else
+                               {{$leader->position->name ?? ''}}
+                           @endif
+                           
+                        </option>
                      @endforeach
                      {{-- <option value="" selected disabled>Select</option>
                      <option value="Kontrak">Kontrak</option>
