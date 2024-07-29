@@ -71,7 +71,7 @@
                      <div class="card-body p-0">
                         <table class="display  table-sm table-bordered  ">
                            <thead>
-                              @foreach ($depart->positions as $depos)
+                              @foreach ($depart->positions->where('type', 'dept') as $depos)
                                   <tr>
                                     <td colspan="2">{{$depos->name}}</td>
                                     <td colspan="1">

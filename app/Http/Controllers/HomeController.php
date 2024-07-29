@@ -191,17 +191,27 @@ class HomeController extends Controller
             'qpes' => $qpes
          ]);
       } elseif (auth()->user()->hasRole('HRD')) {
+         $user = Employee::find(auth()->user()->getEmployeeId());
          $employees = Employee::get();
          $male = Biodata::where('gender', 'Male')->count();
          $female = Biodata::where('gender', 'Female')->count();
          $spkls = Spkl::orderBy('updated_at', 'desc')->paginate(5);
          $sps = Sp::where('status', 1)->get();
+         $kontrak = Contract::where('status', 1)->where('type', 'Kontrak')->get()->count();
+         $tetap = Contract::where('status', 1)->where('type', 'Tetap')->get()->count();
+         $empty = Contract::where('type', null)->get()->count();
+         $logs = Log::where('department_id', $user->department_id)->orderBy('created_at', 'desc')->paginate(5);
          return view('pages.dashboard.hrd', [
+            'user' => $user,
             'employees' => $employees,
             'male' => $male,
             'female' => $female,
             'spkls' => $spkls,
-            'sps' => $sps
+            'sps' => $sps,
+            'kontrak' => $kontrak,
+            'tetap' => $tetap,
+            'empty' => $empty,
+            'logs' => $logs
          ]);
       } elseif (auth()->user()->hasRole('HRD-Spv')) {
          $user = Employee::find(auth()->user()->getEmployeeId());
