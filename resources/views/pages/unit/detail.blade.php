@@ -40,7 +40,7 @@
                         @foreach ($departments as $depart)
                            <a class="nav-link {{$firstDept->id == $depart->id ? 'active' : ''}} text-left pl-3" id="v-pills-{{$depart->id}}-tab" data-toggle="pill" href="#v-pills-{{$depart->id}}" role="tab" aria-controls="v-pills-{{$depart->id}}" aria-selected="true">
                               
-                              {{$depart->name}}
+                               {{$depart->name}}
                            </a>
                         @endforeach
                         
@@ -57,7 +57,7 @@
                <div class="tab-pane fade {{$firstDept->id == $depart->id ? 'show active' : ''}} " id="v-pills-{{$depart->id}}" role="tabpanel" aria-labelledby="v-pills-{{$depart->id}}-tab">
                   <div class="card">
                      <div class="card-header d-flex justify-content-between p-2 bg-primary text-white">
-                        <small>{{$depart->name}} Department <br>
+                        <small> {{$depart->name}} Department <br>
                            {{count($depart->employees->where('status', 1))}} Karyawan
                         </small> 
                         <div>

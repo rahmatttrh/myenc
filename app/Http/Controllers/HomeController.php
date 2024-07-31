@@ -203,6 +203,7 @@ class HomeController extends Controller
          $logs = Log::where('department_id', $user->department_id)->orderBy('created_at', 'desc')->paginate(5);
          return view('pages.dashboard.hrd', [
             'user' => $user,
+            'employee' => $user,
             'employees' => $employees,
             'male' => $male,
             'female' => $female,

@@ -5,35 +5,51 @@
 @endsection
 @section('content')
    <div class="page-inner mt--5">
-      <div class="page-header">
+      {{-- <div class="page-header">
          <h5 class="page-title text-info">
             <i class="fa fa-home"></i>
             Dashboard
             
             
          </h5>
-      </div>
+      </div> --}}
       <div class="row">
         
          <div class="col-md-3">
-            <div class="card">
+            <div class="card card-primary">
+               {{-- <div class="card-header">
+                  Dashboard SPV
+               </div> --}}
+               <div class="card-body">
+                  Dashboard HRD <hr class="bg-white">
+                  <b>{{$employee->unit->name}}</b> - {{$employee->department->name}}<br>
+                   
+                  {{$employee->position->name}}
+               </div>
+            </div>
+            {{-- <div class="card">
                <div class="card-header p-2 bg-dark text-white">
-                  <small>Level User</small>
+                  <small>Dashboard HRD</small>
                </div>
                <div class="card-body p-0">
                   <table class="display  table-sm table-bordered  table-striped ">
                      <thead>
                         
                         <tr>
-                           <th scope="col">HRD</th>
+                           <th scope="col">User Level</th>
                            
                         </tr>
                         
                      </thead>
+                     <tbody>
+                        <tr>
+                           <td>HRD</td>
+                        </tr>
+                     </tbody>
                      
                   </table>
                </div>
-            </div>
+            </div> --}}
             {{-- <div class="card card-primary">
                <div class="card-body text-center">
                   <small>HRD</small>

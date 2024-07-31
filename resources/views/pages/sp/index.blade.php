@@ -49,9 +49,21 @@ SP
                      <label>Employee*</label>
                      <select class="form-control employee" required id="employee" name="employee">
                         <option value="" selected disabled>Select Employee</option>
-                        @foreach ($employees as $emp)
-                        <option value="{{$emp->employee->id}}">{{$emp->employee->nik}} {{$emp->employee->biodata->fullName()}} </option>
-                        @endforeach
+                        @if (auth()->user()->hasRole('Manager|Asst. Manager|HRD'))
+                           @foreach ($employee->positions as $pos)
+                               @foreach ($pos->department->employees as $emp)
+                               <option value="{{$emp->id}}">{{$emp->nik}} {{$emp->biodata->fullName()}} </option>
+                               @endforeach
+                           @endforeach
+                              {{-- @foreach ($employees as $emp)
+                              <option value="{{$emp->id}}">{{$emp->nik}} {{$emp->biodata->fullName()}} </option>
+                              @endforeach --}}
+                            @else 
+                           @foreach ($employees as $emp)
+                              <option value="{{$emp->employee->id}}">{{$emp->employee->nik}} {{$emp->employee->biodata->fullName()}} </option>
+                           @endforeach
+                        @endif
+                        
                      </select>
                      
       
@@ -69,29 +81,10 @@ SP
 
                   </div>
                </div>
-               {{-- <div class="col-md-6">
-                  <div class="form-group form-group-default">
-                     <label>Berlaku dari</label>
-                     <input type="date" class="form-control" name="date_from" id="date_from">
-                  </div>
-               </div> --}}
-
-               {{-- <div class="col-md-6">
-                  <small class="text-muted">Masa berlaku SP adalah 6 bulan</small>
-                  <hr>
-               </div> --}}
-               {{-- <div class="col-md-6">
-                  <div class="form-group form-group-default">
-                     <label>Berlaku sampai</label>
-                     <input type="date" class="form-control"  name="date_to" id="date_to">
-                  </div>
-               </div> --}}
+               
             </div>
 
-            {{-- <div class="form-group form-group-default">
-               <label>Peraturan Perusahaan</label>
-               <input type="text" class="form-control" name="rule" id="rule">
-            </div> --}}
+          
             <div class="form-group form-group-default">
                <label>Alasan*</label>
                <input type="text" required class="form-control" name="reason" id="reason">

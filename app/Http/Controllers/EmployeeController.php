@@ -231,6 +231,9 @@ class EmployeeController extends Controller
       $dekripId = dekripRambo($id);
       $employee = Employee::find($dekripId);
       // dd($employee->id);
+      // $employee->update([
+      //    'department_id' => 5
+      // ]);
       if ($employee->designation->name == 'Manager') {
          if (count($employee->positions) > 0) {
             $employee->contract->update([
@@ -310,14 +313,36 @@ class EmployeeController extends Controller
       $allLeaders = Employee::where('designation_id', 3)->where('designation_id', 3)->get();
       $subdepts = SubDept::where('department_id', $employee->department_id)->get();
       $employeeLeaders = EmployeeLeader::where('employee_id', $employee->id)->get();
-
+      // dd($employee->department_id);
       $department = Department::find($employee->department_id);
       $subdept = SubDept::find($employee->sub_dept_id);
          // dd($department->id);
       $myManagers = [];  
       // dd($subdept->id);
       $managerPositions = Position::where('department_id', $department->id)->where('type', 'dept')->get();
-      $subManPositions = Position::where('department_id', $department->id)->where('sub_dept_id', $subdept->id)->where('type', 'subdept')->get();
+      if ($subdept) {
+         $subManPositions = Position::where('department_id', $department->id)->where('sub_dept_id', $subdept->id)->where('type', 'subdept')->get();
+         if (count($subManPositions) > 0) {
+            // dd('ok');
+            // dd($subman->id);
+            foreach($subManPositions as $submanpos){
+               // dd($submanpos->employee);
+               if ($submanpos->employee) {
+                  $myManagers[] = $submanpos->employee;
+               }
+               
+               // dd($submanpos->employee);
+               // foreach($submanpos->employees as $subman){
+               //    $myManagers[] = $subman;
+               //    dd($subman->id);
+               // }
+            }
+            // dd($myManagers);
+         }  
+      } else {
+         $subManPositions = null;
+      }
+      
       // foreach($managerPositions as $manpos){
       //    foreach($manpos->employees as $man){
       //       $myManagers[] = $man;
@@ -330,23 +355,7 @@ class EmployeeController extends Controller
       //    }
       // }
 
-      if (count($subManPositions) > 0) {
-         // dd('ok');
-         // dd($subman->id);
-         foreach($subManPositions as $submanpos){
-            // dd($submanpos->employee);
-            if ($submanpos->employee) {
-               $myManagers[] = $submanpos->employee;
-            }
-            
-            // dd($submanpos->employee);
-            // foreach($submanpos->employees as $subman){
-            //    $myManagers[] = $subman;
-            //    dd($subman->id);
-            // }
-         }
-         // dd($myManagers);
-      }  
+      
       // else {
       //    foreach($managerPositions as $manpos){
             

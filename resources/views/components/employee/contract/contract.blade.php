@@ -158,14 +158,17 @@
                               <div class="text-small text-uppercase fw-bold op-8">Department </div>
                               <small class="fw-bold mt-1">{{$employee->department->name ?? '-'}} - {{$employee->sub_dept->name ?? '-'}}  </small>
                               <div class="mt-2"></div>
+                              <hr>
                               <div class="text-small text-uppercase fw-bold op-8">Position </div>
-                              <small class="fw-bold mt-1">{{$employee->position->name ?? ''}} </small>
+                              {{-- <small class="fw-bold mt-1"></small> --}}
                               <small class="fw-bold mt-1">
-                                 @if (count($employee->positions) > 0)
+                              @if (count($employee->positions) > 0)
                                  @foreach ($employee->positions as $pos)
                                  {{$pos->department->unit->name}}  {{$pos->department->name}}
                                  {{$pos->name ?? '-'}} <br>
                                  @endforeach
+                                 @else
+                                 {{$employee->position->name ?? ''}} 
                               @endif
                               </small>
                               
@@ -245,13 +248,23 @@
                         <div class="row">
                            <div class="col-6 pr-0">
                               <div class="text-small text-uppercase fw-bold op-8">Join Date </div>
-                              <small class="fw-bold mb-1">{{formatDate($employee->join)}}</small>
+                              <small class="fw-bold mb-1">
+                                 @if ($employee->join)
+                                 {{formatDate($employee->join)}}
+                                 @else
+                                 -
+                                 @endif
+
+                                 {{-- {{formatDate($employee->join)}} --}}
+                                 
+                              </small>
                               
                               
                            </div>
                            <div class="col-6 pl-0 text-right">
                               <div class="text-small text-uppercase fw-bold op-8">Penetapan</div>
-                              <small class="fw-bold mb-1">{{formatDate($employee->contract->determination ?? '-')}}</small>
+                              <small class="fw-bold mb-1">
+                                 {{formatDate($employee->contract->determination ?? '-')}}</small>
                               
                            
                               

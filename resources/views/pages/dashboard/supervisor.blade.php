@@ -59,24 +59,28 @@ Dashboard
             
          </div> --}}
          <div class="card card-primary">
-            <div class="card-body ">
-               <b>{{$employee->unit->name}}</b> <br>
-               {{$employee->department->name}} Department <br>
+            {{-- <div class="card-header">
+               Dashboard SPV
+            </div> --}}
+            <div class="card-body">
+               Dashboard SPV <hr class="bg-white">
+               <b>{{$employee->unit->name}}</b> - {{$employee->department->name}} Department<br>
+                
                {{$employee->position->name}}
             </div>
          </div>
          <div class="card">
-            <div class="card-header bg-primary text-white p-2">
+            {{-- <div class="card-header bg-primary text-white p-2">
                <small>Employee</small>
-            </div>
+            </div> --}}
             <div class="card-body p-0">
                <table class=" ">
-                  {{-- <thead>
+                  <thead>
                      <tr>
-                        <th>NIK</th>
-                        <th>Name</th>
+                        <th colspan="2">Team</th>
+                        {{-- <th>Name</th> --}}
                      </tr>
-                  </thead> --}}
+                  </thead>
                   <tbody>
                      @foreach ($teams as $team)
                          <tr>
