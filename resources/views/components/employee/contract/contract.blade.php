@@ -209,7 +209,10 @@
                                     <small class="fw-bold mt-1">
                                        
                                        @foreach ($empleaders as $empleader)
-                                         {{$empleader->leader->nik}} {{$empleader->leader->biodata->fullName()}} <br>
+                                       <a href="#"  class="text-warning" data-toggle="modal" data-target="#modal-revoke-leader-{{$empleader->id}}">{{$empleader->leader->nik}} {{$empleader->leader->biodata->fullName()}}</a>
+                                          <br>
+
+                                          <x-employee.contract.modal.revoke-leader :employee="$employee" :leader="$empleader" />
                                        @endforeach
                                     </small>
                                     
@@ -696,6 +699,7 @@
 
 <x-employee.contract.modal.create-mutation :employee="$employee" :shifts="$shifts" :designations="$designations" :departments="$departments" :positions="$positions" :managers="$managers" :spvs="$spvs"  :leaders="$leaders" :allmanagers="$allmanagers" :allspvs="$allspvs"  :allleaders="$allleaders" :subdepts="$subdepts" :units="$units" :allpositions="$allpositions" />
 <x-employee.contract.modal.add-leader :employee="$employee" :leaders="$leaders" />
+
 {{-- <x-employee.contract.modal.add-position :employee="$employee" :leaders="$leaders" /> --}}
 
 @push('js_footer')

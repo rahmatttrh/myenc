@@ -23,4 +23,14 @@ class EmployeeLeaderController extends Controller
       return redirect()->route('employee.detail', [enkripRambo($employee->id), enkripRambo('contract')])->with('success', 'Employee Leader successfully updated');
       // return redirect()->back()->with('success', 'Direct Leader successfully added');
    }
+
+   public function delete($id){
+      
+      $empLeader = EmployeeLeader::find(dekripRambo($id));
+      $employee = Employee::find($empLeader->employee_id);
+      // dd($empLeader->employee_id);
+
+      $empLeader->delete();
+      return redirect()->route('employee.detail', [enkripRambo($employee->id), enkripRambo('contract')])->with('success', 'Employee Leader successfully updated');
+   }
 }

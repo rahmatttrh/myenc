@@ -395,7 +395,7 @@
                               @foreach ($logins as $log)
                               <tr>
                                  <td class="text-truncate" style="max-width: 110px;">
-                                    {{$log->user->name}} {{$log->action}}
+                                    {{$log->user->username}} {{$log->user->name}} {{$log->action}}
                                      <br>
                                     <small>{{$log->desc}}</small>
                                  </td>

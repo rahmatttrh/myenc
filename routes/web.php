@@ -187,6 +187,7 @@ Route::middleware(["auth"])->group(function () {
       Route::prefix('leader')->group(function () {
          // Route::get('/', [ShiftController::class, 'index'])->name('shift');
          Route::post('store', [EmployeeLeaderController::class, 'store'])->name('leader.store');
+         Route::get('delete/{id}', [EmployeeLeaderController::class, 'delete'])->name('leader.revoke');
          // Route::get('edit/{department:id}', [DepartmentController::class, 'edit'])->name('department.edit');
          // Route::put('update', [ShiftController::class, 'update'])->name('shift.update');
          // Route::get('delete/{id}', [ShiftController::class, 'delete'])->name('shift.delete');
@@ -255,7 +256,7 @@ Route::middleware(["auth"])->group(function () {
 
    // Semua Role 
 
-   Route::group(['middleware' => ['role:Administrator|HRD|HRD-Recruitment|HRD-Spv|Karyawan|Manager|Supervisor|Leader']], function () {
+   Route::group(['middleware' => ['role:Administrator|HRD|HRD-Recruitment|HRD-Spv|Karyawan|Manager|Asst. Manager|Supervisor|Leader']], function () {
       
       Route::prefix('employee')->group(function () {
          Route::put('update', [EmployeeController::class, 'update'])->name('employee.update');
@@ -281,7 +282,7 @@ Route::middleware(["auth"])->group(function () {
 
    
 
-   Route::group(['middleware' => ['role:Supervisor|Manager']], function () {
+   Route::group(['middleware' => ['role:Supervisor|Manager|Asst. Manager']], function () {
       Route::prefix('employee')->group(function () {
          Route::get('spv', [EmployeeController::class, 'indexSpv'])->name('supervisor.employee');
       });
@@ -321,7 +322,7 @@ Route::middleware(["auth"])->group(function () {
 
    // Role Campuran  
 
-   Route::group(['middleware' => ['role:Administrator|HRD|HRD-Recruitment|HRD-Spv|Leader|Manager|Supervisor']], function () {
+   Route::group(['middleware' => ['role:Administrator|HRD|HRD-Recruitment|HRD-Spv|Leader|Manager|Asst. Manager|Supervisor']], function () {
       // kpi
       Route::prefix('kpi')->group(function () {
          Route::get('/', [PeKpiController::class, 'index'])->name('kpi');
@@ -449,7 +450,7 @@ Route::middleware(["auth"])->group(function () {
 
 
 
-   Route::group(['middleware' => ['role:Manager']], function () {
+   Route::group(['middleware' => ['role:Manager|Asst. Manager']], function () {
       Route::prefix('spkl')->group(function () {
          Route::get('manager/index', [SpklController::class, 'indexManager'])->name('manager.spkl');
       });
