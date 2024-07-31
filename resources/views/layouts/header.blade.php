@@ -157,9 +157,13 @@
                                     Reset Password
                               </a>
                            @endif --}}
-                           <a class="dropdown-item" href="{{ route('pass.reset') }}">
-                              Reset Password
-                           </a>
+                           @if (auth()->user()->hasRole('Administrator'))
+                               @else
+                               <a class="dropdown-item" href="{{ route('pass.reset') }}">
+                                 Reset Password
+                              </a>
+                           @endif
+                           
                            
                            {{-- <a class="dropdown-item" href="{{route('change.password')}}">Change Password</a> --}}
                            <div class="dropdown-divider"></div>
