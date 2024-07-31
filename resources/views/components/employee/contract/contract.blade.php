@@ -157,7 +157,7 @@
                               <div class="mt-2"></div>
                               <div class="text-small text-uppercase fw-bold op-8">Department </div>
                               <small class="fw-bold mt-1">{{$employee->department->name ?? '-'}}  </small><br>
-                              <small class="fw-bold mt-1"> {{$employee->sub_dept->name ?? '-'}}  </small>
+                              <small class="fw-bold mt-1 pl-2">- {{$employee->sub_dept->name ?? '-'}}  </small>
                               <div class="mt-2"></div>
                               <hr>
                               <div class="text-small text-uppercase fw-bold op-8">Position </div>
@@ -209,7 +209,7 @@
                                     <small class="fw-bold mt-1">
                                        
                                        @foreach ($empleaders as $empleader)
-                                       <a href="#"  class="text-warning" data-toggle="modal" data-target="#modal-revoke-leader-{{$empleader->id}}">{{$empleader->leader->nik}} {{$empleader->leader->biodata->fullName()}}</a>
+                                       <a href="#"  class="text-light" data-toggle="modal" data-target="#modal-revoke-leader-{{$empleader->id}}">{{$empleader->leader->nik}} {{$empleader->leader->biodata->fullName()}}</a>
                                           <br>
 
                                           <x-employee.contract.modal.revoke-leader :employee="$employee" :leader="$empleader" />
