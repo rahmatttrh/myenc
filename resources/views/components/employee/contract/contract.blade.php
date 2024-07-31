@@ -156,7 +156,8 @@
                               <small class="fw-bold mt-1">{{$employee->contract->unit->name ?? '-'}}  </small>
                               <div class="mt-2"></div>
                               <div class="text-small text-uppercase fw-bold op-8">Department </div>
-                              <small class="fw-bold mt-1">{{$employee->department->name ?? '-'}} - {{$employee->sub_dept->name ?? '-'}}  </small>
+                              <small class="fw-bold mt-1">{{$employee->department->name ?? '-'}}  </small><br>
+                              <small class="fw-bold mt-1"> {{$employee->sub_dept->name ?? '-'}}  </small>
                               <div class="mt-2"></div>
                               <hr>
                               <div class="text-small text-uppercase fw-bold op-8">Position </div>
@@ -217,10 +218,18 @@
                                  </div>
 
                                  <div class="col-6 prl-0 text-right ">
-                                    <div class="text-small text-uppercase fw-bold op-8">Manager</div>
+                                    <div class="text-small text-uppercase fw-bold op-8"></div>
                                     <small class="fw-bold mt-1">
                                        @foreach ($mymanagers as $man)
-                                         {{$man->nik}} {{$man->biodata->fullName()}} <br>
+                                        @if (count($man->positions) > 0)
+                                            @foreach ($man->positions as $pos)
+                                                {{$pos->name}}
+                                            @endforeach
+                                            @else
+                                            {{$man->position->name}}
+                                        @endif
+                                        
+                                       | {{$man->biodata->fullName()}} <br>
                                        @endforeach
                                     </small>
                                  </div>
