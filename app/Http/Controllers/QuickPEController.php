@@ -120,17 +120,18 @@ class QuickPEController extends Controller
 
         // Data KPI
         if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment')) {
+            $employee = auth()->user()->getEmployee();
             $kpas = PeKpa::orderBy('date', 'desc')
                 ->where('status', '!=', '0')
                 ->orderBy('employe_id')
                 ->get();
 
 
-            $employes = Employee::where('status', '1')
-                ->whereNotNull('kpi_id')
-                ->get();
+            // $employes = Employee::where('status', '1')
+            //     ->whereNotNull('kpi_id')
+            //     ->get();
             // 
-
+            $employes = EmployeeLeader::where('leader_id', $employee->id)->get();
             $outAssesments = $this->outstandingAssessment();
 
             // 

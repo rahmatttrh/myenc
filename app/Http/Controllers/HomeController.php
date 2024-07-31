@@ -164,6 +164,7 @@ class HomeController extends Controller
       }
 
       // dd($dates);
+      // dd(auth()->user()->getEmployeeId());
 
       if (auth()->user()->hasRole('Administrator')) {
          $employees = Employee::get();
