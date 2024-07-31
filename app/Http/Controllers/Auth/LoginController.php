@@ -42,24 +42,36 @@ class LoginController extends Controller
 
    protected function authenticated($user)
    {
-      Log::create([
-         // 'department_id' => $departmentId,
-         'user_id' => auth()->user()->id,
-         'action' => 'Login',
-         'desc' => formatDateTimeB(NOW())
-      ]);
+      if (auth()->user()->hasRole('Administrator')) {
+         
+      } else {
+         Log::create([
+            // 'department_id' => $departmentId,
+            'user_id' => auth()->user()->id,
+            'action' => 'Login',
+            'desc' => formatDateTimeB(NOW())
+         ]);
+      }
+      
    }
 
    protected function logout()
    {
-      Log::create([
-         // 'department_id' => $departmentId,
-         'user_id' => auth()->user()->id,
-         'action' => 'Logout',
-         'desc' => formatDateTimeB(NOW())
-      ]);
+      // if (auth()->user()->hasRole('Administrator')) {
+         
+      // } else {
+      //    Log::create([
+      //       // 'department_id' => $departmentId,
+      //       'user_id' => auth()->user()->id,
+      //       'action' => 'Logout',
+      //       'desc' => formatDateTimeB(NOW())
+      //    ]);
+         
+      // }
+
       $this->guard()->logout();
-      return redirect('/');
+         return redirect('/');
+      
    }
 
    public function username()

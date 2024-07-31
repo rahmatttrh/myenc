@@ -242,7 +242,7 @@
                   </table>
                </div>
             </div>
-            <table class=" table table-bordered  table-head-bg-info table-bordered-bd-info">
+            {{-- <table class=" table table-bordered  table-head-bg-info table-bordered-bd-info">
                <thead>
                   <tr>
                      <th scope="">Status</th>
@@ -267,11 +267,11 @@
                      <td class="text-center">0</td>
                   </tr>
                </tbody>
-            </table>
+            </table> --}}
              {{-- </div> --}}
             
             
-            <div class="card">
+            {{-- <div class="card">
                <div class="card-header">
                   <div class="badge badge-primary">
                      Recent Activities
@@ -348,8 +348,8 @@
                      </div>
                   </div>
                </div>
-            </div>
-            <div class="card">
+            </div> --}}
+            {{-- <div class="card">
                <div class="card-header">
                   <div class="badge badge-danger">
                      Chart
@@ -360,7 +360,7 @@
                      <canvas id="barChart"></canvas>
                   </div>
                </div>
-            </div>
+            </div> --}}
             
          </div>
          <div class="col-md-4">
@@ -382,9 +382,13 @@
                         @if (count($logins) > 0)
                               @foreach ($logins as $log)
                               <tr>
-                                 <td class="text-truncate" style="max-width: 110px;">{{$log->user->name}}</td>
-                                 <td>{{$log->action}}</td>
-                                 <td >{{$log->desc}}</td>
+                                 <td class="text-truncate" style="max-width: 110px;">
+                                    {{$log->user->name}} {{$log->action}}
+                                     <br>
+                                    <small>{{$log->desc}}</small>
+                                 </td>
+                                 {{-- <td>{{$log->action}}</td>
+                                 <td >{{$log->desc}}</td> --}}
                               </tr>
                               @endforeach
                            @else
@@ -398,7 +402,7 @@
                   </table>
                </div>
             </div>
-            <div class="card">
+            {{-- <div class="card">
                <div class="card-header">
                   <div class="badge badge-danger">
                      Today's Not Sign In
@@ -406,91 +410,20 @@
                </div>
                <div class="card-body">
                   <div class="d-flex">
-                     <!-- <div class="avatar avatar-online">
-                        {{-- <span class="avatar-title rounded-circle border border-white bg-info">J</span> --}}
-                        <img src="{{asset('img/jm_denis.jpg')}}" alt="..." class="avatar-img rounded-circle">
-                     </div> -->
                      <div class="flex-1 ml-3 ">
-                        {{-- <h5 class="text-uppercase fw-bold mb-1">9 Januari 1995</h5> --}}
                         <span class="text-muted">Rahmat Hidayat</span>
                      </div>
                   </div>
                   <div class="separator-dashed"></div>
                   <div class="d-flex">
-                     <!-- <div class="avatar avatar-online">
-                        {{-- <span class="avatar-title rounded-circle border border-white bg-secondary">P</span> --}}
-                        <img src="{{asset('img/chadengle.jpg')}}" alt="..." class="avatar-img rounded-circle">
-                     </div> -->
                      <div class="flex-1 ml-3">
-                        {{-- <h5 class="text-uppercase fw-bold mb-1">11 Januari 1965</h5> --}}
                         <span class="text-muted">Ahmad Juantoro</span>
                      </div>
                      
                   </div>
                </div>
-            </div>
-            <div class="card">
-               <div class="card-header">
-                  <div class="badge badge-warning">
-                     Birthday This Week
-                  </div>
-               </div>
-               <div class="card-body">
-                  <div class="d-flex">
-                     <!-- <div class="avatar avatar-online">
-                        {{-- <span class="avatar-title rounded-circle border border-white bg-info">J</span> --}}
-                        <img src="{{asset('img/jm_denis.jpg')}}" alt="..." class="avatar-img rounded-circle">
-                     </div> -->
-                     <div class="flex-1 ml-3 pt-1">
-                        <h5 class="text-uppercase fw-bold mb-1">9 Januari 1995</h5>
-                        <span class="text-muted">Rahmat Hidayat</span>
-                     </div>
-                  </div>
-                  <div class="separator-dashed"></div>
-                  <div class="d-flex">
-                     <!-- <div class="avatar avatar-online">
-                        {{-- <span class="avatar-title rounded-circle border border-white bg-secondary">P</span> --}}
-                        <img src="{{asset('img/chadengle.jpg')}}" alt="..." class="avatar-img rounded-circle">
-                     </div> -->
-                     <div class="flex-1 ml-3 pt-1">
-                        <h5 class="text-uppercase fw-bold mb-1">11 Januari 1965</h5>
-                        <span class="text-muted">Ahmad Juantoro</span>
-                     </div>
-                     
-                  </div>
-               </div>
-            </div>
-            <div class="card">
-               <div class="card-header">
-                  <div class="badge badge-danger">
-                     Contract End This Week
-                  </div>
-               </div>
-               <div class="card-body">
-                  <div class="d-flex">
-                     <!-- <div class="avatar avatar-online">
-                        {{-- <span class="avatar-title rounded-circle border border-white bg-info">J</span> --}}
-                        <img src="{{asset('img/mlane.jpg')}}" alt="..." class="avatar-img rounded-circle">
-                     </div> -->
-                     <div class="flex-1 ml-3 pt-1">
-                        <h5 class="text-uppercase fw-bold mb-1">Contract end at 12 June 2023</h5>
-                        <span class="text-muted">Abdul Fikri</span>
-                     </div>
-                  </div>
-                  <div class="separator-dashed"></div>
-                  <div class="d-flex">
-                     <!-- <div class="avatar avatar-online">
-                        {{-- <span class="avatar-title rounded-circle border border-white bg-secondary">P</span> --}}
-                        <img src="{{asset('img/talha.jpg')}}" alt="..." class="avatar-img rounded-circle">
-                     </div> -->
-                     <div class="flex-1 ml-3 pt-1">
-                        <h5 class="text-uppercase fw-bold mb-1">Contract end at 15 June 2023</h5>
-                        <span class="text-muted">Dareza</span>
-                     </div>
-                     
-                  </div>
-               </div>
-            </div>
+            </div> --}}
+            
          </div>
       </div>
    </div>
