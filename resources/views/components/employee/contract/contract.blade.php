@@ -157,7 +157,7 @@
                               <div class="mt-2"></div>
                               <div class="text-small text-uppercase fw-bold op-8">Department </div>
                               <small class="fw-bold mt-1">{{$employee->department->name ?? '-'}}  </small><br>
-                              <small class="fw-bold mt-1"> {{$employee->sub_dept->name ?? '-'}}  </small>
+                              <small class="fw-bold mt-1 pl-2">- {{$employee->sub_dept->name ?? '-'}}  </small>
                               <div class="mt-2"></div>
                               <hr>
                               <div class="text-small text-uppercase fw-bold op-8">Position </div>
@@ -209,7 +209,10 @@
                                     <small class="fw-bold mt-1">
                                        
                                        @foreach ($empleaders as $empleader)
-                                         {{$empleader->leader->nik}} {{$empleader->leader->biodata->fullName()}} <br>
+                                       <a href="#"  class="text-light" data-toggle="modal" data-target="#modal-revoke-leader-{{$empleader->id}}">{{$empleader->leader->nik}} {{$empleader->leader->biodata->fullName()}}</a>
+                                          <br>
+
+                                          <x-employee.contract.modal.revoke-leader :employee="$employee" :leader="$empleader" />
                                        @endforeach
                                     </small>
                                     
@@ -696,6 +699,7 @@
 
 <x-employee.contract.modal.create-mutation :employee="$employee" :shifts="$shifts" :designations="$designations" :departments="$departments" :positions="$positions" :managers="$managers" :spvs="$spvs"  :leaders="$leaders" :allmanagers="$allmanagers" :allspvs="$allspvs"  :allleaders="$allleaders" :subdepts="$subdepts" :units="$units" :allpositions="$allpositions" />
 <x-employee.contract.modal.add-leader :employee="$employee" :leaders="$leaders" />
+
 {{-- <x-employee.contract.modal.add-position :employee="$employee" :leaders="$leaders" /> --}}
 
 @push('js_footer')
