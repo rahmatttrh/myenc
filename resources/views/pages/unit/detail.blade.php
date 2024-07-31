@@ -40,7 +40,7 @@
                         @foreach ($departments as $depart)
                            <a class="nav-link {{$firstDept->id == $depart->id ? 'active' : ''}} text-left pl-3" id="v-pills-{{$depart->id}}-tab" data-toggle="pill" href="#v-pills-{{$depart->id}}" role="tab" aria-controls="v-pills-{{$depart->id}}" aria-selected="true">
                               
-                              {{$depart->name}}
+                               {{$depart->name}}
                            </a>
                         @endforeach
                         
@@ -57,7 +57,7 @@
                <div class="tab-pane fade {{$firstDept->id == $depart->id ? 'show active' : ''}} " id="v-pills-{{$depart->id}}" role="tabpanel" aria-labelledby="v-pills-{{$depart->id}}-tab">
                   <div class="card">
                      <div class="card-header d-flex justify-content-between p-2 bg-primary text-white">
-                        <small>{{$depart->name}} Department <br>
+                        <small> {{$depart->name}} Department <br>
                            {{count($depart->employees->where('status', 1))}} Karyawan
                         </small> 
                         <div>
@@ -71,7 +71,7 @@
                      <div class="card-body p-0">
                         <table class="display  table-sm table-bordered  ">
                            <thead>
-                              @foreach ($depart->positions as $depos)
+                              @foreach ($depart->positions->where('type', 'dept') as $depos)
                                   <tr>
                                     <td colspan="2">{{$depos->name}}</td>
                                     <td colspan="1">
@@ -84,7 +84,7 @@
                                        
                                     </td>
                                     <td class="text-right">
-                                       <a href="" data-toggle="modal" data-target="#modal-change-position-{{$depos->id}}">Add</a> |
+                                       <a href="" data-toggle="modal" data-target="#modal-change-position-{{$depos->id}}">Assign</a> |
                                        {{-- <a href="">Edit</a> | --}}
                                        <a href="" data-toggle="modal" data-target="#modal-delete-{{$depos->id}}">Delete</a>
                                     </td>
@@ -132,9 +132,15 @@
                                              
                                           </td>
                                           <td class="text-right">
-                                             <a href="#" data-toggle="modal" data-target="#modal-edit-position-{{$pos->id}}">Edit</a> | <a href="#" data-toggle="modal" data-target="#modal-delete-{{$pos->id}}">Delete</a>
+                                             @if ($pos->designation_id > 2)
+                                             <a href="" data-toggle="modal" data-target="#modal-change-position-{{$pos->id}}">Assign</a> |
+                                             @endif
+                                             
+                                             <a href="#" data-toggle="modal" data-target="#modal-edit-position-{{$pos->id}}">Edit</a> | 
+                                             <a href="#" data-toggle="modal" data-target="#modal-delete-{{$pos->id}}">Delete</a>
                                           </td>
                                        </tr> 
+                                       <x-modal.change-position :id="$pos->id" :pos="$pos" :deptemployees="$depart->getManagers()"  />
                                        <x-modal.delete :id="$pos->id" :body="$pos->name" url="{{route('position.delete', enkripRambo($pos->id))}}" />
                                        <x-modal.edit-position :id="$pos->id" :pos="$pos"  />
                                     @endforeach

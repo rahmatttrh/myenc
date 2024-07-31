@@ -246,6 +246,10 @@ class EmployeeController extends Controller
 
       $dekripId = dekripRambo($id);
       $employee = Employee::find($dekripId);
+      // dd($employee->id);
+      // $employee->update([
+      //    'department_id' => 5
+      // ]);
       if ($employee->designation->name == 'Manager') {
          if (count($employee->positions) > 0) {
             $employee->contract->update([
@@ -309,8 +313,10 @@ class EmployeeController extends Controller
 
       $managers = Employee::where('status', 1)->where('designation_id', 6)->get();
       $spvs = Employee::where('status', 1)->where('designation_id', 4)->where('department_id', $employee->department_id)->get();
-      $leaders = Employee::where('role', 4)->orWhere('role', 7)->get();
-      $finalLeaders = $leaders->where('status', 1)->where('department_id', $employee->department_id);
+      $leaders = Employee::where('role', 4)->orWhere('role', 8)->orWhere('role', 5)->orWhere('role', 9)->get();
+      // dd($leaders);
+      $finalLeaders = $leaders->where('status', 1);
+      $managers = Position::where('type', 'dept');
       // $managers = Position::where('');
       // dd($finalLeaders);
       // dd($employee->documents);
@@ -320,10 +326,77 @@ class EmployeeController extends Controller
       $allManagers = Employee::where('designation_id', 6)->get();
       $allSpvs = Employee::where('designation_id', 4)->get();
       // dd($spvs);
-      $allLeaders = Employee::where('designation_id', 3)->get();
+      $allLeaders = Employee::where('designation_id', 3)->where('designation_id', 3)->get();
       $subdepts = SubDept::where('department_id', $employee->department_id)->get();
       $employeeLeaders = EmployeeLeader::where('employee_id', $employee->id)->get();
+      // dd($employee->department_id);
+      $department = Department::find($employee->department_id);
+      $subdept = SubDept::find($employee->sub_dept_id);
+         // dd($department->id);
+      $myManagers = [];  
+      // dd($subdept->id);
+      $managerPositions = Position::where('department_id', $department->id)->where('type', 'dept')->get();
+      if ($subdept) {
+         $subManPositions = Position::where('department_id', $department->id)->where('sub_dept_id', $subdept->id)->where('type', 'subdept')->get();
+         if (count($subManPositions) > 0) {
+            // dd('ok');
+            // dd($subman->id);
+            foreach($subManPositions as $submanpos){
+               // dd($submanpos->employee);
+               if ($submanpos->employee) {
+                  $myManagers[] = $submanpos->employee;
+               }
+               
+               // dd($submanpos->employee);
+               // foreach($submanpos->employees as $subman){
+               //    $myManagers[] = $subman;
+               //    dd($subman->id);
+               // }
+            }
+            // dd($myManagers);
+         }  
+      } else {
+         $subManPositions = null;
+      }
+      
+      // foreach($managerPositions as $manpos){
+      //    foreach($manpos->employees as $man){
+      //       $myManagers[] = $man;
+      //    }
+      // }
 
+      // foreach($subManPositions as $submanpos){
+      //    foreach($submanpos->employees as $subman){
+      //       $myManagers[] = $subman;
+      //    }
+      // }
+
+      
+      // else {
+      //    foreach($managerPositions as $manpos){
+            
+      //       foreach($manpos->employees as $man){
+      //          // dd($man);
+      //          $myManagers[] = $man;
+      //       }
+      //    }
+      // }
+
+      if (count($managerPositions) > 0){
+         foreach($managerPositions as $manpos){
+            
+            foreach($manpos->employees as $man){
+               // dd($man);
+               $myManagers[] = $man;
+            }
+         }
+      }
+
+      // dd($subManPositions);
+
+      
+
+      // dd($myManagers);
 
       return view('pages.employee.detail', [
          'employee' => $employee,
@@ -349,7 +422,8 @@ class EmployeeController extends Controller
          'subdepts' => $subdepts,
          'contracts' => $contracts,
          // 'tab' => $tab,
-         'employeeLeaders' => $employeeLeaders
+         'employeeLeaders' => $employeeLeaders,
+         'myManagers' => $myManagers
       ]);
    }
 
@@ -612,18 +686,18 @@ class EmployeeController extends Controller
          'picture' => $picture
       ]);
 
-      if (auth()->user()->hasRole('Administrator')) {
-         $departmentId = null;
-      } else {
-         $user = Employee::find(auth()->user()->getEmployeeId());
-         $departmentId = $user->department_id;
-      }
-      Log::create([
-         'department_id' => $departmentId,
-         'user_id' => auth()->user()->id,
-         'action' => 'Update',
-         'desc' => 'Profile Picture ' . $employee->nik . ' ' . $employee->biodata->fullname()
-      ]);
+      // if (auth()->user()->hasRole('Administrator')) {
+      //    $departmentId = null;
+      // } else {
+      //    $user = Employee::find(auth()->user()->getEmployeeId());
+      //    $departmentId = $user->department_id;
+      // }
+      // Log::create([
+      //    'department_id' => $departmentId,
+      //    'user_id' => auth()->user()->id,
+      //    'action' => 'Update',
+      //    'desc' => 'Profile Picture ' . $employee->nik . ' ' . $employee->biodata->fullname()
+      // ]);
 
       return redirect()->route('employee.detail', [enkripRambo($employee->id), enkripRambo('basic')])->with('success', 'Employee successfully updated');
    }
@@ -641,18 +715,18 @@ class EmployeeController extends Controller
 
       
       // $user = Employee::find(auth()->user()->getEmployeeId());
-      if (auth()->user()->hasRole('Administrator')) {
-         $departmentId = null;
-      } else {
-         $user = Employee::find(auth()->user()->getEmployeeId());
-         $departmentId = $user->department_id;
-      }
-      Log::create([
-         'department_id' => $departmentId,
-         'user_id' => auth()->user()->id,
-         'action' => 'Update',
-         'desc' => 'Role ' . $employee->nik . ' ' . $employee->biodata->fullname()
-      ]);
+      // if (auth()->user()->hasRole('Administrator')) {
+      //    $departmentId = null;
+      // } else {
+      //    $user = Employee::find(auth()->user()->getEmployeeId());
+      //    $departmentId = $user->department_id;
+      // }
+      // Log::create([
+      //    'department_id' => $departmentId,
+      //    'user_id' => auth()->user()->id,
+      //    'action' => 'Update',
+      //    'desc' => 'Role ' . $employee->nik . ' ' . $employee->biodata->fullname()
+      // ]);
 
       return redirect()->route('employee.detail', [enkripRambo($employee->id), enkripRambo('account')])->with('success', 'Employee successfully updated');
    }

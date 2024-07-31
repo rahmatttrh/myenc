@@ -1,4 +1,4 @@
-<div class="modal fade" id="modalReject" data-bs-backdrop="static">
+<div class="modal fade" id="modal-reject-hrd" data-bs-backdrop="static">
    <div class="modal-dialog">
       <div class="modal-content">
 

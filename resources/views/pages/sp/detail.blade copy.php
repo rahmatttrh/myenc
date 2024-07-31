@@ -59,7 +59,19 @@ SP Detail
             <div class="col">
 
                <x-status.sp :sp="$sp" />
-               
+               {{-- @if ($sp->status == 0)
+               Draft
+               @elseif($sp->status == 1)
+               Approval HRD
+               @elseif($sp->status == 2)
+               Employee Verification
+               @elseif($sp->status == 3)
+               Approval Manager
+               @elseif($sp->status == 4)
+               Active
+               @elseif($sp->status == 5)
+               Deactivated
+               @endif --}}
 
 
                <h5 class="page-title">{{$sp->code}}</h5>
@@ -128,6 +140,178 @@ SP Detail
                   <button data-target="#modal-complain-employee" data-toggle="modal" class="btn btn-md btn-danger "><i class="fa fa-edit"></i> Add Notes</button>
                @endif
 
+               
+               
+               
+               
+               
+               {{-- @if($sp->status == '1' && auth()->user()->hasRole('Karyawan'))
+                  @if($sp->status == '2' && auth()->user()->getEmployeeId() == $sp->employee_id)
+                     <!-- Start -->
+                     <button class="btn btn-md btn-success" data-toggle="modal" data-target="#modal-app-employee-{{$sp->id}}"><i class="fas fa-check"></i> Confirm </button>
+
+                     <div class="modal fade" id="modal-app-employee-{{$sp->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                           <div class="modal-content">
+                              <form method="POST" action="{{route('sp.app.employee', enkripRambo($sp->id))}}" enctype="multipart/form-data">
+                                 @csrf
+                                 @method('PUT')
+                                 <input type="hidden" name="id" value="{{$sp->id}}">
+                                 <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Confirm Employee</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                       <span aria-hidden="true">&times;</span>
+                                    </button>
+                                 </div>
+                                 <div class="modal-body">
+                                    Confirm {{$sp->code}}
+                                 </div>
+                                 <div class="modal-footer">
+                                    <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-success ">
+                                       Confirm
+                                    </button>
+                                 </div>
+                              </form>
+                           </div>
+                        </div>
+                     </div>
+
+                     <!-- End Approved -->
+
+                     
+                  @endif
+               @endif --}}
+
+               {{-- @if($sp->status == '1' && auth()->user()->hasRole('Manager'))
+                  @if($sp->status == '3' && auth()->user()->getEmployee()->id == $sp->employee->manager_id)
+                  <!-- Start -->
+                  <button class="btn btn-md btn-success" data-toggle="modal" data-target="#modal-submit-{{$sp->id}}"><i class="fas fa-check"></i> Approved </button>
+
+                  <div class="modal fade" id="modal-submit-{{$sp->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                     <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                           <form method="POST" action="{{route('sp.approved', enkripRambo($sp->id))}}" enctype="multipart/form-data">
+                              @csrf
+                              @method('PUT')
+                              <input type="hidden" name="id" value="{{$sp->id}}">
+                              <div class="modal-header">
+                                 <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                 </button>
+                              </div>
+                              <div class="modal-body">
+                                 Submit Surat Peringatan ini untuk priode
+
+                                 <?php echo   ' semester ' . $sp->semester . ' ' . $sp->tahun; ?>
+                              </div>
+                              <div class="modal-footer">
+                                 <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+                                 <button type="submit" class="btn btn-success ">
+                                    Approved
+                                 </button>
+                              </div>
+                           </form>
+                        </div>
+                     </div>
+                  </div>
+
+                  <!-- End Approved -->
+
+                  <!-- Reject -->
+                  <button data-target="#modalReject" data-toggle="modal" class="btn btn-md btn-danger "><i class="fa fa-reply"></i> Reject</button>
+
+
+                  <!-- Modal Reject  -->
+                  <div class="modal fade" id="modalReject" data-bs-backdrop="static">
+                     <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+
+                           <!-- Bagian header modal -->
+                           <div class="modal-header">
+                              <h3 class="modal-title"> </h3>
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                           </div>
+                           <form method="POST" action="{{route('sp.reject',$sp->id) }}" enctype="multipart/form-data">
+                              @csrf
+                              @method('PATCH')
+                              <input type="hidden" name="id" value="{{$sp->id}}">
+
+                              <!-- Bagian konten modal -->
+                              <div class="modal-body">
+
+                                 <div class="row">
+                                    <div class="col-md-12">
+                                       <div class="card shadow-none border">
+                                          <div class="card-header d-flex">
+                                             <div class="d-flex  align-items-center">
+                                                <div class="card-title">Konfirmasi Reject</div>
+                                             </div>
+
+                                          </div>
+                                          <div class="card-body">
+                                             <label for="" class="label-control">Alasan Penolakan</label>
+                                             <textarea name="alasan_reject" class="form-control" id="" cols="30" rows="10" placeholder="Isikan alasan penolakan disini"></textarea>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+
+                              <!-- Bagian footer modal -->
+                              <div class="modal-footer">
+                                 <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+                                 <button type="submit" class="btn btn-danger">Reject</button>
+                              </div>
+                           </form>
+
+                        </div>
+                     </div>
+                  </div>
+
+                  <!-- End Modal Reject  -->
+
+                  <!-- End Reject -->
+                  @endif
+               @endif --}}
+
+               {{-- @if($sp->status == '5' && $sp->employee_id == auth()->user()->getEmployeeId())
+               <!-- Start -->
+               <button class="btn btn-md btn-warning" data-toggle="modal" data-target="#modal-submit-{{$sp->id}}"><i class="fas fa-rocket"></i> Sumbit Kembali </button>
+
+               <div class="modal fade" id="modal-submit-{{$sp->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                     <div class="modal-content">
+                        <form method="POST" action="{{route('sp.submit', enkripRambo($sp->id))}}" enctype="multipart/form-data">
+                           @csrf
+                           @method('PUT')
+                           <input type="hidden" name="id" value="{{$sp->id}}">
+                           <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                 <span aria-hidden="true">&times;</span>
+                              </button>
+                           </div>
+                           <div class="modal-body">
+                              Approved Surat Peringatan ini untuk priode
+
+                              <?php echo   ' semester ' . $sp->semester . ' ' . $sp->tahun; ?>
+                           </div>
+                           <div class="modal-footer">
+                              <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+                              <button type="submit" class="btn btn-warning ">
+                                 Submit
+                              </button>
+                           </div>
+                        </form>
+                     </div>
+                  </div>
+               </div>
+
+               <!-- End -->
+               @endif --}}
+
 
                {{-- @if ($sp->status > 1 && $sp->status != 6) --}}
                <button type="button" class="btn btn-light border" onclick="javascript:window.print();">
@@ -181,7 +365,7 @@ SP Detail
             </div>
          @endif
 
-         @if($sp->status == '505')
+         @if($sp->status == '6')
             <div class="card ">
                <div class="card-header">
                   <div class="badge badge-danger mr-1"><b>!</b></div><b>Rejected by HRD</b>
@@ -195,7 +379,7 @@ SP Detail
          
          <div class="row">
             <div class="col-md-12">
-               @if ($sp->status > 1 && $sp->status != 505)
+               @if ($sp->status > 1 && $sp->status != 6)
                <x-sp.preview :sp="$sp" :gen="$gen" :user="$user" :hrd="$hrd" :manager="$manager" :suspect="$suspect" />
                
                <hr>

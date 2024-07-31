@@ -15,7 +15,9 @@ class CreateEmployeeLeadersTable extends Migration
     {
         Schema::create('employee_leaders', function (Blueprint $table) {
             $table->id();
+            $table->integer('unit_id');
             $table->integer('department_id')->nullable();
+            $table->integer('sub_dept_id');
             $table->integer('employee_id');
             $table->integer('leader_id');
             $table->timestamps();

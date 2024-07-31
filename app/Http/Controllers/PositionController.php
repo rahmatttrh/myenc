@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Position;
+use App\Models\SubDept;
 use Illuminate\Http\Request;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx\Rels;
 use Illuminate\Support\Str;
@@ -23,9 +24,12 @@ class PositionController extends Controller
 
     public function store(Request $req){
       $req->validate([]);
+      $subdept = SubDept::find($req->subdept);
+      // $depart
 
       Position::create([
          'type' => 'subdept',
+         'department_id' => $subdept->department_id,
          'sub_dept_id' => $req->subdept,
          'designation_id' => $req->designation,
          'name' => $req->name,
@@ -79,12 +83,12 @@ class PositionController extends Controller
       $employee = Employee::find($req->employee);
       $department = Department::find($position->department_id);
       // dd($employee->biodata->fullName());
-      $employee->update([
-         'unit_id' => null,
-         'department_id' => null,
-         'position_id' => null,
-         'designation_id' => null
-      ]);
+      // $employee->update([
+      //    'unit_id' => null,
+      //    'department_id' => null,
+      //    'position_id' => null,
+      //    'designation_id' => null
+      // ]);
 
       $position->employees()->sync($employee->id);
 

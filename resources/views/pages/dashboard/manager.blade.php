@@ -61,11 +61,13 @@ Dashboard
          </div> --}}
          <div class="card card-primary">
             <div class="card-body ">
+               Dashboard Manager
+               <hr class="bg-white">
                @if (count($employee->positions) > 0)
                      @foreach ($positions as $pos)
-                     <b>{{$pos->department->unit->name ?? '-'}} - {{$pos->department->name}}</b><br>
-                     <small>{{$pos->name}}</small>
-                     <hr>
+                      <b>{{$pos->department->unit->name ?? '-'}} - {{$pos->department->name}}</b><br>
+                     <small class="">{{$pos->name}}</small>
+                     <br><br>
                      {{-- <div class="row">
                         <div class="col-md-4">
                            {{$pos->department->name}} 
@@ -114,8 +116,8 @@ Dashboard
                                     <tr>
                                     <td></td>
                                     {{-- <td>{{$emp->sub_dept->name ?? ''}}</td> --}}
-                                    <td>{{$emp->nik}}</td>
-                                    <td>{{$emp->biodata->fullName()}}</td>
+                                    {{-- <td></td> --}}
+                                    <td>{{$emp->nik}} {{$emp->biodata->fullName()}}</td>
                                     </tr>
                                  @endforeach
                            @endforeach
@@ -138,68 +140,12 @@ Dashboard
          </div>
       </div>
       <div class="col-md-8">
-         {{-- <div class="alert alert-info">You have 2 Notification !</div> --}}
-         {{-- <div class="d-none d-sm-block">
-            <div class="alert alert-info shadow-sm">
-
-                  <div class="card-opening">
-                     <h4>
-                        <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1">
-                        <b>Announcement</b>
-                     </h4>
-                  </div>
-                  <hr>
-                  <div class="card-desc">
-                     Tanggal 8 & 9 Februari Libur Nasional dan Cuti Bersama
-                  </div>
-            </div>
-            <hr>
-         </div> --}}
-
-         {{-- <div class="card">
-            <div class="card-header p-2 bg-primary text-white">
-               <small>SPKL Request</small>
-            </div>
-            <div class="card-body p-0">
-               <table class=" ">
-                  <thead>
-                     
-                     <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Date</th>
-                        <th>Name</th>
-                        <th>Desc</th>
-                        <th scope="col">Status</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     @if (count($spkls) > 0)
-                         @foreach ($spkls as $spkl)
-                         <tr>
-                           <td><a href="{{route('spkl.detail', enkripRambo($spkl->id))}}">{{$spkl->code}}</a></td>
-                           <td>{{formatDate($spkl->date)}}</td>
-                           <td>{{$spkl->employee->biodata->first_name}} {{$spkl->employee->biodata->last_name}}</td>
-                           <td style="max-width: 150px" class="text-truncate">{{$spkl->desc}}</td>
-                           <td>
-                              <x-status.spkl :spkl="$spkl" />
-                           </td>
-                        </tr>
-                         @endforeach
-                        @else
-                        <tr>
-                           <td colspan="5" class="text-center">Empty</td>
-                        </tr>
-                     @endif
-                     
-                     
-                  </tbody>
-               </table>
-            </div>
-         </div> --}}
+         
 
          <div class="card">
-            <div class="card-header p-2 bg-primary text-white">
+            <div class="card-header d-flex justify-content-between p-2 bg-primary text-white">
                <small>Recent QPE</small>
+               <a href="{{route('qpe')}}" class="text-white">more...</a>
             </div>
             <div class="card-body p-0">
                <table class=" ">
@@ -219,7 +165,7 @@ Dashboard
                          <tr>
                            <td colspan="6">{{$pos->department->unit->name}} {{$pos->department->name}}</td>
                          </tr>
-                         @foreach ($pos->department->pes()->paginate(5) as $pe)
+                         @foreach ($pos->department->pes()->where('status', 1)->get() as $pe)
                          <tr>
                            <th></th>
                            <td>
@@ -241,34 +187,6 @@ Dashboard
                          @endforeach
                      @endforeach
 
-                     {{-- @if (count($employee->sub_dept->pes) > 0)
-                     @foreach ($employee->sub_dept->pes as $pe)
-                     <tr>
-                        <th></th>
-                        <td>@if($pe->status == '0' || $pe->status == '101')
-                           <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
-                           @elseif($pe->status == '1' || $pe->status == '202' )
-                           <a href="/qpe/approval/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
-                           @else
-                           <a href="/qpe/show/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
-                           @endif
-                        </td>
-                        <td>{{$pe->semester}} / {{$pe->tahun}}</td>
-                        <td>{{$pe->achievement}}</td>
-                        <td>
-                           <x-status.pe :pe="$pe" />
-                        </td>
-                     </tr>
-                     @endforeach
-                     @else
-                     <tr>
-                        <td class="text-center" colspan="5">Empty</td>
-                     </tr>
-                     @endif --}}
-                     
-                     {{-- @foreach ($sps as $sp)
-                         
-                     @endforeach --}}
                   </tbody>
                </table>
             </div>
@@ -287,7 +205,7 @@ Dashboard
                         {{-- <th scope="col">#</th> --}}
                         <th></th>
                         <th >Name</th>
-                        <th>ID</th>
+                        <th>SP ID</th>
                         {{-- <th>Name</th> --}}
                         
                         <th>Level</th>
