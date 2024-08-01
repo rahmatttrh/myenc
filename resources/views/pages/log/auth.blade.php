@@ -45,9 +45,11 @@ Logs Activity
                      <thead>
                         <tr>
                            <th class="text-center" style="width: 10px">No</th>
-                           <th>Name</th>
                            <th>Action</th>
-                           <th>Desc</th>
+                           <th>NIK</th>
+                           <th>Name</th>
+                           
+                           {{-- <th>Desc</th> --}}
                            
                            <th>Timestamp</th>
                         </tr>
@@ -56,9 +58,11 @@ Logs Activity
                         @foreach ($logs as $log)
                         <tr>
                            <td class="text-center">{{++$i}}</td>
+                           <td>{{$log->action}} into system</td>
+                           <td>{{$log->user->username}}</td>
                            <td>{{$log->user->name}}</td>
-                           <td>{{$log->action}}</td>
-                           <td>{{$log->desc}}</td>
+                           
+                           {{-- <td>{{$log->desc}}</td> --}}
                            <td>{{formatDateTime($log->created_at)}}</td>
                         </tr>
                         @endforeach
