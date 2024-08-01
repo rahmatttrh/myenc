@@ -276,7 +276,12 @@
                            <div class="col-6 pl-0 text-right">
                               <div class="text-small text-uppercase fw-bold op-8">Penetapan</div>
                               <small class="fw-bold mb-1">
-                                 {{formatDate($employee->contract->determination ?? '-')}}</small>
+                                 @if ($employee->contract->determination)
+                                 {{formatDate($employee->contract->determination)}}
+                                 @else
+                                 -
+                                 @endif
+                                 </small>
                               
                            
                               
