@@ -246,6 +246,17 @@ class EmployeeController extends Controller
 
       $dekripId = dekripRambo($id);
       $employee = Employee::find($dekripId);
+      // $empUnit = Unit::find($employee->unit_id);
+      // $empDepartment = Department::find($employee->department_id);
+      // $empSubdept = SubDept::find($employee->sub_dept_id);
+      // if ($empUnit == null) {
+      //    $employee->update([
+      //       'unit_id' => null,
+      //       'department_id' => null,
+      //       'sub_dept_id' => null,
+      //       'position_id' => null
+      //    ]);
+      // }
       // dd($employee->id);
       // $employee->update([
       //    'department_id' => 5

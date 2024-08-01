@@ -76,7 +76,7 @@
 
                               <td class="text-right">
                                     <a href="" data-toggle="modal" data-target="#modal-edit-unit-{{$unit->id}}">Edit</a> |
-                                    <a href="#" data-toggle="modal" data-target="#modal-delete-{{$unit->id}}">Delete</a>
+                                    {{-- <a href="#" data-toggle="modal" data-target="#modal-delete-{{$unit->id}}">Delete</a> --}}
                                  </td>
                               </tr>
                               <x-modal.edit-unit :id="$unit->id" :unit="$unit"  />
