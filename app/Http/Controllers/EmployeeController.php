@@ -324,7 +324,7 @@ class EmployeeController extends Controller
 
       $managers = Employee::where('status', 1)->where('designation_id', 6)->get();
       $spvs = Employee::where('status', 1)->where('designation_id', 4)->where('department_id', $employee->department_id)->get();
-      $leaders = Employee::where('role', 4)->orWhere('role', 8)->orWhere('role', 5)->orWhere('role', 9)->get();
+      $leaders = Employee::where('role', 4)->orWhere('role', 7)->orWhere('role', 8)->orWhere('role', 5)->orWhere('role', 9)->get();
       // dd($leaders);
       $finalLeaders = $leaders->where('status', 1);
       $managers = Position::where('type', 'dept');

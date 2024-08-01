@@ -135,35 +135,7 @@ class QuickPEController extends Controller
             $outAssesments = $this->outstandingAssessment();
 
             // 
-        } else if (auth()->user()->hasRole('Manager|Asst. Manager')) {
-         $employee = auth()->user()->getEmployee();
-            $kpas = DB::table('pe_kpas')
-                ->join('pe_kpis', 'pe_kpas.kpi_id', '=', 'pe_kpis.id')
-                ->where('pe_kpis.departement_id', $employee->department_id)
-                ->select('pe_kpas.*')
-                ->orderBy('pe_kpas.date', 'desc')
-                ->orderBy('pe_kpas.status', 'asc')
-                ->get();
-
-            // Convert the query builder result to Order model instances
-            $kpas = PeKpa::hydrate($kpas->toArray());
-
-            // $employes = Employee::where('department_id', $employee->department_id)
-            //     ->where('status', '1')
-            //     ->whereNotNull('kpi_id')
-            //     ->get();
-            $employes = [];
-            foreach($employee->positions as $pos){
-               foreach($pos->department->employees as $emp){
-                  $employes[] = $emp; 
-               }
-            }
-
-            // $employes = EmployeeLeader::where('leader_id', $employee->id)->get();
-            // 
-            $outAssesments = $this->outstandingAssessment($employee->department_id);
-            // 
-        } else if (auth()->user()->hasRole('Leader|Supervisor')) {
+        } else if (auth()->user()->hasRole('Leader|Manager|Asst. Manager|Supervisor')) {
          $employee = auth()->user()->getEmployee();
             $kpas = DB::table('pe_kpas')
                 ->join('pe_kpis', 'pe_kpas.kpi_id', '=', 'pe_kpis.id')
