@@ -71,6 +71,7 @@ class PositionController extends Controller
       $position = Position::find($req->position);
 
       $position->update([
+         'designation_id' => $req->designation,
          'name' => $req->name,
          'slug' => Str::slug($req->name)
       ]);

@@ -12,7 +12,16 @@
                @csrf
                @method('PUT')
                   {{-- <input type="number" name="employee" id="employee" value="{{$employee->id}}" hidden> --}}
+                  
                   <input type="number" name="position" id="position" value="{{$id}}" hidden>
+                  <div class="form-group form-group-default">
+                     <label>Designation</label>
+                     <select class="form-control" id="designation"  name="designation">
+                        @foreach ($designations as $desig)
+                        <option {{$pos->designation_id == $desig->id ? 'selected' : ''}}  value="{{$desig->id}}">{{$desig->name}}</option>
+                        @endforeach
+                     </select>
+                  </div>
                   <div class="form-group form-group-default">
                      <label>Position Name</label>
                      <input type="text" class="form-control"  name="name" id="name" value="{{$pos->name}}"  >

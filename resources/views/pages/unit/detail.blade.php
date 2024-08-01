@@ -132,7 +132,7 @@
                                              
                                           </td>
                                           <td class="text-right">
-                                             @if ($pos->designation_id > 2)
+                                             @if ($pos->designation_id == 6)
                                              <a href="" data-toggle="modal" data-target="#modal-change-position-{{$pos->id}}">Assign</a> |
                                              @endif
                                              
@@ -142,7 +142,7 @@
                                        </tr> 
                                        <x-modal.change-position :id="$pos->id" :pos="$pos" :deptemployees="$depart->getManagers()"  />
                                        <x-modal.delete :id="$pos->id" :body="$pos->name" url="{{route('position.delete', enkripRambo($pos->id))}}" />
-                                       <x-modal.edit-position :id="$pos->id" :pos="$pos"  />
+                                       <x-modal.edit-position :id="$pos->id" :pos="$pos" :designations="$designations"  />
                                     @endforeach
                                        <x-modal.delete :id="$sub->id" :body="$sub->name" url="{{route('subdept.delete', enkripRambo($sub->id))}}" />
                                        <x-modal.edit-subdept :id="$sub->id" :sub="$sub"  />
