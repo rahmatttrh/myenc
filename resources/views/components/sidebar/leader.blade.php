@@ -37,13 +37,13 @@
             <a href="#">
                <span class="sub-item">...</span>
             </a>
-         </li> --}}
+         </li> -->
       </ul>
    </div>
 </li>
 <li class="nav-item">
    <a data-toggle="collapse" href="#qpe">
-      <!-- <a  href="{{route('qpe')}}"> -->
+    {{-- <a  href="{{route('qpe')}}"> --}}
       <i class="fas fa-file"></i>
       <p>Quick PE</p>
       <span class="caret"></span>

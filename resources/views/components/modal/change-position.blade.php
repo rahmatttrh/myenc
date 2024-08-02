@@ -12,6 +12,7 @@
          <form action="{{route('position.department.update')}}" method="POST" >
             <div class="modal-body">
                @csrf
+            
                @method('PUT')
                <input type="text" value="{{$id}}" name="position" id="position" hidden >
                <div class="form-group form-group-default">

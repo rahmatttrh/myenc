@@ -24,9 +24,16 @@ class PeKpiController extends Controller
             $kpis = PeKpi::get();
             $units = Unit::orderBy('name')->get();
             $departements = Department::orderBy('name')->get();
-        } else if (auth()->user()->hasRole('Leader|Manager|Supervisor')) {
+        } else if (auth()->user()->hasRole('Manager')) {
             $employee = auth()->user()->getEmployee();
             $kpis = PeKpi::where('departement_id', $employee->department_id)->get();
+            
+            $units = Unit::where('id', $employee->department->unit->id)->get();
+            $departements = Department::where('id', $employee->department_id)->get();
+        }  else if (auth()->user()->hasRole('Leader|Supervisor')) {
+            $employee = auth()->user()->getEmployee();
+            $kpis = PeKpi::where('departement_id', $employee->department_id)->get();
+            
             $units = Unit::where('id', $employee->department->unit->id)->get();
             $departements = Department::where('id', $employee->department_id)->get();
         }

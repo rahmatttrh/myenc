@@ -261,7 +261,7 @@ class HomeController extends Controller
             'tetap' => $tetap,
             'empty' => $empty
          ]);
-      } elseif (auth()->user()->hasRole('Manager')) {
+      } elseif (auth()->user()->hasRole('Manager|Asst. Manager')) {
          // dd('ok');
          $employee = Employee::where('nik', auth()->user()->username)->first();
          $biodata = Biodata::where('email', auth()->user()->email)->first();
@@ -275,6 +275,7 @@ class HomeController extends Controller
 
          if (count($employee->positions) > 0) {
             $teams = null;
+            $pes = null;
          } else {
             if ($employee->position->sub_dept_id != null) {
                // dd('ada sub');
@@ -282,6 +283,10 @@ class HomeController extends Controller
             } else {
                $teams = Employee::where('department_id', $employee->position->department_id)->get();
             }
+
+            $pes = Pe::where('department_id', $employee->department_id)->where('status', '>', '0')
+            ->orderBy('release_at', 'desc')
+            ->get();
          }
          
          
@@ -296,9 +301,11 @@ class HomeController extends Controller
             'spkls' => $spkls,
             'sps' => $sps,
             'teams' => $teams,
-            'positions' => $employeePositions
+            'positions' => $employeePositions,
+            'pes' => $pes
          ]);
       } elseif (auth()->user()->hasRole('Supervisor|Leader')) {
+         // dd('ok');
          $employee = Employee::where('nik', auth()->user()->username)->first();
          $biodata = Biodata::where('email', auth()->user()->email)->first();
          $presences = Presence::where('employee_id', $employee->id)->orderBy('created_at', 'desc')->get();

@@ -59,7 +59,7 @@
                <x-sidebar.hrd-recruitment />
             @endif
 
-            @if (auth()->user()->hasRole('Manager'))
+            @if (auth()->user()->hasRole('Manager|Asst. Manager'))
             <x-sidebar.manager />
             @endif
 

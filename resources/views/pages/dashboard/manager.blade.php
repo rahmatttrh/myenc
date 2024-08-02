@@ -161,12 +161,14 @@ Dashboard
                      </tr>
                   </thead>
                   <tbody>
+
+                     
                      @foreach ($positions as $pos)
                          <tr>
                            <td colspan="6">{{$pos->department->unit->name}} {{$pos->department->name}}</td>
                          </tr>
                          @foreach ($pos->department->pes()->where('status', 1)->get() as $pe)
-                         <tr>
+                           <tr>
                            <th></th>
                            <td>
                               {{-- <a href="{{route('sp.detail', enkripRambo($pe->id))}}">{{$pe->code}}</a> --}}
@@ -183,10 +185,35 @@ Dashboard
                            <td>
                               <x-status.pe :pe="$pe" />
                            </td>
-                        </tr>
+                           </tr>
                          @endforeach
                      @endforeach
-
+                     <tr>
+                        <td colspan="6"></td>
+                     </tr>
+                     @if ($pes)
+                     @foreach ($pes as $pe)
+                     <tr>
+                     <th></th>
+                     <td>
+                        {{-- <a href="{{route('sp.detail', enkripRambo($pe->id))}}">{{$pe->code}}</a> --}}
+                        @if($pe->status == '0' || $pe->status == '101')
+                        <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
+                        @elseif($pe->status == '1' || $pe->status == '202' )
+                        <a href="/qpe/approval/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
+                        @else
+                        <a href="/qpe/show/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
+                        @endif
+                     </td>
+                     <td>{{$pe->semester}} / {{$pe->tahun}}</td>
+                     <td>{{$pe->achievement}}</td>
+                     <td>
+                        <x-status.pe :pe="$pe" />
+                     </td>
+                     </tr>
+            @endforeach
+                     @endif
+                     
                   </tbody>
                </table>
             </div>

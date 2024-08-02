@@ -15,6 +15,8 @@ class CreateEmployeePositionsTable extends Migration
     {
         Schema::create('employee_positions', function (Blueprint $table) {
             $table->id();
+            $table->integer('employee_id');
+            $table->integer('position_id');
             $table->timestamps();
         });
     }
