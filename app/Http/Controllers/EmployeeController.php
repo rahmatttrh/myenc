@@ -33,13 +33,7 @@ class EmployeeController extends Controller
    public function index($enkripTab)
    {
       $tab = dekripRambo($enkripTab);
-      // dd($tab);
-      // $employees = Employee::where('status', 1)
-      //    ->orderBy('department_id')
-      //    ->orderBy('sub_dept_id')
-      //    ->orderBy('designation_id')
-      //    ->orderBy('position_id')
-      //    ->get();
+      
          $employees = Employee::where('status', 1)
          ->orderBy('updated_at', 'desc')
          ->get();

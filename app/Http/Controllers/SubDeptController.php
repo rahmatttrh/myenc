@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Models\Pe;
 use App\Models\Position;
 use App\Models\SubDept;
 use Illuminate\Http\Request;
@@ -56,8 +57,9 @@ class SubDeptController extends Controller
       $subdept = SubDept::find($dekripId);
       $positions = Position::where('sub_dept_id', $subdept->id)->get();
       $employees = Employee::where('sub_dept_id', $subdept->id)->get();
-
-      if (count($positions) > 0 || count($employees) > 0) {
+      $pes = Pe::where('sub_dept_id', $subdept->id)->get();
+     
+      if (count($positions) > 0 || count($employees) > 0 ) {
          return redirect()->back()->with('danger', 'Sub Department delete fail, data ini memiliki relasi ke data lain');
       } else {
          foreach($positions as $pos){

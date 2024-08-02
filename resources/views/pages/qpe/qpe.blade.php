@@ -120,7 +120,7 @@ QPE
                                            </tr> --}}
                                            @foreach ($pos->department->pes as $pe)
                                            <tr>
-                                             <td class="text-center">{{++$i}} </td>
+                                             <td class="text-center">{{++$i}} -{{$pe->kpa->id}} </td>
                                              <td>
                                                 @if($pe->status == '0' || $pe->status == '101')
                                                 <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
@@ -169,7 +169,7 @@ QPE
                                      @else
                                      @foreach ($pes as $pe)
                                        <tr>
-                                             <td class="text-center">{{++$i}} </td>
+                                             <td class="text-center">{{++$i}}  </td>
                                              <td>
                                                 @if($pe->status == '0' || $pe->status == '101')
                                                 <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
@@ -179,7 +179,7 @@ QPE
                                                 <a href="/qpe/show/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
                                                 @endif
                                              </td>
-                                             <td>{{$pe->semester}} / {{$pe->tahun}}</td>
+                                             <td>{{$pe->semester}} / {{$pe->tahun}} </td>
                                              <td><span class="badge badge-primary badge-lg"><b>{{$pe->achievement}}</b></span></td>
                                              @if($pe->status == 0)
                                              <td><span class="badge badge-dark badge-lg"><b>Draft</b></span></td>

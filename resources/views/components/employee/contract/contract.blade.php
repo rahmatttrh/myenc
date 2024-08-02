@@ -224,13 +224,13 @@
                                     <div class="text-small text-uppercase fw-bold op-8"></div>
                                     <small class="fw-bold mt-1">
                                        @foreach ($mymanagers as $man)
-                                        @if (count($man->positions) > 0)
-                                            @foreach ($man->positions as $pos)
-                                                {{$pos->name}}
-                                            @endforeach
-                                            @else
-                                            {{$man->position->name}}
-                                        @endif
+                                          @if (count($man->positions) > 0)
+                                             @foreach ($man->positions as $pos)
+                                                   {{$pos->name}}
+                                             @endforeach
+                                             @else
+                                             {{$man->position->name}}
+                                          @endif
                                         
                                        | {{$man->biodata->fullName()}} <br>
                                        @endforeach

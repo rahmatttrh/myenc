@@ -98,12 +98,17 @@ Designation
                                 @foreach ($kpis as $kpi)
                                 <tr>
                                     <td class="text-center">{{++$i}}</td>
-                                    <td><a href="{{'kpi/'. enkripRambo($kpi->id)}}"> {{$kpi->title}} </a></td>
+                                    <td><a href="{{'kpi/'. enkripRambo($kpi->id)}}">{{$kpi->id}} - {{$kpi->title}} </a></td>
                                     <td>{{$kpi->departement->name}}</td>
                                     <td>{{$kpi->position->name ?? '-'}}</td>
                                     <td class="text-right">
                                         {{--<a href="{{route('kpi.edit', enkripRambo($kpi->id) )}}">Edit</a>--}}
-                                        <a href="#" data-toggle="modal" data-target="#modal-delete-{{$kpi->id}}">Delete</a>
+                                        @if (auth()->user()->hasRole('Leader|Supervisor'))
+                                        -
+                                            @else
+                                            <a href="#" data-toggle="modal" data-target="#modal-delete-{{$kpi->id}}">Delete</a>
+                                        @endif
+                                        
                                     </td>
                                 </tr>
                                 <x-modal.delete :id="$kpi->id" :body="$kpi->title" url="{{route('kpi.delete', enkripRambo($kpi->id))}}" />
