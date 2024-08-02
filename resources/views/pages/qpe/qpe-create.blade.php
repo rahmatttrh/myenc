@@ -165,7 +165,7 @@ Create PE
                 </form>
             </div>
 
-            <div class="card shadow-none border">
+            {{-- <div class="card shadow-none border">
                <div class="card-header bg-primary">
                    <small class="text-white">Behavior</small>
                </div>
@@ -219,7 +219,7 @@ Create PE
                        </div>
                    </div>
                </form>
-           </div>
+            </div> --}}
         </div>
     </div>
     {{-- <div class="row" id="boxDetail">
