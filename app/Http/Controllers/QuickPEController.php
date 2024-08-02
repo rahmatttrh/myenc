@@ -61,7 +61,7 @@ class QuickPEController extends Controller
             $outAssesments = $this->outstandingAssessment();
 
             // 
-        }   else if (auth()->user()->hasRole('Manager|Asst. Manager')) {
+        } else if (auth()->user()->hasRole('Manager|Asst. Manager')) {
          // dd('ok');
          $employee = auth()->user()->getEmployee();
             // $pes = Pe::join('employees', 'pes.employe_id', '=', 'employees.id')
