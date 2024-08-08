@@ -289,9 +289,9 @@
                      </div>
                   </div>
                   <hr>
-                  @if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment'))
+                  {{-- @if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment')) --}}
                   <button type="submit" class="btn btn-dark" >Update</button>
-                  @endif
+                  {{-- @endif --}}
                </form>
             </div>
             <div class="tab-pane fade" id="pills-bio-nobd" role="tabpanel" aria-labelledby="pills-bio-tab-nobd">
@@ -318,11 +318,11 @@
                         <small class="text-danger"><i>{{ $message }}</i></small>
                      @enderror
                   </div>
-                  @if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment'))
+                  {{-- @if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment')) --}}
                   <div class="text-right mt-3 mb-3">
                      <button type="submit" class="btn btn-dark" >Update Bio</button>
                   </div>
-                  @endif
+                  {{-- @endif --}}
                </form>
             </div>
 

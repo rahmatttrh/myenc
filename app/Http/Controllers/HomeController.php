@@ -326,12 +326,13 @@ class HomeController extends Controller
          // $teams = Employee::where('direct_leader_id', auth()->user()->getEmployeeId())->get();
          $teams = EmployeeLeader::where('leader_id', $employee->id)->get();
 
-         // $myteams = EmployeeLeader::join('biodatas', 'employee_leaders.employee_id', '=', 'biodatas.employee_id')
-         //        ->where('employees.id', $employee->id)
-         //        ->whereIn('pes.status', [2, 101, 202])
-         //        ->select('pes.*')
-         //        ->orderBy('pes.release_at', 'desc')
-         //        ->get();
+         $myteams = EmployeeLeader::join('employees', 'employee_leaders.employee_id', '=', 'employees.id')
+               ->join('biodatas', 'employees.biodata_id', '=', 'biodatas.id')
+                ->where('leader_id', $employee->id)
+                ->select('employees.*')
+                ->orderBy('biodatas.first_name', 'asc')
+                ->get();
+               //  dd($myteams);
 
          // $pes = Pe::join('employees', 'pes.employe_id', '=', 'employees.id')
          // ->where('employees.id', $employee->id)
@@ -352,6 +353,7 @@ class HomeController extends Controller
          return view('pages.dashboard.supervisor', [
             'employee' => $biodata->employee,
             'teams' => $teams,
+            'myteams' => $myteams,
             'dates' => $dates,
             'presences' => $presences,
             'pending' => $pending,

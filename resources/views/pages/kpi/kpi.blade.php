@@ -98,7 +98,11 @@ Designation
                                 @foreach ($kpis as $kpi)
                                 <tr>
                                     <td class="text-center">{{++$i}}</td>
-                                    <td><a href="{{'kpi/'. enkripRambo($kpi->id)}}">{{$kpi->id}} - {{$kpi->title}} </a></td>
+                                    <td><a href="{{'kpi/'. enkripRambo($kpi->id)}}">
+                                       @if (auth()->user()->hasRole('Administrator'))
+                                       {{$kpi->id}} -
+                                       @endif
+                                       {{$kpi->title}} </a></td>
                                     <td>{{$kpi->departement->name}}</td>
                                     <td>{{$kpi->position->name ?? '-'}}</td>
                                     <td class="text-right">

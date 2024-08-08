@@ -63,7 +63,10 @@
             </div>
             <div class="modal-footer">
                <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+               @if (auth()->user()->hasRole('Administrator|HRD|HRD-Staff|HRD-Recruitment'))
                <button type="submit" class="btn btn-dark ">Update</button>
+            
+               @endif
             </div>
          </form>
       </div>

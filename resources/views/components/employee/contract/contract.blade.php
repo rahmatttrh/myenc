@@ -209,6 +209,11 @@
                                     <small class="fw-bold mt-1">
                                        
                                        @foreach ($empleaders as $empleader)
+                                       @if (auth()->user()->hasRole('Administrator|HRD|HRD-Staff|HRD-Recruitment'))
+                                       <a href="#"  class="text-light" data-toggle="modal" data-target="#modal-revoke-leader-{{$empleader->id}}">{{$empleader->leader->nik}} {{$empleader->leader->biodata->fullName()}}</a>
+                                        @else
+                                        {{$empleader->leader->nik}} {{$empleader->leader->biodata->fullName()}}
+                                       @endif
                                        <a href="#"  class="text-light" data-toggle="modal" data-target="#modal-revoke-leader-{{$empleader->id}}">{{$empleader->leader->nik}} {{$empleader->leader->biodata->fullName()}}</a>
                                           <br>
 
@@ -221,7 +226,7 @@
                                  </div>
 
                                  <div class="col-6 prl-0 text-right ">
-                                    <div class="text-small text-uppercase fw-bold op-8"></div>
+                                    <div class="text-small text-uppercase fw-bold op-8">Manager / Asst. Manager</div>
                                     <small class="fw-bold mt-1">
                                        @foreach ($mymanagers as $man)
                                           @if (count($man->positions) > 0)
@@ -232,7 +237,8 @@
                                              {{$man->position->name}}
                                           @endif
                                         
-                                       | {{$man->biodata->fullName()}} <br>
+                                       | 
+                                       {{$man->biodata->fullName()}} <br>
                                        @endforeach
                                     </small>
                                  </div>
