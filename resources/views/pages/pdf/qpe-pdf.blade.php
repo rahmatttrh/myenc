@@ -287,12 +287,12 @@ PDF Example
                   </tr>
                   <tr>
                      <td class="text-center">A</td>
-                     <td class="text-center">91 - 100</td>
+                     <td class="text-center">88 - 100</td>
                      <td colspan="4">: Baik sekali (Diatas ekspektasi, mencapai hasil lebih dari yang diharapkan)</td>
                   </tr>
                   <tr>
                      <td class="text-center">B</td>
-                     <td class="text-center">76 - 90</td>
+                     <td class="text-center">76 - 87</td>
                      <td colspan="4">: Baik (Memenuhi ekspektasi, mencapai hasil yang diharapkan)</td>
                   </tr>
                   <tr>

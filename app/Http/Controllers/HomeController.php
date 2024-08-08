@@ -36,6 +36,9 @@ class HomeController extends Controller
     */
    public function index()
    {
+
+      
+
       // $contracts = Contract::get();
       // foreach($contracts as $con){
       //    $con->update([
@@ -163,6 +166,12 @@ class HomeController extends Controller
          $start->addDay();
       }
 
+      // if (auth()->user()->hasRole('HRD') && auth()->user()->hasRole('Manager')) {
+      //    dd('okee');
+      // } else {
+      //    dd('not okee');
+      // }
+
       // dd($dates);
 
       if (auth()->user()->hasRole('Administrator')) {
@@ -201,6 +210,10 @@ class HomeController extends Controller
          $tetap = Contract::where('status', 1)->where('type', 'Tetap')->get()->count();
          $empty = Contract::where('type', null)->get()->count();
          $logs = Log::where('department_id', $user->department_id)->orderBy('created_at', 'desc')->paginate(5);
+         $teams = EmployeeLeader::where('leader_id', $user->id)->get();
+         // dd($teams);
+         $pes = Pe::where('department_id', $user->department_id)->orderBy('updated_at', 'desc')->get();
+         // dd($pes);
          return view('pages.dashboard.hrd', [
             'user' => $user,
             'employee' => $user,
@@ -212,7 +225,9 @@ class HomeController extends Controller
             'kontrak' => $kontrak,
             'tetap' => $tetap,
             'empty' => $empty,
-            'logs' => $logs
+            'logs' => $logs,
+            'teams' => $teams,
+            'pes' => $pes
          ]);
       } elseif (auth()->user()->hasRole('HRD-Spv')) {
          $user = Employee::find(auth()->user()->getEmployeeId());
@@ -240,8 +255,9 @@ class HomeController extends Controller
             'logs' => $logs
          ]);
       } elseif (auth()->user()->hasRole('HRD-Recruitment')) {
+         $user = Employee::find(auth()->user()->getEmployeeId());
          $units = Unit::get()->count();
-         $employees = Employee::get();
+         $employees = Employee::where('kpi_id', null)->get();
          $male = Biodata::where('gender', 'Male')->count();
          $female = Biodata::where('gender', 'Female')->count();
          $spkls = Spkl::orderBy('updated_at', 'desc')->paginate(5);
@@ -251,6 +267,7 @@ class HomeController extends Controller
          $empty = Contract::where('type', null)->get()->count();
          return view('pages.dashboard.hrd-recruitment', [
             'units' => $units,
+            'employee' => $user,
             'employees' => $employees,
             'male' => $male,
             'female' => $female,
@@ -259,7 +276,7 @@ class HomeController extends Controller
             'kontrak' => $kontrak,
             'tetap' => $tetap,
             'empty' => $empty
-         ]);
+         ])->with('i');
       } elseif (auth()->user()->hasRole('Manager')) {
          // dd('ok');
          $employee = Employee::where('nik', auth()->user()->username)->first();
@@ -308,9 +325,30 @@ class HomeController extends Controller
          // dd($spkls);
          // $teams = Employee::where('direct_leader_id', auth()->user()->getEmployeeId())->get();
          $teams = EmployeeLeader::where('leader_id', $employee->id)->get();
+
+         // $myteams = EmployeeLeader::join('biodatas', 'employee_leaders.employee_id', '=', 'biodatas.employee_id')
+         //        ->where('employees.id', $employee->id)
+         //        ->whereIn('pes.status', [2, 101, 202])
+         //        ->select('pes.*')
+         //        ->orderBy('pes.release_at', 'desc')
+         //        ->get();
+
+         // $pes = Pe::join('employees', 'pes.employe_id', '=', 'employees.id')
+         // ->where('employees.id', $employee->id)
+         // ->whereIn('pes.status', [2, 101, 202])
+         // ->select('pes.*')
+         // ->orderBy('pes.release_at', 'desc')
+         // ->get();
+
+                
          // dd($teams);
          $spRecents = Sp::where('by_id',auth()->user()->getEmployeeId())->orderBy('updated_at', 'desc')->paginate('5');
          $peRecents = Pe::where('created_by', $employee->id)->orderBy('updated_at', 'desc')->paginate(5);
+         if ($employee->designation->slug == 'supervisor') {
+            $peRecents = Pe::where('department_id', $employee->department_id)->orderBy('updated_at', 'desc')->paginate(5);
+         } else {
+            $peRecents = Pe::where('created_by', $employee->id)->orderBy('updated_at', 'desc')->paginate(5);
+         }
          return view('pages.dashboard.supervisor', [
             'employee' => $biodata->employee,
             'teams' => $teams,

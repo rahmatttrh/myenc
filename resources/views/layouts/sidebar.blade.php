@@ -25,7 +25,7 @@
                      @if (auth()->user()->hasRole('Administrator'))
                      <span class="user-level">{{auth()->user()->getRoleName()}}</span>
                      @else
-                     <span class="user-level">{{auth()->user()->getEmployee()->designation->name}}</span>
+                     <span class="user-level">{{auth()->user()->getEmployee()->position->name}}</span>
                      @endif
                   </span>
                </a>
@@ -47,13 +47,18 @@
                </span>
                <h4 class="text-section">Main Menu</h4>
             </li>
-            @if (auth()->user()->hasRole('Administrator|HRD'))
+            @if (auth()->user()->hasRole('Administrator'))
                <x-sidebar.administrator />
             @endif
 
-            @if (auth()->user()->hasRole('HRD-Spv'))
+            @if (auth()->user()->hasRole('HRD&Supervisor'))
+            
                <x-sidebar.hrd-spv />
             @endif
+
+            {{-- @if (auth()->user()->hasRole('HRD-Spv'))
+               <x-sidebar.hrd-spv />
+            @endif --}}
             
             @if (auth()->user()->hasRole('HRD-Recruitment'))
                <x-sidebar.hrd-recruitment />

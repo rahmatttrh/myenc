@@ -36,8 +36,41 @@
    </div>
 </li>
 
+<li class="nav-item">
+   <a data-toggle="collapse" href="#employee">
+      <i class="fas fa-users"></i>
+      <p>Employee</p>
+      <span class="caret"></span>
+   </a>
+   <div class="collapse" id="employee">
+      <ul class="nav nav-collapse">
+         <li>
+            <a href="{{route('employee', enkripRambo('active'))}}">
+               <span class="sub-item">Active</span>
+            </a>
+         </li>
+         <li>
+            <a href="{{route('employee.nonactive')}}">
+               <span class="sub-item">Non Active</span>
+            </a>
+         </li>
+         <li>
+            <a href="{{route('employee.draft')}}">
+               <span class="sub-item">Draft</span>
+            </a>
+         </li>
+         <li>
+            <a href="{{route('employee.draft')}}">
+               <span class="sub-item">Import by Excel</span>
+            </a>
+         </li>
 
-<li class="nav-section">
+      </ul>
+   </div>
+</li>
+
+
+{{-- <li class="nav-section">
    <span class="sidebar-mini-icon">
       <i class="fa fa-ellipsis-h"></i>
    </span>
@@ -66,7 +99,7 @@
       <i class="fas fa-download"></i>
       <p>Import</p>
    </a>
-</li>
+</li> --}}
 {{-- Employee --}}
 {{-- <li class="nav-item">
    <a data-toggle="collapse" href="#employee">

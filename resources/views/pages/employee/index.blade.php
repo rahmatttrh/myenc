@@ -43,7 +43,11 @@ Employee
                <thead>
                   <tr>
                      <th class="text-center">No</th>
+                     @if (auth()->user()->hasRole('Administrator'))
                      <th>ID</th>
+                     @endif
+                     
+                     <th>NIK</th>
                      <th>Name</th>
                      <th>KPI</th>
                      <th>Leader</th>
@@ -75,6 +79,9 @@ Employee
                   @foreach ($employees as $employee)
                   <tr>
                      <td class="text-center">{{++$i}}</td>
+                     @if (auth()->user()->hasRole('Administrator'))
+                     <td>{{$employee->id}}</td>
+                     @endif
                      <td class="text-truncate">{{$employee->contract->id_no}}</td>
                      {{-- <td><a href="{{route('employee.detail', enkripRambo($employee->id))}}">{{$employee->name}}</a> </td> --}}
                      <td class="text-truncate">

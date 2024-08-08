@@ -37,6 +37,9 @@ SP
    </div>
 
    <div class="row">
+      @if (auth()->user()->hasRole('Administrator'))
+         @else
+      
       <div class="col-md-4">
          <h4>Form Pengajuan SP</h4>
          <hr>
@@ -58,10 +61,14 @@ SP
                               {{-- @foreach ($employees as $emp)
                               <option value="{{$emp->id}}">{{$emp->nik}} {{$emp->biodata->fullName()}} </option>
                               @endforeach --}}
-                            @else 
-                           @foreach ($employees as $emp)
-                              <option value="{{$emp->employee->id}}">{{$emp->employee->nik}} {{$emp->employee->biodata->fullName()}} </option>
-                           @endforeach
+                           @elseif(auth()->user()->hasRole('HRD') || auth()->user()->hasRole('HRD-Spv'))
+                              @foreach ($allEmployees as $emp)
+                                 <option value="{{$emp->id}}">{{$emp->nik}} {{$emp->biodata->fullName()}} </option>
+                              @endforeach
+                           @else 
+                              @foreach ($employees as $emp)
+                                 <option value="{{$emp->employee->id}}">{{$emp->employee->nik}} {{$emp->employee->biodata->fullName()}} </option>
+                              @endforeach
                         @endif
                         
                      </select>
@@ -102,8 +109,13 @@ SP
             <button type="submit" class="btn btn-block btn-primary">Submit</button>
          </form>
       </div>
+      @endif
 
+      @if (auth()->user()->hasRole('Administrator'))
+      <div class="col-md-12">
+         @else
       <div class="col-md-8">
+      @endif
          <div class=" sp px-3">
             <table>
                {{-- <thead>

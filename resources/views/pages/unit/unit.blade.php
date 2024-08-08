@@ -70,7 +70,14 @@
                               @foreach ($units as $unit)
                               <tr>
                                  {{-- <td class="text-center">{{$unit->id}}</td> --}}
-                                 <td><a href="{{route('unit.detail', enkripRambo($unit->id))}}">{{$unit->name}}</a></td>
+                                 <td>
+                                    <a href="{{route('unit.detail', enkripRambo($unit->id))}}">
+                                       @if (auth()->user()->hasRole('Administrator'))
+                                           {{$unit->id}}
+                                       @endif
+                                       {{$unit->name}}
+                                    </a>
+                                 </td>
                                  <td>{{count($unit->departments)}} Department</td>
                                  <td>{{count($unit->employees->where('status', 1))}}</td>
 

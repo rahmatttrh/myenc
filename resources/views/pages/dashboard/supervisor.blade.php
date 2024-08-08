@@ -60,10 +60,16 @@ Dashboard
          </div> --}}
          <div class="card card-primary">
             {{-- <div class="card-header">
-               Dashboard SPV
+               Dashboard Leader
             </div> --}}
             <div class="card-body">
-               Dashboard SPV <hr class="bg-white">
+               Dashboard
+               @if (auth()->user()->hasRole('Supervisor'))
+                   SPV
+                   @elseif(auth()->user()->hasRole('Leader'))
+                   Team Leader
+               @endif
+               <hr class="bg-white">
                <b>{{$employee->unit->name}}</b> - {{$employee->department->name}} Department<br>
                 
                {{$employee->position->name}}

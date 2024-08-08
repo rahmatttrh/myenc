@@ -80,8 +80,8 @@ PE
                     <small class=" text-white">KPI  {{auth()->user()->getEmployeeId()}}  {{$pe->created_by}}</small>
                 </div>
 
-                {{-- @if(($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202') && (auth()->user()->hasRole('Leader') || auth()->user()->hasRole('Supervisor') || auth()->user()->hasRole('Administrator') ) ) --}}
-                @if(($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202') && (auth()->user()->getEmployeeId() == $pe->created_by  ) )
+                {{-- @if(($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202') && (auth()->user()->hasRole('Leader|Supervisor') ) ) --}}
+                @if(($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202') && (auth()->user()->getEmployeeId() == $pe->created_by  || auth()->user()->hasRole('Supervisor')) )
                 <div class="btn-group btn-group-page-header ml-auto">
                     <div class="button-group">
                         @if(isset($pd) && $pd->pdds->count() == 6)
@@ -987,7 +987,7 @@ $pbaAchievement = 0;
                                 <td>: Manager</td>
                                 <td>SP</td>
                                 <td>0</td>
-                                <td colspan="2">100 - 91</td>
+                                <td colspan="2">88 - 100</td>
                                 <td colspan="2">Memuaskan</td>
                             </tr>
                             <tr>
@@ -995,7 +995,7 @@ $pbaAchievement = 0;
                                 <td>: Supervisor</td>
                                 <td></td>
                                 <td></td>
-                                <td colspan="2">90 - 76</td>
+                                <td colspan="2">76 - 87</td>
                                 <td colspan="2">Baik</td>
                             </tr>
                             <tr>
@@ -1003,7 +1003,7 @@ $pbaAchievement = 0;
                                 <td>: Team Leader</td>
                                 <td></td>
                                 <td></td>
-                                <td colspan="2">75 - 61</td>
+                                <td colspan="2">61 - 75</td>
                                 <td colspan="2">Cukup</td>
                             </tr>
                             <tr>
@@ -1011,17 +1011,17 @@ $pbaAchievement = 0;
                                 <td>: Staff</td>
                                 <td></td>
                                 <td></td>
-                                <td colspan="2">60 - 51</td>
+                                <td colspan="2">0 - 60</td>
                                 <td colspan="2">Kurang</td>
                             </tr>
-                            <tr>
+                            {{-- <tr>
                                 <td> </td>
                                 <td> </td>
                                 <td></td>
                                 <td></td>
                                 <td colspan="2">50 - 0</td>
                                 <td colspan="2">Sangat Kurang</td>
-                            </tr>
+                            </tr> --}}
                         </tbody>
                     </table>
                 </div>

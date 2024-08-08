@@ -290,7 +290,7 @@ class EmployeeController extends Controller
 
       $panel = dekripRambo($enkripPanel);
       $designations = Designation::get();
-      $roles = Role::get();
+      $roles = Role::where('id', '>', 1)->get();
       $shifts = Shift::get();
       $units = Unit::get();
       $socials = Social::get();
@@ -386,6 +386,13 @@ class EmployeeController extends Controller
       
 
       // dd($myManagers);
+
+      // if (auth()->user()->hasRole('HRD')) {
+      //    # code...
+      // }
+
+      // dd($employee->position_id);
+      // dd($employee->designation->name);  
 
       return view('pages.employee.detail', [
          'employee' => $employee,
@@ -700,6 +707,14 @@ class EmployeeController extends Controller
       ]);
       $user->roles()->detach();
       $user->assignRole($role->name);
+
+      if ($employee->department->slug == 'hrd') {
+         $role2 = Role::find($req->role2);
+         $employee->update([
+            'role2' => $req->role2
+         ]);
+         $user->assignRole($role2->name);
+      }
       // dd($req->role);
 
       
