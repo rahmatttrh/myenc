@@ -15,7 +15,7 @@ Detail Employee
    </ol>
    </nav> --}}
    <div class="page-header d-flex">
-      <h5 class="page-title">Detail Employee {{$employee->id}}</h5>
+      <h5 class="page-title">Detail Employee </h5>
       <ul class="breadcrumbs">
          <li class="nav-home">
             <a href="/">

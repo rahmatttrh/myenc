@@ -271,7 +271,7 @@ Route::middleware(["auth"])->group(function () {
       });
 
       // Quick PE All
-      Route::prefix('qpe')->group(function () {sp
+      Route::prefix('qpe')->group(function () {
          Route::get('/', [QuickPEController::class, 'index'])->name('qpe');
 
          Route::get('show/{id}', [QuickPEController::class, 'show'])->name('qpe.show');

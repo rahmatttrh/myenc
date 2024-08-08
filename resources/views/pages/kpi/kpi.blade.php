@@ -98,9 +98,21 @@ Designation
                                 @foreach ($kpis as $kpi)
                                 <tr>
                                     <td class="text-center">{{++$i}}</td>
-                                    <td><a href="{{'kpi/'. enkripRambo($kpi->id)}}">{{$kpi->id}} - {{$kpi->title}} </a></td>
-                                    <td>{{$kpi->departement->name}}</td>
-                                    <td>{{$kpi->position->name ?? '-'}}</td>
+                                    <td><a href="{{'kpi/'. enkripRambo($kpi->id)}}">
+                                        @if (auth()->user()->hasRole('Administrator'))
+                                        {{$kpi->id}}
+                                        @endif
+                                        {{$kpi->title}} </a></td>
+                                    <td>
+                                        @if (auth()->user()->hasRole('Administrator'))
+                                            {{$kpi->department->id}} -
+                                        @endif
+                                        {{$kpi->departement->name}}</td>
+                                    <td>
+                                        @if (auth()->user()->hasRole('Administrator'))
+                                            {{$kpi->position->id}} -
+                                        @endif
+                                        {{$kpi->position->name ?? '-'}}</td>
                                     <td class="text-right">
                                         {{--<a href="{{route('kpi.edit', enkripRambo($kpi->id) )}}">Edit</a>--}}
                                         @if (auth()->user()->hasRole('Leader|Supervisor'))

@@ -221,10 +221,10 @@
                                  </div>
 
                                  <div class="col-6 prl-0 text-right ">
-                                    <div class="text-small text-uppercase fw-bold op-8"></div>
+                                    <div class="text-small text-uppercase fw-bold op-8">Manager / Asst. Manager</div>
                                     <small class="fw-bold mt-1">
                                        @foreach ($mymanagers as $man)
-                                          @if (count($man->positions) > 0)
+                                          {{-- @if (count($man->positions) > 0)
                                              @foreach ($man->positions as $pos)
                                                    {{$pos->name}}
                                              @endforeach
@@ -232,7 +232,8 @@
                                              {{$man->position->name}}
                                           @endif
                                         
-                                       | {{$man->biodata->fullName()}} <br>
+                                       |  --}}
+                                       {{$man->biodata->fullName()}} <br>
                                        @endforeach
                                     </small>
                                  </div>
