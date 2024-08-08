@@ -38,6 +38,7 @@ use App\Http\Controllers\SpklController;
 use App\Http\Controllers\SubDeptController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\VerificationController;
+use App\Http\Controllers\FuncController;
 use App\Models\Emergency;
 use App\Models\EmployeeLeader;
 use App\Models\SpApproval;
@@ -55,6 +56,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware(["auth"])->group(function () {
+
+   Route::get('update/position', [FuncController::class, 'updatePosition']);
+
    Route::prefix('pass')->group(function () {
       Route::get('reset', [PasswordController::class, 'index'])->name('pass.reset');
       Route::put('reset/update', [PasswordController::class, 'update'])->name('pass.reset.update');

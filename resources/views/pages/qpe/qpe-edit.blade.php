@@ -77,7 +77,7 @@ PE
         <div class="card shadow-none border">
             <div class="card-header d-flex bg-primary">
                 <div class="d-flex  align-items-center">
-                    <small class=" text-white">KPI  {{auth()->user()->getEmployeeId()}}  {{$pe->created_by}}</small>
+                    <small class=" text-white">KPI </small>
                 </div>
 
                 {{-- @if(($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202') && (auth()->user()->hasRole('Leader') || auth()->user()->hasRole('Supervisor') || auth()->user()->hasRole('Administrator') ) ) --}}
@@ -808,7 +808,7 @@ PE
                         </div>
                         <div class="col-md-6">
                            <label for="form-control">Development & Training : </label>
-                           <textarea name="pengembangan" id="pengembangan" class="form-control pengembangan" rows="4" placeholder="Tuliskan alasan penolakan disini!">{{$pe->pengembangan ?? ''}}</textarea>
+                           <textarea name="pengembangan" id="pengembangan" class="form-control pengembangan" rows="4" placeholder="Tuliskan rencana Training & Development">{{$pe->pengembangan ?? ''}}</textarea>
                         </div>
                         <div class="col-md-6 mt-3">
                            <div class="form-group mb-3">
@@ -987,7 +987,7 @@ $pbaAchievement = 0;
                                 <td>: Manager</td>
                                 <td>SP</td>
                                 <td>0</td>
-                                <td colspan="2">100 - 91</td>
+                                <td colspan="2">88 - 100</td>
                                 <td colspan="2">Memuaskan</td>
                             </tr>
                             <tr>
@@ -995,7 +995,7 @@ $pbaAchievement = 0;
                                 <td>: Supervisor</td>
                                 <td></td>
                                 <td></td>
-                                <td colspan="2">90 - 76</td>
+                                <td colspan="2">76 - 87</td>
                                 <td colspan="2">Baik</td>
                             </tr>
                             <tr>
@@ -1003,7 +1003,7 @@ $pbaAchievement = 0;
                                 <td>: Team Leader</td>
                                 <td></td>
                                 <td></td>
-                                <td colspan="2">75 - 61</td>
+                                <td colspan="2">61 - 75</td>
                                 <td colspan="2">Cukup</td>
                             </tr>
                             <tr>
@@ -1011,17 +1011,17 @@ $pbaAchievement = 0;
                                 <td>: Staff</td>
                                 <td></td>
                                 <td></td>
-                                <td colspan="2">60 - 51</td>
+                                <td colspan="2">0 - 60</td>
                                 <td colspan="2">Kurang</td>
                             </tr>
-                            <tr>
+                            {{-- <tr>
                                 <td> </td>
                                 <td> </td>
                                 <td></td>
                                 <td></td>
                                 <td colspan="2">50 - 0</td>
                                 <td colspan="2">Sangat Kurang</td>
-                            </tr>
+                            </tr> --}}
                         </tbody>
                     </table>
                 </div>

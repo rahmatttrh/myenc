@@ -63,7 +63,7 @@ Dashboard
                Dashboard SPV
             </div> --}}
             <div class="card-body">
-               Dashboard SPV <hr class="bg-white">
+               Dashboard Leader <hr class="bg-white">
                <b>{{$employee->unit->name}}</b> - {{$employee->department->name}} Department<br>
                 
                {{$employee->position->name}}
@@ -84,8 +84,9 @@ Dashboard
                   <tbody>
                      @foreach ($teams as $team)
                          <tr>
-                           <td>{{$team->employee->department->name}} </td>
-                           <td>{{$team->employee->nik}} {{$team->employee->biodata->fullName()}}</td>
+                           {{-- <td>{{$team->employee->department->name}} </td> --}}
+                           <td>{{$team->employee->nik}}</td>
+                           <td> {{$team->employee->biodata->fullName()}}</td>
                          </tr>
                      @endforeach
                      

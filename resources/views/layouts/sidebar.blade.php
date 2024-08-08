@@ -68,6 +68,7 @@
             @endif
 
             @if (auth()->user()->hasRole('Karyawan'))
+            
                <x-sidebar.employee />
             @endif
 

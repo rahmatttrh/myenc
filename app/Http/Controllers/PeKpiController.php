@@ -10,6 +10,7 @@ use App\Models\PekpaDetail;
 use App\Models\PeKpi;
 use App\Models\PekpiDetail;
 use App\Models\PekpiPoint;
+use App\Models\Position;
 use App\Models\Unit;
 use Illuminate\Http\Request;
 
@@ -18,25 +19,44 @@ class PeKpiController extends Controller
     public function index()
     {
       //   $employee = auth()->user()->getEmployee();
+      $kpis = PeKpi::get();
+    //   foreach($kpis as $kpi){
+    //      $position = Position::find($kpi->position_id);
+    //     //  if ($position) {
+    //     //     dd('ada');
+    //     //  } else {
+    //     //     dd('kosong');
+    //     //  }
+
+    //     if ($position) {
+    //         // dd($kpi->id);
+    //         if ($position->sub_dept_id != null) {
+    //             $kpi->update([
+    //                 'sub_dept_id' => $position->sub_dept_id
+    //              ]);
+    //          }
+    //     }
+        
+         
+    //   }
 
         // Data KPI
         if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv')) {
             $kpis = PeKpi::get();
             $units = Unit::orderBy('name')->get();
             $departements = Department::orderBy('name')->get();
-        } else if (auth()->user()->hasRole('Manager')) {
+        } else if (auth()->user()->hasRole('Manager|Asst. Manager')) {
             $employee = auth()->user()->getEmployee();
             $kpis = PeKpi::where('departement_id', $employee->department_id)->get();
-            
             $units = Unit::where('id', $employee->department->unit->id)->get();
             $departements = Department::where('id', $employee->department_id)->get();
-        }  else if (auth()->user()->hasRole('Leader|Supervisor')) {
+        } else if (auth()->user()->hasRole('Leader|Supervisor')) {
             $employee = auth()->user()->getEmployee();
-            $kpis = PeKpi::where('departement_id', $employee->department_id)->get();
-            
+            // $kpis = PeKpi::where('departement_id', $employee->department_id)->get();
+            $kpis = PeKpi::where('sub_dept_id', $employee->sub_dept_id)->get();
             $units = Unit::where('id', $employee->department->unit->id)->get();
             $departements = Department::where('id', $employee->department_id)->get();
-        }
+         }
 
         //   dd($kpis);
 

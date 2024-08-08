@@ -57,7 +57,7 @@
                <div class="tab-pane fade {{$firstDept->id == $depart->id ? 'show active' : ''}} " id="v-pills-{{$depart->id}}" role="tabpanel" aria-labelledby="v-pills-{{$depart->id}}-tab">
                   <div class="card">
                      <div class="card-header d-flex justify-content-between p-2 bg-primary text-white">
-                        <small> {{$depart->name}} Department <br>
+                        <small>{{$depart->id}} {{$depart->name}} Department <br>
                            {{count($depart->employees->where('status', 1))}} Karyawan
                         </small> 
                         <div>
@@ -109,7 +109,7 @@
                                     @foreach ($depart->sub_depts as $sub)
                                     <tr>
                                        {{-- <td class="text-center">{{++$i}}</td> --}}
-                                       <td colspan="2">{{$sub->name}}</td>
+                                       <td colspan="2">{{$sub->id}} {{$sub->name}}</td>
                                        <td>{{count($sub->employees->where('status', 1))}} Karyawan</td>
       
                                        <td class="text-right">
@@ -125,7 +125,7 @@
                                     @foreach ($sub->positions as $pos)
                                         <tr>
                                           <td></td>
-                                          <td>{{$pos->name}} </td>
+                                          <td>{{$pos->id}} {{$pos->name}} </td>
                                           <td>
                                              
                                              {{count($pos->getEmployees()->where('status', 1))}} Karyawan

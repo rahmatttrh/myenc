@@ -30,16 +30,24 @@ class SpController extends Controller
          $sps = Sp::orderBy('created_at', 'desc')->get();
       } elseif (auth()->user()->hasRole('Manager|Asst. Manager')) {
          $employee = auth()->user()->getEmployee();
-         $employees = Employee::where('department_id', auth()->user()->getEmployee()->department_id)->where('designation_id', '<', 6)->get();
+         $employees = Employee::where('department_id', auth()->user()->getEmployee()->department_id)->where('designation_id', '<', 6)->where('status', 1)->get();
 
-         $sps = Sp::where('department_id', auth()->user()->getEmployee()->department_id)->orderBy('created_at', 'desc')->get();
+         $sps = Sp::orderBy('created_at', 'desc')->get();
       } elseif (auth()->user()->hasRole('Leader') || auth()->user()->hasRole('Supervisor')) {
          $employee = auth()->user()->getEmployee();
          // dd(auth()->user()->getEmployeeId());
          // $employees = Employee::where('department_id', auth()->user()->getEmployee()->department_id)->where('designation_id', '<', 4)->get();
          // $employees = Employee::where('direct_leader_id', auth()->user()->getEmployeeId())->get();
          $employees = EmployeeLeader::where('leader_id', auth()->user()->getEmployee()->id)->get();
-         $sps = Sp::where('by_id', auth()->user()->getEmployee()->id)->orderBy('created_at', 'desc')->get();
+         // $sps = Sp::where('by_id', auth()->user()->getEmployee()->id)->orderBy('created_at', 'desc')->get();
+         $sps = Sp::where('employee_id', auth()->user()->getEmployee()->id)->orderBy('created_at', 'desc')->get();
+      } elseif (auth()->user()->hasRole('Karyawan')) {
+         $employee = auth()->user()->getEmployee();
+         // dd(auth()->user()->getEmployeeId());
+         // $employees = Employee::where('department_id', auth()->user()->getEmployee()->department_id)->where('designation_id', '<', 4)->get();
+         // $employees = Employee::where('direct_leader_id', auth()->user()->getEmployeeId())->get();
+         $employees = EmployeeLeader::where('leader_id', auth()->user()->getEmployee()->id)->get();
+         $sps = Sp::where('employee_id', auth()->user()->getEmployee()->id)->orderBy('created_at', 'desc')->get();
       }
       
       // foreach ($sps as $sp) {

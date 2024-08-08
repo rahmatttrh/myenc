@@ -464,7 +464,7 @@ PE
                                                                 <div class="card-body">
                                                                     <div class="form-group">
                                                                         @if ($pe->evidence)
-                                                                        <iframe src="{{ Storage::url($pe->evidence) }}" id="pdfPreview-{{$pe->id}}" width=" 100%" height="575px"></iframe>
+                                                                        <iframe src="{{ asset('storage/'. $pe->evidence) }}" id="pdfPreview-{{$pe->id}}" width=" 100%" height="575px"></iframe>
                                                                         @else
                                                                         <p>No attachment available.</p>
                                                                         @endif

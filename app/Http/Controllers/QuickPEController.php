@@ -61,7 +61,7 @@ class QuickPEController extends Controller
             $outAssesments = $this->outstandingAssessment();
 
             // 
-        }   else if (auth()->user()->hasRole('Manager|Asst. Manager')) {
+        } else if (auth()->user()->hasRole('Manager|Asst. Manager')) {
          // dd('ok');
          $employee = auth()->user()->getEmployee();
         //  dd($employee->department_id);
@@ -136,6 +136,7 @@ class QuickPEController extends Controller
 
         // Data KPI
         if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment')) {
+            $employee = auth()->user()->getEmployee();
             $kpas = PeKpa::orderBy('date', 'desc')
                 ->where('status', '!=', '0')
                 ->orderBy('employe_id')
@@ -169,10 +170,12 @@ class QuickPEController extends Controller
             //     ->get();
             $employes = [];
             foreach($employee->positions as $pos){
-               foreach($pos->department->employees as $emp){
+               foreach($pos->department->employees->where('status', 1) as $emp){
                   $employes[] = $emp; 
                }
             }
+
+            // $employes[] = Employee::where('department_id', $employee->department_id)->get();
 
             // $employes = EmployeeLeader::where('leader_id', $employee->id)->get();
             // 
@@ -210,6 +213,7 @@ class QuickPEController extends Controller
 
 
         return view('pages.qpe.qpe-create', [
+            'employee' => $employee,
             'designations' => $designations,
             'departements' => $departements,
             'kpas' => $kpas,
@@ -487,7 +491,8 @@ class QuickPEController extends Controller
         if ($kpa->status == '2') {
             # code...
 
-            $dataOpen = PekpaDetail::where('kpa_id', $kpa->id)->where('status', '0')->get();
+            // $dataOpen = PekpaDetail::where('kpa_id', $kpa->id)->where('status', '0')->get();
+            $dataOpen = PekpaDetail::where('kpa_id', $kpa->id)->get();
             if ($dataOpen->count() == 0) {
                 $dataReject = PekpaDetail::where('kpa_id', $kpa->id)->where('status', '202')->get();
 

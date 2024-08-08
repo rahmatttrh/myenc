@@ -74,8 +74,8 @@ Employee
                <tbody>
                   @foreach ($employees as $employee)
                   <tr>
-                     <td class="text-center">{{++$i}}</td>
-                     <td class="text-truncate">{{$employee->contract->id_no}}</td>
+                     <td class="text-center">{{++$i}} </td>
+                     <td class="text-truncate"> {{$employee->contract->id_no}}</td>
                      {{-- <td><a href="{{route('employee.detail', enkripRambo($employee->id))}}">{{$employee->name}}</a> </td> --}}
                      <td class="text-truncate">
                         <div>

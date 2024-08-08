@@ -51,7 +51,7 @@ SP
                         <option value="" selected disabled>Select Employee</option>
                         @if (auth()->user()->hasRole('Manager|Asst. Manager|HRD'))
                            @foreach ($employee->positions as $pos)
-                               @foreach ($pos->department->employees as $emp)
+                               @foreach ($pos->department->employees->where('status', 1) as $emp)
                                <option value="{{$emp->id}}">{{$emp->nik}} {{$emp->biodata->fullName()}} </option>
                                @endforeach
                            @endforeach

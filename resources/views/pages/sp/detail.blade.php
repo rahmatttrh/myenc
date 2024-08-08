@@ -67,7 +67,7 @@ SP Detail
             </div>
             <div class="col-auto">
 
-               @if (auth()->user()->hasRole('Supervisor'))
+               @if (auth()->user()->hasRole('Supervisor|Manager|Asst. Manager'))
                   @if($sp->status == '0')
                      <!-- Start -->
                      <button class="btn btn btn-dark" data-toggle="modal" data-target="#modal-submit-{{$sp->id}}"><i class="fas fa-rocket"></i> Submit </button>
@@ -123,7 +123,7 @@ SP Detail
                   @endif
                @endif
                
-               @if($sp->status == '4' && auth()->user()->hasRole('Karyawan'))
+               @if($sp->status == '4' && auth()->user()->hasRole('Karyawan|Supervisor'))
                   <button class="btn btn-md btn-primary" data-toggle="modal" data-target="#modal-app-employee-{{$sp->id}}"><i class="fas fa-check"></i> Confirm </button>
                   <button data-target="#modal-complain-employee" data-toggle="modal" class="btn btn-md btn-danger "><i class="fa fa-edit"></i> Add Notes</button>
                @endif

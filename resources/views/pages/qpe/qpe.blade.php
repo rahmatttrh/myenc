@@ -62,7 +62,7 @@ QPE
                               @if (auth()->user()->hasRole('Administrator'))
                                     @foreach ($pes as $pe)
                                        <tr>
-                                             <td class="text-center">{{++$i}} </td>
+                                             <td class="text-center">{{++$i}} {{$pe->id}} </td>
                                              <td>
                                                 @if($pe->status == '0' || $pe->status == '101')
                                                 <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
@@ -114,7 +114,7 @@ QPE
                     
                                                 @foreach ($pos->department->pes as $pe)
                                                 <tr>
-                                                <td class="text-center">{{++$i}} -{{$pe->kpa->id}} </td>
+                                                <td class="text-center">{{++$i}} -{{$pe->id}} </td>
                                                 <td>
                                                     @if($pe->status == '0' || $pe->status == '101')
                                                     <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
