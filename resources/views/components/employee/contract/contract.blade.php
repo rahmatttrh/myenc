@@ -209,7 +209,12 @@
                                     <small class="fw-bold mt-1">
                                        
                                        @foreach ($empleaders as $empleader)
+                                       @if (auth()->user()->hasRole('Administrator|HRD|HRD-Staff|HRD-Recruitment'))
                                        <a href="#"  class="text-light" data-toggle="modal" data-target="#modal-revoke-leader-{{$empleader->id}}">{{$empleader->leader->nik}} {{$empleader->leader->biodata->fullName()}}</a>
+                                        @else
+                                        {{$empleader->leader->nik}} {{$empleader->leader->biodata->fullName()}}
+                                       @endif
+                                       {{-- <a href="#"  class="text-light" data-toggle="modal" data-target="#modal-revoke-leader-{{$empleader->id}}">{{$empleader->leader->nik}} {{$empleader->leader->biodata->fullName()}}</a> --}}
                                           <br>
 
                                           <x-employee.contract.modal.revoke-leader :employee="$employee" :leader="$empleader" />
@@ -224,7 +229,7 @@
                                     <div class="text-small text-uppercase fw-bold op-8">Manager / Asst. Manager</div>
                                     <small class="fw-bold mt-1">
                                        @foreach ($mymanagers as $man)
-                                          {{-- @if (count($man->positions) > 0)
+                                           {{-- @if (count($man->positions) > 0)
                                              @foreach ($man->positions as $pos)
                                                    {{$pos->name}}
                                              @endforeach

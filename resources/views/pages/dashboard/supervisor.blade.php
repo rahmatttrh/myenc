@@ -88,11 +88,21 @@ Dashboard
                      </tr>
                   </thead>
                   <tbody>
-                     @foreach ($teams as $team)
+                     {{-- @foreach ($teams as $team)
                          <tr>
                            {{-- <td>{{$team->employee->department->name}} </td> --}}
                            <td>{{$team->employee->nik}}</td>
                            <td> {{$team->employee->biodata->fullName()}}</td>
+                         </tr>
+                     @endforeach --}}
+                     @foreach ($myteams as $team)
+                         @php
+                             $bio = DB::table('biodatas')->where('id', $team->biodata_id)->first();
+                         @endphp
+                         <tr>
+                           {{-- <td>{{$team->department->name}} </td> --}}
+                           <td>{{$team->nik}}</td>
+                           <td> {{$bio->first_name}} {{$bio->last_name}}</td>
                          </tr>
                      @endforeach
                      
@@ -103,23 +113,6 @@ Dashboard
          </div>
       </div>
       <div class="col-md-8">
-         {{-- <div class="d-none d-sm-block">
-            <div class="alert alert-info shadow-sm">
-
-                  <div class="card-opening">
-                     <h4>
-                        <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1">
-                        <b>Announcement</b>
-                     </h4>
-                  </div>
-                  <hr>
-                  <div class="card-desc">
-                     Tanggal 8 & 9 Februari Libur Nasional dan Cuti Bersama
-                  </div>
-            </div>
-            <hr>
-         </div> --}}
-
          <div class="card">
             <div class="card-header bg-primary text-white p-2">
                <small>Recent QPE</small>
