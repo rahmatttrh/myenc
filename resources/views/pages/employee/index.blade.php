@@ -119,6 +119,9 @@ Employee
                               @endforeach --}}
                               Multiple
                             @else
+                            @if (auth()->user()->hasRole('Administrator'))
+                            {{$employee->department->unit->id ?? ''}}
+                           @endif
                             {{$employee->department->unit->name ?? ''}}
                         @endif
                         
@@ -132,6 +135,9 @@ Employee
                               @endforeach --}}
                               Multiple
                             @else
+                            @if (auth()->user()->hasRole('Administrator'))
+                            {{$employee->department->id ?? ''}}
+                           @endif
                             {{$employee->department->name ?? ''}}
                         @endif
                      </td>
@@ -152,6 +158,9 @@ Employee
                               @endforeach --}}
                               Multiple
                             @else
+                            @if (auth()->user()->hasRole('Administrator'))
+                            {{$employee->position->id ?? ''}}
+                           @endif
                             {{$employee->position->name ?? ''}}
                         @endif
                      </td>
