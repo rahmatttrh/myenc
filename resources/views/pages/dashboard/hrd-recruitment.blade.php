@@ -5,116 +5,27 @@
 @endsection
 @section('content')
    <div class="page-inner mt--5">
-      <div class="page-header">
+      {{-- <div class="page-header">
          <h5 class="page-title text-info">
             <i class="fa fa-home"></i>
             Dashboard
             
             
          </h5>
-      </div>
+      </div> --}}
       <div class="row">
          <div class="col-sm-6 col-md-3">
-            <a href="" style="text-decoration: none" data-toggle="tooltip" data-placement="top" title="Total Vessel">
-               <div class="card card-stats card-secondary card-round">
-                  <div class="card-body">
-                     <div class="row">
-                        <div class="col-5">
-                           <div class="icon-big text-center">
-                              <i class="flaticon-users"></i>
-                           </div>
-                        </div>
-                        <div class="col col-stats">
-                           <div class="numbers">
-                              <p class="card-category">Bisnis Unit</p>
-                              <h4 class="card-title">{{$units}}</h4>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </a>
-         </div>
-         <div class="col-sm-6 col-md-9">
-            <a href="" style="text-decoration: none" data-toggle="tooltip" data-placement="top" title="Total Vessel">
-               <div class="card card-stats card-primary card-round">
-                  <div class="card-body">
-                     <div class="row">
-                        <div class="col-2">
-                           <div class="icon-big text-center">
-                              <i class="flaticon-users"></i>
-                           </div>
-                        </div>
-                        <div class="col col-stats">
-                           <div class="numbers">
-                              <p class="card-category">Total Employee</p>
-                              <h4 class="card-title">{{count($employees)}}</h4>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </a>
-         </div>
-         {{-- <div class="col-sm-6 col-md-3">
-            <a href="#" style="text-decoration: none" data-toggle="tooltip" data-placement="top" title="Total Office">
-               <div class="card card-stats card-info card-round">
-                  <div class="card-body">
-                     <div class="row">
-                        <div class="col-5">
-                           <div class="icon-big text-center">
-                              <i class="flaticon-user"></i>
-                           </div>
-                        </div>
-                        <div class="col col-stats">
-                           <div class="numbers">
-                              <p class="card-category">Male</p>
-                               <h4 class="card-title">{{$male}}</h4> 
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </a>
-         </div>
-         <div class="col-sm-6 col-md-3">
-            <a href="" style="text-decoration: none" data-toggle="tooltip" data-placement="top" title="Total Material">
-               <div class="card card-stats card-secondary card-round">
-                  <div class="card-body">
-                     <div class="row">
-                        <div class="col-5">
-                           <div class="icon-big text-center">
-                              <i class="flaticon-like"></i>
-                           </div>
-                        </div>
-                        <div class="col col-stats">
-                           <div class="numbers">
-                              <p class="card-category">Female</p>
-                              <h4 class="card-title">{{$female}}</h4>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </a>
-         </div> --}}
-         
-      </div>
-      <div class="row">
-         <div class="col-md-3">
-            <div class="card">
+            <div class="card card-primary">
                <div class="card-body">
-                  @if (auth()->user()->hasRole('HRD-Recruitment'))
-                    Hak Akses :  HRD Recruitment
-                  @endif
+                  <x-role />
+                  <hr>
+                  
+                  <b>{{$employee->unit->name}}</b> - {{$employee->department->name}}<br>
+                   
+                  {{$employee->position->name}}
                </div>
             </div>
-            {{-- <div class="table-responsive"> --}}
-               {{-- table table-bordered table-sm table-head-bg-info table-bordered-bd-info --}}
             <div class="card">
-               {{-- <div class="card-header p-2 bg-dark text-white">
-                  <small>Employee Status</small>
-               </div> --}}
                <div class="card-body p-0">
                   <table class="display  table-sm table-bordered  table-striped ">
                      <thead>
@@ -141,6 +52,10 @@
                            <td>Empty</td>
                            <td class="text-center">{{$empty}}</td>
                         </tr>
+                        <tr>
+                           <td>Total</td>
+                           <td class="text-center">{{count($employees)}}</td>
+                        </tr>
                      </tbody>
                   </table>
                </div>
@@ -151,39 +66,161 @@
             </div>
             
          </div>
-         <div class="col-md-9">
-            <div class="row">
-               <div class="col-md-12">
-                  <div class="card">
-                     <div class="card-header p-2 bg-primary text-white">
-                        <small>Contract End This Month</small>
-                     </div>
-                     <div class="card-body p-0">
-                        <table class="display  table-sm table-bordered  table-striped ">
-                           <thead>
-                              
-                              <tr>
-                                 <th scope="col">ID</th>
-                                 <th scope="col" >Name</th>
-                                 <th>Unit</th>
-                                 <th>Department</th>
-                                 <th>Expired</th>
-                              </tr>
-                              
-                           </thead>
-                           <tbody>
-                              <tr>
-                                 <td colspan="5" class="text-center">Empty</td>
-                              </tr>
-                           </tbody>
-                        </table>
-                     </div>
+         <div class="col-sm-6 col-md-9">
+            <div class="card">
+               <div class="card-header p-2 bg-primary text-white">
+                  <small>Contract End This Month</small>
+               </div>
+               <div class="card-body p-0">
+                  <table class="display  table-sm table-bordered  table-striped ">
+                     <thead>
+                        
+                        <tr>
+                           <th scope="col">ID</th>
+                           <th scope="col" >Name</th>
+                           <th>Unit</th>
+                           <th>Department</th>
+                           <th>Expired</th>
+                        </tr>
+                        
+                     </thead>
+                     <tbody>
+                        <tr>
+                           <td colspan="5" class="text-center">Empty</td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+
+            <div class="card">
+               <div class="card-header p-2 bg-primary text-white">
+                  <small>Incomplete KPI Data</small>
+               </div>
+               <div class="card-body p-0">
+                  <div class="table-responsive">
+                     <table class=" table-sm table-bordered  table-striped ">
+                        <thead>
+                           
+                           <tr>
+                              <th class="text-center">No</th>
+                              <th>ID</th>
+                              <th>Name</th>
+                              <th>KPI</th>
+                              <th>Leader</th>
+                              {{-- <th>Phone</th> --}}
+                              <th class="text-truncate">Bisnis Unit</th>
+                              <th>Department</th>
+                              {{-- <th>Sub</th> --}}
+                              <th  >Posisi</th>
+                              {{-- <th>Kontrak/Tetap</th> --}}
+                              {{-- <th class="text-right">Action</th> --}}
+                           </tr>
+                           
+                        </thead>
+                        <tbody>
+                           @if (count($employees) > 0)
+                              @foreach ($employees as $employee)
+                                 <tr>
+                                    <td class="text-center">{{++$i}}</td>
+                                    <td class="text-truncate">{{$employee->contract->id_no}}</td>
+                                    {{-- <td><a href="{{route('employee.detail', enkripRambo($employee->id))}}">{{$employee->name}}</a> </td> --}}
+                                    <td class="text-truncate" style="max-width: 120px">
+                                       {{-- <div> --}}
+                                          <a href="{{route('employee.detail', [enkripRambo($employee->id), enkripRambo('basic')])}}"> {{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</a> 
+                                          {{-- <small class="text-muted">{{$employee->biodata->email}}</small> --}}
+                                       {{-- </div> --}}
+                                    
+                                    </td>
+                                    
+                                    <td>
+                                       @if ($employee->kpi_id != null)
+                                       {{-- <a href="{{route('kpi.edit', enkripRambo($employee->kpi_id))}}">{{$employee->getKpi()->title}}</a> --}}
+                                          {{-- <span class="text-success">OK</span> --}}
+                                          <i class="fa fa-check"></i>
+                                          @else
+                                          Empty
+                                       @endif
+                                       
+                                    </td>
+                                    <td>
+                                       @if (count($employee->getLeaders()) > 0)
+                                          {{-- OK --}}
+                                          <i class="fa fa-check"></i>
+                                          @else
+                                          Empty
+                                       @endif
+                                    </td>
+                                    {{-- <td>{{$employee->biodata->phone}}</td> --}}
+                                    
+                                    <td class="text-truncate">
+                                       @if (count($employee->positions) > 0)
+                                             {{-- @foreach ($employee->positions as $pos)
+                                                {{$pos->department->unit->name}}
+                                             @endforeach --}}
+                                             Multiple
+                                          @else
+                                          {{$employee->department->unit->name ?? ''}}
+                                       @endif
+                                       
+                                    </td>
+                                    
+                                    <td>
+                                       {{-- {{$employee->department->name ?? ''}} --}}
+                                       @if (count($employee->positions) > 0)
+                                             {{-- @foreach ($employee->positions as $pos)
+                                                {{$pos->department->name}}
+                                             @endforeach --}}
+                                             Multiple
+                                          @else
+                                          {{$employee->department->name ?? ''}}
+                                       @endif
+                                    </td>
+                                    {{-- <td>
+                                       @if (count($employee->positions) > 0)
+                                             @foreach ($employee->positions as $pos)
+                                                {{$pos->sub_dept->name ?? ''}}
+                                             @endforeach
+                                          @else
+                                          {{$employee->sub_dept->name ?? ''}}
+                                       @endif
+                                    </td> --}}
+                                    {{-- <td>{{$employee->contract->designation->name ?? ''}}</td> --}}
+                                    <td>
+                                       @if (count($employee->positions) > 0)
+                                             {{-- @foreach ($employee->positions as $pos)
+                                                {{$pos->name}}
+                                             @endforeach --}}
+                                             Multiple
+                                          @else
+                                          {{$employee->position->name ?? ''}}
+                                       @endif
+                                    </td>
+                                    {{-- <td>
+                                       @if ($employee->contract->type == 'Kontrak')
+                                       <span class="badge badge-info">Kontrak</span>
+                                       @elseif($employee->contract->type == 'Tetap')
+                                       <span class="badge badge-info">Tetap</span>
+                                       @else
+                                       <span class="badge badge-muted">Empty</span>
+                                       @endif
+                     
+                                    </td> --}}
+                                 </tr>
+                              @endforeach
+                              @else
+                           @endif
+                           
+                        </tbody>
+                     </table>
                   </div>
                </div>
             </div>
-            
          </div>
+         
+         
       </div>
+      
    </div>
 
    @push('chart-dashboard')

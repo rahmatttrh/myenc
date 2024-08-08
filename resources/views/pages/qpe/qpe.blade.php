@@ -51,6 +51,9 @@ QPE
                             <thead>
                                 <tr>
                                     <th class="text-white text-center">No </th>
+                                    @if (auth()->user()->hasRole('Administrator'))
+                                    <th>ID</th>
+                                    @endif
                                     <th class="text-white">Employe</th>
                                     <th class="text-white">Semester / Tahun</th>
                                     <th class="text-white">Achievement</th>
@@ -60,6 +63,7 @@ QPE
                             </thead>
                             <tbody>
                               @if (auth()->user()->hasRole('Administrator'))
+                                    @foreach ($pes as $pe)
                                     @foreach ($pes as $pe)
                                        <tr>
                                              <td class="text-center">{{++$i}} {{$pe->id}} </td>
@@ -255,6 +259,7 @@ QPE
                                        </tr>
                                        <x-modal.submit :id="$pe->id" :body="'KPI ' . $pe->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($pe->date))   " url="" />
                                        <x-modal.delete :id="$pe->id" :body="'KPI ' . $pe->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($pe->date))   " url="qpe/delete/{{$pe->id}}" />
+                                    @endforeach
                                     @endforeach
                                  @endif
                                 

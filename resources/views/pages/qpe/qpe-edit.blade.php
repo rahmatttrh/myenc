@@ -80,8 +80,8 @@ PE
                     <small class=" text-white">KPI </small>
                 </div>
 
-                {{-- @if(($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202') && (auth()->user()->hasRole('Leader') || auth()->user()->hasRole('Supervisor') || auth()->user()->hasRole('Administrator') ) ) --}}
-                @if(($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202') && (auth()->user()->getEmployeeId() == $pe->created_by  ) )
+                {{-- @if(($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202') && (auth()->user()->hasRole('Leader|Supervisor') ) ) --}}
+                @if(($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202') && (auth()->user()->getEmployeeId() == $pe->created_by  || auth()->user()->hasRole('Supervisor')) )
                 <div class="btn-group btn-group-page-header ml-auto">
                     <div class="button-group">
                         @if(isset($pd) && $pd->pdds->count() == 6)

@@ -20,34 +20,29 @@ class SpController extends Controller
 
       // dd(auth()->user()->getEmployee()->id);
 
-      if (auth()->user()->hasRole('Administrator|HRD-Spv')) {
+      if (auth()->user()->hasRole('Administrator')) {
          $employee = null;
          $employees = Employee::get();
          $sps = Sp::orderBy('created_at', 'desc')->get();
-      } elseif (auth()->user()->hasRole('HRD')) {
+         $allEmployees = [];
+      } elseif (auth()->user()->hasRole('HRD-Spv|HRD')) {
          $employee = auth()->user()->getEmployee();
-         $employees = Employee::get();
+         $allEmployees = Employee::get();
+         $employees = [];
          $sps = Sp::orderBy('created_at', 'desc')->get();
       } elseif (auth()->user()->hasRole('Manager|Asst. Manager')) {
          $employee = auth()->user()->getEmployee();
-         $employees = Employee::where('department_id', auth()->user()->getEmployee()->department_id)->where('designation_id', '<', 6)->where('status', 1)->get();
-
-         $sps = Sp::orderBy('created_at', 'desc')->get();
+         $employees = Employee::where('department_id', auth()->user()->getEmployee()->department_id)->where('designation_id', '<', 6)->get();
+         $allEmployees = [];
+         $sps = Sp::where('department_id', auth()->user()->getEmployee()->department_id)->orderBy('created_at', 'desc')->get();
       } elseif (auth()->user()->hasRole('Leader') || auth()->user()->hasRole('Supervisor')) {
          $employee = auth()->user()->getEmployee();
          // dd(auth()->user()->getEmployeeId());
          // $employees = Employee::where('department_id', auth()->user()->getEmployee()->department_id)->where('designation_id', '<', 4)->get();
          // $employees = Employee::where('direct_leader_id', auth()->user()->getEmployeeId())->get();
          $employees = EmployeeLeader::where('leader_id', auth()->user()->getEmployee()->id)->get();
-         // $sps = Sp::where('by_id', auth()->user()->getEmployee()->id)->orderBy('created_at', 'desc')->get();
-         $sps = Sp::where('employee_id', auth()->user()->getEmployee()->id)->orderBy('created_at', 'desc')->get();
-      } elseif (auth()->user()->hasRole('Karyawan')) {
-         $employee = auth()->user()->getEmployee();
-         // dd(auth()->user()->getEmployeeId());
-         // $employees = Employee::where('department_id', auth()->user()->getEmployee()->department_id)->where('designation_id', '<', 4)->get();
-         // $employees = Employee::where('direct_leader_id', auth()->user()->getEmployeeId())->get();
-         $employees = EmployeeLeader::where('leader_id', auth()->user()->getEmployee()->id)->get();
-         $sps = Sp::where('employee_id', auth()->user()->getEmployee()->id)->orderBy('created_at', 'desc')->get();
+         $sps = Sp::where('by_id', auth()->user()->getEmployee()->id)->orderBy('created_at', 'desc')->get();
+         $allEmployees = [];
       }
       
       // foreach ($sps as $sp) {
@@ -61,6 +56,7 @@ class SpController extends Controller
 
       return view('pages.sp.index', [
          'employee' => $employee,
+         'allEmployees' => $allEmployees,
          'employees' => $employees,
          'sps' => $sps
       ])->with('i');

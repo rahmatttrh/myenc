@@ -15,57 +15,38 @@
       </div> --}}
       <div class="row">
         
-         <div class="col-md-3">
+         <div class="col-md-4">
             <div class="card card-primary">
                {{-- <div class="card-header">
                   Dashboard SPV
                </div> --}}
                <div class="card-body">
-                  Dashboard HRD <hr class="bg-white">
+                  {{-- <span class="badge badge-dark">Level :</span> --}}
+                  <x-role />
+                  <hr>
+                  
+                  {{-- Dashboard HRD <hr class="bg-white"> --}}
                   <b>{{$employee->unit->name}}</b> - {{$employee->department->name}}<br>
                    
                   {{$employee->position->name}}
+                  
+                  {{-- @if (auth()->user()->hasRole('HRD'))
+                     HRD
+                  @endif
+                  @if (auth()->user()->hasRole('Supervisor'))
+                     SPV
+                  @endif --}}
                </div>
             </div>
-            {{-- <div class="card">
-               <div class="card-header p-2 bg-dark text-white">
-                  <small>Dashboard HRD</small>
-               </div>
+            <div class="card">
                <div class="card-body p-0">
                   <table class="display  table-sm table-bordered  table-striped ">
                      <thead>
-                        
+                        {{-- <tr>
+                           <th colspan="2">Employee Status</th>
+                        </tr> --}}
                         <tr>
-                           <th scope="col">User Level</th>
-                           
-                        </tr>
-                        
-                     </thead>
-                     <tbody>
-                        <tr>
-                           <td>HRD</td>
-                        </tr>
-                     </tbody>
-                     
-                  </table>
-               </div>
-            </div> --}}
-            {{-- <div class="card card-primary">
-               <div class="card-body text-center">
-                  <small>HRD</small>
-               </div>
-            </div> --}}
-            {{-- <div class="table-responsive"> --}}
-               {{-- table table-bordered table-sm table-head-bg-info table-bordered-bd-info --}}
-            {{-- <div class="card">
-               <div class="card-body p-0">
-                  <table class="display  table-sm table-bordered  table-striped ">
-                     <thead>
-                        <tr>
-                           <th colspan="2">Employee</th>
-                        </tr>
-                        <tr>
-                           <th scope="col">Status</th>
+                           <th scope="col">Employee</th>
                            <th scope="col" class="text-center">Jumlah</th>
                            
                         </tr>
@@ -81,7 +62,7 @@
                            <td class="text-center">{{$tetap}}</td>
                         </tr>
                         <tr>
-                           <td>Pending</td>
+                           <td>Empty</td>
                            <td class="text-center">{{$empty}}</td>
                         </tr>
                         <tr>
@@ -91,72 +72,54 @@
                      </tbody>
                   </table>
                </div>
-            </div> --}}
-         </div>
-         <div class="col-md-9">
-            <div class="card">
-               <div class="card-header p-2 bg-primary text-white">
-                  <small>Employee</small>
-               </div>
-               <div class="card-body p-0">
-                  <table class="display  table-sm table-bordered  table-striped ">
-                     <thead>
-                        
-                        <tr>
-                           <th class="text-center">Total</th>
-                           <th class="text-center">Kontrak</th>
-                           <th class="text-center">Tetap</th>
-                           <th class="text-center">Pending</th>
-                        </tr>
-                        
-                        
-                     </thead>
-                     <tbody>
-                        <tr>
-                           <td class="text-center">{{count($employees)}}</td>
-                           <td class="text-center">{{$kontrak}}</td>
-                           <td class="text-center">{{$tetap}}</td>
-                           <td class="text-center">{{$empty}}</td>
-                        </tr>
-                     </tbody>
-                  </table>
-               </div>
             </div>
-            
-         </div>
-         
-         
-      </div>
-
-      <div class="row">
-         <div class="col-md-6">
             <div class="card">
-               <div class="card-header p-2 bg-primary text-white">
-                  <small>Contract End This Month</small>
+               <div class="card-header bg-primary text-white p-2">
+                  <small>Teams</small>
                </div>
                <div class="card-body p-0">
-                  <table class="display  table-sm table-bordered  table-striped ">
-                     <thead>
-                        
+                  <table class=" ">
+                     {{-- <thead>
                         <tr>
-                           <th scope="col">ID</th>
-                           <th scope="col" >Name</th>
-                           {{-- <th>Unit</th>
-                           <th>Department</th> --}}
-                           <th>Expired</th>
+                           <th></th>
+                           <th>NIK</th>
+                           <th>Name</th>
                         </tr>
-                        
-                     </thead>
+                     </thead> --}}
                      <tbody>
-                        <tr>
-                           <td colspan="3" class="text-center">Empty</td>
-                        </tr>
+                        @if (count($employee->positions) > 0)
+                              @foreach ($positions as $pos)
+                                    <tr>
+                                    {{-- <td></td> --}}
+                                    <td colspan="4">{{$pos->department->unit->name}} {{$pos->department->name}} ({{count($pos->department->employees)}}) </td>
+                                    {{-- <td>{{$employee->biodata->fullName()}}</td> --}}
+                                    </tr>
+                                    @foreach ($pos->department->employees as $emp)
+                                       <tr>
+                                       <td></td>
+                                       {{-- <td>{{$emp->sub_dept->name ?? ''}}</td> --}}
+                                       {{-- <td></td> --}}
+                                       <td>{{$emp->nik}} {{$emp->id}}</td>
+                                       </tr>
+                                    @endforeach
+                              @endforeach
+                            @else
+                            @foreach ($teams as $team)
+                         <tr>
+                           <td>{{$team->employee->nik}} </td>
+                           <td> {{$team->employee->biodata->fullName()}}</td>
+                         </tr>
+                     @endforeach
+                        @endif
+                        
+                        
+                        
                      </tbody>
                   </table>
                </div>
             </div>
          </div>
-         <div class="col-md-6">
+         <div class="col-md-8">
             <div class="card">
                <div class="card-header p-2 bg-danger text-white">
                   <small>Recent SP</small>
@@ -197,49 +160,57 @@
                   </table>
                </div>
             </div>
-         </div>
-         {{-- <div class="col-md-6">
-            <hr>
             <div class="card">
-               <div class="card-header d-flex p-2 text-white" style="background-color: rgb(44, 42, 42)">
-                  <small>Logs Activity</small>
-                  <a href="{{route('log')}}" class="ml-auto text-info">More...</a>
+               <div class="card-header d-flex justify-content-between p-2 bg-primary text-white">
+                  <small>Recent QPE</small>
+                  <a href="{{route('qpe')}}" class="text-white">more...</a>
                </div>
                <div class="card-body p-0">
-                  <table class="display  table-sm table-bordered  table-striped ">
+                  <table class=" ">
                      <thead>
                         
-                        <tr>
-                           <th scope="col">Name</th>
-                           <th scope="col">Action</th>
-                           <th>Desc</th>
-                           <th>Timestamp</th>
+                        <tr class="">
+                           {{-- <th scope="col">#</th> --}}
+                           {{-- <th></th> --}}
+                           <th>Employee</th>
+                           <th>Semester/Tahun</th>
+                           <th>Achievement</th>
+                           <th>Status</th>
                         </tr>
-                        
                      </thead>
                      <tbody>
-                        @if (count($logs) > 0)
-                           @foreach ($logs as $log)
-                           <tr>
-                              <td>{{$log->user->name}}</td>
-                              <td>{{$log->action}}</td>
-                              <td>{{$log->desc}}</td>
-                              <td>{{formatDateTime($log->created_at)}}</td>
-                           </tr>
-                           @endforeach
-                            @else
+                        @foreach ($pes as $pe)
                             <tr>
-                              <td colspan="4" class="text-center">Empty</td>
+                              {{-- <th></th> --}}
+                              <td>
+                                 {{-- <a href="{{route('sp.detail', enkripRambo($pe->id))}}">{{$pe->code}}</a> --}}
+                                 @if($pe->status == '0' || $pe->status == '101')
+                                 <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
+                                 @elseif($pe->status == '1' || $pe->status == '202' )
+                                 <a href="/qpe/approval/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
+                                 @else
+                                 <a href="/qpe/show/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
+                                 @endif
+                              </td>
+                              <td>{{$pe->semester}} / {{$pe->tahun}}</td>
+                              <td>{{$pe->achievement}}</td>
+                              <td>
+                                 <x-status.pe :pe="$pe" />
+                              </td>
                            </tr>
-                        @endif
-                        
+                            @endforeach
+   
                      </tbody>
                   </table>
                </div>
-               
             </div>
-         </div> --}}
+            
+         </div>
+         
+         
       </div>
+
+      
    </div>
 
    @push('chart-dashboard')

@@ -43,7 +43,11 @@ Employee
                <thead>
                   <tr>
                      <th class="text-center">No</th>
+                     @if (auth()->user()->hasRole('Administrator'))
                      <th>ID</th>
+                     @endif
+                     
+                     <th>NIK</th>
                      <th>Name</th>
                      <th>KPI</th>
                      <th>Leader</th>
@@ -74,8 +78,11 @@ Employee
                <tbody>
                   @foreach ($employees as $employee)
                   <tr>
-                     <td class="text-center">{{++$i}} </td>
-                     <td class="text-truncate"> {{$employee->contract->id_no}}</td>
+                     <td class="text-center">{{++$i}}</td>
+                     @if (auth()->user()->hasRole('Administrator'))
+                     <td>{{$employee->id}}</td>
+                     @endif
+                     <td class="text-truncate">{{$employee->contract->id_no}}</td>
                      {{-- <td><a href="{{route('employee.detail', enkripRambo($employee->id))}}">{{$employee->name}}</a> </td> --}}
                      <td class="text-truncate">
                         <div>
@@ -112,6 +119,9 @@ Employee
                               @endforeach --}}
                               Multiple
                             @else
+                            @if (auth()->user()->hasRole('Administrator'))
+                            {{$employee->department->unit->id ?? ''}}
+                           @endif
                             {{$employee->department->unit->name ?? ''}}
                         @endif
                         
@@ -125,6 +135,9 @@ Employee
                               @endforeach --}}
                               Multiple
                             @else
+                            @if (auth()->user()->hasRole('Administrator'))
+                            {{$employee->department->id ?? ''}}
+                           @endif
                             {{$employee->department->name ?? ''}}
                         @endif
                      </td>
@@ -145,6 +158,9 @@ Employee
                               @endforeach --}}
                               Multiple
                             @else
+                            @if (auth()->user()->hasRole('Administrator'))
+                            {{$employee->position->id ?? ''}}
+                           @endif
                             {{$employee->position->name ?? ''}}
                         @endif
                      </td>
