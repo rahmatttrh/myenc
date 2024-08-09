@@ -383,9 +383,15 @@
                               @foreach ($logins as $log)
                               <tr>
                                  <td class="text-truncate" style="max-width: 110px;">
-                                    {{$log->user->username}} {{$log->user->name}} {{$log->action}}
+                                    {{$log->user->username}} {{$log->user->name}} 
                                      <br>
-                                    <small>{{$log->desc}}</small>
+                                     @if ($log->action == 'Login')
+                                     {{$log->action}} into system<br>
+                                        @else 
+                                        {{$log->action}} <small>{{$log->desc}}</small> <br>
+                                     @endif
+                                    
+                                    <small>{{formatDateTime($log->created_at)}}</small>
                                  </td>
                                  {{-- <td>{{$log->action}}</td>
                                  <td >{{$log->desc}}</td> --}}

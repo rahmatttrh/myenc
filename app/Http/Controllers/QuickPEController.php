@@ -373,12 +373,12 @@ class QuickPEController extends Controller
             //    $user = Employee::find(auth()->user()->getEmployeeId());
             //    $departmentId = $user->department_id;
             // }
-            // Log::create([
-            //    'department_id' => $departmentId,
-            //    'user_id' => auth()->user()->id,
-            //    'action' => 'Create',
-            //    'desc' => 'QPE KPI ' . $employe->nik . ' ' . $employe->biodata->fullName() . ' Semester ' . $req->semester . ' Tahun ' . $req->tahun 
-            // ]);
+            Log::create([
+               'department_id' => $employee->department_id,
+               'user_id' => auth()->user()->id,
+               'action' => 'Create',
+               'desc' => 'QPE ' . $employe->nik . ' ' . $employe->biodata->fullName() . ' ' . $req->semester . '/' . $req->tahun 
+            ]);
 
             return redirect('/qpe/edit/' . $kpaId)->with('success', 'KPI successfully added');
         } catch (\Exception $e) {
@@ -692,12 +692,13 @@ class QuickPEController extends Controller
       //    $user = Employee::find(auth()->user()->getEmployeeId());
       //    $departmentId = $user->department_id;
       // }
-      //    Log::create([
-      //       'department_id' => $departmentId,
-      //       'user_id' => auth()->user()->id,
-      //       'action' => 'Submit',
-      //       'desc' => 'QPE ' . $pe->employe->nik . ' ' . $pe->employe->biodata->fullName() . ' Semester ' . $pe->semester . ' Tahun ' . $pe->tahun 
-      //    ]);
+         $user = Employee::find(auth()->user()->getEmployeeId());
+         Log::create([
+            'department_id' => $user->department_id,
+            'user_id' => auth()->user()->id,
+            'action' => 'Submit',
+            'desc' => 'QPE ' . $pe->employe->nik . ' ' . $pe->employe->biodata->fullName() . ' ' . $pe->semester . '/' . $pe->tahun 
+         ]);
 
         return redirect('qpe')->with('success', 'Perfomance Evaluation berhasil di Sumbit');
     }
