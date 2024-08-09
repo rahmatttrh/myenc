@@ -184,7 +184,7 @@ class HomeController extends Controller
          $female = Biodata::where('gender', 'Female')->count();
          $spkls = Spkl::orderBy('updated_at', 'desc')->paginate(5);
          $sps = Sp::orderBy('updated_at', 'desc')->paginate(4);
-         $logins = Log::where('action', 'Login')->orWhere('action', 'Logout')->orderBy('created_at', 'desc')->paginate(10);
+         $logins = Log::orderBy('created_at', 'desc')->paginate(10);
          $qpes = Pe::orderBy('updated_at', 'desc')->paginate(4);
          // Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit culpa tenetur sed
          return view('pages.dashboard.admin', [

@@ -45,9 +45,8 @@ Logs Activity
                      <thead>
                         <tr>
                            <th class="text-center" style="width: 10px">No</th>
+                           <th>User</th>
                            <th>Action</th>
-                           <th>NIK</th>
-                           <th>Name</th>
                            
                            {{-- <th>Desc</th> --}}
                            
@@ -58,9 +57,16 @@ Logs Activity
                         @foreach ($logs as $log)
                         <tr>
                            <td class="text-center">{{++$i}}</td>
-                           <td>{{$log->action}} into system</td>
-                           <td>{{$log->user->username}}</td>
-                           <td>{{$log->user->name}}</td>
+                           <td>{{$log->user->username}} {{$log->user->name}}</td>
+                           <td>
+                              @if ($log->action == 'Login')
+                                 {{$log->action}} into system
+                                  @else
+                                  {{$log->action}} {{$log->desc}}
+                              @endif
+                              
+                           </td>
+                           
                            
                            {{-- <td>{{$log->desc}}</td> --}}
                            <td>{{formatDateTime($log->created_at)}}</td>
