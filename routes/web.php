@@ -59,6 +59,7 @@ Route::middleware(["auth"])->group(function () {
 
    // Func
    Route::get('update/position', [MyController::class, 'updatePosition']);
+   Route::get('test/email', [MyController::class, 'testEmail']);
 
 
    Route::prefix('pass')->group(function () {
