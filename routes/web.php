@@ -57,7 +57,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(["auth"])->group(function () {
 
+   // Func
    Route::get('update/position', [FuncController::class, 'updatePosition']);
+   Route::get('test/email', [FuncController::class, 'testEmail']);
+
 
    Route::prefix('pass')->group(function () {
       Route::get('reset', [PasswordController::class, 'index'])->name('pass.reset');

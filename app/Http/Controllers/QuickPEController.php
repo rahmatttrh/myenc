@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\QpeSubmitEmail;
 use App\Models\Department;
 use App\Models\Designation;
 use App\Models\Employee;
 use App\Models\EmployeeLeader;
+use App\Models\EmployeePosition;
 use App\Models\Log;
 use App\Models\Pe;
 use App\Models\PeBehavior;
@@ -17,10 +19,12 @@ use App\Models\PeKpa;
 use App\Models\PekpaDetail;
 use App\Models\PeKpi;
 use App\Models\PekpiDetail;
+use App\Models\Position;
 use App\Models\Sp;
 use App\Models\Unit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use PhpOffice\PhpSpreadsheet\Calculation\MathTrig\Round;
 
 class QuickPEController extends Controller
@@ -661,47 +665,63 @@ class QuickPEController extends Controller
         return redirect()->back()->with('success', 'Behavior Karyawan Berhasil di Update');
     }
 
-    public function submit(Request $request, $id)
-    {
+   public function submit(Request $request, $id)
+   {
 
-        $pe = Pe::find($request->id);
+      $pe = Pe::find($request->id);
+      $department = Department::find($pe->department_id);
+      $positionManager = Position::where('department_id', $department->id)->where('designation_id', 6)->first();
+      //   dd($positionManager->name);
+         $manager = EmployeePosition::where('position_id', $positionManager->id)->first();
+         // dd($manager->employee->biodata->fullName());
+
+      $data = [
+         'to' => $manager->employee->biodata->fullName(),
+         'from' => 'MyENC System',
+         'subject' => 'Approval QPE',
+         'body' => 'QPE '. $pe->employe->nik . ' ' . $pe->employe->biodata->fullName() . ' Semester ' . $pe->semester . ' Tahun ' . $pe->tahun,
+         
+         'link' => route('qpe.approval', enkripRambo($pe->kpa->id))
+         // '/qpe/approval/' . enkripRambo($pe->kpa->id)
+      ];
+      // Mail::to("rahmattrust@adasd.comm")->send(new QpeSubmitEmail($data));
+      
+
+      PeDiscipline::where('pe_id', $pe->id)->update([
+         'status' => '1'
+      ]);
+
+      PeKpa::where('pe_id', $pe->id)->update([
+         'release_at' => NOW(),
+         'status' => '1'
+      ]);
+
+      PeBehaviorApprasial::where('pe_id', $pe->id)->update([
+         'status' => '1'
+      ]);
 
 
-        PeDiscipline::where('pe_id', $pe->id)->update([
-            'status' => '1'
-        ]);
+      $pe->update([
+         'release_at' => NOW(),
+         'status' => '1'
+      ]);
 
-        PeKpa::where('pe_id', $pe->id)->update([
-            'release_at' => NOW(),
-            'status' => '1'
-        ]);
+   //   if (auth()->user()->hasRole('Administrator')) {
+   //    $departmentId = null;
+   // } else {
+   //    $user = Employee::find(auth()->user()->getEmployeeId());
+   //    $departmentId = $user->department_id;
+   // }
+      $user = Employee::find(auth()->user()->getEmployeeId());
+      Log::create([
+         'department_id' => $user->department_id,
+         'user_id' => auth()->user()->id,
+         'action' => 'Submit',
+         'desc' => 'QPE ' . $pe->employe->nik . ' ' . $pe->employe->biodata->fullName() . ' ' . $pe->semester . '/' . $pe->tahun 
+      ]);
 
-        PeBehaviorApprasial::where('pe_id', $pe->id)->update([
-            'status' => '1'
-        ]);
-
-
-        $pe->update([
-            'release_at' => NOW(),
-            'status' => '1'
-        ]);
-
-      //   if (auth()->user()->hasRole('Administrator')) {
-      //    $departmentId = null;
-      // } else {
-      //    $user = Employee::find(auth()->user()->getEmployeeId());
-      //    $departmentId = $user->department_id;
-      // }
-         $user = Employee::find(auth()->user()->getEmployeeId());
-         Log::create([
-            'department_id' => $user->department_id,
-            'user_id' => auth()->user()->id,
-            'action' => 'Submit',
-            'desc' => 'QPE ' . $pe->employe->nik . ' ' . $pe->employe->biodata->fullName() . ' ' . $pe->semester . '/' . $pe->tahun 
-         ]);
-
-        return redirect('qpe')->with('success', 'Perfomance Evaluation berhasil di Sumbit');
-    }
+      return redirect('qpe')->with('success', 'Perfomance Evaluation berhasil di Sumbit');
+   }
 
     public function approved(Request $request, $id)
 

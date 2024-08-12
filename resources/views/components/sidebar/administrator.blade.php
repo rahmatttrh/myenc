@@ -96,11 +96,11 @@
    </a>
    <div class="collapse" id="qpe">
       <ul class="nav nav-collapse">
-         <li>
+         {{-- <li>
             <a href="{{route('qpe.create')}}">
                <span class="sub-item">Create PE</span>
             </a>
-         </li>
+         </li> --}}
          <li>
             <a href="{{route('qpe')}}">
                <span class="sub-item">Daftar PE</span>
