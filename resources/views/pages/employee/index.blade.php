@@ -5,7 +5,13 @@ Employee
 @section('content')
 
 <div class="page-inner">
-   <div class="page-header d-flex">
+   <nav aria-label="breadcrumb ">
+      <ol class="breadcrumb  ">
+         <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
+         <li class="breadcrumb-item active" aria-current="page">Active Employee</li>
+      </ol>
+   </nav>
+   {{-- <div class="page-header d-flex">
 
       <h5 class="page-title">Active Employee</h5>
       <ul class="breadcrumbs">
@@ -30,16 +36,14 @@ Employee
 
             <a class="dropdown-item" style="text-decoration: none" href="{{route('employee.create')}}">Create</a>
             <a class="dropdown-item" style="text-decoration: none"  data-toggle="modal" data-target="#modal-export">Export</a>
-            <div class="dropdown-divider"></div>
-            {{-- <a class="dropdown-item" style="text-decoration: none" href="" target="_blank">Print Preview</a> --}}
-         </div>
+            <div class="dropdown-divider"></div></div>
       </div>
-   </div>
+   </div> --}}
 
-   <div class="card">
+   <div class="card shadow-none border">
       <div class="card-body">
          <div class="table-responsive">
-            <table id="data" class="display basic-datatables table-sm    ">
+            <table id="data" class="display basic-datatables table-sm">
                <thead>
                   <tr>
                      <th class="text-center">No</th>

@@ -378,7 +378,7 @@
          <div class="col-md-4">
             <div class="card">
                <div class="card-header d-flex justify-content-between p-2 bg-dark text-white">
-                  <small>Login Activity</small>
+                  <small>Log Activity</small>
                   <a href="{{route('log.auth')}}" class="text-white">More..</a>
                </div>
                <div class="card-body p-0">
