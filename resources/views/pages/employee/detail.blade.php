@@ -14,8 +14,20 @@ Detail Employee
    <li class="breadcrumb-item active" aria-current="page">Detail</li>
    </ol>
    </nav> --}}
-   <div class="page-header d-flex">
-      <h5 class="page-title">Detail Employee </h5>
+   <nav aria-label="breadcrumb ">
+      <ol class="breadcrumb  ">
+         <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
+         @if ($employee->status == 1)
+            <li class="breadcrumb-item" aria-current="page"><a href="{{route('employee', enkripRambo('active'))}}">Employee</a></li>
+             @else
+             <li class="breadcrumb-item" aria-current="page"><a href="{{route('employee.nonactive')}}">Employee</a></li>
+         @endif
+         
+         <li class="breadcrumb-item active" aria-current="page">Detail</li>
+      </ol>
+   </nav>
+   {{-- <div class="page-header d-flex">
+      <h5 class="page-title">Detail Employee</h5>
       <ul class="breadcrumbs">
          <li class="nav-home">
             <a href="/">
@@ -41,7 +53,7 @@ Detail Employee
             <a href="#">Detail</a>
          </li>
       </ul>
-   </div>
+   </div> --}}
    <div class="row">
       <div class="col-md-4">
          @if ($employee->status == 0)

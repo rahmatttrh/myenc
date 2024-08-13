@@ -107,7 +107,7 @@
                                                     </div>
                                                     <div class="card-body">
                                                         @if ($data->evidence)
-                                                        <iframe src="{{ Storage::url($data->evidence) }}" id="pdfPreview-{{$data->id}}" width=" 100%" height="575px"></iframe>
+                                                        <iframe src="{{ asset('storage/'. $data->evidence) }}" id="pdfPreview-{{$data->id}}" width=" 100%" height="575px"></iframe>
                                                         @else
                                                         <p>No attachment available.</p>
                                                         @endif
