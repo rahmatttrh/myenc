@@ -60,8 +60,7 @@ class QuickPEController extends Controller
             //     ->orderBy('employe_id')
             //     ->get();
             
-               $pes = Pe::where('status', '>', 0)
-               ->orderBy('release_at', 'desc')
+               $pes = Pe::orderBy('release_at', 'desc')
                ->get();
 
             $outAssesments = $this->outstandingAssessment();
