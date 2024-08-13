@@ -294,9 +294,9 @@ class HomeController extends Controller
          } else {
             if ($employee->position->sub_dept_id != null) {
                // dd('ada sub');
-               $teams = Employee::where('sub_dept_id', $employee->position->sub_dept_id)->where('id', '!=', $employee->id)->get();
+               $teams = Employee::where('status', 1)->where('sub_dept_id', $employee->position->sub_dept_id)->where('id', '!=', $employee->id)->get();
             } else {
-               $teams = Employee::where('department_id', $employee->position->department_id)->get();
+               $teams = Employee::where('status', 1)->where('department_id', $employee->position->department_id)->get();
             }
          }
          

@@ -100,7 +100,7 @@ SP Detail
                   @endif
                @endif
 
-               @if($sp->status == '1' && auth()->user()->hasRole('HRD|HRD-Spv'))
+               @if($sp->status == '1' && auth()->user()->hasRole('HRD|HRD-Manager|HRD-Spv'))
                   {{-- <button class="btn btn-md btn-primary" data-toggle="modal" data-target="#modal-app-hrd-{{$sp->id}}"><i class="fas fa-check"></i> Approve </button> --}}
                   <button data-target="#modal-reject-hrd" data-toggle="modal" class="btn btn-md btn-danger "><i class="fa fa-reply"></i> Reject</button>
                   {{-- <x-sp.modal.hrd-reject :sp="$sp" /> --}}
@@ -214,7 +214,7 @@ SP Detail
                   <b>Form SP {{$sp->level}}</b>
                </div>
                <div class="card-body">
-                  @if (auth()->user()->hasRole('HRD|HRD-Spv'))
+                  @if (auth()->user()->hasRole('HRD|HRD-Manager|HRD-Spv'))
                         @if ($sp->status == 1 )
                         <form action="{{route('sp.app.hrd', enkripRambo($sp->id))}}" method="POST" enctype="multipart/form-data">
                            @csrf
