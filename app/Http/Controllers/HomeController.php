@@ -185,7 +185,7 @@ class HomeController extends Controller
          $female = Biodata::where('gender', 'Female')->count();
          $spkls = Spkl::orderBy('updated_at', 'desc')->paginate(5);
          $sps = Sp::orderBy('updated_at', 'desc')->paginate(4);
-         $logins = Log::orderBy('created_at', 'desc')->paginate(10);
+         $logins = Log::where('department_id', '!=', null)->orderBy('created_at', 'desc')->paginate(10);
          $qpes = Pe::orderBy('updated_at', 'desc')->paginate(4);
          // Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit culpa tenetur sed
          return view('pages.dashboard.admin', [
@@ -296,9 +296,9 @@ class HomeController extends Controller
          } else {
             if ($employee->position->sub_dept_id != null) {
                // dd('ada sub');
-               $teams = Employee::where('sub_dept_id', $employee->position->sub_dept_id)->where('id', '!=', $employee->id)->get();
+               $teams = Employee::where('status', 1)->where('sub_dept_id', $employee->position->sub_dept_id)->where('id', '!=', $employee->id)->get();
             } else {
-               $teams = Employee::where('department_id', $employee->position->department_id)->get();
+               $teams = Employee::where('status', 1)->where('department_id', $employee->position->department_id)->get();
             }
 
             $pes = Pe::where('department_id', $employee->department_id)->where('status', '>', '0')

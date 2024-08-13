@@ -5,110 +5,163 @@ SP
 @section('content')
 
 <div class="page-inner">
-   <div class="page-header d-flex">
-
-      <h5 class="page-title">SP</h5>
-      <ul class="breadcrumbs">
-         <li class="nav-home">
-            <a href="/">
-               <i class="flaticon-home"></i>
-            </a>
-         </li>
-         <li class="separator">
-            <i class="flaticon-right-arrow"></i>
-         </li>
-         <li class="nav-item">
-            <a href="#">SP</a>
-         </li>
-      </ul>
-      <div class="ml-auto">
-         <button class="btn btn-light border btn-round " data-toggle="dropdown">
-            <i class="fa fa-ellipsis-h"></i>
-         </button>
-         <div class="dropdown-menu">
-
-
-            {{-- <a class="dropdown-item" style="text-decoration: none" href="{{route('employee.create')}}">Create</a> --}}
-            <a class="dropdown-item" style="text-decoration: none" data-toggle="modal" data-target="#modal-export">Export</a>
-            <div class="dropdown-divider"></div>
-            {{-- <a class="dropdown-item" style="text-decoration: none" href="" target="_blank">Print Preview</a> --}}
-         </div>
-      </div>
-   </div>
+   <nav aria-label="breadcrumb ">
+      <ol class="breadcrumb  ">
+         <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
+         <li class="breadcrumb-item active" aria-current="page">Surat Peringatan</li>
+      </ol>
+   </nav>
 
    <div class="row">
       @if (auth()->user()->hasRole('Administrator'))
-         @else
-      
-      <div class="col-md-4">
-         <h4>Form Pengajuan SP</h4>
-         <hr>
-         <form action="{{route('sp.store')}}" method="POST" enctype="multipart/form-data">
-            @csrf
-            
-            <div class="row">
-               <div class="col-md-8">
-                  <div class="form-group form-group-default">
-                     <label>Employee*</label>
-                     <select class="form-control employee" required id="employee" name="employee">
-                        <option value="" selected disabled>Select Employee</option>
-                        @if (auth()->user()->hasRole('Manager|Asst. Manager|HRD'))
-                           @foreach ($employee->positions as $pos)
-                               @foreach ($pos->department->employees->where('status', 1) as $emp)
-                               <option value="{{$emp->id}}">{{$emp->nik}} {{$emp->biodata->fullName()}} </option>
-                               @endforeach
-                           @endforeach
-                              {{-- @foreach ($employees as $emp)
-                              <option value="{{$emp->id}}">{{$emp->nik}} {{$emp->biodata->fullName()}} </option>
-                              @endforeach --}}
-                           @elseif(auth()->user()->hasRole('HRD') || auth()->user()->hasRole('HRD-Spv'))
-                              @foreach ($allEmployees as $emp)
-                                 <option value="{{$emp->id}}">{{$emp->nik}} {{$emp->biodata->fullName()}} </option>
-                              @endforeach
-                           @else 
-                              @foreach ($employees as $emp)
-                                 <option value="{{$emp->employee->id}}">{{$emp->employee->nik}} {{$emp->employee->biodata->fullName()}} </option>
-                              @endforeach
-                        @endif
-                        
-                     </select>
-                     
-      
-                  </div>
-               </div>
-               <div class="col-md-4">
-                  <div class="form-group form-group-default">
-                     <label>Level*</label>
-                     <select class="form-control" required id="level" name="level">
-                        <option value="" selected disabled>Select level</option>
-                        <option value="I">SP I</option>
-                        <option value="II">SP II</option>
-                        <option value="III">SP III</option>
-                     </select>
-
-                  </div>
-               </div>
-               
-            </div>
-
-          
-            <div class="form-group form-group-default">
-               <label>Alasan*</label>
-               <input type="text" required class="form-control" name="reason" id="reason">
-            </div>
-
-            <div class="form-group form-group-default">
-               <label>Kronologi*</label>
-               <textarea class="form-control" required name="desc" id="desc" rows="4"></textarea>
-            </div>
-            <div class="form-group form-group-default">
-               <label>File attachment</label>
-               <input type="file" class="form-control" name="file" id="file">
-            </div>
+         @elseif(auth()->user()->hasRole('HRD-Manager'))
+         <div class="col-md-4">
+            <h4>Form Pengajuan SP dari HRD</h4>
             <hr>
-            <button type="submit" class="btn btn-block btn-primary">Submit</button>
-         </form>
-      </div>
+            <form action="{{route('sp.store')}}" method="POST" enctype="multipart/form-data">
+               @csrf
+               {{-- <div class="form-group form-group-default">
+                  <label>Type</label>
+                  <select class="form-control" required id="level" name="level">
+                     <option value="" selected disabled>Choose one</option>
+                     <option value="Excisting">Excisting</option>
+                     <option value="New">New</option>
+                  </select>
+
+               </div> --}}
+               <div class="row">
+                  <div class="col-md-8">
+                     <div class="form-group form-group-default">
+                        <label>Employee*</label>
+                        <select class="form-control employee" required id="employee" name="employee">
+                           <option value="" selected disabled>Select Employee</option>
+                           @if (auth()->user()->hasRole('Manager|Asst. Manager|HRD'))
+                              @foreach ($employee->positions as $pos)
+                                 @foreach ($pos->department->employees as $emp)
+                                 <option value="{{$emp->id}}">{{$emp->nik}} {{$emp->biodata->fullName()}} </option>
+                                 @endforeach
+                              @endforeach
+                                 {{-- @foreach ($employees as $emp)
+                                 <option value="{{$emp->id}}">{{$emp->nik}} {{$emp->biodata->fullName()}} </option>
+                                 @endforeach --}}
+                              @elseif(auth()->user()->hasRole('HRD') || auth()->user()->hasRole('HRD-Spv'))
+                                 @foreach ($allEmployees as $emp)
+                                    <option value="{{$emp->id}}">{{$emp->nik}} {{$emp->biodata->fullName()}} </option>
+                                 @endforeach
+                              @else 
+                                 @foreach ($employees as $emp)
+                                    <option value="{{$emp->employee->id}}">{{$emp->employee->nik}} {{$emp->employee->biodata->fullName()}} </option>
+                                 @endforeach
+                           @endif
+                           
+                        </select>
+                        
+         
+                     </div>
+                  </div>
+                  <div class="col-md-4">
+                     <div class="form-group form-group-default">
+                        <label>Level*</label>
+                        <select class="form-control" required id="level" name="level">
+                           <option value="" selected disabled>Select level</option>
+                           <option value="I">SP I</option>
+                           <option value="II">SP II</option>
+                           <option value="III">SP III</option>
+                        </select>
+
+                     </div>
+                  </div>
+                  
+               </div>
+
+            
+               <div class="form-group form-group-default">
+                  <label>Alasan*</label>
+                  <input type="text" required class="form-control" name="reason" id="reason">
+               </div>
+
+               <div class="form-group form-group-default">
+                  <label>Kronologi*</label>
+                  <textarea class="form-control" required name="desc" id="desc" rows="4"></textarea>
+               </div>
+               <div class="form-group form-group-default">
+                  <label>File attachment</label>
+                  <input type="file" class="form-control" name="file" id="file">
+               </div>
+               <hr>
+               <button type="submit" class="btn btn-block btn-primary">Submit</button>
+            </form>
+         </div>
+         @else
+         <div class="col-md-4">
+            <h4>Form Pengajuan SP</h4>
+            <hr>
+            <form action="{{route('sp.store')}}" method="POST" enctype="multipart/form-data">
+               @csrf
+               
+               <div class="row">
+                  <div class="col-md-8">
+                     <div class="form-group form-group-default">
+                        <label>Employee*</label>
+                        <select class="form-control employee" required id="employee" name="employee">
+                           <option value="" selected disabled>Select Employee</option>
+                           @if (auth()->user()->hasRole('Manager|Asst. Manager|HRD'))
+                              @foreach ($employee->positions as $pos)
+                                 @foreach ($pos->department->employees as $emp)
+                                 <option value="{{$emp->id}}">{{$emp->nik}} {{$emp->biodata->fullName()}} </option>
+                                 @endforeach
+                              @endforeach
+                                 {{-- @foreach ($employees as $emp)
+                                 <option value="{{$emp->id}}">{{$emp->nik}} {{$emp->biodata->fullName()}} </option>
+                                 @endforeach --}}
+                              @elseif(auth()->user()->hasRole('HRD') || auth()->user()->hasRole('HRD-Spv'))
+                                 @foreach ($allEmployees as $emp)
+                                    <option value="{{$emp->id}}">{{$emp->nik}} {{$emp->biodata->fullName()}} </option>
+                                 @endforeach
+                              @else 
+                                 @foreach ($employees as $emp)
+                                    <option value="{{$emp->employee->id}}">{{$emp->employee->nik}} {{$emp->employee->biodata->fullName()}} </option>
+                                 @endforeach
+                           @endif
+                           
+                        </select>
+                        
+         
+                     </div>
+                  </div>
+                  <div class="col-md-4">
+                     <div class="form-group form-group-default">
+                        <label>Level*</label>
+                        <select class="form-control" required id="level" name="level">
+                           <option value="" selected disabled>Select level</option>
+                           <option value="I">SP I</option>
+                           <option value="II">SP II</option>
+                           <option value="III">SP III</option>
+                        </select>
+
+                     </div>
+                  </div>
+                  
+               </div>
+
+            
+               <div class="form-group form-group-default">
+                  <label>Alasan*</label>
+                  <input type="text" required class="form-control" name="reason" id="reason">
+               </div>
+
+               <div class="form-group form-group-default">
+                  <label>Kronologi*</label>
+                  <textarea class="form-control" required name="desc" id="desc" rows="4"></textarea>
+               </div>
+               <div class="form-group form-group-default">
+                  <label>File attachment</label>
+                  <input type="file" class="form-control" name="file" id="file">
+               </div>
+               <hr>
+               <button type="submit" class="btn btn-block btn-primary">Submit</button>
+            </form>
+         </div>
       @endif
 
       @if (auth()->user()->hasRole('Administrator'))
