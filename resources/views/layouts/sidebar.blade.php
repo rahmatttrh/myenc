@@ -26,7 +26,7 @@
                      <span class="user-level">{{auth()->user()->getRoleName()}}</span>
                      @else
                         @if (count(auth()->user()->getEmployee()->positions) > 0)
-                           {{auth()->user()->getEmployee()->role->name}}
+                           {{auth()->user()->getEmployee()->designation->name}}
                             @else
                             <span class="user-level">{{auth()->user()->getEmployee()->position->name}}</span>
                         @endif
