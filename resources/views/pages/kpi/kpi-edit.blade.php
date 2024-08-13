@@ -33,7 +33,7 @@ KPI Detail
                             <i class="fa fa-user"></i> {{$kpi->position->name}}
                         </div>
                         <div class="form-group form-group-default">
-                           <label>Used on QPE - {{$kpi->id}}</label>
+                           <label>Used on QPE </label>
                            <i class="fa fa-user"></i> {{count($kpi->kpas)}}
                        </div>
                     </form>
@@ -80,7 +80,7 @@ KPI Detail
                   {{-- <div class="card-footer">
                      <small>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni at neque inventore vel.</small>
                   </div> --}}
-            </div>
+               </div>
             @endif
             
         </div>
