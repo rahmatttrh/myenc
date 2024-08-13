@@ -1,5 +1,5 @@
-@if (auth()->user()->hasRole('HRD'))
-    <span class="badge badge-light">HRD</span>
+@if (auth()->user()->hasRole('HRD-Manager'))
+    <span class="badge badge-lights">HRD Manager</span>
 @endif
 
 @if (auth()->user()->hasRole('HRD-Recruitment'))
