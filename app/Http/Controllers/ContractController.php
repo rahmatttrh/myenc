@@ -62,18 +62,18 @@ class ContractController extends Controller
          // 'direct_leader_id' => $contract->direct_leader_id,
       ]);
 
-      // if (auth()->user()->hasRole('Administrator')) {
-      //    $departmentId = null;
-      // } else {
-      //    $user = Employee::find(auth()->user()->getEmployeeId());
-      //    $departmentId = $user->department_id;
-      // }
-      // Log::create([
-      //    'department_id' => $departmentId,
-      //    'user_id' => auth()->user()->id,
-      //    'action' => 'Create',
-      //    'desc' => 'Contract ' . $employee->nik . ' ' . $employee->biodata->fullname()
-      // ]);
+      if (auth()->user()->hasRole('Administrator')) {
+         $departmentId = null;
+      } else {
+         $user = Employee::find(auth()->user()->getEmployeeId());
+         $departmentId = $user->department_id;
+      }
+      Log::create([
+         'department_id' => $departmentId,
+         'user_id' => auth()->user()->id,
+         'action' => 'Create',
+         'desc' => 'Contract ' . $employee->nik . ' ' . $employee->biodata->fullname()
+      ]);
 
       return redirect()->route('employee.detail', [enkripRambo($req->employee), enkripRambo('contract')])->with('success', 'Contract successfully added');
    }
@@ -146,18 +146,18 @@ class ContractController extends Controller
       //    $user->assignRole('Karyawan');
       // }
 
-      // if (auth()->user()->hasRole('Administrator')) {
-      //    $departmentId = null;
-      // } else {
-      //    $user = Employee::find(auth()->user()->getEmployeeId());
-      //    $departmentId = $user->department_id;
-      // }
-      // Log::create([
-      //    'department_id' => $departmentId,
-      //    'user_id' => auth()->user()->id,
-      //    'action' => 'Update',
-      //    'desc' => 'Contract ' . $employee->nik . ' ' . $employee->biodata->fullname()
-      // ]);
+      if (auth()->user()->hasRole('Administrator')) {
+         $departmentId = null;
+      } else {
+         $user = Employee::find(auth()->user()->getEmployeeId());
+         $departmentId = $user->department_id;
+      }
+      Log::create([
+         'department_id' => $departmentId,
+         'user_id' => auth()->user()->id,
+         'action' => 'Update',
+         'desc' => 'Contract ' . $employee->nik . ' ' . $employee->biodata->fullname()
+      ]);
 
       return redirect()->route('employee.detail', [enkripRambo($req->employee), enkripRambo('contract')])->with('success', 'Contract successfully updated');
       // } catch (\Exception $e) {
