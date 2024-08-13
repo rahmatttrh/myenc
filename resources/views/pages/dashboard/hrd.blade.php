@@ -94,7 +94,7 @@
                                     <td colspan="4">{{$pos->department->unit->name}} {{$pos->department->name}} ({{count($pos->department->employees)}}) </td>
                                     {{-- <td>{{$employee->biodata->fullName()}}</td> --}}
                                     </tr>
-                                    @foreach ($pos->department->employees as $emp)
+                                    @foreach ($pos->department->employees->where('status', 1) as $emp)
                                        <tr>
                                        <td></td>
                                        {{-- <td>{{$emp->sub_dept->name ?? ''}}</td> --}}
@@ -105,11 +105,14 @@
                               @endforeach
                             @else
                             @foreach ($teams as $team)
-                         <tr>
-                           <td>{{$team->employee->nik}} </td>
-                           <td> {{$team->employee->biodata->fullName()}}</td>
-                         </tr>
-                     @endforeach
+                                 @if ($team->employee->status == 1)
+                                 <tr>
+                                    <td>{{$team->employee->nik}} </td>
+                                    <td> {{$team->employee->biodata->fullName()}}</td>
+                                 </tr>
+                                 @endif
+                                 
+                           @endforeach    
                         @endif
                         
                         
