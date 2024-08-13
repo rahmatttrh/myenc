@@ -1,4 +1,4 @@
-@if (auth()->user()->hasRole('HRD-Spv|HRD|HRD-Recruitment'))
+@if (auth()->user()->hasRole('HRD-Spv|HRD|HRD-Recruitment|HRD-Manager'))
 <li class="nav-item">
    <a data-toggle="collapse" href="#vessel">
       <i class="fas fa-server"></i>
@@ -66,7 +66,7 @@
       </ul>
    </div>
 </li>
-@if (auth()->user()->hasRole('HRD-Spv|HRD|HRD-Recruitment'))
+@if (auth()->user()->hasRole('HRD-Spv|HRD|HRD-Recruitment|HRD-Manager'))
 <li class="nav-item">
    <a data-toggle="collapse" href="#employee">
       <i class="fas fa-users"></i>

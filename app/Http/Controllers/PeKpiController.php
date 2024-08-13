@@ -126,12 +126,12 @@ class PeKpiController extends Controller
     public function edit($id)
     {
         // dd($id);
-
+         // dd('ok');
         $kpis = PeKpi::get();
         $kpi = PeKpi::find(dekripRambo($id));
         $datas = PekpiDetail::where('kpi_id', dekripRambo($id))->get();
 
-
+         // dd($datas->sum('weight'));
 
         $employes = Employee::where('department_id', $kpi->departement_id)
             ->where('position_id', $kpi->position_id)

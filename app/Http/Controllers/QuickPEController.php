@@ -53,14 +53,14 @@ class QuickPEController extends Controller
             $outAssesments = $this->outstandingAssessment();
 
             // 
-        } else if (auth()->user()->hasRole('HRD|HRD-Spv')) {
+        } else if (auth()->user()->hasRole('HRD|HRD-Spv|HRD-Manager')) {
          // dd('ok');
             $employee = auth()->user()->getEmployee();
             // $kpas = PeKpa::where('status', '!=', '0')
             //     ->orderBy('employe_id')
             //     ->get();
             
-               $pes = Pe::where('department_id', $employee->department_id)
+               $pes = Pe::where('status', '>', 0)
                ->orderBy('release_at', 'desc')
                ->get();
 
@@ -77,7 +77,7 @@ class QuickPEController extends Controller
             //     ->orderBy('pes.release_at', 'desc')
             //     ->get();
 
-                $pes = Pe::where('department_id', $employee->department_id)->where('pes.status', '>', '0')
+                $pes = Pe::where('pes.status', '>', '0')
                 ->orderBy('release_at', 'desc')
                 ->get();
 
@@ -672,18 +672,18 @@ class QuickPEController extends Controller
       $department = Department::find($pe->department_id);
       $positionManager = Position::where('department_id', $department->id)->where('designation_id', 6)->first();
       //   dd($positionManager->name);
-         $manager = EmployeePosition::where('position_id', $positionManager->id)->first();
+         // $manager = EmployeePosition::where('position_id', $positionManager->id)->first();
          // dd($manager->employee->biodata->fullName());
 
-      $data = [
-         'to' => $manager->employee->biodata->fullName(),
-         'from' => 'MyENC System',
-         'subject' => 'Approval QPE',
-         'body' => 'QPE '. $pe->employe->nik . ' ' . $pe->employe->biodata->fullName() . ' Semester ' . $pe->semester . ' Tahun ' . $pe->tahun,
+      // $data = [
+      //    'to' => $manager->employee->biodata->fullName(),
+      //    'from' => 'MyENC System',
+      //    'subject' => 'Approval QPE',
+      //    'body' => 'QPE '. $pe->employe->nik . ' ' . $pe->employe->biodata->fullName() . ' Semester ' . $pe->semester . ' Tahun ' . $pe->tahun,
          
-         'link' => route('qpe.approval', enkripRambo($pe->kpa->id))
-         // '/qpe/approval/' . enkripRambo($pe->kpa->id)
-      ];
+      //    'link' => route('qpe.approval', enkripRambo($pe->kpa->id))
+      //    // '/qpe/approval/' . enkripRambo($pe->kpa->id)
+      // ];
       // Mail::to("rahmattrust@adasd.comm")->send(new QpeSubmitEmail($data));
       
 

@@ -724,10 +724,12 @@ class EmployeeController extends Controller
       $employee = Employee::find($req->employee);
       $role = Role::find($req->role);
       $user = User::where('username', $employee->nik)->first();
+      
+      $user->roles()->detach();
+
       $employee->update([
          'role' => $req->role
       ]);
-      $user->roles()->detach();
       $user->assignRole($role->name);
 
       if ($employee->department->slug == 'hrd') {

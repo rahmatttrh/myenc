@@ -77,10 +77,13 @@ PE
         <div class="card shadow-none border">
             <div class="card-header d-flex bg-primary">
                 <div class="d-flex  align-items-center">
-                    <small class=" text-white">KPI </small>
+                    <small class=" text-white">KPI   {{$pe->created_by}}</small>
                 </div>
 
                 {{-- @if(($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202') && (auth()->user()->hasRole('Leader|Supervisor') ) ) --}}
+                @if (auth()->user()->hasRole('Administrator|HRD'))
+                @else
+                
                 @if(($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202') && (auth()->user()->getEmployeeId() == $pe->created_by  || auth()->user()->hasRole('Supervisor')) )
                 <div class="btn-group btn-group-page-header ml-auto">
                     <div class="button-group">
@@ -127,6 +130,7 @@ PE
                     </div>
                 </div>
                 @else
+                @endif
                 @endif
 
                 @if (auth()->user()->hasRole('Administrator|HRD'))

@@ -68,8 +68,29 @@
                            <a href="#" data-toggle="modal" class="text-white" data-target="#modal-add-position-dept-{{$depart->id}}">Add Position</a>  |
                            <a href="#" data-toggle="modal" class="text-white" data-target="#modal-add-subdept-{{$depart->id}}">Add Sub</a> |
                            <a href="#" class="text-white" data-toggle="modal" data-target="#modal-edit-department-{{$depart->id}}">Edit</a> |
-                           <a href="#" class="text-white" data-toggle="modal" data-target="#modal-delete-{{$depart->id}}">Delete</a>
-                        
+                           <a href="#" class="text-white" data-toggle="modal" data-target="#modal-delete-depart-{{$depart->id}}">Delete</a>
+                           {{-- <x-modal.delete :id="$depart->id" :body="$depart->name" url="{{route('department.delete', enkripRambo($depart->id))}}" /> --}}
+                              <div class="modal fade" id="modal-delete-depart-{{$depart->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                 <div class="modal-dialog modal-sm" role="document">
+                                    <div class="modal-content text-dark">
+                                       <div class="modal-header">
+                                          <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                             <span aria-hidden="true">&times;</span>
+                                          </button>
+                                       </div>
+                                       <div class="modal-body ">
+                                          Delete {{$depart->name}} ?
+                                       </div>
+                                       <div class="modal-footer">
+                                          <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+                                          <button type="button" class="btn btn-danger ">
+                                             <a class="text-light" href="{{route('department.delete', enkripRambo($depart->id))}}">Delete</a>
+                                          </button>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
                         </div>
                      </div>
                      <div class="card-body p-0">
@@ -175,7 +196,7 @@
                   </div>
                </div>
 
-               <x-modal.delete :id="$depart->id" :body="$depart->name" url="{{route('department.delete', enkripRambo($depart->id))}}" />
+                   
                   <x-modal.add-position-dept :id="$depart->id" :department="$depart" url="" :designations="$designations" />
                   <x-modal.add-subdept :id="$depart->id" :department="$depart" url="" />
                   <x-modal.edit-department :id="$depart->id" :department="$depart"  />

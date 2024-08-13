@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-Designation
+KPI
 @endsection
 @section('content')
 
@@ -91,7 +91,7 @@ Designation
                                     <th>Title</th>
                                     <th>Divisi</th>
                                     <th>Jabatan</th>
-                                    <th class="text-right">Action</th>
+                                    {{-- <th class="text-right">Action</th> --}}
                                 </tr>
                             </thead>
                             <tbody>
@@ -105,15 +105,15 @@ Designation
                                        {{$kpi->title}} </a></td>
                                     <td>{{$kpi->departement->name}}</td>
                                     <td>{{$kpi->position->name ?? '-'}}</td>
-                                    <td class="text-right">
-                                        {{--<a href="{{route('kpi.edit', enkripRambo($kpi->id) )}}">Edit</a>--}}
+                                    {{-- <td class="text-right">
+                                        <a href="{{route('kpi.edit', enkripRambo($kpi->id) )}}">Edit</a>
                                         @if (auth()->user()->hasRole('Leader|Supervisor'))
                                         -
                                             @else
                                             <a href="#" data-toggle="modal" data-target="#modal-delete-{{$kpi->id}}">Delete</a>
                                         @endif
                                         
-                                    </td>
+                                    </td> --}}
                                 </tr>
                                 <x-modal.delete :id="$kpi->id" :body="$kpi->title" url="{{route('kpi.delete', enkripRambo($kpi->id))}}" />
                                 @endforeach

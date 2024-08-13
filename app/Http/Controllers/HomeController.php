@@ -200,7 +200,7 @@ class HomeController extends Controller
             'logins' => $logins,
             'qpes' => $qpes
          ]);
-      } elseif (auth()->user()->hasRole('HRD')) {
+      } elseif (auth()->user()->hasRole('HRD-Manager')) {
          $user = Employee::find(auth()->user()->getEmployeeId());
          $employees = Employee::get();
          $male = Biodata::where('gender', 'Male')->count();
@@ -213,7 +213,7 @@ class HomeController extends Controller
          $logs = Log::where('department_id', $user->department_id)->orderBy('created_at', 'desc')->paginate(5);
          $teams = EmployeeLeader::where('leader_id', $user->id)->get();
          // dd($teams);
-         $pes = Pe::where('department_id', $user->department_id)->orderBy('updated_at', 'desc')->get();
+         $pes = Pe::where('status', '>', 0)->orderBy('updated_at', 'desc')->get();
          // dd($pes);
          return view('pages.dashboard.hrd', [
             'user' => $user,
@@ -352,7 +352,7 @@ class HomeController extends Controller
                 
          // dd($teams);
          $spRecents = Sp::where('by_id',auth()->user()->getEmployeeId())->orderBy('updated_at', 'desc')->paginate('5');
-         $peRecents = Pe::where('created_by', $employee->id)->orderBy('updated_at', 'desc')->paginate(5);
+         $peRecents = Pe::where('created_by', $employee->id)->orderBy('updated_at', 'desc')->paginate(10);
          if ($employee->designation->slug == 'supervisor') {
             $peRecents = Pe::where('department_id', $employee->department_id)->orderBy('updated_at', 'desc')->paginate(5);
          } else {
