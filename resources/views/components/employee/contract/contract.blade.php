@@ -214,7 +214,7 @@
                                         @else
                                         {{$empleader->leader->nik}} {{$empleader->leader->biodata->fullName()}}
                                        @endif
-                                       <a href="#"  class="text-light" data-toggle="modal" data-target="#modal-revoke-leader-{{$empleader->id}}">{{$empleader->leader->nik}} {{$empleader->leader->biodata->fullName()}}</a>
+                                       {{-- <a href="#"  class="text-light" data-toggle="modal" data-target="#modal-revoke-leader-{{$empleader->id}}">{{$empleader->leader->nik}} {{$empleader->leader->biodata->fullName()}}</a> --}}
                                           <br>
 
                                           <x-employee.contract.modal.revoke-leader :employee="$employee" :leader="$empleader" />

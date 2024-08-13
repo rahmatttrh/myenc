@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-KPI
+KPI Detail
 @endsection
 @section('content')
 
@@ -17,7 +17,7 @@ KPI
             <div class="card shadow-none border">
                 <div class="card-header d-flex">
                     <div class="d-flex  align-items-center">
-                        <div class="card-title">{{$kpi->title}}</div>
+                        {{$kpi->title}}
                     </div>
 
                 </div>
@@ -32,71 +32,71 @@ KPI
                             <label>Jabatan</label>
                             <i class="fa fa-user"></i> {{$kpi->position->name}}
                         </div>
+                        <div class="form-group form-group-default">
+                           <label>Used on QPE - {{$kpi->id}}</label>
+                           <i class="fa fa-user"></i> {{count($kpi->kpas)}}
+                       </div>
                     </form>
                 </div>
             </div>
 
+            @if ($datas->sum('weight') < 100)
+               <div class="card shadow-none border">
+                  <div class="card-header d-flex">
+                     <div class="d-flex  align-items-center">
+                        Form Create 
+                     </div>
 
-            <div class="card shadow-none border">
-                <div class="card-header d-flex">
-                    <div class="d-flex  align-items-center">
-                        <div class="card-title">Form Create</div>
-                    </div>
-
-                </div>
-                <div class="card-body">
-                    <form action="{{route('kpidetail.store')}}" method="POST">
+                  </div>
+                  <div class="card-body">
+                     <form action="{{route('kpidetail.store')}}" method="POST">
                         @csrf
                         <input type="hidden" name="kpi_id" value="{{$kpi->id}}">
                         <input type="hidden" name="metode" value="cum">
                         <div class="form-group form-group-default">
-                            <label>Objective</label>
-                            <textarea required name="objective" id="" class="form-control" rows="4"></textarea>
+                              <label>Objective</label>
+                              <textarea required name="objective" id="" class="form-control" rows="4"></textarea>
                         </div>
                         <div class="form-group form-group-default">
-                            <label>KPI</label>
-                            <textarea required name="kpi" id="" class="form-control" rows="5"></textarea>
+                              <label>KPI</label>
+                              <textarea required name="kpi" id="" class="form-control" rows="5"></textarea>
                         </div>
                         <div class="form-group form-group-default">
-                            <label>Weight</label>
-                            <input required placeholder="0-100" min="1" id="weight" name="weight" type="number" autocomplete="off" class="form-control">
+                              <label>Weight</label>
+                              <input required placeholder="0-100" min="1" id="weight" name="weight" type="number" autocomplete="off" class="form-control">
                         </div>
                         <div class="form-group form-group-default">
-                            <label>Target</label>
-                            <input required value="4" id="target" name="target" type="text" class="form-control">
+                              <label>Target</label>
+                              <input required value="4" id="target" name="target" type="text" class="form-control">
                         </div>
                         <div class="form-group form-group-default">
-                            <label>Priode Target</label>
-                            <input required placeholder="Daily/Weekly/Monthly" id="priode_target" name="priode_target" type="text" class="form-control">
+                              <label>Priode Target</label>
+                              <input required placeholder="Daily/Weekly/Monthly" id="priode_target" name="priode_target" type="text" class="form-control">
                         </div>
                         <button type="submit" class="btn btn-block btn-primary">Add</button>
 
-                    </form>
-                </div>
-                <div class="card-footer">
-                    <small>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni at neque inventore vel.</small>
-                </div>
+                     </form>
+                  </div>
+                  {{-- <div class="card-footer">
+                     <small>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni at neque inventore vel.</small>
+                  </div> --}}
             </div>
+            @endif
+            
         </div>
         <div class="col-md-9">
             <!-- Table Objective KPI -->
+            {{-- <div class="btn-group">
+               <a href="" class="btn btn-sm btn-primary">Status : Active</a>
+               <a href="" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-delete-kpi-{{$kpi->id}}">Delete</a>
+            </div>
+            <hr> --}}
             <div class="card shadow-none border">
                 <div class="card-header d-flex">
                     <div class="d-flex  align-items-center">
-                        <div class="card-title">Objective KPI</div>
+                        Objective KPI
                     </div>
-                    <div class="btn-group btn-group-page-header ml-auto">
-                        <button type="button" class="btn btn-light btn-round btn-page-header-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fa fa-ellipsis-h"></i>
-                        </button>
-                        <div class="dropdown-menu">
-
-
-                            <a class="dropdown-item" style="text-decoration: none" href="{{route('employee.create')}}">Create</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" style="text-decoration: none" href="" target="_blank">Print Preview</a>
-                        </div>
-                    </div>
+                    
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
@@ -108,7 +108,7 @@ KPI
                                     <th>KPI</th>
                                     <th>Weight</th>
                                     <th>Target</th>
-                                    <th>Priode Target</th>
+                                    <th>Priode</th>
                                     <th class="text-right">Action</th>
                                 </tr>
                             </thead>
@@ -123,7 +123,11 @@ KPI
                                     <td>{{$data->priode_target}}</td>
                                     <td class="text-right">
                                         {{--<a href="{{route('data.edit', enkripRambo($data->id) )}}">Edit</a>--}}
-                                        <a href="#" data-toggle="modal" data-target="#modal-delete-{{$data->id}}">Delete</a>
+                                        @if (count($kpi->kpas) > 0)
+                                            @else
+                                            <a href="#" data-toggle="modal" data-target="#modal-delete-{{$data->id}}">Delete</a>
+                                        @endif
+                                        
                                     </td>
                                 </tr>
                                 <x-modal.delete :id="$data->id" :body="$data->objective" url="{{route('kpi.objective.delete', enkripRambo($data->id))}}" />
@@ -342,7 +346,7 @@ KPI
                     <!-- End Table -->
                 </div>
                 <!-- Form Assign KPI -->
-                <div class="col-md-5">
+                <div class="col-md-6">
                     <div class="card shadow-none border">
                         <div class="card-header d-flex">
                             <div class="d-flex  align-items-center">
@@ -366,9 +370,9 @@ KPI
 
                             </form>
                         </div>
-                        <div class="card-footer">
+                        {{-- <div class="card-footer">
                             <small>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni at neque inventore vel.</small>
-                        </div>
+                        </div> --}}
                     </div>
 
                 </div>
@@ -376,6 +380,29 @@ KPI
 
         </div>
     </div>
+</div>
+
+
+<div class="modal fade" id="modal-delete-kpi-{{$kpi->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content text-dark">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body ">
+            Delete {{$kpi->title}} ?
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-danger ">
+               <a class="text-light" href="{{route('kpi.delete', enkripRambo($kpi->id))}}">Delete</a>
+            </button>
+         </div>
+      </div>
+   </div>
 </div>
 
 @endsection

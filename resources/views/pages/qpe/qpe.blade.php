@@ -120,7 +120,7 @@ QPE
                                     @if (count($employee->positions) > 0)
                                        @foreach ($employee->positions as $pos)
                                              
-                                          @foreach ($pos->department->pes as $pe)
+                                          @foreach ($pos->department->pes->where('status', '>', 0) as $pe)
                                              <tr>
                                                 <td class="text-center">{{++$i}} -{{$pe->kpa->id}} </td>
                                                 <td>
