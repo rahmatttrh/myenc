@@ -143,20 +143,31 @@ class EmployeeController extends Controller
             'status' => 1,
          ]);
 
+         $user = User::where('username', $employee->nik)->first();
+         if ($employee->contract->designation_id == 1) {
+            $user->assignRole('Manager');
+         } elseif ($employee->contract->designation_id == 2) {
+            $user->assignRole('Asst. Manager');
+         } elseif ($employee->contract->designation_id == 3) {
+            $user->assignRole('Supervisor');
+         } else {
+            $user->assignRole('Karyawan');
+         }
+
          // $user->assignRole('Karyawan');
 
-         // if (auth()->user()->hasRole('Administrator')) {
-         //    $departmentId = null;
-         // } else {
-         //    $user = Employee::find(auth()->user()->getEmployeeId());
-         //    $departmentId = $user->department_id;
-         // }
-         // Log::create([
-         //    'department_id' => $departmentId,
-         //    'user_id' => auth()->user()->id,
-         //    'action' => 'Publish',
-         //    'desc' => 'Employee ' . $employee->nik . ' ' . $employee->biodata->fullname()
-         // ]);
+         if (auth()->user()->hasRole('Administrator')) {
+            $departmentId = null;
+         } else {
+            $user = Employee::find(auth()->user()->getEmployeeId());
+            $departmentId = $user->department_id;
+         }
+         Log::create([
+            'department_id' => $departmentId,
+            'user_id' => auth()->user()->id,
+            'action' => 'Publish',
+            'desc' => 'Employee ' . $employee->nik . ' ' . $employee->biodata->fullname()
+         ]);
          return redirect()->back()->with('success', 'Employee successfully activated');
    }
 
