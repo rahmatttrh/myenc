@@ -266,20 +266,15 @@ Route::middleware(["auth"])->group(function () {
          Route::get('/detail/{id}' , [PayrollController::class, 'detail'])->name('payroll.detail');
          Route::put('/update', [PayrollController::class, 'update'])->name('payroll.update');
          Route::prefix('transaction')->group(function () {
+            Route::get('/index', [TransactionController::class, 'index'])->name('payroll.transaction');
             Route::get('/detail/{id}' , [TransactionController::class, 'detail'])->name('payroll.transaction.detail');
-            // Route::get('show/{id}', [QuickPEController::class, 'show'])->name('qpe.show');
-   
-            // Route::get('approval/{id}', [QuickPEController::class, 'approval'])->name('qpe.approval');
-   
-            // Route::patch('complain/{id}', [QuickPEController::class, 'complain'])->name('qpe.complain.patch');
-            // Route::patch('close-complain/{id}', [QuickPEController::class, 'closeComplain'])->name('qpe.closecomplain.patch');
+            Route::post('store', [TransactionController::class, 'store'])->name('payroll.transaction.store');
          });
-         // Route::get('show/{id}', [QuickPEController::class, 'show'])->name('qpe.show');
-
-         // Route::get('approval/{id}', [QuickPEController::class, 'approval'])->name('qpe.approval');
-
-         // Route::patch('complain/{id}', [QuickPEController::class, 'complain'])->name('qpe.complain.patch');
-         // Route::patch('close-complain/{id}', [QuickPEController::class, 'closeComplain'])->name('qpe.closecomplain.patch');
+         Route::prefix('unit')->group(function () {
+            Route::get('/index', [PayrollController::class, 'unit'])->name('payroll.unit');
+            // Route::get('/detail/{id}' , [TransactionController::class, 'detail'])->name('payroll.transaction.detail');
+            // Route::post('store', [TransactionController::class, 'store'])->name('payroll.transaction.store');
+         });
       });
 
    });

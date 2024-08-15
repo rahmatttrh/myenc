@@ -17,7 +17,7 @@ Detail Transaction Payroll Employee
    </nav>
    
    <div class="row">
-      <div class="col-md-5">
+      <div class="col-md-4">
          
          <div class="card card-light shadow-none border">
             <div class="card-header">
@@ -27,75 +27,61 @@ Detail Transaction Payroll Employee
                   <div class="item-list">
                      <div class="avatar avatar-md avatar-online">
 
-                        @if ($employee->picture)
-                        <img src="{{asset('storage/' . $employee->picture)}}" alt="..." class="avatar-img rounded-circle">
+                        @if ($transaction->employee->picture)
+                        <img src="{{asset('storage/' . $transaction->employee->picture)}}" alt="..." class="avatar-img rounded-circle">
                         @else
                         <img src="{{asset('img/user.png')}}" alt="..." class="avatar-img rounded-circle">
                         @endif
                      </div>
                      <div class="info-user ml-3">
                         <div class="username">
-                           <h3>{{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</h3>
+                           <h3>{{$transaction->employee->biodata->first_name}} {{$transaction->employee->biodata->last_name}}</h3>
                         </div>
-                        <div class="status"> {{$employee->position->name ?? '-'}} </div>
+                        <div class="status"> {{$transaction->employee->position->name ?? '-'}} </div>
                      </div>
                   </div>
                </div>
-               <small class="badge badge-white text-uppercase">{{$employee->contract->type ?? 'Kontrak/Tetap'}}</small>
-               <small class="badge badge-white text-uppercase">{{$employee->contract->unit->name ?? '-'}}</small>
+               {{-- <small class="badge badge-white text-uppercase">{{$employee->contract->type ?? 'Kontrak/Tetap'}}</small> --}}
+               <small class="badge badge-white text-uppercase">{{$transaction->employee->contract->unit->name ?? '-'}}</small>
                {{-- <small class="badge badge-white text-uppercase">{{$employee->contract->loc ?? 'Lokasi'}}</small> --}}
             </div>
+          
             <div class="card-body">
-               <div class="form-group form-group-default">
-                  <label>Gaji Pokok</label>
-                  <input type="text" class="form-control" id="first_name" name="first_name" value="">
-               </div>
-               <div class="row">
-                  <div class="col">
-                     <div class="form-group form-group-default">
-                        <label>Tunj. Jabatan</label>
-                        <input type="text" class="form-control" id="first_name" name="first_name" value="">
-                     </div>
-                     <div class="form-group form-group-default">
-                        <label>Tunj. Kinerja</label>
-                        <input type="text" class="form-control" id="first_name" name="first_name" value="">
-                     </div>
-                     <div class="form-group form-group-default">
-                        <label>Insentif</label>
-                        <input type="text" class="form-control" id="first_name" name="first_name" value="">
-                     </div>
-                  </div>
-                  <div class="col">
-                     <div class="form-group form-group-default">
-                        <label>Tunj. Ops</label>
-                        <input type="text" class="form-control" id="first_name" name="first_name" value="">
-                     </div>
-                     <div class="form-group form-group-default">
-                        <label>Tunj. Fungsional</label>
-                        <input type="text" class="form-control" id="first_name" name="first_name" value="">
-                     </div>
-                     <button class="btn btn-primary btn-block">Update</button>
-                  </div>
-               </div>
-            </div>
-            {{-- <div class="card-body">
-               <h2><b>Rp. 7.000.000</b></h2>
+               <b>{{formatRupiah($transaction->employee->payroll->total ?? 0)}}</b>
             </div>
             <div class="card-footer d-flex justify-content-between">
                <div>
-                  Gaji Pokok <br>
-                  Tunjangan Tetap <br>
-                  Tunjangan Tidak Tetap 
+                  @foreach ($transaction->details->where('type', 'basic') as $trans)
+                      {{$trans->desc}} <br>
+                  @endforeach
+                  
+                  <hr>
+                  <a href="#" data-target="#modal-update-payroll" data-toggle="modal">Update</a>
                </div>
                <div class="text-right">
-                  3.000.000 <br>
-                  2.300.000 <br>
-                  300.000 
+                  @if ($transaction->employee->payroll_id != null)
+                  {{formatRupiah($transaction->employee->payroll->pokok) ?? 0}} <br>
+                  {{formatRupiah($transaction->employee->payroll->tunj_jabatan) ?? 0}} <br>
+                  {{formatRupiah($transaction->employee->payroll->tunj_ops) ?? 0}}  <br>
+                  {{formatRupiah($transaction->employee->payroll->tunj_kinerja) ?? 0}} <br>
+                  {{formatRupiah($transaction->employee->payroll->tunj_fungsional) ?? 0}} <br>
+                  {{formatRupiah($transaction->employee->payroll->insentif) ?? 0}}
+                      @else
+                      0 <br>
+                      0 <br>
+                      0 <br>
+                      0 <br>
+                      0 <br>
+                      0 <br>
+                  @endif
+                  
                </div>
-            </div> --}}
+               
+               
+            </div> 
          </div>
       </div>
-      <div class="col-md-7">
+      <div class="col-md-8">
          
 
          <div class="tab-content" id="v-pills-tabContent">
@@ -181,124 +167,7 @@ Detail Transaction Payroll Employee
                            </table>
                         </div>
             
-                        <div class="tab-pane fade" id="pills-doc-nobd" role="tabpanel" aria-labelledby="pills-doc-tab-nobd">
-                           <form action="{{route('employee.update')}}" method="POST">
-                              @csrf
-                              @method('PUT')
-                              <input type="number" name="employee" id="employee" value="{{$employee->id}}" hidden>
-                              
-                              <div class="form-group form-group-default">
-                                 <label>Gaji Pokok</label>
-                                 <input type="text" class="form-control" id="first_name" name="first_name" value="{{$employee->biodata->first_name}}">
-                              </div>
-                              <hr>
-                              <div class="row">
-                                 <div class="col-md-6">
-                                    <div class="form-group form-group-default">
-                                       <label>Tunjangan Jabatan</label>
-                                       <input type="text" class="form-control" id="first_name" name="first_name" value="{{$employee->biodata->first_name}}">
-                                    </div>
-
-                                    <div class="form-group form-group-default">
-                                       <label>Tunjangan Operasional</label>
-                                       <input type="text" class="form-control" id="first_name" name="first_name" value="{{$employee->biodata->first_name}}">
-                                    </div>
-                                    <div class="form-group form-group-default">
-                                       <label>Tunjangan Kinerja</label>
-                                       <input type="text" class="form-control" id="first_name" name="first_name" value="{{$employee->biodata->first_name}}">
-                                    </div>
-                                    
-                                 </div>
-                                 <div class="col-md-6">
-                                    <div class="form-group form-group-default">
-                                       <label>Tunjangan Fungsional</label>
-                                       <input type="text" class="form-control" id="first_name" name="first_name" value="{{$employee->biodata->first_name}}">
-                                    </div>
-                                    <div class="form-group form-group-default">
-                                       <label>Insentif</label>
-                                       <input type="text" class="form-control" id="first_name" name="first_name" value="{{$employee->biodata->first_name}}">
-                                    </div>
-                                    
-                                 </div>
-                              </div>
-                              <hr>
-                              <div class="row">
-                                 <div class="col-md-6">
-                                    <div class="form-group form-group-default">
-                                       <label>Tunjangan kemahalan Dareah</label>
-                                       <input type="text" class="form-control" id="last_name" name="last_name" value="{{$employee->biodata->last_name}}">
-                                    </div>
-                                 </div>
-                              </div>
-                              
-                              
-            
-                              <div class="text-right mt-3 mb-3">
-                                 {{-- <button type="submit" class="btn btn-dark" {{$employee->status == 0 ? 'disabled' : ''}}>Update</button> --}}
-                                 <button type="submit" class="btn btn-dark" >Update</button>
-                              </div>
-                           </form>
-                        </div>
-            
-                        <div class="tab-pane fade " id="pills-profile-nobd" role="tabpanel" aria-labelledby="pills-profile-tab-nobd">
-                           <form action="{{route('employee.update.picture')}}" method="POST" enctype="multipart/form-data">
-                              @csrf
-                              @method('PUT')
-                              <input type="number" name="employee" id="employee" value="{{$employee->id}}" hidden>
-                              <div class="row">
-                                 <div class="col-md-6">
-                                    @if ($employee->picture)
-                                    <img src="{{asset('storage/' .$employee->picture)}}" alt="..." class="img-thumbnail">
-                                    @else
-                                    <img src="{{asset('img/user.png')}}" alt="..." class="img-thumbnail">
-                                    @endif
-            
-            
-                                 </div>
-                                 <div class="col-md-6">
-                                    <div class="form-group form-group-default">
-                                       <label>Select</label>
-                                       <input type="file" class="form-control" name="picture" id="picture">
-                                    </div>
-                                 </div>
-                              </div>
-                              <hr>
-                              {{-- @if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment')) --}}
-                              <button type="submit" class="btn btn-dark" >Update</button>
-                              {{-- @endif --}}
-                           </form>
-                        </div>
-                        <div class="tab-pane fade" id="pills-bio-nobd" role="tabpanel" aria-labelledby="pills-bio-tab-nobd">
-                           <form action="{{route('employee.update.bio')}}" method="POST">
-                              @csrf
-                              @method('PUT')
-                              <input type="number" name="employee" id="employee" value="{{$employee->id}}" hidden>
-                              <div class="form-group form-group-default">  
-                                 <label>Bio *</label>
-                                 <textarea type="text" class="form-control" id="bio" name="bio">{{$employee->bio}}</textarea>
-                                 @error('bio')
-                                    <small class="text-danger"><i>{{ $message }}</i></small>
-                                 @enderror
-                              </div>
-                              <div class="form-group form-group-default">  
-                                 <label>Experience</label>
-                                 <select class="form-control" id="experience" name="experience">
-                                    <option value="" disabled selected>Choose one</option>
-                                    <option  {{$employee->experience == 'Startup' ? 'selected' : ''}} value="Startup">Startup</option>
-                                    <option {{$employee->experience == 'Intermediate' ? 'selected' : ''}} value="Intermediate">Intermediate</option>
-                                    <option {{$employee->experience == 'Expert' ? 'selected' : ''}} value="Expert">Expert</option>
-                                 </select>
-                                 @error('experience')
-                                    <small class="text-danger"><i>{{ $message }}</i></small>
-                                 @enderror
-                              </div>
-                              {{-- @if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment')) --}}
-                              <div class="text-right mt-3 mb-3">
-                                 <button type="submit" class="btn btn-dark" >Update Bio</button>
-                              </div>
-                              {{-- @endif --}}
-                           </form>
-                        </div>
+                        
             
                      </div>
             
@@ -311,116 +180,4 @@ Detail Transaction Payroll Employee
    </div>
 </div>
 
-<div class="modal fade" id="modal-deactivate-employee" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-   <div class="modal-dialog" role="document">
-      <div class="modal-content">
-         <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Deactivate Employee</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
-         </div>
-         <form action="{{route('deactivate')}}" method="POST">
-            <div class="modal-body">
-               @csrf
-               <input type="number" name="employee" id="employee" value="{{$employee->id}}" hidden>
-               <div class="row">
-                  
-                  <div class="col-md-8">
-                     <div class="form-group form-group-default">
-                        <label>Reason</label>
-                        <input type="text" class="form-control" name="reason" id="reason"  required>
-                        @error('reason')
-                           <small class="text-danger"><i>{{ $message }}</i></small>
-                        @enderror
-                     </div>
-                  </div>
-                  <div class="col-md-4">
-                     <div class="form-group form-group-default">
-                        <label>Date</label>
-                        <input type="date" class="form-control"  name="date" name="date"  required>
-                        @error('date')
-                           <small class="text-danger"><i>{{ $message }}</i></small>
-                        @enderror
-                     </div>
-                  </div>
-               </div>
-            </div>
-            <div class="modal-footer">
-               <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
-               <button type="submit" class="btn btn-dark ">Update</button>
-            </div>
-         </form>
-      </div>
-   </div>
-</div>
-
-<div class="modal fade" id="modal-activate-employee" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-   <div class="modal-dialog" role="document">
-      <div class="modal-content">
-         <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Deactivate Employee</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
-         </div>
-         <form action="{{route('activate')}}" method="POST">
-            <div class="modal-body">
-               @csrf
-               <input type="number" name="employee" id="employee" value="{{$employee->id}}" hidden>
-               {{-- <div class="row"> --}}
-                  <small>Activate {{$employee->nik}} {{$employee->biodata->fullName()}}</small>
-                  {{-- <div class="col-md-8">
-                     <div class="form-group form-group-default">
-                        <label>Reason</label>
-                        <input type="text" class="form-control" name="reason" id="reason"  required>
-                        @error('reason')
-                           <small class="text-danger"><i>{{ $message }}</i></small>
-                        @enderror
-                     </div>
-                  </div>
-                  <div class="col-md-4">
-                     <div class="form-group form-group-default">
-                        <label>Date</label>
-                        <input type="date" class="form-control"  name="date" name="date"  required>
-                        @error('date')
-                           <small class="text-danger"><i>{{ $message }}</i></small>
-                        @enderror
-                     </div>
-                  </div> --}}
-               {{-- </div> --}}
-            </div>
-            <div class="modal-footer">
-               <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
-               <button type="submit" class="btn btn-primary ">Acitvate</button>
-            </div>
-         </form>
-      </div>
-   </div>
-</div>
-
-<div class="modal fade" id="modal-publish-employee" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-   <div class="modal-dialog modal-sm" role="document">
-      <div class="modal-content">
-         <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Publish Employee</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
-         </div>
-         <div class="modal-body">
-            Ubah status menjadi Karyawan Aktif?
-            <hr>
-            <small>- Sistem akan otomatis membuat akun</small><br>
-            <small>- Username : NIK</small><br>
-            <small>- Password : 12345678</small><br>
-         </div>
-         <div class="modal-footer">
-            <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
-            {{-- <button type="submit" class="btn btn-dark ">Update</button> --}}
-            <a href="{{route('employee.publish.single', enkripRambo($employee->id))}}" class="btn btn-primary ">Publish</a>
-         </div>
-      </div>
-   </div>
-</div>
 @endsection

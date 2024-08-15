@@ -119,7 +119,7 @@ QPE
                                              
                                           @foreach ($pos->department->pes->where('status', '>', 0) as $pe)
                                              <tr>
-                                                <td class="text-center">{{++$i}} -{{$pe->kpa->id}} </td>
+                                                <td class="text-center">{{++$i}} </td>
                                                 <td>
                                                    @if($pe->status == '0' || $pe->status == '101')
                                                    <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
