@@ -21,6 +21,7 @@ use App\Http\Controllers\LogController;
 use App\Http\Controllers\MutationController;
 use App\Http\Controllers\OvertimeController;
 use App\Http\Controllers\PasswordController;
+use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\PeComponentController;
 use App\Http\Controllers\PeDisciplineController;
 use App\Http\Controllers\PeKpaController;
@@ -36,6 +37,7 @@ use App\Http\Controllers\SpApprovalController;
 use App\Http\Controllers\SpController;
 use App\Http\Controllers\SpklController;
 use App\Http\Controllers\SubDeptController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\FuncController;
@@ -43,6 +45,7 @@ use App\Models\Emergency;
 use App\Models\EmployeeLeader;
 use App\Models\SpApproval;
 use Illuminate\Support\Facades\Route;
+use PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer\SpgrContainer\SpContainer;
 
 /*
 |--------------------------------------------------------------------------
@@ -258,6 +261,27 @@ Route::middleware(["auth"])->group(function () {
       Route::get('/log', [LogController::class, 'index'])->name('log');
       Route::get('/log/auth', [LogController::class, 'auth'])->name('log.auth');
 
+      Route::prefix('payroll')->group(function () {
+         Route::get('/index', [PayrollController::class, 'index'])->name('payroll');
+         Route::get('/detail/{id}' , [PayrollController::class, 'detail'])->name('payroll.detail');
+         Route::put('/update', [PayrollController::class, 'update'])->name('payroll.update');
+         Route::prefix('transaction')->group(function () {
+            Route::get('/detail/{id}' , [TransactionController::class, 'detail'])->name('payroll.transaction.detail');
+            // Route::get('show/{id}', [QuickPEController::class, 'show'])->name('qpe.show');
+   
+            // Route::get('approval/{id}', [QuickPEController::class, 'approval'])->name('qpe.approval');
+   
+            // Route::patch('complain/{id}', [QuickPEController::class, 'complain'])->name('qpe.complain.patch');
+            // Route::patch('close-complain/{id}', [QuickPEController::class, 'closeComplain'])->name('qpe.closecomplain.patch');
+         });
+         // Route::get('show/{id}', [QuickPEController::class, 'show'])->name('qpe.show');
+
+         // Route::get('approval/{id}', [QuickPEController::class, 'approval'])->name('qpe.approval');
+
+         // Route::patch('complain/{id}', [QuickPEController::class, 'complain'])->name('qpe.complain.patch');
+         // Route::patch('close-complain/{id}', [QuickPEController::class, 'closeComplain'])->name('qpe.closecomplain.patch');
+      });
+
    });
 
 
@@ -325,6 +349,12 @@ Route::middleware(["auth"])->group(function () {
       Route::put('/approved/{id}', [SpApprovalController::class, 'approved'])->name('sp.approved');
 
       Route::patch('/reject/{id}', [SpApprovalController::class, 'reject'])->name('sp.reject');
+
+      Route::prefix('hrd')->group(function () {
+         Route::post('/store', [SpController::class, 'hrdStore'])->name('sp.hrd.store');
+         // Route::get('/approve/supervisor/{id}', [SpklController::class, 'approveSupervisor'])->name('spkl.approve.supervisor');
+         // Route::get('/approve/manager/{id}', [SpklController::class, 'approveManager'])->name('spkl.approve.manager');
+      });
    });
 
    // Role Campuran  

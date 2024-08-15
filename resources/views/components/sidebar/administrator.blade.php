@@ -111,7 +111,7 @@
 </li>
 
 {{-- Employee --}}
-<li class="nav-item">
+<li class="nav-item {{ (request()->is('employee/*')) ? 'active' : '' }}">
    <a data-toggle="collapse" href="#employee">
       <i class="fas fa-users"></i>
       <p>Employee</p>
@@ -156,3 +156,34 @@
       <p>SP</p>
    </a>
 </li>
+
+<li class="nav-item {{ (request()->is('payroll/*')) ? 'active' : '' }}">
+   <a data-toggle="collapse" href="#payroll">
+      <i class="fas fa-money-bill"></i>
+      <p>Payroll</p>
+      <span class="caret"></span>
+   </a>
+   <div class="collapse" id="payroll">
+      <ul class="nav nav-collapse">
+         <li>
+            <a href="{{route('payroll')}}">
+               <span class="sub-item">Employee</span>
+            </a>
+         </li>
+         <li>
+            <a href="{{route('employee.nonactive')}}">
+               <span class="sub-item">Transaction</span>
+            </a>
+         </li>
+         
+
+      </ul>
+   </div>
+</li>
+
+{{-- <li class="nav-item {{ (request()->is('payroll/*')) ? 'active' : '' }}">
+   <a href="{{route('payroll')}}">
+      <i class="fas fa-money-bill"></i>
+      <p>Payroll</p>
+   </a>
+</li> --}}

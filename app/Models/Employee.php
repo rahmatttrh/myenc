@@ -168,4 +168,9 @@ class Employee extends Model
    }
 
 
+   public function payroll(){
+      return $this->belongsTo(Payroll::class);
+   }
+
+
 }

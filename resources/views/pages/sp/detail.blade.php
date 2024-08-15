@@ -106,6 +106,14 @@ SP Detail
                   {{-- <x-sp.modal.hrd-reject :sp="$sp" /> --}}
                @endif
 
+               @if(auth()->user()->hasRole('HRD|HRD-Manager|HRD-Spv'))
+               <a href="#" class="btn btn-danger " data-toggle="modal" data-target="#modal-sp-delete">
+                  <i class="fa fa-trash"></i> Delete
+               </a>
+
+               <x-sp.modal.delete :sp="$sp" />
+               @endif
+
                @if (auth()->user()->hasRole('Manager'))
                   @if($sp->status == '3' ||  $sp->status == '101')
                      <button class="btn btn-md btn-primary" data-toggle="modal" data-target="#modal-app-manager-{{$sp->id}}"><i class="fas fa-check"></i> Approve </button>
@@ -224,7 +232,7 @@ SP Detail
                                  
                                     <input type="hidden" name="id" value="{{$sp->id}}">
                                     <div class="form-group form-group-default">
-                                       <label>Employee </label>
+                                       <label>Employee</label>
                                        <input type="text" readonly class="form-control" name="date_from" required id="date_from" value="{{$sp->employee->biodata->fullName()}}">
                                     </div>
                                     <div class="row">

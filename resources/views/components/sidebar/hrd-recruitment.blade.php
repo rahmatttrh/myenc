@@ -27,9 +27,28 @@
                <span class="sub-item">Jabatan</span>
             </a>
          </li> --}}
-         <li>
+         {{-- <li>
             <a href="{{route('so')}}">
                <span class="sub-item">Struktur Organisasi</span>
+            </a>
+         </li> --}}
+      </ul>
+   </div>
+</li>
+
+{{-- Performance --}}
+<li class="nav-item">
+   <a data-toggle="collapse" href="#kpi">
+      <i class="fas fa-file-contract"></i>
+      <p>Performance</p>
+      <span class="caret"></span>
+   </a>
+   <div class="collapse" id="kpi">
+      <ul class="nav nav-collapse">
+         
+         <li>
+            <a href="{{route('discipline')}}">
+               <span class="sub-item">Discipline</span>
             </a>
          </li>
       </ul>
@@ -73,6 +92,7 @@
       </ul>
    </div>
 </li>
+<hr>
 
 
 {{-- <li class="nav-section">
