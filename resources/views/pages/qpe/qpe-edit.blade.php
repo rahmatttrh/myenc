@@ -77,14 +77,14 @@ PE
         <div class="card shadow-none border">
             <div class="card-header d-flex bg-primary">
                 <div class="d-flex  align-items-center">
-                    <small class=" text-white">KPI   {{$pe->created_by}}</small>
+                    <small class=" text-white">KPI </small>
                 </div>
 
                 {{-- @if(($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202') && (auth()->user()->hasRole('Leader|Supervisor') ) ) --}}
                 @if (auth()->user()->hasRole('Administrator|HRD'))
                 @else
                 
-                @if(($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202') && (auth()->user()->getEmployeeId() == $pe->created_by  || auth()->user()->hasRole('Supervisor')) )
+                @if(($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202') && (auth()->user()->getEmployeeId() == $pe->created_by  || auth()->user()->hasRole('Supervisor|Manager|Asst. Manager')) )
                 <div class="btn-group btn-group-page-header ml-auto">
                     <div class="button-group">
                         @if(isset($pd) && $pd->pdds->count() == 6)
@@ -167,7 +167,7 @@ PE
                     <table id="tableCreate" class="displays table-sm">
                         <thead>
                             <tr>
-                                <th>No</th>
+                                <th class="text-center">No</th>
                                 <th>Objective</th>
                                 <th>Weight</th>
                                 <th>Target</th>
@@ -189,11 +189,11 @@ PE
                             $urlPdf = Storage::url($data->evidence) ;
                             @endphp
                             <tr>
-                                <td>{{++$i}}</td>
+                                <td class="text-center">{{++$i}}</td>
                                 <td><a href="#" data-target="#myModal-{{$data->id}}" data-toggle="modal"> {{$data->kpidetail->objective}} </a></td>
-                                <td> {{$data->kpidetail->weight}}</td>
-                                <td> {{$data->kpidetail->target}}</td>
-                                <td> {{$data->value}}</td>
+                                <td class="text-center"> {{$data->kpidetail->weight}}</td>
+                                <td class="text-center"> {{$data->kpidetail->target}}</td>
+                                <td class="text-center"> {{$data->value}}</td>
                                 <td class="text-right"> <b>{{$data->achievement}}</b></td>
                                 @if($kpa->status == '2' || $kpa->status == '202')
                                 <td>
@@ -362,9 +362,9 @@ PE
                             <tr>
                                 <td>Addtional </td>
                                 <td><b><a href="#" data-target="#modalEditAddtional" data-toggle="modal">{{$addtional->addtional_objective}}</a></b></td>
-                                <td>{{$addtional->addtional_weight}}</td>
-                                <td>{{$addtional->addtional_target}}</td>
-                                <td>{{$addtional->value}}</td>
+                                <td class="text-center">{{$addtional->addtional_weight}}</td>
+                                <td class="text-center">{{$addtional->addtional_target}}</td>
+                                <td class="text-center">{{$addtional->value}}</td>
                                 <td class="text-right"><b>{{$addtional->achievement}}</b></td>
                                 @if($kpa->status == '2' || $kpa->status == '202')
                                 <td>
@@ -559,7 +559,7 @@ PE
                      <table class="displays table-sm ">
                          <thead>
                              <tr>
-                                 <th>No</th>
+                                 <th class="text-center">No</th>
                                  <th>Objective</th>
                                  <th>Description</th>
                                  <th>Bobot</th>
@@ -571,10 +571,10 @@ PE
                              @if($pba == null)
                              @foreach($behaviors as $key => $behavior)
                              <tr>
-                                 <td>{{ ++$key }}</td>
+                                 <td class="text-center">{{ ++$key }}</td>
                                  <td>{{ $behavior->objective }}</td>
                                  <td>{{ $behavior->description }}</td>
-                                 <td>{{ $behavior->bobot }}</td>
+                                 <td class="text-center">{{ $behavior->bobot }}</td>
                                  <td>
                                      <input style="width: 80px" type="text" name="valBehavior[{{ $behavior->id }}]" value="0" min="0.01" max="4" step="0.01">
                                      <br><span><small>*Max 4</small></span>
@@ -911,9 +911,9 @@ $pbaAchievement = 0;
             <div class="card-header bg-primary">
                 <div class="card-title text-white text-center">RANGKUMAN HASIL PENILAIAN AKHIR </div>
             </div>
-            <div class="card-body">
+            <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table class="displays table table-striped ">
+                    <table class=" table  table-sm">
                         <thead>
                             <tr>
                                 <th rowspan="2" colspan="2" class="text-white text-center">Indikator</th>
@@ -927,7 +927,7 @@ $pbaAchievement = 0;
                         <tbody>
                             <tr>
                                 <td>1</td>
-                                <td class="text-center">DISIPLIN</td>
+                                <td class="">DISIPLIN</td>
                                 <td class="text-center">3</td>
                                 <td class="text-center">15</td>
                                 <td class="text-center"><b>{{round(($pdAchievement/15)*100)}}</b></td>
@@ -936,7 +936,7 @@ $pbaAchievement = 0;
                             </tr>
                             <tr>
                                 <td>2</td>
-                                <td class="text-center">KPI</td>
+                                <td class="">KPI</td>
                                 <td class="text-center">{{$datas->count()}}</td>
                                 <td class="text-center">{{$kpa->weight}}</td>
                                 <td class="text-center text-bold"><b>{{$kpa->achievement }}</b></td>
@@ -945,7 +945,7 @@ $pbaAchievement = 0;
                             </tr>
                             <tr>
                                 <td>3</td>
-                                <td class="text-center">BEHAVIOR</td>
+                                <td class="">BEHAVIOR</td>
                                 @if(isset($pba))
                                 <td class="text-center">{{$behaviors->count()}}</td>
                                 <td class="text-center">{{$pba->weight}}</td>
@@ -979,7 +979,7 @@ $pbaAchievement = 0;
                     </table>
                 </div>
                 <div class="table-responsive mt-3">
-                    <table class="displays table table-striped ">
+                    <table class=" table table-striped table-sm">
                         <tr>
                             <td colspan="2">Note : </td>
                             <td colspan="2">Pengurang</td>

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Payroll;
+use App\Models\Unit;
 use Illuminate\Http\Request;
 
 class PayrollController extends Controller
@@ -56,5 +58,15 @@ class PayrollController extends Controller
       }
 
       return redirect()->back()->with('success', 'Payroll successfully updated');
+   }
+
+
+   public function unit(){
+      $units = Unit::get();
+      $firstUnit = Unit::get()->first();
+      return view('pages.payroll.unit.index', [
+         'units' => $units,
+         'firstUnit' => $firstUnit
+      ])->with('i');
    }
 }

@@ -802,6 +802,9 @@ class EmployeeController extends Controller
       $biodata = Biodata::find($employee->biodata_id);
       // dd($biodata->id);
 
+      $nik = $employee->nik;
+      $name = $employee->biodata->fullName();
+
       if ($contract) {
          $contract->delete();
       }
@@ -815,6 +818,19 @@ class EmployeeController extends Controller
       }
 
       $employee->delete();
+
+      if (auth()->user()->hasRole('Administrator')) {
+         $departmentId = null;
+      } else {
+         $user = Employee::find(auth()->user()->getEmployeeId());
+         $departmentId = $user->department_id;
+      }
+      Log::create([
+         'department_id' => $departmentId,
+         'user_id' => auth()->user()->id,
+         'action' => 'Delete',
+         'desc' => 'Employee ' . $nik . ' ' . $name
+      ]);
       return redirect()->back()->with('success', 'Employee successfully deleted');
    }
 }

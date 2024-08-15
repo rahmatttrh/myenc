@@ -166,15 +166,21 @@
    <div class="collapse" id="payroll">
       <ul class="nav nav-collapse">
          <li>
+            <a href="{{route('payroll.transaction')}}">
+               <span class="sub-item">Transaction</span>
+            </a>
+         </li>
+         <li>
             <a href="{{route('payroll')}}">
                <span class="sub-item">Employee</span>
             </a>
          </li>
          <li>
-            <a href="{{route('employee.nonactive')}}">
-               <span class="sub-item">Transaction</span>
+            <a href="{{route('payroll.unit')}}">
+               <span class="sub-item">Bisnis Unit</span>
             </a>
          </li>
+         
          
 
       </ul>
