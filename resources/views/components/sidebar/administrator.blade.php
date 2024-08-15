@@ -157,7 +157,7 @@
    </a>
 </li>
 
-<li class="nav-item {{ (request()->is('payroll/*')) ? 'active' : '' }}">
+{{-- <li class="nav-item {{ (request()->is('payroll/*')) ? 'active' : '' }}">
    <a data-toggle="collapse" href="#payroll">
       <i class="fas fa-money-bill"></i>
       <p>Payroll</p>
@@ -179,7 +179,7 @@
 
       </ul>
    </div>
-</li>
+</li> --}}
 
 {{-- <li class="nav-item {{ (request()->is('payroll/*')) ? 'active' : '' }}">
    <a href="{{route('payroll')}}">
