@@ -45,7 +45,7 @@
    </a>
    <div class="collapse" id="kpi">
       <ul class="nav nav-collapse">
-         @if (auth()->user()->hasRole('Administrator|HRD'))
+         @if (auth()->user()->hasRole('Administrator|HRD|HRD-Manager'))
          <li>
             <a href="{{route('pe.component')}}">
                <span class="sub-item">Component</span>
