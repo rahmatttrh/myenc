@@ -14,56 +14,53 @@ SP
 
    <div class="row">
       @if (auth()->user()->hasRole('Administrator'))
-         @elseif(auth()->user()->hasRole('HRD-Manager'))
+         @elseif(auth()->user()->hasRole('HRD|HRD-Manager'))
          <div class="col-md-4">
-            <h4>Form Pengajuan SP dari HRD</h4>
+            <h4>Penerbitan SP dari HRD</h4>
             <hr>
-            <form action="{{route('sp.store')}}" method="POST" enctype="multipart/form-data">
+            <form action="{{route('sp.hrd.store')}}" method="POST" enctype="multipart/form-data">
                @csrf
-               {{-- <div class="form-group form-group-default">
-                  <label>Type</label>
-                  <select class="form-control" required id="level" name="level">
-                     <option value="" selected disabled>Choose one</option>
-                     <option value="Excisting">Excisting</option>
-                     <option value="New">New</option>
-                  </select>
-
-               </div> --}}
                <div class="row">
-                  <div class="col-md-8">
+                  {{-- <div class="col">
+                     <div class="form-group form-group-default">
+                        <label>Type</label>
+                        <select class="form-control" required id="level" name="level">
+                           <option value="" selected disabled>Choose one</option>
+                           <option value="Existing">Existing</option>
+                           <option value="New">New</option>
+                        </select>
+      
+                     </div>
+                  </div> --}}
+                  <div class="col">
                      <div class="form-group form-group-default">
                         <label>Employee*</label>
                         <select class="form-control employee" required id="employee" name="employee">
                            <option value="" selected disabled>Select Employee</option>
-                           @if (auth()->user()->hasRole('Manager|Asst. Manager|HRD'))
-                              @foreach ($employee->positions as $pos)
-                                 @foreach ($pos->department->employees as $emp)
+                           @foreach ($allEmployees as $emp)
                                  <option value="{{$emp->id}}">{{$emp->nik}} {{$emp->biodata->fullName()}} </option>
-                                 @endforeach
-                              @endforeach
-                                 {{-- @foreach ($employees as $emp)
-                                 <option value="{{$emp->id}}">{{$emp->nik}} {{$emp->biodata->fullName()}} </option>
-                                 @endforeach --}}
-                              @elseif(auth()->user()->hasRole('HRD') || auth()->user()->hasRole('HRD-Spv'))
-                                 @foreach ($allEmployees as $emp)
-                                    <option value="{{$emp->id}}">{{$emp->nik}} {{$emp->biodata->fullName()}} </option>
-                                 @endforeach
-                              @else 
-                                 @foreach ($employees as $emp)
-                                    <option value="{{$emp->employee->id}}">{{$emp->employee->nik}} {{$emp->employee->biodata->fullName()}} </option>
-                                 @endforeach
-                           @endif
+                           @endforeach
                            
                         </select>
                         
          
                      </div>
+                     
                   </div>
-                  <div class="col-md-4">
+               </div>
+               
+               <div class="row">
+                  <div class="col-md-6">
+                     <div class="form-group form-group-default">
+                        <label>Date</label>
+                        <input type="date" required class="form-control" name="date_from" id="date_from">
+                     </div>
+                  </div>
+                  <div class="col-md-6">
                      <div class="form-group form-group-default">
                         <label>Level*</label>
                         <select class="form-control" required id="level" name="level">
-                           <option value="" selected disabled>Select level</option>
+                           {{-- <option value="" selected disabled>Select level</option> --}}
                            <option value="I">SP I</option>
                            <option value="II">SP II</option>
                            <option value="III">SP III</option>
@@ -79,11 +76,16 @@ SP
                   <label>Alasan*</label>
                   <input type="text" required class="form-control" name="reason" id="reason">
                </div>
-
                <div class="form-group form-group-default">
-                  <label>Kronologi*</label>
-                  <textarea class="form-control" required name="desc" id="desc" rows="4"></textarea>
+                  <label>Peraturan yang dilanggar*</label>
+                  <input type="text" required class="form-control" name="rule" id="rule">
                </div>
+
+               {{-- <div class="form-group form-group-default">
+                  <label>Kronologi</label>
+                  <textarea class="form-control"  name="desc" id="desc" rows="4"></textarea>
+               </div> --}}
+               
                <div class="form-group form-group-default">
                   <label>File attachment</label>
                   <input type="file" class="form-control" name="file" id="file">
@@ -91,7 +93,10 @@ SP
                <hr>
                <button type="submit" class="btn btn-block btn-primary">Submit</button>
             </form>
+            <hr>
+            <small>* SP akan otomatis aktif ketika klik Submit</small>
          </div>
+
          @else
          <div class="col-md-4">
             <h4>Form Pengajuan SP</h4>
@@ -166,8 +171,13 @@ SP
 
       @if (auth()->user()->hasRole('Administrator'))
       <div class="col-md-12">
+         {{-- <div class="card shadow-none border">
+            <div class="card-body">
+
+            </div>
+         </div> --}}
          @else
-      <div class="col-md-8">
+         <div class="col-md-8">
       @endif
          <div class=" sp px-3">
             <table>

@@ -460,8 +460,11 @@ class QuickPEController extends Controller
         } else {
             $pbads = null;
         }
-
+         //   dd('oke');
         $pe = Pe::find($kpa->pe_id);
+        $this->calculateAcvKpa($kpa->id);
+         // Menghitung ulang pencapaian PE
+         $this->calculatePe($pe->id);
 
         $pd = PeDiscipline::where('pe_id', $kpa->pe_id)->first();
 
@@ -551,6 +554,10 @@ class QuickPEController extends Controller
         }
 
         $pe = Pe::find($kpa->pe_id);
+        $this->calculateAcvKpa($kpa->id);
+         // Menghitung ulang pencapaian PE
+         $this->calculatePe($pe->id);
+        
 
         $pd = PeDiscipline::where('pe_id', $kpa->pe_id)->first();
 
@@ -705,12 +712,12 @@ class QuickPEController extends Controller
          'status' => '1'
       ]);
 
-   //   if (auth()->user()->hasRole('Administrator')) {
-   //    $departmentId = null;
-   // } else {
-   //    $user = Employee::find(auth()->user()->getEmployeeId());
-   //    $departmentId = $user->department_id;
-   // }
+      //   if (auth()->user()->hasRole('Administrator')) {
+      //    $departmentId = null;
+      // } else {
+      //    $user = Employee::find(auth()->user()->getEmployeeId());
+      //    $departmentId = $user->department_id;
+      // }
       $user = Employee::find(auth()->user()->getEmployeeId());
       Log::create([
          'department_id' => $user->department_id,
@@ -1033,6 +1040,7 @@ class QuickPEController extends Controller
         }
 
         $pe = Pe::find($kpa->pe_id);
+        $this->updatePengurang($pe);
 
         $pd = PeDiscipline::where('pe_id', $kpa->pe_id)->first();
 
@@ -1267,7 +1275,7 @@ class QuickPEController extends Controller
         $sp = Sp::where('employee_id', $pe->employe_id)
             ->where('tahun', $pe->tahun)
             ->where('semester', $pe->semester)
-            ->where('status', '2')
+            ->where('status', '>=', 4)
             ->get();
 
         // Update PE
@@ -1277,7 +1285,7 @@ class QuickPEController extends Controller
             Sp::where('employee_id', $pe->employe_id)
                 ->where('tahun', $pe->tahun)
                 ->where('semester', $pe->semester)
-                ->where('status', '2')
+                ->where('status', '>=', 4)
                 ->update([
                     'pe_id' => $pe->id
                 ]);

@@ -22,11 +22,11 @@ QPE
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('kpa.summary')}}">Summary</a>
                         </li>
-                        @if (auth()->user()->hasRole('Administrator|HRD'))
+                        {{-- @if (auth()->user()->hasRole('Administrator'))
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('kpa.monitoring')}}">Monitoring</a>
                         </li>
-                        @endif
+                        @endif --}}
 
                     </ul>
                 </div>
