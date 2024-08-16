@@ -55,8 +55,6 @@ Detail Transaction Payroll Employee
                       {{$trans->desc}} <br>
                   @endforeach
                   
-                  <hr>
-                  <a href="#" data-target="#modal-update-payroll" data-toggle="modal">Update</a>
                </div>
                <div class="text-right">
                   @if ($transaction->employee->payroll_id != null)
@@ -98,68 +96,38 @@ Detail Transaction Payroll Employee
                   <div class="card-body">
                      <div class="tab-content mt-2 mb-3" id="pills-without-border-tabContent">
                         <div class="tab-pane fade show active" id="pills-basic-nobd" role="tabpanel" aria-labelledby="pills-basic-tab-nobd">
-                           <a href=""  class="btn btn-primary btn-sm mb-2">Submit</a>
+                           <a href=""  class="btn btn-primary btn-sm">Submit</a>
+                           <hr>
                            <div class="row">
                               <div class="col-3">
-                                 <span><b>Final</b></span> <br>
-                                 <span>Gaji Pokok</span> <br>
+                                 <span><b>Pendapatan</b></span> <br>
+                                 <span>Gaji</span> <br>
                                  <span>Lembur/Piket</span> <br>
                                  <span>Pengurangan</span>
                               </div>
                               <div class="col-md-9">
-                                 <span>: <b>6.500.000</b></span> <br>
-                                 <span>: 4.300.000</span> <br>
-                                 <span>: 300.000</span> <br>
-                                 <span>: 100.000</span> <br>
+                                 <span>: <b>{{formatRupiah($transaction->total)}}</b></span> <br>
+                                 <span>: {{formatRupiah($payroll->total)}}</span> <br>
+                                 <span>: </span> <br>
+                                 <span>: {{formatRupiah($transaction->reductions->where('type', 'employee')->sum('value'))}}</span> <br>
                               </div>
                            </div>
                            <hr>
-                           <table class=" ">
-                              <thead>
-                                 <tr>
-                                    <th colspan="6">Penambah</th>
-                                 </tr>
-                              </thead>
-                              <tbody>
-                                 <tr>
-                                    <td class="">Lembur</td>
-                                    <td>Upah/173</td>
-                                    <td>Aktual</td>
-                                    <td>8 Jam</td>
-                                    <td>120.000</td>
-                                    <td><a href="">Delete</a></td>
-                                 </tr>
-                                 <tr>
-                                    <td class="">Lembur</td>
-                                    <td>Upah/173</td>
-                                    <td>Aktual</td>
-                                    <td>4 Jam</td>
-                                    <td>60.000</td>
-                                    <td><a href="">Delete</a></td>
-                                 </tr>
-                                 
-                                 
-                                 
-                              </tbody>
-                           </table>
+                           
 
                            <table class="mt-2">
                               <thead>
                                  <tr>
-                                    <th colspan="3">Potongan</th>
+                                    <th colspan="3">Reduction</th>
                                  </tr>
                               </thead>
                               <tbody>
-                                 <tr>
-                                    <td class="">Kehadiran</td>
-                                    <td>50.000</td>
-                                    <td><a href="">Delete</a></td>
-                                 </tr>
-                                 <tr>
-                                    <td class="">Keterlambatan</td>
-                                    <td>120.000</td>
-                                    <td><a href="">Delete</a></td>
-                                 </tr>
+                                 @foreach ($transaction->reductions->where('type', 'employee') as $red)
+                                     <tr>
+                                       <td>{{$red->name}}</td>
+                                       <td>{{$red->value}}</td>
+                                     </tr>
+                                 @endforeach
                                  
                                  
                                  

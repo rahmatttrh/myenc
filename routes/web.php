@@ -30,6 +30,7 @@ use App\Http\Controllers\PekpiDetailController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\PresenceController;
 use App\Http\Controllers\QuickPEController;
+use App\Http\Controllers\ReductionController;
 use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\SocialAccountController;
 use App\Http\Controllers\SoController;
@@ -43,6 +44,7 @@ use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\FuncController;
 use App\Models\Emergency;
 use App\Models\EmployeeLeader;
+use App\Models\Reduction;
 use App\Models\SpApproval;
 use Illuminate\Support\Facades\Route;
 use PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer\SpgrContainer\SpContainer;
@@ -275,6 +277,12 @@ Route::middleware(["auth"])->group(function () {
             // Route::get('/detail/{id}' , [TransactionController::class, 'detail'])->name('payroll.transaction.detail');
             // Route::post('store', [TransactionController::class, 'store'])->name('payroll.transaction.store');
          });
+      });
+
+      Route::prefix('reduction')->group(function () {
+         // Route::get('/index', [PayrollController::class, 'unit'])->name('payroll.unit');
+         // Route::get('/detail/{id}' , [TransactionController::class, 'detail'])->name('payroll.transaction.detail');
+         Route::post('store', [ReductionController::class, 'store'])->name('reduction.store');
       });
 
    });
