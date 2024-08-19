@@ -36,4 +36,8 @@ class Unit extends Model
         }
         return $totalSubDept;
     }
+
+   public function unitTransactions(){
+      return $this->hasMany(UnitTransaction::class);
+   }
 }

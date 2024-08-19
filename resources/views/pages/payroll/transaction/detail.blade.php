@@ -10,7 +10,7 @@ Detail Transaction Payroll Employee
    <nav aria-label="breadcrumb ">
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
-         <li class="breadcrumb-item" aria-current="page"><a href="{{route('payroll')}}">Payroll</a></li>
+         <li class="breadcrumb-item" aria-current="page">Payroll</li>
          
          <li class="breadcrumb-item active" aria-current="page">Detail Transaction</li>
       </ol>
@@ -18,7 +18,8 @@ Detail Transaction Payroll Employee
    
    <div class="row">
       <div class="col-md-4">
-         
+         <a href=""  class="btn btn-primary btn-block">Submit</a>
+         <hr>
          <div class="card card-light shadow-none border">
             <div class="card-header">
                
@@ -89,21 +90,21 @@ Detail Transaction Payroll Employee
                      <div class="row row-nav-line">
                         <ul class="nav nav-tabs nav-line nav-color-secondary" role="tablist">
                            <li class="nav-item"> <a class="nav-link show active" id="pills-basic-tab-nobd" data-toggle="pill" href="#pills-basic-nobd" role="tab" aria-controls="pills-basic-nobd" aria-selected="true">Detail Transaksi Agustus</a> </li>
-                           {{-- <li class="nav-item"> <a class="nav-link " id="pills-doc-tab-nobd" data-toggle="pill" href="#pills-doc-nobd" role="tab" aria-controls="pills-doc-nobd" aria-selected="true">Komponen</a> </li> --}}
+                           <li class="nav-item"> <a class="nav-link " id="pills-doc-tab-nobd" data-toggle="pill" href="#pills-doc-nobd" role="tab" aria-controls="pills-doc-nobd" aria-selected="true">Lembur</a> </li>
                         </ul>
                      </div>
                   </div>
                   <div class="card-body">
                      <div class="tab-content mt-2 mb-3" id="pills-without-border-tabContent">
                         <div class="tab-pane fade show active" id="pills-basic-nobd" role="tabpanel" aria-labelledby="pills-basic-tab-nobd">
-                           <a href=""  class="btn btn-primary btn-sm">Submit</a>
-                           <hr>
+                           
+                        
                            <div class="row">
                               <div class="col-3">
-                                 <span><b>Pendapatan</b></span> <br>
-                                 <span>Gaji</span> <br>
-                                 <span>Lembur/Piket</span> <br>
-                                 <span>Pengurangan</span>
+                                 <span><b>Gaji Bersih</b></span> <br>
+                                 <span>Pendapatan</span> <br>
+                                 <span>Uang Lembur</span> <br>
+                                 <span>Potongan</span>
                               </div>
                               <div class="col-md-9">
                                  <span>: <b>{{formatRupiah($transaction->total)}}</b></span> <br>
@@ -114,28 +115,130 @@ Detail Transaction Payroll Employee
                            </div>
                            <hr>
                            
-
-                           <table class="mt-2">
-                              <thead>
-                                 <tr>
-                                    <th colspan="3">Reduction</th>
-                                 </tr>
-                              </thead>
-                              <tbody>
-                                 @foreach ($transaction->reductions->where('type', 'employee') as $red)
-                                     <tr>
-                                       <td>{{$red->name}}</td>
-                                       <td>{{$red->value}}</td>
-                                     </tr>
-                                 @endforeach
-                                 
-                                 
-                                 
-                              </tbody>
-                           </table>
+                           <div class="row">
+                              <div class="col">
+                                 <table class="mt-2">
+                                    <thead>
+                                       <tr>
+                                          <th colspan="3">Potongan Karyawan</th>
+                                       </tr>
+                                    </thead>
+                                    <tbody>
+                                       @foreach ($transaction->reductions->where('type', 'employee') as $red)
+                                           <tr>
+                                             <td>{{$red->name}}</td>
+                                             {{-- <td></td> --}}
+                                             <td class="text-right">{{formatRupiah($red->value)}}</td>
+                                           </tr>
+                                       @endforeach
+                                       
+                                       
+                                       
+                                    </tbody>
+                                 </table>
+                              </div>
+                              <div class="col">
+                                 <table class="mt-2">
+                                    <thead>
+                                       <tr>
+                                          <th colspan="3">Potongan Perusahaan</th>
+                                       </tr>
+                                    </thead>
+                                    <tbody>
+                                       @foreach ($transaction->reductions->where('type', 'company') as $red)
+                                           <tr>
+                                             <td>{{$red->name}}</td>
+                                             {{-- <td></td> --}}
+                                             <td class="text-right">{{formatRupiah($red->value)}}</td>
+                                           </tr>
+                                       @endforeach
+                                       
+                                       
+                                       
+                                    </tbody>
+                                 </table>
+                              </div>
+                           </div>
+                           
+                           
+                           <hr>
+                           <p>
+                              <a class="btn btn-light btn-sm border" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                #Info
+                              </a>
+                              
+                            </p>
+                            <div class="collapse" id="collapseExample">
+                              <table>
+                                 <tbody>
+                                    
+                                    <tr>
+                                       <td><b>Desc</b> </td>
+                                       <td><b>Min. Salary</b></td>
+                                       <td><b>Max. Salary</b></td>
+                                       <td><b>Beban Perusahaan</b></td>
+                                       <td><b>Beban Karyawan</b></td>
+                                    </tr>
+                                    @foreach ($employee->unit->reductions as $unitRed)
+                                       <tr>
+                                          <td>{{$unitRed->name}}</td>
+                                          <td>{{formatRupiah($unitRed->min_salary)}}</td>
+                                          <td>{{formatRupiah($unitRed->max_salary)}}</td>
+                                          <td>{{$unitRed->company}} %</td>
+                                          <td>{{$unitRed->employee}} %</td>
+                                       </tr>
+                                    @endforeach
+                                 </tbody>
+                              </table>
+                            </div>
+                           
                         </div>
             
-                        
+                        <div class="tab-pane fade " id="pills-doc-nobd" role="tabpanel" aria-labelledby="pills-doc-tab-nobd">
+                           <form action="{{route('payroll.overtime.store')}}" method="POST">
+                              @csrf
+                              <input type="number" name="transaction" id="transaction" value="{{$transaction->id}}" hidden>
+                              <div class="row">
+                                 <div class="col-md-4">
+                                    <div class="form-group form-group-default">
+                                       <label>Date</label>
+                                       <input type="date" class="form-control" id="date" name="date" >
+                                    </div>
+                                 </div>
+                                 <div class="col-md-2">
+                                    <div class="form-group form-group-default">
+                                       <label>Hours</label>
+                                       <input type="number" class="form-control" id="hours" name="hours" >
+                                    </div>
+                                 </div>
+                                 <div class="col-md-4">
+                                    <div class="form-group form-group-default">
+                                       <label>Type</label>
+                                       <select name="type" id="type" class="form-control">
+                                          <option value="1">GP/173</option>
+                                          <option value="2">GP+Tunj. Tetap/173</option>
+                                       </select>
+                                    </div>
+                                 </div>
+                                 <div class="col-md-2">
+                                    <button class="btn btn-block btn-primary" type="submit">Add</button>
+                                 </div>
+                              </div>
+                           </form>
+                           <hr>
+                           <div class="table-responsive">
+                              <table>
+                                 <thead>
+                                    <tr>
+                                       <th>Date</th>
+                                       <th>Hours</th>
+                                       <th>Type</th>
+                                       <th>Rupiah</th>
+                                    </tr>
+                                 </thead>
+                              </table>
+                           </div>
+                        </div>
             
                      </div>
             
