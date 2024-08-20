@@ -157,7 +157,7 @@
    </a>
 </li>
 
-{{-- <li class="nav-item {{ (request()->is('payroll/*')) ? 'active' : '' }}">
+<li class="nav-item {{ (request()->is('payroll/*')) ? 'active' : '' }}">
    <a data-toggle="collapse" href="#payroll">
       <i class="fas fa-money-bill"></i>
       <p>Payroll</p>
@@ -175,7 +175,7 @@
                <span class="sub-item">Setup</span>
             </a>
          </li>
-         {{-- <li>
+         <li>
             <a href="{{route('payroll')}}">
                <span class="sub-item">Employee</span>
             </a>
@@ -184,13 +184,13 @@
             <a href="{{route('payroll.unit')}}">
                <span class="sub-item">Bisnis Unit</span>
             </a>
-         </li> --}}
+         </li> 
          
          
 
       </ul>
    </div>
-</li> --}}
+</li>
 
 {{-- <li class="nav-item {{ (request()->is('payroll/*')) ? 'active' : '' }}">
    <a href="{{route('payroll')}}">

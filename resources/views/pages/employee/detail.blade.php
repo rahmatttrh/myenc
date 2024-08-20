@@ -57,7 +57,7 @@ Detail Employee
    </div> --}}
    <div class="row">
       <div class="col-md-4">
-         @if (auth->user()->hasRole('Karyawan'))
+         @if (auth()->user()->hasRole('Karyawan'))
              @else
              @if ($employee->status == 0 )
                <a href="#" data-toggle="modal" data-target="#modal-publish-employee" class="btn btn-block btn-primary mb-2">Publish</a>

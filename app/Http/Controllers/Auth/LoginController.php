@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Employee;
 use App\Models\Log;
 use App\Providers\RouteServiceProvider;
 use GuzzleHttp\Psr7\Request;
@@ -45,8 +46,10 @@ class LoginController extends Controller
       if (auth()->user()->hasRole('Administrator')) {
          
       } else {
+         $user = Employee::find(auth()->user()->getEmployeeId());
+         $departmentId = $user->department_id;
          Log::create([
-            // 'department_id' => $departmentId,
+            'department_id' => $departmentId,
             'user_id' => auth()->user()->id,
             'action' => 'Login',
             'desc' => formatDateTimeB(NOW())

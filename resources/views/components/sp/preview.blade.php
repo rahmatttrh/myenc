@@ -72,69 +72,69 @@
             <tr>
                <td style="height: 80px" class="">
                   
-                  @if ($user)
+                  {{-- @if ($user)
                   {{$user->employee->biodata->fullName()}} <br>
                   {{$user->employee->position->name}}
                   @else
                   -
-                  @endif
+                  @endif --}}
 
                </td>
                <td>
-                  @if ($manager)
+                  {{-- @if ($manager)
                   {{$manager->employee->biodata->fullName()}} <br>
                   {{$manager->employee->position->name}}
                   @else
                   -
-                  @endif
+                  @endif --}}
 
                </td>
                <td>
-                  @if ($hrd)
+                  {{-- @if ($hrd)
                   {{$hrd->employee->biodata->fullName()}} <br>
                   {{$hrd->employee->position->name}}
                   @else
                   -
-                  @endif
+                  @endif --}}
 
                </td>
                <td>
-                  @if ($suspect)
+                  {{-- @if ($suspect)
                   {{$suspect->employee->biodata->fullName()}} <br>
                   {{$suspect->employee->position->name}}
                   @else
                   -
-                  @endif
+                  @endif --}}
                </td>
             </tr>
             <tr>
                <td>
-                  @if ($user)
+                  {{-- @if ($user)
                   {{formatDateTime($user->created_at)}}
                   @else
                   -
-                  @endif
+                  @endif --}}
                </td>
                <td>
-                  @if ($manager)
+                  {{-- @if ($manager)
                   {{formatDateTime($manager->created_at)}}
                   @else
                   -
-                  @endif
+                  @endif --}}
                </td>
                <td>
-                  @if ($hrd)
+                  {{-- @if ($hrd)
                   {{formatDateTime($hrd->created_at)}}
                   @else
                   -
-                  @endif
+                  @endif --}}
                </td>
                <td>
-                  @if ($suspect)
+                  {{-- @if ($suspect)
                   {{formatDateTime($suspect->created_at)}}
                   @else
                   -
-                  @endif
+                  @endif --}}
                </td>
                
             </tr>
