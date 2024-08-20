@@ -15,6 +15,7 @@ class CreatePayrollReductionsTable extends Migration
     {
         Schema::create('payroll_reductions', function (Blueprint $table) {
             $table->id();
+            $table->integer('');
             $table->timestamps();
         });
     }

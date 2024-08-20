@@ -507,6 +507,7 @@ class EmployeeController extends Controller
       $contract = Contract::create([
          'id_no' => $req->nik,
          'type' => $req->type,
+         
          'unit_id' => $req->unit,
          'department_id' => $req->department,
          'sub_dept_id' => $req->subdept,
