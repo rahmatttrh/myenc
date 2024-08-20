@@ -78,69 +78,70 @@ PE
             <div class="card-header d-flex bg-primary">
                 <div class="d-flex  align-items-center">
                     <small class=" text-white">KPI </small>
+                    
                 </div>
 
                 {{-- @if(($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202') && (auth()->user()->hasRole('Leader|Supervisor') ) ) --}}
-                @if (auth()->user()->hasRole('Administrator|HRD'))
-                @else
-                
-                @if(($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202') && (auth()->user()->getEmployeeId() == $pe->created_by  || auth()->user()->hasRole('Supervisor|Manager|Asst. Manager')) )
-                <div class="btn-group btn-group-page-header ml-auto">
-                    <div class="button-group">
-                        @if(isset($pd) && $pd->pdds->count() == 6)
-                        <button class="btn btn-xs btn-light" data-toggle="modal" data-target="#modal-submit-{{$kpa->id}}"><i class="fas fa-rocket"></i> Submit </button>
-                        <!-- <x-modal.submit :id="$pe->id" :body="'KPI ' . $kpa->employe->biodata->fullName() . ' semester '. $kpa->semester.' '. $pe->tahun " url="{{route('qpe.submit', enkripRambo($pe->id))}}" /> -->
+                @if (auth()->user()->hasRole('Administrator'))
+                  @else
+                  
+                  @if(($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202') && (auth()->user()->getEmployeeId() == $pe->created_by  || auth()->user()->hasRole('Supervisor|Manager|Asst. Manager')) )
+                  <div class="btn-group btn-group-page-header ml-auto">
+                     
+                     <div class="button-group">
+                           @if(isset($pd) && $pd->pdds->count() == 6)
+                           <button class="btn btn-xs btn-light" data-toggle="modal" data-target="#modal-submit-{{$kpa->id}}"><i class="fas fa-rocket"></i> Submit </button>
+                           <!-- <x-modal.submit :id="$pe->id" :body="'KPI ' . $kpa->employe->biodata->fullName() . ' semester '. $kpa->semester.' '. $pe->tahun " url="{{route('qpe.submit', enkripRambo($pe->id))}}" /> -->
 
-                        <div class="modal fade" id="modal-submit-{{$kpa->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <form method="POST" action="{{route('qpe.submit', enkripRambo($pe->id))}}" enctype="multipart/form-data">
-                                        @csrf
-                                        @method('PUT')
-                                        <input type="hidden" name="id" value="{{$pe->id}}">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            Submit KPI
+                           <div class="modal fade" id="modal-submit-{{$kpa->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                              <div class="modal-dialog" role="document">
+                                 <div class="modal-content">
+                                       <form method="POST" action="{{route('qpe.submit', enkripRambo($pe->id))}}" enctype="multipart/form-data">
+                                          @csrf
+                                          @method('PUT')
+                                          <input type="hidden" name="id" value="{{$pe->id}}">
+                                          <div class="modal-header">
+                                             <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                   <span aria-hidden="true">&times;</span>
+                                             </button>
+                                          </div>
+                                          <div class="modal-body">
+                                             Submit KPI
 
-                                            <?php echo $kpa->employe->biodata->fullName() . ' semester ' . $kpa->semester . ' ' . $pe->tahun; ?>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-primary ">
-                                                Submit
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        @endif
-                    </div>
-                    &nbsp;
-                    <button type="button" class="btn btn-light btn-xs btn-round btn-page-header-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fa fa-ellipsis-h"></i>
-                    </button>
-                    <div class="dropdown-menu">
-                        <btn data-target="#modalAddtional" data-toggle="modal" class="dropdown-item" style="text-decoration: none">Addtional Objective</btn>
-                    </div>
-                </div>
-                @else
-                @endif
-                @endif
+                                             <?php echo $kpa->employe->biodata->fullName() . ' semester ' . $kpa->semester . ' ' . $pe->tahun; ?>
+                                          </div>
+                                          <div class="modal-footer">
+                                             <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+                                             <button type="submit" class="btn btn-primary ">
+                                                   Submit
+                                             </button>
+                                          </div>
+                                       </form>
+                                 </div>
+                              </div>
+                           </div>
+                           @endif
+                     </div>
+                     &nbsp;
+                     <button type="button" class="btn btn-light btn-xs btn-round btn-page-header-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                           <i class="fa fa-ellipsis-h"></i>
+                     </button>
+                     <div class="dropdown-menu">
+                           <btn data-target="#modalAddtional" data-toggle="modal" class="dropdown-item" style="text-decoration: none">Addtional Objective</btn>
+                     </div>
+                  </div>
+                  @endif
+               @endif
 
-                @if (auth()->user()->hasRole('Administrator|HRD'))
-                @if($isDone)
-                <button onclick="doneValidasi({{$kpa->id}})" class=" btn btn-sm btn-primary ml-auto"><i class="fa fa-check"></i> Done</button>
-                <form id="done-validasi" action="{{route('kpa.done.validasi', $kpa->id)}}" method="POST"> @csrf @method('patch')</form>
-                @elseif($isReject)
-                <button onclick="rejectValidasi({{$kpa->id}})" class="btn btn-sm btn-danger ml-auto"><i class="fa fa-reply"></i> Reject</button>
-                <form id="reject-validasi" action="{{route('kpa.reject.validasi', $kpa->id)}}" method="POST"> @csrf @method('patch') </form>
-                @endif
+                @if (auth()->user()->hasRole('Administrator'))
+                  @if($isDone)
+                  <button onclick="doneValidasi({{$kpa->id}})" class=" btn btn-sm btn-primary ml-auto"><i class="fa fa-check"></i> Done</button>
+                  <form id="done-validasi" action="{{route('kpa.done.validasi', $kpa->id)}}" method="POST"> @csrf @method('patch')</form>
+                  @elseif($isReject)
+                  <button onclick="rejectValidasi({{$kpa->id}})" class="btn btn-sm btn-danger ml-auto"><i class="fa fa-reply"></i> Reject</button>
+                  <form id="reject-validasi" action="{{route('kpa.reject.validasi', $kpa->id)}}" method="POST"> @csrf @method('patch') </form>
+                  @endif
                 @endif
 
                 {{-- @if (auth()->user()->hasRole('Manager') && $kpa->status == '1' ) --}}
