@@ -65,7 +65,7 @@ Logs Activity
                                   {{$log->action}} {{$log->desc}}
                               @endif
                               
-                           </td>
+                           </td> 
                            
                            
                            {{-- <td>{{$log->desc}}</td> --}}

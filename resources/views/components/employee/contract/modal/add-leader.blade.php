@@ -1,4 +1,4 @@
-<div class="modal fade" id="modal-add-leader" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modal-add-leader"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
    <div class="modal-dialog " role="document">
       <div class="modal-content">
          <div class="modal-header">
@@ -13,11 +13,11 @@
                <input type="number" name="employee" id="employee" value="{{$employee->id}}" hidden>
                <div class="form-group form-group-default">
                   <label>Leader</label>
-                  <select class="form-control"  id="leader" name="leader" >
-                     <option value="" disabled selected>Choose one</option>
+                  <select class="form-control js-example-basic-single" style="width: 100%"  id="leader" name="leader" >
+                     {{-- <option value="" disabled selected>Choose one</option> --}}
                      @foreach ($leaders as $leader)
                          <option value="{{$leader->id}}">
-                           {{$leader->nik}} {{$leader->biodata->fullName()}} -
+                           {{$leader->nik}} <b>{{$leader->biodata->fullName()}}</b> -
                            @if (count($leader->positions) > 0)
                                @foreach ($leader->positions as $pos)
                                   | {{$pos->name}}
