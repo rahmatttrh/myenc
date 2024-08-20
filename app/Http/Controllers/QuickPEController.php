@@ -38,7 +38,7 @@ class QuickPEController extends Controller
     {
         
 
-        $pes = Pe::get();
+        $pes = Pe::orderBy('updated_at', 'asc')->get();
 
         // Data KPI
         if (auth()->user()->hasRole('Administrator')) {
@@ -60,7 +60,7 @@ class QuickPEController extends Controller
             //     ->orderBy('employe_id')
             //     ->get();
             
-               $pes = Pe::orderBy('release_at', 'desc')
+               $pes = Pe::orderBy('updated_at', 'desc')
                ->get();
 
             $outAssesments = $this->outstandingAssessment();
@@ -77,7 +77,7 @@ class QuickPEController extends Controller
             //     ->get();
 
                 $pes = Pe::where('pes.status', '>', '0')
-                ->orderBy('release_at', 'desc')
+                ->orderBy('updated_at', 'desc')
                 ->get();
 
             // 
@@ -106,9 +106,11 @@ class QuickPEController extends Controller
             //    $pes = Pe::where('created_by', $employee->id)->get();
             // }
             if ($employee->designation->slug == 'supervisor') {
-               $pes = Pe::where('department_id', $employee->department_id)->get();
+               $pes = Pe::where('department_id', $employee->department_id)->orderBy('updated_at', 'desc')
+               ->get();
             } else {
-               $pes = Pe::where('created_by', $employee->id)->get();
+               $pes = Pe::where('created_by', $employee->id)->orderBy('updated_at', 'desc')
+               ->get();
             }
             
             

@@ -63,9 +63,9 @@ QPE
                             </thead>
                             <tbody>
                               @if (auth()->user()->hasRole('Administrator'))
-                                    @foreach ($pes as $pe)
+                                    @foreach ($pes->sortByDesc('updated_at') as $pe)
                                        <tr>
-                                             <td class="text-center">{{++$i}} </td>
+                                             <td class="text-center">{{++$i}} 11 </td>
                                              <td>
                                                 @if (auth()->user()->hasRole('Administrator'))
                                                    {{$pe->id}} 
@@ -120,7 +120,7 @@ QPE
                                     @if (count($employee->positions) > 0)
                                        @foreach ($employee->positions as $pos)
                                              
-                                          @foreach ($pos->department->pes->where('status', '>', 0) as $pe)
+                                          @foreach ($pos->department->pes->where('status', '>', 0)->sortByDesc('updated_at') as $pe)
                                              <tr>
                                                 <td class="text-center">{{++$i}} </td>
                                                 <td>
@@ -169,7 +169,7 @@ QPE
                                           @endforeach
                                        @endforeach
                                        @else
-                                       @foreach ($pes as $pe)
+                                       @foreach ($pes->sortByDesc('updated_at') as $pe)
                                        <tr>
                                              <td class="text-center">{{++$i}}  </td>
                                              <td>
@@ -218,7 +218,7 @@ QPE
                                     @endif
                                       
                                     @else
-                                    @foreach ($pes as $pe)
+                                    @foreach ($pes->sortByDesc('updated_at') as $pe)
                                        <tr>
                                              <td class="text-center">{{++$i}}  </td>
                                              <td>
