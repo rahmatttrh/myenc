@@ -21,21 +21,10 @@ SP
             <form action="{{route('sp.hrd.store')}}" method="POST" enctype="multipart/form-data">
                @csrf
                <div class="row">
-                  {{-- <div class="col">
-                     <div class="form-group form-group-default">
-                        <label>Type</label>
-                        <select class="form-control" required id="level" name="level">
-                           <option value="" selected disabled>Choose one</option>
-                           <option value="Existing">Existing</option>
-                           <option value="New">New</option>
-                        </select>
-      
-                     </div>
-                  </div> --}}
                   <div class="col">
                      <div class="form-group form-group-default">
                         <label>Employee*</label>
-                        <select class="form-control employee" required id="employee" name="employee">
+                        <select class="form-control employee js-example-basic-single" required id="employee" name="employee">
                            <option value="" selected disabled>Select Employee</option>
                            @foreach ($allEmployees as $emp)
                                  <option value="{{$emp->id}}">{{$emp->nik}} {{$emp->biodata->fullName()}} </option>
@@ -105,10 +94,10 @@ SP
                @csrf
                
                <div class="row">
-                  <div class="col-md-8">
+                  <div class="col-md-12">
                      <div class="form-group form-group-default">
                         <label>Employee*</label>
-                        <select class="form-control employee" required id="employee" name="employee">
+                        <select class="form-control employee js-example-basic-single" required id="employee" name="employee">
                            <option value="" selected disabled>Select Employee</option>
                            @if (auth()->user()->hasRole('Manager|Asst. Manager|HRD'))
                               @foreach ($employee->positions as $pos)
@@ -134,7 +123,7 @@ SP
          
                      </div>
                   </div>
-                  <div class="col-md-4">
+                  <div class="col-md-6">
                      <div class="form-group form-group-default">
                         <label>Level*</label>
                         <select class="form-control" required id="level" name="level">
