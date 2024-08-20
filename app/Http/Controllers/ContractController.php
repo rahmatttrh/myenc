@@ -98,10 +98,10 @@ class ContractController extends Controller
 
       // dd($req->designation);
       $employee->update([
-         'unit_id' => $req->unit,
+         // 'unit_id' => $req->unit,
          'nik' => $req->nik,
          'manager_id' => $req->manager,
-         'direct_leader_id' => $req->leader,
+         // 'direct_leader_id' => $req->leader,
          'designation_id' => $position->designation_id,
          'unit_id' => $req->unit,
          'department_id' => $req->department,
