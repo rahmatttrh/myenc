@@ -63,11 +63,14 @@ QPE
                             </thead>
                             <tbody>
                               @if (auth()->user()->hasRole('Administrator'))
-                                    @foreach ($pes as $pe)
-                                    
+                                    @foreach ($pes->sortByDesc('updated_at') as $pe)
                                        <tr>
-                                             <td class="text-center">{{++$i}} {{$pe->id}} </td>
-                                             <td>{{$pe->id}}</td>
+                                             <td class="text-center">{{++$i}} </td>
+                                             <td>
+                                                @if (auth()->user()->hasRole('Administrator'))
+                                                   {{$pe->id}} 
+                                                @endif
+                                             </td>
                                              <td>
                                                 @if($pe->status == '0' || $pe->status == '101')
                                                 <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
@@ -117,7 +120,7 @@ QPE
                                     @if (count($employee->positions) > 0)
                                        @foreach ($employee->positions as $pos)
                                              
-                                          @foreach ($pos->department->pes->where('status', '>', 0) as $pe)
+                                          @foreach ($pos->department->pes->where('status', '>', 0)->sortByDesc('updated_at') as $pe)
                                              <tr>
                                                 <td class="text-center">{{++$i}} </td>
                                                 <td>
@@ -166,7 +169,7 @@ QPE
                                           @endforeach
                                        @endforeach
                                        @else
-                                       @foreach ($pes as $pe)
+                                       @foreach ($pes->sortByDesc('updated_at') as $pe)
                                        <tr>
                                              <td class="text-center">{{++$i}}  </td>
                                              <td>
@@ -215,7 +218,7 @@ QPE
                                     @endif
                                       
                                     @else
-                                    @foreach ($pes as $pe)
+                                    @foreach ($pes->sortByDesc('updated_at') as $pe)
                                        <tr>
                                              <td class="text-center">{{++$i}}  </td>
                                              <td>
