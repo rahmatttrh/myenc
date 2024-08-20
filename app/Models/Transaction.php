@@ -21,4 +21,10 @@ class Transaction extends Model
    public function reductions(){
       return $this->hasMany(TransactionReduction::class);
    }
+
+   public function overtimes(){
+      return $this->hasMany(TransactionOvertime::class);
+   }
+
+   
 }

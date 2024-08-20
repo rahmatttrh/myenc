@@ -9,61 +9,72 @@ Payroll Transaction
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
          <li class="breadcrumb-item" aria-current="page">Payroll</li>
-         <li class="breadcrumb-item active" aria-current="page">Unit</li>
+         <li class="breadcrumb-item" aria-current="page"><a href="{{route('payroll.transaction')}}">Unit</a></li>
+         <li class="breadcrumb-item active" aria-current="page">Monthly</li>
       </ol>
    </nav>
    
    <div class="row">
       <div class="col-md-3">
-         {{-- <div class="card shadow-none border">
+         <div class="card shadow-none border card-primary">
             
-            <div class="card-body"> --}}
-                  <div class="nav flex-column justify-content-start nav-pills nav-primary" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                     @foreach ($units as $unit)
-                        <a class="nav-link {{$firstUnit->id == $unit->id ? 'active' : ''}} text-left pl-3" id="v-pills-{{$unit->id}}-tab" data-toggle="pill" href="#v-pills-{{$unit->id}}" role="tab" aria-controls="v-pills-{{$unit->id}}" aria-selected="true">
-                           
-                            {{$unit->name}}
-                        </a>
-                     @endforeach
-                  </div>
-            {{-- </div>
+            <div class="card-body">
+                  <h2 class="text-uppercase">{{$unit->name}}</h2>
+                  {{$unitTransaction->month}} {{$unitTransaction->year}} 
+                  <hr class="bg-white">
+                  Total Karyawan <br>
+                  {{$unitTransaction->total_employee}} / {{count($unitTransaction->unit->employees->where('status', 1))}} <br><br>
+                  Total Salary <br>
+                   {{formatRupiah($unitTransaction->total_salary)}}
+            </div>
             
-         </div> --}}
+            
+         </div>
+         <a href="" class="btn btn-block btn-info">Submit</a>
+
+         <a href="" class="btn btn-block btn-light border">
+            <i class="fas fa-upload"></i>
+            Upload Lembur
+         </a>
+         <a href="" class="btn btn-block btn-light border">
+            <i class="fas fa-upload"></i>
+            Upload Absensi
+         </a>
+
+         
       </div>
       <div class="col-md-9">
          <div class="tab-content" id="v-pills-tabContent">
-            @foreach ($units as $unit)
-            <div class="tab-pane fade {{$firstUnit->id == $unit->id ? 'show active' : ''}} " id="v-pills-{{$unit->id}}" role="tabpanel" aria-labelledby="v-pills-{{$unit->id}}-tab">
+            @foreach ($units as $u)
+            <div class="tab-pane fade {{$unit->id == $u->id ? 'show active' : ''}} " id="v-pills-{{$u->id}}" role="tabpanel" aria-labelledby="v-pills-{{$u->id}}-tab">
                <div class="table-responsive">
-                  <table>
+                  <table id="data" class="display basic-datatables table-sm">
                      <thead>
+                        
                         <tr>
-                           <th colspan="4" class="text-uppercase">SLIP GAJI {{$unit->name}}</th>
-                           <th>
-                              <a href="" class="btn btn-sm btn-light btn-block" data-target="#modal-add-master-transaction" data-toggle="modal">Generate</a>
-                           </th>
-                        </tr>
-                        <tr>
-                           <th>Month</th>
-                           <th>Total Employee</th>
-                           <th>Total Salary</th>
+                           <th>Employee</th>
+                           <th>Pendapatan</th>
+                           <th>Gaji Bersih</th>
+                           <th>Lembur</th>
                            <th>Status</th>
-                           <th>Action</th>
+                           {{-- <th>Action</th> --}}
                         </tr>
                      </thead>
                      <tbody>
-
-                        @foreach ($unit->unitTransactions as $trans)
+                        @foreach ($transactions as $trans)
                         <tr>
-                           <td>{{$trans->month}}</td>
-                           <td>{{$trans->total_employee}} / {{count($trans->unit->employees->where('status', 1))}}</td>
-                           <td>{{formatRupiah($trans->total_salary)}}</td>
-                           <td>Draft</td>
                            <td>
-                              <a href="{{route('payroll.transaction.monthly', enkripRambo($trans->id))}}">Detail</a>
+                              <a href="{{route('payroll.transaction.detail', enkripRambo($trans->id))}}">{{$trans->employee->nik}} {{$trans->employee->biodata->fullName()}}</a>
+                              
                            </td>
+                           <td>{{formatRupiah($trans->employee->payroll->total)}}</td>
+                           <td>{{formatRupiah($trans->total)}}</td>
+                           <td>0</td>
+                           <td>Draft</td>
+                           
                         </tr>
                         @endforeach
+                        
                         
                         
                      </tbody>
@@ -136,7 +147,7 @@ Payroll Transaction
                <div class="modal-dialog modal-sm" role="document">
                   <div class="modal-content">
                      <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Genetare Slip Gaji</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Add Master Transaction</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
@@ -218,44 +229,5 @@ Payroll Transaction
    </div>
 </div>
 
-<div class="modal fade" id="modal-create-transaction" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-   <div class="modal-dialog" role="document">
-      <div class="modal-content">
-         <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Create Transaction</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
-         </div>
-         <form action="{{route('payroll.transaction.store')}}" method="POST" >
-            <div class="modal-body">
-               @csrf
-               <div class="row">
-                  <div class="col">
 
-                  </div>
-               </div>
-               <div class="form-group form-group-default">
-                  <label>Employee</label>
-                  <select class="form-control" name="employee" id="employee" required>
-                      <option value="">--- Choose Employe ---</option>
-                      @foreach ($employees as $employe)
-                          <option value="{{$employe->id}}">{{$employe->nik}} {{$employe->biodata->fullName()}} </option>
-                          @endforeach
-                      
-                  </select>
-              </div>
-              <small>Daftar Karyawan yang belum memiliki transaksi gaji bulan ini</small>
-                  
-                  
-            </div>
-            <div class="modal-footer">
-               <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
-               <button type="submit" class="btn btn-info ">Create</button>
-            </div>
-            
-         </form>
-      </div>
-   </div>
-</div>
 @endsection

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-Detail Payroll Employee
+Setup Payroll Employee
 @endsection
 
 @section('content')
@@ -11,8 +11,8 @@ Detail Payroll Employee
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
          <li class="breadcrumb-item" aria-current="page">Payroll</li>
-         <li class="breadcrumb-item" aria-current="page"><a href="{{route('payroll')}}">Employee List</a></li>
-         <li class="breadcrumb-item active" aria-current="page">Detail</li>
+         <li class="breadcrumb-item" aria-current="page"><a href="{{route('payroll.setup')}}">Setup</a></li>
+         <li class="breadcrumb-item active" aria-current="page">Employee</li>
       </ol>
    </nav>
    
@@ -82,7 +82,7 @@ Detail Payroll Employee
                <b>{{formatRupiah($employee->payroll->total ?? 0)}}</b>
             </div>
             <div class="card-footer d-flex justify-content-between">
-               <div>
+               {{-- <div>
                   Gaji Pokok <br>
                   Tunj. Jabatan <br>
                   Tunj. OPS <br>
@@ -109,7 +109,7 @@ Detail Payroll Employee
                       0 <br>
                   @endif
                   
-               </div>
+               </div> --}}
                
                
             </div> 
@@ -124,8 +124,8 @@ Detail Payroll Employee
                   <div class="card-header">
                      <div class="row row-nav-line">
                         <ul class="nav nav-tabs nav-line nav-color-secondary" role="tablist">
-                           <li class="nav-item"> <a class="nav-link show active" id="pills-basic-tab-nobd" data-toggle="pill" href="#pills-basic-nobd" role="tab" aria-controls="pills-basic-nobd" aria-selected="true">Transaksi</a> </li>
-                           <li class="nav-item"> <a class="nav-link " id="pills-doc-tab-nobd" data-toggle="pill" href="#pills-doc-nobd" role="tab" aria-controls="pills-doc-nobd" aria-selected="true">Komponen</a> </li>
+                           <li class="nav-item"> <a class="nav-link show active" id="pills-basic-tab-nobd" data-toggle="pill" href="#pills-basic-nobd" role="tab" aria-controls="pills-basic-nobd" aria-selected="true">Upah</a> </li>
+                           <li class="nav-item"> <a class="nav-link " id="pills-doc-tab-nobd" data-toggle="pill" href="#pills-doc-nobd" role="tab" aria-controls="pills-doc-nobd" aria-selected="true">Riwayat Slip Gaji</a> </li>
                            {{-- <li class="nav-item"> <a class="nav-link" id="pills-profile-tab-nobd" data-toggle="pill" href="#pills-profile-nobd" role="tab" aria-controls="pills-profile-nobd" aria-selected="false">Profile Picture</a> </li>
                            <li class="nav-item"> <a class="nav-link  " id="pills-bio-tab-nobd" data-toggle="pill" href="#pills-bio-nobd" role="tab" aria-controls="pills-bio-nobd" aria-selected="true">Notes</a> </li> --}}
                            {{-- <li class="nav-item"> <a class="nav-link" id="pills-contact-tab-nobd" data-toggle="pill" href="#pills-contact-nobd" role="tab" aria-controls="pills-contact-nobd" aria-selected="false">Social Networking</a> </li> --}}
@@ -135,15 +135,60 @@ Detail Payroll Employee
                   <div class="card-body">
                      <div class="tab-content mt-2 mb-3" id="pills-without-border-tabContent">
                         <div class="tab-pane fade show active" id="pills-basic-nobd" role="tabpanel" aria-labelledby="pills-basic-tab-nobd">
-                           
-                           
+                           <form action="{{route('payroll.update')}}" method="POST">
+                              @csrf
+                              @method('PUT')
+                              <input type="number" name="employee" id="employee" value="{{$employee->id}}" hidden>
+                              
+                              <div class="row">
+                                 <div class="col">
+                                    <div class="form-group form-group-default">
+                                       <label>Gaji Pokok</label>
+                                       <input type="text" class="form-control" id="pokok" name="pokok" value="{{$employee->payroll->pokok ?? 0}}">
+                                    </div>
+                                    <div class="form-group form-group-default">
+                                       <label>Tunj. Jabatan</label>
+                                       <input type="text" class="form-control" id="tunj_jabatan" name="tunj_jabatan" value="{{$employee->payroll->tunj_jabatan ?? 0}}">
+                                    </div>
+                                    
+                                    <div class="form-group form-group-default">
+                                       <label>Insentif</label>
+                                       <input type="text" class="form-control" id="insentif" name="insentif" value="{{$employee->payroll->insentif ?? 0}}">
+                                    </div>
+                                 </div>
+                                 <div class="col">
+                                    <div class="form-group form-group-default">
+                                       <label>Tunj. Kinerja</label>
+                                       <input type="text" class="form-control" id="tunj_kinerja" name="tunj_kinerja" value="{{$employee->payroll->tunj_kinerja ?? 0}}">
+                                    </div>
+                                    <div class="form-group form-group-default">
+                                       <label>Tunj. Ops</label>
+                                       <input type="text" class="form-control" id="tunj_ops" name="tunj_ops" value="{{$employee->payroll->tunj_ops ?? 0}}">
+                                    </div>
+                                    <div class="form-group form-group-default">
+                                       <label>Tunj. Fungsional</label>
+                                       <input type="text" class="form-control" id="tunj_fungsional" name="tunj_fungsional" value="{{$employee->payroll->tunj_fungsional ?? 0}}">
+                                    </div>
+                                 </div>
+                              </div>
+                              
+                              
+            
+                              <div class="text-right mt-3 mb-3">
+                                 {{-- <button type="submit" class="btn btn-dark" {{$employee->status == 0 ? 'disabled' : ''}}>Update</button> --}}
+                                 <button type="submit" class="btn btn-dark" >Update</button>
+                              </div>
+                           </form>
+                        </div>
+            
+                        <div class="tab-pane fade" id="pills-doc-nobd" role="tabpanel" aria-labelledby="pills-doc-tab-nobd">
                            <table class=" ">
                               
                               <tbody>
                                  <tr>
                                     <td class="d-flex justify-content-between">
                                        {{-- <span></span> --}}
-                                       <a href="{{route('payroll.transaction.detail', enkripRambo($employee->id))}}">Januari</a>
+                                       <a href="">Januari</a>
                                        <span class="text-success">Done</span>
                                     </td>
                                  </tr>
@@ -169,83 +214,7 @@ Detail Payroll Employee
                                  
                               </tbody>
                            </table>
-                           <hr>
-                           <table>
-                              <thead>
-                                 <tr>
-                                    <th colspan="2">Potongan</th>
-                                 </tr>
-                              </thead>
-                              <tbody>
-                                 <tr>
-                                    <td>BPJS TK</td>
-                                    <td>120.000</td>
-                                 </tr>
-                                 <tr>
-                                    <td>BPJS KS</td>
-                                    <td>80.000</td>
-                                 </tr>
-                              </tbody>
-                           </table>
-                        </div>
-            
-                        <div class="tab-pane fade" id="pills-doc-nobd" role="tabpanel" aria-labelledby="pills-doc-tab-nobd">
-                           <form action="{{route('employee.update')}}" method="POST">
-                              @csrf
-                              @method('PUT')
-                              <input type="number" name="employee" id="employee" value="{{$employee->id}}" hidden>
-                              
-                              <div class="form-group form-group-default">
-                                 <label>Gaji Pokok</label>
-                                 <input type="text" class="form-control" id="first_name" name="first_name" >
-                              </div>
-                              <hr>
-                              <div class="row">
-                                 <div class="col-md-6">
-                                    <div class="form-group form-group-default">
-                                       <label>Tunjangan Jabatan</label>
-                                       <input type="text" class="form-control" id="first_name" name="first_name" >
-                                    </div>
-
-                                    <div class="form-group form-group-default">
-                                       <label>Tunjangan Operasional</label>
-                                       <input type="text" class="form-control" id="first_name" name="first_name" >
-                                    </div>
-                                    <div class="form-group form-group-default">
-                                       <label>Tunjangan Kinerja</label>
-                                       <input type="text" class="form-control" id="first_name" name="first_name" >
-                                    </div>
-                                    
-                                 </div>
-                                 <div class="col-md-6">
-                                    <div class="form-group form-group-default">
-                                       <label>Tunjangan Fungsional</label>
-                                       <input type="text" class="form-control" id="first_name" name="first_name" >
-                                    </div>
-                                    <div class="form-group form-group-default">
-                                       <label>Insentif</label>
-                                       <input type="text" class="form-control" id="first_name" name="first_name" >
-                                    </div>
-                                    
-                                 </div>
-                              </div>
-                              <hr>
-                              <div class="row">
-                                 <div class="col-md-6">
-                                    <div class="form-group form-group-default">
-                                       <label>Tunjangan kemahalan Dareah</label>
-                                       <input type="text" class="form-control" id="last_name" name="last_name" value="{{$employee->biodata->last_name}}">
-                                    </div>
-                                 </div>
-                              </div>
-                              
-                              
-            
-                              <div class="text-right mt-3 mb-3">
-                                 {{-- <button type="submit" class="btn btn-dark" {{$employee->status == 0 ? 'disabled' : ''}}>Update</button> --}}
-                                 <button type="submit" class="btn btn-dark" >Update</button>
-                              </div>
-                           </form>
+                           
                         </div>
             
                         <div class="tab-pane fade " id="pills-profile-nobd" role="tabpanel" aria-labelledby="pills-profile-tab-nobd">

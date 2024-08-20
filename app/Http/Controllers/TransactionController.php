@@ -8,6 +8,8 @@ use App\Models\Reduction;
 use App\Models\Transaction;
 use App\Models\TransactionDetail;
 use App\Models\TransactionReduction;
+use App\Models\Unit;
+use App\Models\UnitTransaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -17,9 +19,13 @@ class TransactionController extends Controller
    public function index(){
       $employees = Employee::get();
       $transactions = Transaction::get();
+      $units = Unit::get();
+      $firstUnit = Unit::get()->first();
       return view('pages.payroll.transaction.index', [
          'employees' => $employees,
-         'transactions' => $transactions
+         'transactions' => $transactions,
+         'units' => $units,
+         'firstUnit' => $firstUnit
       ])->with('i');
    }
 
@@ -78,8 +84,54 @@ class TransactionController extends Controller
       ]);
    }
 
-   public function store(Request $req){
-      $employee = Employee::find($req->employee);
+   public function storeMaster(Request $req){
+      $unit = Unit::find($req->unit);
+      $employees = Employee::where('unit_id', $unit->id)->where('status', 1)->get();
+      $totalSalary = 0;
+      $totalEmployee = 0;
+
+      foreach($employees as $emp){
+         if ($emp->payroll_id != null) {
+            $totalSalary = $totalSalary + $emp->payroll->total;
+            $totalEmployee = $totalEmployee + 1;
+
+            $this->store($emp, $req);
+         }
+         
+      }
+
+      UnitTransaction::create([
+         'status' => 0,
+         'unit_id' => $unit->id,
+         'month' => $req->month,
+         'year' => $req->year,
+         'total_employee' => $totalEmployee,
+         'total_salary' => $totalSalary
+      ]);
+
+      
+
+      return redirect()->back()->with('success', 'Master Transaction successfully created');
+
+      // dd($totalSalary);
+   }
+
+   public function monthly($id){
+      $unitTransaction = UnitTransaction::find(dekripRambo($id));
+      $unit = Unit::find($unitTransaction->unit_id);
+      $units = Unit::get();
+      $transactions = Transaction::where('unit_id', $unit->id)->where('month', $unitTransaction->month)->where('year', $unitTransaction->year)->get();
+
+      return view('pages.payroll.transaction.monthly', [
+         'unit' => $unit,
+         'units' => $units,
+         'unitTransaction' => $unitTransaction,
+         'transactions' => $transactions
+      ])->with('i');
+   }
+
+   public function store($emp, $req){
+      $employee = Employee::find($emp->id);
       $payroll = Payroll::find($employee->payroll_id);
 
       $now = Carbon::today();
@@ -89,9 +141,10 @@ class TransactionController extends Controller
       // dd($now->format('d/m/Y'));
       $transaction = Transaction::create([
          'status' => 0,
-         'employee_id' => $req->employee,
-         'month' => $month,
-         'year' => $year,
+         'unit_id' => $emp->unit_id, 
+         'employee_id' => $employee->id,
+         'month' => $req->month,
+         'year' => $req->year,
          'total' => 0
       ]);
 
@@ -143,11 +196,17 @@ class TransactionController extends Controller
          if ($payroll->total <= $red->min_salary) {
             // dd('kurang dari minimum gaju');
             $salary = $red->min_salary;
+            $realSalary = $payroll->total;
+
+            $bebanPerusahaan = ($red->company * $salary) / 100;
+            $bebanKaryawan = ($red->employee * $realSalary) / 100;
          } else {
             $salary = $payroll->total;
+            $bebanPerusahaan = ($red->company * $salary) / 100;
+            $bebanKaryawan = ($red->employee * $salary) / 100;
          }
-         $bebanPerusahaan = ($red->company * $salary) / 100;
-         $bebanKaryawan = ($red->employee * $salary) / 100;
+         // $bebanPerusahaan = ($red->company * $salary) / 100;
+         // $bebanKaryawan = ($red->employee * $salary) / 100;
          // dd($bebanPerusahaan);
 
          TransactionReduction::create([

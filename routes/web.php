@@ -39,6 +39,7 @@ use App\Http\Controllers\SpController;
 use App\Http\Controllers\SpklController;
 use App\Http\Controllers\SubDeptController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\TransactionOvertimeController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\FuncController;
@@ -46,6 +47,7 @@ use App\Models\Emergency;
 use App\Models\EmployeeLeader;
 use App\Models\Reduction;
 use App\Models\SpApproval;
+use App\Models\TransactionOvertime;
 use Illuminate\Support\Facades\Route;
 use PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer\SpgrContainer\SpContainer;
 
@@ -265,12 +267,20 @@ Route::middleware(["auth"])->group(function () {
 
       Route::prefix('payroll')->group(function () {
          Route::get('/index', [PayrollController::class, 'index'])->name('payroll');
+         Route::get('/setup', [PayrollController::class, 'setup'])->name('payroll.setup');
          Route::get('/detail/{id}' , [PayrollController::class, 'detail'])->name('payroll.detail');
          Route::put('/update', [PayrollController::class, 'update'])->name('payroll.update');
          Route::prefix('transaction')->group(function () {
+            Route::post('/add/master', [TransactionController::class, 'storeMaster'])->name('payroll.add.master.transaction');
+            Route::get('/monthly/{id}', [TransactionController::class, 'monthly'])->name('payroll.transaction.monthly');
             Route::get('/index', [TransactionController::class, 'index'])->name('payroll.transaction');
             Route::get('/detail/{id}' , [TransactionController::class, 'detail'])->name('payroll.transaction.detail');
             Route::post('store', [TransactionController::class, 'store'])->name('payroll.transaction.store');
+         });
+         Route::prefix('overtime')->group(function () {
+            Route::post('/store', [TransactionOvertimeController::class, 'store'])->name('payroll.overtime.store');
+            // Route::get('/detail/{id}' , [TransactionController::class, 'detail'])->name('payroll.transaction.detail');
+            // Route::post('store', [TransactionController::class, 'store'])->name('payroll.transaction.store');
          });
          Route::prefix('unit')->group(function () {
             Route::get('/index', [PayrollController::class, 'unit'])->name('payroll.unit');

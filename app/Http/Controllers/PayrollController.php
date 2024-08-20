@@ -12,8 +12,21 @@ class PayrollController extends Controller
 {
    public function index(){
       $employees = Employee::where('status', 1)->get();
+      $units = Unit::get();
       return view('pages.payroll.index', [
-         'employees' => $employees
+         'employees' => $employees,
+         'units' => $units
+      ])->with('i');
+   }
+
+   public function setup(){
+      $employees = Employee::where('status', 1)->get();
+      $units = Unit::get();
+      $firstUnit = Unit::get()->first();
+      return view('pages.payroll.setup', [
+         'employees' => $employees,
+         'units' => $units,
+         'firstUnit' => $firstUnit
       ])->with('i');
    }
 

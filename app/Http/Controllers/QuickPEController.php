@@ -280,7 +280,7 @@ class QuickPEController extends Controller
             'date' => 'required'
         ]);
 
-        $employee = Employee::where('nik', auth()->user()->username)->first();
+        $leader = Employee::where('nik', auth()->user()->username)->first();
 
         // Memeriksa apakah PE untuk karyawan pada semester dan tahun tertentu sudah ada
         $cek = Pe::where([
@@ -306,14 +306,14 @@ class QuickPEController extends Controller
 
             // Menyisipkan data PE baru ke database
             $pe = Pe::create([
-               'department_id' => $employee->department_id,
-               'sub_dept_id' => $employee->sub_dept_id,
+               'department_id' => $employe->department_id,
+               'sub_dept_id' => $employe->sub_dept_id,
                 'employe_id' => $req->employe_id,
                 'date' => $req->date,
                 'is_semester' => '1',
                 'semester' => $req->semester,
                 'tahun' => $req->tahun,
-                'created_by' => $employee->id,
+                'created_by' => $leader->id,
                 'created_at' => NOW(),
                 'updated_at' => NOW()
             ]);
@@ -377,7 +377,7 @@ class QuickPEController extends Controller
             //    $departmentId = $user->department_id;
             // }
             Log::create([
-               'department_id' => $employee->department_id,
+               'department_id' => $leader->department_id,
                'user_id' => auth()->user()->id,
                'action' => 'Create',
                'desc' => 'QPE ' . $employe->nik . ' ' . $employe->biodata->fullName() . ' ' . $req->semester . '/' . $req->tahun 
