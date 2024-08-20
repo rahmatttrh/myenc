@@ -26,7 +26,7 @@ Create PE
                         @csrf
                         <div class="form-group form-group-default">
                             <label>Employee</label>
-                            <select class="form-control" name="employe_id" id="employe_id">
+                            <select class="form-control js-example-basic-single" name="employe_id" id="employe_id">
                                 <option value="">--- Choose Employe ---</option>
                                 <option value="{{$employee->id}}">{{$employee->biodata->fullName()}}</option>
                                 @if (auth()->user()->hasRole('Manager|Asst. Manager'))

@@ -97,6 +97,7 @@ class ContractController extends Controller
       // dd($req->position);
 
       // dd($req->designation);
+<<<<<<< HEAD
       $employee->update([
          // 'unit_id' => $req->unit,
          'nik' => $req->nik,
@@ -110,6 +111,9 @@ class ContractController extends Controller
          
          
       ]);
+=======
+      
+>>>>>>> a2c2ed7ea49f6ea25618c293f9ff12734244dd0e
 
       $contract->update([
          'status' => 1,
@@ -134,6 +138,21 @@ class ContractController extends Controller
          'cuti' => $req->cuti,
          'loc' => $req->loc,
          'note' => $req->note
+      ]);
+
+      $employee->update([
+         // 'unit_id' => $req->unit,
+         'nik' => $req->nik,
+         'manager_id' => $req->manager,
+         'direct_leader_id' => $req->leader,
+         'designation_id' => $position->designation_id,
+
+         'unit_id' => $contract->unit_id,
+         'department_id' => $contract->department_id,
+         'sub_dept_id' => $contract->subdept_id,
+         'position_id' => $position->id,
+         
+         
       ]);
       // });
 

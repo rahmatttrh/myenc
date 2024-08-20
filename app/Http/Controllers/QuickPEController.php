@@ -22,6 +22,7 @@ use App\Models\PekpiDetail;
 use App\Models\Position;
 use App\Models\Sp;
 use App\Models\Unit;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -464,6 +465,16 @@ class QuickPEController extends Controller
         }
          //   dd('oke');
         $pe = Pe::find($kpa->pe_id);
+
+        $today = Carbon::now();
+        $date1 = Carbon::createFromDate($pe->employe->join);
+        $date2 = Carbon::createFromDate($today->format('Y'), 6, 30);
+        $time = $today->diff($pe->employe->join);
+
+        $joinMonth = $date1->diffInMonths($date2);
+
+      //   dd($monthDifference);
+
         $this->calculateAcvKpa($kpa->id);
          // Menghitung ulang pencapaian PE
          $this->calculatePe($pe->id);
@@ -485,7 +496,8 @@ class QuickPEController extends Controller
             'kpaAchievement' => 0,
             'pbaAchievement' => 0,
             'datas' => $datas,
-            'valueAvg' => $valueAvg
+            'valueAvg' => $valueAvg,
+            'joinMonth' => $joinMonth
         ])->with('i');
     }
 

@@ -14,21 +14,45 @@ PE
     </nav>
 
 
-    @if($pd->pdds->count() < 6) <div class="row">
-        <div class="col md-12">
-            <div class="card shadow-none border">
-                <div class="card-header d-flex bg-warning">
-                    Informasi !
-                </div>
-                <div class="card-body">
-                    @if($pd->pdds->count() < 6) <h4 class="text-center"> Anda belum bisa melakukan submit karena : </h4>
+    @if ($joinMonth < 6)
+      {{-- {{$pd->pdds->count()}} --}}
+         @if($pd->pdds->count() == null || $pd->pdds->count() == 0) 
+         <div class="row">
+            <div class="col md-12">
+               <div class="card shadow-none border">
+                  <div class="card-header d-flex bg-warning">
+                     Informasi !!!
+                  </div>
+                  <div class="card-body">
+                        <h4 class="text-center"> Anda belum bisa melakukan submit karena : </h4>
                         <h3 class="text-center">
-                            - Data Discipline (Absensi) masih belum lengkap !</h3>
-                        @endif </div>
+                              - Data Discipline (Absensi) masih belum lengkap !</h3>
+                        
+                  </div>
+               </div>
             </div>
-        </div>
-</div>
-@endif
+         </div>
+         @endif
+        @else
+        @if($pd->pdds->count() < 6) 
+         <div class="row">
+            <div class="col md-12">
+               <div class="card shadow-none border">
+                  <div class="card-header d-flex bg-warning">
+                     Informasi !!!
+                  </div>
+                  <div class="card-body">
+                        @if($pd->pdds->count() < 6) <h4 class="text-center"> Anda belum bisa melakukan submit karena : </h4>
+                        <h3 class="text-center">
+                              - Data Discipline (Absensi) masih belum lengkap !</h3>
+                        @endif 
+                  </div>
+               </div>
+            </div>
+         </div>
+      @endif
+    @endif
+   
 
 <div class="row" id="boxCreate">
     <div class="col-md-3">
@@ -82,13 +106,48 @@ PE
                 </div>
 
                 {{-- @if(($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202') && (auth()->user()->hasRole('Leader|Supervisor') ) ) --}}
-                @if (auth()->user()->hasRole('Administrator'))
+               @if (auth()->user()->hasRole('Administrator'))
                   @else
                   
                   @if(($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202') && (auth()->user()->getEmployeeId() == $pe->created_by  || auth()->user()->hasRole('Supervisor|Manager|Asst. Manager')) )
                   <div class="btn-group btn-group-page-header ml-auto">
                      
                      <div class="button-group">
+                        @if ($joinMonth < 6)
+                           @if(isset($pd))
+                           <button class="btn btn-xs btn-light" data-toggle="modal" data-target="#modal-submit-{{$kpa->id}}"><i class="fas fa-rocket"></i> Submit </button>
+                           <!-- <x-modal.submit :id="$pe->id" :body="'KPI ' . $kpa->employe->biodata->fullName() . ' semester '. $kpa->semester.' '. $pe->tahun " url="{{route('qpe.submit', enkripRambo($pe->id))}}" /> -->
+
+                           <div class="modal fade" id="modal-submit-{{$kpa->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                              <div class="modal-dialog" role="document">
+                                 <div class="modal-content">
+                                       <form method="POST" action="{{route('qpe.submit', enkripRambo($pe->id))}}" enctype="multipart/form-data">
+                                          @csrf
+                                          @method('PUT')
+                                          <input type="hidden" name="id" value="{{$pe->id}}">
+                                          <div class="modal-header">
+                                             <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                   <span aria-hidden="true">&times;</span>
+                                             </button>
+                                          </div>
+                                          <div class="modal-body">
+                                             Submit KPI
+
+                                             <?php echo $kpa->employe->biodata->fullName() . ' semester ' . $kpa->semester . ' ' . $pe->tahun; ?>
+                                          </div>
+                                          <div class="modal-footer">
+                                             <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+                                             <button type="submit" class="btn btn-primary ">
+                                                   Submit
+                                             </button>
+                                          </div>
+                                       </form>
+                                 </div>
+                              </div>
+                           </div>
+                           @endif
+                        @else
                            @if(isset($pd) && $pd->pdds->count() == 6)
                            <button class="btn btn-xs btn-light" data-toggle="modal" data-target="#modal-submit-{{$kpa->id}}"><i class="fas fa-rocket"></i> Submit </button>
                            <!-- <x-modal.submit :id="$pe->id" :body="'KPI ' . $kpa->employe->biodata->fullName() . ' semester '. $kpa->semester.' '. $pe->tahun " url="{{route('qpe.submit', enkripRambo($pe->id))}}" /> -->
@@ -122,6 +181,8 @@ PE
                               </div>
                            </div>
                            @endif
+                        @endif
+                           
                      </div>
                      &nbsp;
                      <button type="button" class="btn btn-light btn-xs btn-round btn-page-header-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

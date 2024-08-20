@@ -37,7 +37,11 @@ class HomeController extends Controller
    public function index()
    {
 
-      
+      // if (auth()->user()->hasRole('Manager')) {
+      //    dd('Manager');
+      // } else {
+      //    dd('ok');
+      // }
 
       // $contracts = Contract::get();
       // foreach($contracts as $con){
@@ -200,7 +204,7 @@ class HomeController extends Controller
             'logins' => $logins,
             'qpes' => $qpes
          ]);
-      } elseif (auth()->user()->hasRole('HRD-Manager')) {
+      } elseif (auth()->user()->hasRole('HRD-Manager|HRD')) {
          $user = Employee::find(auth()->user()->getEmployeeId());
          $employees = Employee::get();
          $male = Biodata::where('gender', 'Male')->count();

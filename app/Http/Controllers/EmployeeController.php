@@ -535,6 +535,7 @@ class EmployeeController extends Controller
          'position_id' => $req->position,
          'contract_id' => $contract->id,
          'biodata_id' => $biodata->id,
+         'join' => $req->join,
          'picture' => request('picture') ? request()->file('picture')->store('employee/picture') : '',
       ]);
 
