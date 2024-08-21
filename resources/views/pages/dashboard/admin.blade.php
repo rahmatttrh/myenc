@@ -224,7 +224,7 @@
                            <th>Semester</th>
                            {{-- <th>Desc</th> --}}
                            <th scope="col">Status</th>
-                           {{-- <th></th> --}}
+                           <th>Last Update</th>
                         </tr>
                      </thead>
                      <tbody>
@@ -236,6 +236,9 @@
                                  <td>{{$pe->semester}} / {{$pe->tahun}}</td>
                                  <td class="text-muted">
                                     <x-status.qpe-plain :pe="$pe" />
+                                 </td>
+                                 <td>
+                                    {{formatDateTimeB($pe->updated_at)}}
                                  </td>
                                 
                                 {{-- <td class="text-right">
@@ -267,7 +270,7 @@
                   <a href="{{route('sp')}}" class="text-white">More..</a>
                </div>
                <div class="card-body p-0">
-                  <table class="display  table-sm table-bordered  table-striped ">
+                  <table class="display  table-sm table-bordered   ">
                      <thead>
                         
                         <tr>
@@ -278,6 +281,7 @@
                            
                            <th>Level</th>
                            <th scope="col">Status</th>
+                           <th>Last Update</th>
                         </tr>
                      </thead>
                      <tbody>
@@ -295,6 +299,7 @@
                               <td>
                                  <x-status.sp :sp="$sp" />
                               </td>
+                              <td>{{formatDateTimeB($sp->updated_at)}}</td>
                            </tr>
                               @endforeach
                            @else
@@ -324,6 +329,7 @@
                            <th>Name</th>
                            {{-- <th>Desc</th> --}}
                            <th scope="col">Status</th>
+                           
                         </tr>
                      </thead>
                      <tbody>
