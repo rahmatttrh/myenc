@@ -173,7 +173,7 @@
             
             <div class="card">
                <div class="card-header d-flex justify-content-between p-2 bg-primary text-white">
-                  <small>10 Latest QPE</small>
+                  <small>8 Latest QPE</small>
                   <a href="{{route('qpe')}}" class="text-white">more...</a>
                </div>
                <div class="card-body p-0">
@@ -215,7 +215,7 @@
                   </table>
                </div>
                <div class="card-footer">
-                  <small class="text-muted">*Ini adalah 10 data QPE terkini, klik <a href="{{route('qpe')}}">Disini</a> untuk melihat seluruh data QPE.</small>
+                  <small class="text-muted">*Ini adalah 8 data QPE terkini, klik <a href="{{route('qpe')}}">Disini</a> untuk melihat seluruh data QPE.</small>
                </div>
             </div>
 

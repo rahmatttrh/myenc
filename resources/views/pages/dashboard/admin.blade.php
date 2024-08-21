@@ -157,6 +157,39 @@
                         </tr> --}}
                      </tbody>
                   </table>
+                  <table class="display  table-sm table-bordered">
+                     <thead>
+                        <tr>
+                           <th colspan="2">SP</th>
+                           <th colspan="2">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                           <td>Draft</td>
+                           <td class="text-center">{{count($sps->where('status', 0))}}</td>
+                           {{-- <td>Draft</td>
+                           <td class="text-center">{{count($qpes->where('status', 0))}}</td> --}}
+                        </tr>
+                        <tr>
+                           <td>Progress</td>
+                           <td class="text-center">{{count($sps->where('status','>', 0)->where('status', '<', 4))}}</td>
+                           {{-- <td>Porgress</td>
+                           <td class="text-center">{{count($qpes->where('status', 1))}}</td> --}}
+                        </tr>
+                        <tr>
+                           <td class="text-muted">Published</td>
+                           <td class="text-center text-muted">{{count($sps->where('status', '>=', 4))}}</td>
+                           {{-- <td>Done</td>
+                           <td class="text-center">{{count($qpes->where('status', 2))}}</td> --}}
+                        </tr>
+                        
+                        {{-- <tr>
+                           <td>Nonactive</td>
+                           <td class="text-center">{{count($employees->where('status', 3))}}</td>
+                        </tr> --}}
+                     </tbody>
+                  </table>
                </div>
             </div>
             <div class="card">
@@ -210,7 +243,7 @@
          <div class="col-md-8">
             <div class="card">
                <div class="card-header d-flex justify-content-between p-2 bg-primary text-white">
-                  <small>10 Latest QPE</small>
+                  <small>8 Latest QPE</small>
                   <a href="{{route('qpe')}}" class="text-white">More..</a>
                </div>
                <div class="card-body p-0">
@@ -262,11 +295,14 @@
                      </tbody>
                   </table>
                </div>
+               <div class="card-footer">
+                  <small class="text-muted">*Ini adalah 8 data QPE terkini, klik <a href="{{route('qpe')}}">Disini</a> untuk melihat seluruh data QPE.</small>
+               </div>
             </div>
 
             <div class="card">
                <div class="card-header d-flex justify-content-between p-2 bg-danger text-white">
-                  <small>SP Recent</small>
+                  <small>5 Latest SP</small>
                   <a href="{{route('sp')}}" class="text-white">More..</a>
                </div>
                <div class="card-body p-0">
@@ -285,8 +321,8 @@
                         </tr>
                      </thead>
                      <tbody>
-                        @if (count($sps) > 0)
-                              @foreach ($sps as $sp)
+                        @if (count($recentSps) > 0)
+                              @foreach ($recentSps as $sp)
                               <tr>
                               <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->code}}</a></td>
                               <td>{{$sp->employee->nik}}</td>
