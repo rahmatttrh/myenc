@@ -188,7 +188,8 @@ class HomeController extends Controller
          $male = Biodata::where('gender', 'Male')->count();
          $female = Biodata::where('gender', 'Female')->count();
          $spkls = Spkl::orderBy('updated_at', 'desc')->paginate(5);
-         $sps = Sp::orderBy('updated_at', 'desc')->paginate(5);
+         $sps = Sp::orderBy('updated_at', 'desc')->get();
+         $recentSps = Sp::orderBy('updated_at', 'desc')->paginate(5);
          $logins = Log::orderBy('created_at', 'desc')->paginate(10);
          $qpes = Pe::orderBy('updated_at', 'desc')->get();
          $recentQpes = Pe::orderBy('updated_at', 'desc')->paginate(8);
@@ -206,6 +207,7 @@ class HomeController extends Controller
             'female' => $female,
             'spkls' => $spkls,
             'sps' => $sps,
+            'recentSps' => $recentSps,
             'tetap' => $tetap,
             'kontrak' => $kontrak,
             'off' => $off,
