@@ -115,58 +115,100 @@
          <div class="col-md-8">
             {{-- <div class="table-responsive"> --}}
                {{-- table table-bordered table-sm table-head-bg-info table-bordered-bd-info --}}
-            <div class="card">
-               <div class="card-header d-flex justify-content-between p-2 bg-primary text-white">
-                  <small>Recent QPE</small>
-                  <a href="{{route('qpe')}}" class="text-white">More..</a>
+               <div class="row">
+                  <div class="col-md-3">
+                     <div class="card">
+                        <div class="card-header d-flex justify-content-between p-2 bg-primary text-white">
+                           <small>QPE</small>
+                           {{-- <a href="{{route('qpe')}}" class="text-white">More..</a> --}}
+                        </div>
+                        <div class="card-body p-0">
+                           <table class="display  table-sm table-bordered  ">
+                              <thead>
+                                 <tr>
+                                    <th colspan="2">Monitoring</th>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                                 <tr>
+                                    <td>Draft</td>
+                                    <td>{{count($qpes->where('status', 0))}}</td>
+                                 </tr>
+                                 <tr>
+                                    <td>Porgress</td>
+                                    <td>{{count($qpes->where('status', 1))}}</td>
+                                 </tr>
+                                 <tr>
+                                    <td>Done</td>
+                                    <td>{{count($qpes->where('status', 2))}}</td>
+                                 </tr>
+                                 <tr>
+                                    <td>Total</td>
+                                    <td>{{count($qpes)}}</td>
+                                 </tr>
+                                 
+                                 
+                              </tbody>
+                           </table>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col">
+                     <div class="card">
+                        <div class="card-header d-flex justify-content-between p-2 bg-primary text-white">
+                           <small>Recent QPE</small>
+                           <a href="{{route('qpe')}}" class="text-white">More..</a>
+                        </div>
+                        <div class="card-body p-0">
+                           <table class="display  table-sm table-bordered  ">
+                              <thead>
+                                 
+                                 <tr>
+                                    {{-- <th scope="col">#</th> --}}
+                                    {{-- <th scope="col">ID</th> --}}
+                                    <th scope="col">Employee</th>
+                                    <th>Semester</th>
+                                    {{-- <th>Desc</th> --}}
+                                    <th scope="col">Status</th>
+                                    {{-- <th></th> --}}
+                                 </tr>
+                              </thead>
+                              <tbody>
+                                 @if (count($recentQpes) > 0)
+                                       @foreach ($recentQpes as $pe)
+                                        <tr>
+                                          {{-- <td>{{$pe->employe->nik}}</td> --}}
+                                          <td>{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}}</td>
+                                          <td>{{$pe->semester}} / {{$pe->tahun}}</td>
+                                          <td class="text-muted">
+                                             <x-status.qpe-plain :pe="$pe" />
+                                          </td>
+                                         
+                                         {{-- <td class="text-right">
+                                             @if($pe->status == 0)
+                                             <!-- <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-delete-{{$pe->id}}"><i class="fas fa-trash"></i> Delete</button> -->
+                                             @elseif(($pe->status == '1' || $pe->status == '2' || $pe->status == '101' || $pe->status == '202') && $pe->behavior > 0)
+                                             <a href="{{ route('export.qpe', $pe->id) }}" target="_blank"> Preview PDF</a>
+                                             @elseif(($pe->status == 0 || $pe->status == 101 || $pe->status == 202) && auth()->user()->hasRole('Leader'))
+                                             <!-- <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-submit-{{$pe->id}}"><i class="fas fa-rocket"></i> Submit</button> -->
+                                             @endif
+                                         </td> --}}
+                                        </tr>
+                                       @endforeach
+                                    @else
+                                    <tr>
+                                       <td colspan="5" class="text-center">Empty</td>
+                                    </tr>
+                                 @endif
+                                 
+                                 
+                              </tbody>
+                           </table>
+                        </div>
+                     </div>
+                  </div>
                </div>
-               <div class="card-body p-0">
-                  <table class="display  table-sm table-bordered  ">
-                     <thead>
-                        
-                        <tr>
-                           {{-- <th scope="col">#</th> --}}
-                           <th scope="col">ID</th>
-                           <th scope="col">Employee</th>
-                           <th>Semester/Tahun</th>
-                           {{-- <th>Desc</th> --}}
-                           <th scope="col">Status</th>
-                           {{-- <th></th> --}}
-                        </tr>
-                     </thead>
-                     <tbody>
-                        @if (count($qpes) > 0)
-                              @foreach ($qpes as $pe)
-                               <tr>
-                                 <td>{{$pe->employe->nik}}</td>
-                                 <td>{{$pe->employe->biodata->fullName()}}</td>
-                                 <td>{{$pe->semester}} / {{$pe->tahun}}</td>
-                                 <td class="text-muted">
-                                    <x-status.qpe-plain :pe="$pe" />
-                                 </td>
-                                
-                                {{-- <td class="text-right">
-                                    @if($pe->status == 0)
-                                    <!-- <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-delete-{{$pe->id}}"><i class="fas fa-trash"></i> Delete</button> -->
-                                    @elseif(($pe->status == '1' || $pe->status == '2' || $pe->status == '101' || $pe->status == '202') && $pe->behavior > 0)
-                                    <a href="{{ route('export.qpe', $pe->id) }}" target="_blank"> Preview PDF</a>
-                                    @elseif(($pe->status == 0 || $pe->status == 101 || $pe->status == 202) && auth()->user()->hasRole('Leader'))
-                                    <!-- <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-submit-{{$pe->id}}"><i class="fas fa-rocket"></i> Submit</button> -->
-                                    @endif
-                                </td> --}}
-                               </tr>
-                              @endforeach
-                           @else
-                           <tr>
-                              <td colspan="5" class="text-center">Empty</td>
-                           </tr>
-                        @endif
-                        
-                        
-                     </tbody>
-                  </table>
-               </div>
-            </div>
+            
             <div class="card">
                <div class="card-header d-flex justify-content-between p-2 bg-danger text-white">
                   <small>SP Recent</small>

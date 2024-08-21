@@ -189,8 +189,10 @@ class HomeController extends Controller
          $spkls = Spkl::orderBy('updated_at', 'desc')->paginate(5);
          $sps = Sp::orderBy('updated_at', 'desc')->paginate(4);
          $logins = Log::orderBy('created_at', 'desc')->paginate(10);
-         $qpes = Pe::orderBy('updated_at', 'desc')->paginate(4);
+         $qpes = Pe::orderBy('updated_at', 'desc')->get();
+         $recentQpes = Pe::orderBy('updated_at', 'desc')->paginate(5);
          // Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit culpa tenetur sed
+         
          return view('pages.dashboard.admin', [
             'employees' => $employees,
             'male' => $male,
@@ -201,7 +203,8 @@ class HomeController extends Controller
             'kontrak' => $kontrak,
             'off' => $off,
             'logins' => $logins,
-            'qpes' => $qpes
+            'qpes' => $qpes,
+            'recentQpes' => $recentQpes
          ]);
       } elseif (auth()->user()->hasRole('HRD-Manager|HRD')) {
          $user = Employee::find(auth()->user()->getEmployeeId());
@@ -216,7 +219,8 @@ class HomeController extends Controller
          $logs = Log::where('department_id', $user->department_id)->orderBy('created_at', 'desc')->paginate(5);
          $teams = EmployeeLeader::where('leader_id', $user->id)->get();
          // dd($teams);
-         $pes = Pe::where('status', '>', 0)->orderBy('updated_at', 'desc')->get();
+         $pes = Pe::orderBy('updated_at', 'desc')->get();
+         $recentPes = Pe::orderBy('updated_at', 'desc')->paginate(10);
          // dd($pes);
          return view('pages.dashboard.hrd', [
             'user' => $user,
@@ -231,7 +235,8 @@ class HomeController extends Controller
             'empty' => $empty,
             'logs' => $logs,
             'teams' => $teams,
-            'pes' => $pes
+            'pes' => $pes,
+            'recentPes' => $recentPes
          ]);
       } elseif (auth()->user()->hasRole('HRD-Spv')) {
          $user = Employee::find(auth()->user()->getEmployeeId());

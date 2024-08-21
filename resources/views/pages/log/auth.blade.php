@@ -34,7 +34,7 @@ Logs Activity
                         @foreach ($logs as $log)
                         <tr>
                            {{-- <td class="text-center">{{++$i}}</td> --}}
-                           <td class="text-truncate">{{formatDateTime($log->created_at)}}</td>
+                           <td class="text-truncate">{{formatDateTimeB($log->created_at)}}</td>
                            <td class="text-truncate">{{$log->user->username}} {{$log->user->name}}</td>
                            <td>
                               @if ($log->action == 'Login')
