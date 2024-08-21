@@ -192,6 +192,10 @@ class HomeController extends Controller
          $logins = Log::orderBy('created_at', 'desc')->paginate(10);
          $qpes = Pe::orderBy('updated_at', 'desc')->get();
          $recentQpes = Pe::orderBy('updated_at', 'desc')->paginate(5);
+
+         $kontrak = Contract::where('status', 1)->where('type', 'Kontrak')->get()->count();
+         $tetap = Contract::where('status', 1)->where('type', 'Tetap')->get()->count();
+         $empty = Contract::where('type', null)->get()->count();
          // Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit culpa tenetur sed
          
          return view('pages.dashboard.admin', [
@@ -205,7 +209,10 @@ class HomeController extends Controller
             'off' => $off,
             'logins' => $logins,
             'qpes' => $qpes,
-            'recentQpes' => $recentQpes
+            'recentQpes' => $recentQpes,
+            'kontrak' => $kontrak,
+            'tetap' => $tetap,
+            'empty' => $empty,
          ]);
       } elseif (auth()->user()->hasRole('HRD-Manager|HRD')) {
          $user = Employee::find(auth()->user()->getEmployeeId());
