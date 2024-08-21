@@ -172,7 +172,7 @@
       <ul class="nav nav-collapse">
          <li>
             <a href="{{route('payroll.transaction')}}">
-               <span class="sub-item">Slip Gaji</span>
+               <span class="sub-item">Transaction</span>
             </a>
          </li>
          <li>

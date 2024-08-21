@@ -25,4 +25,16 @@ class ReductionController extends Controller
 
       return redirect()->back()->with('success', 'Reduction Unit successfully added');
    }
+
+   public function update(Request $req){
+      $unitReduction = Reduction::find($req->reduction);
+      dd($unitReduction->name);
+   }
+
+   public function delete($id){
+      $reduction = Reduction::find(dekripRambo($id));
+      // dd($reduction->name);
+      $reduction->delete();
+      return redirect()->back()->with('success', 'Reduction Unit successfully deleted');
+   }
 }

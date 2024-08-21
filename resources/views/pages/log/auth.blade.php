@@ -35,7 +35,7 @@ Logs Activity
                         <tr>
                            {{-- <td class="text-center">{{++$i}}</td> --}}
                            <td class="text-truncate">{{formatDateTimeB($log->created_at)}}</td>
-                           <td class="text-truncate" style="max-width: 160px">{{$log->user->username}} {{$log->user->name}}</td>
+                           <td class="text-truncate">{{$log->user->username}} {{$log->user->name}}</td>
                            <td>
                               @if ($log->action == 'Login')
                                  {{$log->action}} into system

@@ -82,4 +82,13 @@ class PayrollController extends Controller
          'firstUnit' => $firstUnit
       ])->with('i');
    }
+
+   public function unitUpdatePph(Request $req){
+      $unit = Unit::find($req->unit);
+      $unit->update([
+         'pph' => $req->pph
+      ]);
+
+      return redirect()->back()->with('success', 'Unit PPH successfully updated');
+   }
 }

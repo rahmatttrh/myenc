@@ -112,9 +112,12 @@
                                  <div class="form-group form-group-default">
                                     <label>Type</label>
                                     <select class="form-control" name="desc" id="desc" required>
-                                        <option value="">Choose</option>
+                                        <option value="" selected disabled>Choose</option>
                                         <option value="BPJS KS">BPJS Kesehatan </option>
-                                        <option value="BPJS KT">BPJS Ketenagakerjaan </option>
+                                        <option value="JKK">JKK </option>
+                                        <option value="JHT">JHT </option>
+                                        <option value="JKM">JKM </option>
+                                        <option value="JP">JP </option>
                                     </select>
                                 </div>
                                  <div class="row">

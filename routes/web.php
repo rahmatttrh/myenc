@@ -284,6 +284,7 @@ Route::middleware(["auth"])->group(function () {
          });
          Route::prefix('unit')->group(function () {
             Route::get('/index', [PayrollController::class, 'unit'])->name('payroll.unit');
+            Route::post('/update/pph', [PayrollController::class, 'unitUpdatePph'])->name('payroll.unit.update.pph');
             // Route::get('/detail/{id}' , [TransactionController::class, 'detail'])->name('payroll.transaction.detail');
             // Route::post('store', [TransactionController::class, 'store'])->name('payroll.transaction.store');
          });
@@ -291,8 +292,9 @@ Route::middleware(["auth"])->group(function () {
 
       Route::prefix('reduction')->group(function () {
          // Route::get('/index', [PayrollController::class, 'unit'])->name('payroll.unit');
-         // Route::get('/detail/{id}' , [TransactionController::class, 'detail'])->name('payroll.transaction.detail');
+         Route::put('/update' , [ReductionController::class, 'update'])->name('reduction.update');
          Route::post('store', [ReductionController::class, 'store'])->name('reduction.store');
+         Route::get('delete/{id}', [ReductionController::class, 'delete'])->name('reduction.delete');
       });
 
    });

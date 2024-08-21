@@ -38,41 +38,88 @@
                   @endif --}}
                </div>
             </div>
-            <div class="card">
-               <div class="card-body p-0">
-                  <table class="display  table-sm table-bordered  table-striped ">
-                     <thead>
-                        {{-- <tr>
-                           <th colspan="2">Employee Status</th>
-                        </tr> --}}
-                        <tr>
-                           <th scope="col">Employee</th>
-                           <th scope="col" class="text-center">Jumlah</th>
-                           
-                        </tr>
-                        
-                     </thead>
-                     <tbody>
-                        <tr>
-                           <td>Kontrak</td>
-                           <td class="text-center">{{$kontrak}}</td>
-                        </tr>
-                        <tr>
-                           <td>Tetap</td>
-                           <td class="text-center">{{$tetap}}</td>
-                        </tr>
-                        <tr>
-                           <td>Empty</td>
-                           <td class="text-center">{{$empty}}</td>
-                        </tr>
-                        <tr>
-                           <td>Total</td>
-                           <td class="text-center">{{count($employees)}}</td>
-                        </tr>
-                     </tbody>
-                  </table>
+            <div class="row">
+               <div class="col">
+                  <div class="card">
+                     <div class="card-header d-flex justify-content-between p-2 bg-primary text-white">
+                        <small>Monitoring</small>
+                     </div>
+                     <div class="card-body p-0">
+                        <table class="display  table-sm table-bordered">
+                           <thead>
+                              <tr>
+                                 <th colspan="2">Employee</th>
+                                 <th colspan="2">QPE</th>
+                              </tr>
+                           </thead>
+                           <tbody>
+                              <tr>
+                                 <td>Kontrak</td>
+                                 <td class="text-center">{{$kontrak}}</td>
+                                 <td>Draft</td>
+                                 <td>{{count($pes->where('status', 0))}}</td>
+                              </tr>
+                              <tr>
+                                 <td>Tetap</td>
+                                 <td class="text-center">{{$tetap}}</td>
+                                 <td>Porgress</td>
+                                 <td>{{count($pes->where('status', 1))}}</td>
+                              </tr>
+                              <tr>
+                                 <td>Empty</td>
+                                 <td class="text-center">{{$empty}}</td>
+                                 <td>Done</td>
+                                 <td>{{count($pes->where('status', 2))}}</td>
+                              </tr>
+                              <tr>
+                                 <td>Total</td>
+                                 <td class="text-center">{{count($employees)}}</td>
+                                 <td>Total</td>
+                                 <td>{{count($pes)}}</td>
+                              </tr>
+                           </tbody>
+                        </table>
+                     </div>
+                  </div>
                </div>
+               {{-- <div class="col">
+                  <div class="card">
+                     <div class="card-header d-flex justify-content-between p-2 bg-primary text-white">
+                        <small>QPE</small>
+                     </div>
+                     <div class="card-body p-0">
+                        <table class="display  table-sm table-bordered  ">
+                           <thead>
+                              <tr>
+                                 <th colspan="2">Monitoring</th>
+                              </tr>
+                           </thead>
+                           <tbody>
+                              <tr>
+                                 <td>Draft</td>
+                                 <td>{{count($pes->where('status', 0))}}</td>
+                              </tr>
+                              <tr>
+                                 <td>Porgress</td>
+                                 <td>{{count($pes->where('status', 1))}}</td>
+                              </tr>
+                              <tr>
+                                 <td>Done</td>
+                                 <td>{{count($pes->where('status', 2))}}</td>
+                              </tr>
+                              <tr>
+                                 <td>Total</td>
+                                 <td>{{count($pes)}}</td>
+                              </tr>
+                              
+                              
+                           </tbody>
+                        </table>
+                     </div>
+                  </div>
+               </div> --}}
             </div>
+            
             <div class="card">
                <div class="card-header bg-primary text-white p-2">
                   <small>Teams</small>
@@ -123,6 +170,55 @@
             </div>
          </div>
          <div class="col-md-8">
+            
+            <div class="card">
+               <div class="card-header d-flex justify-content-between p-2 bg-primary text-white">
+                  <small>10 Latest QPE</small>
+                  <a href="{{route('qpe')}}" class="text-white">more...</a>
+               </div>
+               <div class="card-body p-0">
+                  <table class=" ">
+                     <thead>
+                        
+                        <tr class="">
+                           {{-- <th scope="col">#</th> --}}
+                           {{-- <th></th> --}}
+                           <th>Employee</th>
+                           <th>Semester</th>
+                           <th>Achievement</th>
+                           <th>Status</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        @foreach ($recentPes as $pe)
+                            <tr>
+                              {{-- <th></th> --}}
+                              <td>
+                                 {{-- <a href="{{route('sp.detail', enkripRambo($pe->id))}}">{{$pe->code}}</a> --}}
+                                 @if($pe->status == '0' || $pe->status == '101')
+                                 <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
+                                 @elseif($pe->status == '1' || $pe->status == '202' )
+                                 <a href="/qpe/approval/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
+                                 @else
+                                 <a href="/qpe/show/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
+                                 @endif
+                              </td>
+                              <td>{{$pe->semester}} / {{$pe->tahun}}</td>
+                              <td>{{$pe->achievement}}</td>
+                              <td>
+                                 <x-status.pe :pe="$pe" />
+                              </td>
+                           </tr>
+                            @endforeach
+   
+                     </tbody>
+                  </table>
+               </div>
+               <div class="card-footer">
+                  <small class="text-muted">*Ini adalah 10 data QPE terkini, klik <a href="{{route('qpe')}}">Disini</a> untuk melihat seluruh data QPE.</small>
+               </div>
+            </div>
+
             <div class="card">
                <div class="card-header p-2 bg-danger text-white">
                   <small>Recent SP</small>
@@ -155,7 +251,7 @@
                            @endforeach
                             @else
                             <tr>
-                              <td colspan="3" class="text-center">Empty</td>
+                              <td colspan="5" class="text-center">Empty</td>
                            </tr>
                         @endif
                         
@@ -163,50 +259,7 @@
                   </table>
                </div>
             </div>
-            <div class="card">
-               <div class="card-header d-flex justify-content-between p-2 bg-primary text-white">
-                  <small>Recent QPE</small>
-                  <a href="{{route('qpe')}}" class="text-white">more...</a>
-               </div>
-               <div class="card-body p-0">
-                  <table class=" ">
-                     <thead>
-                        
-                        <tr class="">
-                           {{-- <th scope="col">#</th> --}}
-                           {{-- <th></th> --}}
-                           <th>Employee</th>
-                           <th>Semester/Tahun</th>
-                           <th>Achievement</th>
-                           <th>Status</th>
-                        </tr>
-                     </thead>
-                     <tbody>
-                        @foreach ($pes as $pe)
-                            <tr>
-                              {{-- <th></th> --}}
-                              <td>
-                                 {{-- <a href="{{route('sp.detail', enkripRambo($pe->id))}}">{{$pe->code}}</a> --}}
-                                 @if($pe->status == '0' || $pe->status == '101')
-                                 <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
-                                 @elseif($pe->status == '1' || $pe->status == '202' )
-                                 <a href="/qpe/approval/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
-                                 @else
-                                 <a href="/qpe/show/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
-                                 @endif
-                              </td>
-                              <td>{{$pe->semester}} / {{$pe->tahun}}</td>
-                              <td>{{$pe->achievement}}</td>
-                              <td>
-                                 <x-status.pe :pe="$pe" />
-                              </td>
-                           </tr>
-                            @endforeach
-   
-                     </tbody>
-                  </table>
-               </div>
-            </div>
+            
             
          </div>
          
