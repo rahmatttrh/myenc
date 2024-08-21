@@ -169,7 +169,7 @@
                               @foreach ($logins as $log)
                               <tr>
                                  <td class="text-truncate" style="max-width: 110px;">
-                                    <small>{{formatDateTime($log->created_at)}}</small> {{$log->user->username}} {{$log->user->name}} 
+                                    <small>{{formatDateTimeB($log->created_at)}}</small> {{$log->user->username}} {{$log->user->name}} 
                                      <br>
                                      @if ($log->action == 'Login')
                                      {{$log->action}} into system<br>
@@ -255,7 +255,7 @@
                   <a href="{{route('sp')}}" class="text-white">More..</a>
                </div>
                <div class="card-body p-0">
-                  <table class="display  table-sm table-bordered  table-striped ">
+                  <table class="display  table-sm table-bordered  ">
                      <thead>
                         
                         <tr>
