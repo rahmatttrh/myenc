@@ -391,7 +391,7 @@
                                         {{$log->action}} <small>{{$log->desc}}</small> <br>
                                      @endif
                                     
-                                    <small>{{formatDateTime($log->created_at)}}</small>
+                                    <small>{{formatDateTimeB($log->created_at)}}</small>
                                  </td>
                                  {{-- <td>{{$log->action}}</td>
                                  <td >{{$log->desc}}</td> --}}

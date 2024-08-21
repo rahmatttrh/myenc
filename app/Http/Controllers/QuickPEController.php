@@ -871,7 +871,7 @@ class QuickPEController extends Controller
             Log::create([
                'department_id' => $departmentId,
                'user_id' => auth()->user()->id,
-               'action' => 'Create',
+               'action' => 'Update',
                'desc' => 'QPE Comment & Training ' . $pe->employe->nik . ' ' . $pe->employe->biodata->fullName() . ' Semester ' . $pe->semester . '/' . $pe->tahun 
             ]);
 
