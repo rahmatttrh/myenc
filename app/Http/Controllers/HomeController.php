@@ -188,10 +188,10 @@ class HomeController extends Controller
          $male = Biodata::where('gender', 'Male')->count();
          $female = Biodata::where('gender', 'Female')->count();
          $spkls = Spkl::orderBy('updated_at', 'desc')->paginate(5);
-         $sps = Sp::orderBy('updated_at', 'desc')->paginate(4);
+         $sps = Sp::orderBy('updated_at', 'desc')->paginate(5);
          $logins = Log::orderBy('created_at', 'desc')->paginate(10);
          $qpes = Pe::orderBy('updated_at', 'desc')->get();
-         $recentQpes = Pe::orderBy('updated_at', 'desc')->paginate(5);
+         $recentQpes = Pe::orderBy('updated_at', 'desc')->paginate(8);
 
          $kontrak = Contract::where('status', 1)->where('type', 'Kontrak')->get()->count();
          $tetap = Contract::where('status', 1)->where('type', 'Tetap')->get()->count();
@@ -222,7 +222,7 @@ class HomeController extends Controller
          $male = Biodata::where('gender', 'Male')->count();
          $female = Biodata::where('gender', 'Female')->count();
          $spkls = Spkl::orderBy('updated_at', 'desc')->paginate(5);
-         $sps = Sp::where('status', 1)->get();
+         $sps = Sp::orderBy('updated_at', 'desc')->paginate(5);
          $kontrak = Contract::where('status', 1)->where('type', 'Kontrak')->get()->count();
          $tetap = Contract::where('status', 1)->where('type', 'Tetap')->get()->count();
          $empty = Contract::where('type', null)->get()->count();
@@ -230,7 +230,7 @@ class HomeController extends Controller
          $teams = EmployeeLeader::where('leader_id', $user->id)->get();
          // dd($teams);
          $pes = Pe::orderBy('updated_at', 'desc')->get();
-         $recentPes = Pe::orderBy('updated_at', 'desc')->paginate(10);
+         $recentPes = Pe::orderBy('updated_at', 'desc')->paginate(8);
          // dd($pes);
          return view('pages.dashboard.hrd', [
             'user' => $user,

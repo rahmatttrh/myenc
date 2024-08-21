@@ -198,7 +198,7 @@
          <div class="col-md-8">
             <div class="card">
                <div class="card-header d-flex justify-content-between p-2 bg-primary text-white">
-                  <small>10 Latest QPE</small>
+                  <small>8 Latest QPE</small>
                   <a href="{{route('qpe')}}" class="text-white">More..</a>
                </div>
                <div class="card-body p-0">
@@ -212,7 +212,7 @@
                            <th>Semester</th>
                            {{-- <th>Desc</th> --}}
                            <th scope="col">Status</th>
-                           {{-- <th></th> --}}
+                           <th>Last Update</th>
                         </tr>
                      </thead>
                      <tbody>
@@ -224,6 +224,9 @@
                                  <td>{{$pe->semester}} / {{$pe->tahun}}</td>
                                  <td class="text-muted">
                                     <x-status.qpe-plain :pe="$pe" />
+                                 </td>
+                                 <td>
+                                    {{formatDateTimeB($pe->updated_at)}}
                                  </td>
                                 
                                 {{-- <td class="text-right">
@@ -247,15 +250,18 @@
                      </tbody>
                   </table>
                </div>
+               <div class="card-footer">
+                  <small class="text-muted">*Ini adalah 8 data QPE terkini, klik <a href="{{route('qpe')}}">Disini</a> untuk melihat seluruh data QPE.</small>
+               </div>
             </div>
 
             <div class="card">
                <div class="card-header d-flex justify-content-between p-2 bg-danger text-white">
-                  <small>SP Recent</small>
+                  <small>5 Latest SP</small>
                   <a href="{{route('sp')}}" class="text-white">More..</a>
                </div>
                <div class="card-body p-0">
-                  <table class="display  table-sm table-bordered  ">
+                  <table class="display  table-sm table-bordered   ">
                      <thead>
                         
                         <tr>
@@ -266,6 +272,7 @@
                            
                            <th>Level</th>
                            <th scope="col">Status</th>
+                           <th>Last Update</th>
                         </tr>
                      </thead>
                      <tbody>
@@ -283,6 +290,7 @@
                               <td>
                                  <x-status.sp :sp="$sp" />
                               </td>
+                              <td>{{formatDateTimeB($sp->updated_at)}}</td>
                            </tr>
                               @endforeach
                            @else
@@ -312,6 +320,7 @@
                            <th>Name</th>
                            {{-- <th>Desc</th> --}}
                            <th scope="col">Status</th>
+                           
                         </tr>
                      </thead>
                      <tbody>
