@@ -366,9 +366,9 @@ class HomeController extends Controller
          $spRecents = Sp::where('by_id',auth()->user()->getEmployeeId())->orderBy('updated_at', 'desc')->paginate('5');
          $peRecents = Pe::where('created_by', $employee->id)->where('status', '!=', 2)->orderBy('updated_at', 'desc')->get();
          if ($employee->designation->slug == 'supervisor') {
-            $peRecents = Pe::where('department_id', $employee->department_id)->where('status', '!=', 2)->orderBy('updated_at', 'desc')->get();
+            $peRecents = Pe::where('department_id', $employee->department_id)->where('status', '!=', 2)->orderBy('updated_at', 'desc')->paginate(8);
          } else {
-            $peRecents = Pe::where('created_by', $employee->id)->where('status', '!=', 2)->orderBy('updated_at', 'desc')->paginate(10);
+            $peRecents = Pe::where('created_by', $employee->id)->where('status', '!=', 2)->orderBy('updated_at', 'desc')->paginate(8);
          }
          return view('pages.dashboard.supervisor', [
             'employee' => $biodata->employee,
