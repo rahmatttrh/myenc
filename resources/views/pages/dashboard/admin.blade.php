@@ -131,26 +131,30 @@
                            <td>Kontrak</td>
                            <td class="text-center">{{$kontrak}}</td>
                            <td>Draft</td>
-                           <td>{{count($qpes->where('status', 0))}}</td>
+                           <td class="text-center">{{count($qpes->where('status', 0))}}</td>
                         </tr>
                         <tr>
                            <td>Tetap</td>
                            <td class="text-center">{{$tetap}}</td>
                            <td>Porgress</td>
-                           <td>{{count($qpes->where('status', 1))}}</td>
+                           <td class="text-center">{{count($qpes->where('status', 1))}}</td>
                         </tr>
                         <tr>
-                           <td>Empty</td>
-                           <td class="text-center">{{$empty}}</td>
+                           <td class="text-muted">Nonactive</td>
+                           <td class="text-center text-muted">{{count($employees->where('status', 3))}}</td>
                            <td>Done</td>
-                           <td>{{count($qpes->where('status', 2))}}</td>
+                           <td class="text-center">{{count($qpes->where('status', 2))}}</td>
                         </tr>
                         <tr>
+                           <td>Total Active</td>
+                           <td class="text-center">{{count($employees->where('status', '!=', 3))}}</td>
                            <td>Total</td>
-                           <td class="text-center">{{count($employees)}}</td>
-                           <td>Total</td>
-                           <td>{{count($qpes)}}</td>
+                           <td class="text-center">{{count($qpes)}}</td>
                         </tr>
+                        {{-- <tr>
+                           <td>Nonactive</td>
+                           <td class="text-center">{{count($employees->where('status', 3))}}</td>
+                        </tr> --}}
                      </tbody>
                   </table>
                </div>

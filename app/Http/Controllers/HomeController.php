@@ -195,6 +195,8 @@ class HomeController extends Controller
          $kontrak = Contract::where('status', 1)->where('type', 'Kontrak')->get()->count();
          $tetap = Contract::where('status', 1)->where('type', 'Tetap')->get()->count();
          $empty = Contract::where('type', null)->get()->count();
+         // $empty = Contract::where('type', null)->get()->count();
+         
          // Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit culpa tenetur sed
          
          return view('pages.dashboard.admin', [
