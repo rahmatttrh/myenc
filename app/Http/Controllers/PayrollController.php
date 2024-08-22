@@ -86,9 +86,10 @@ class PayrollController extends Controller
    public function unitUpdatePph(Request $req){
       $unit = Unit::find($req->unit);
       $unit->update([
-         'pph' => $req->pph
+         'pph' => $req->pph,
+         'spkl_type' => $req->spkl_type
       ]);
 
-      return redirect()->back()->with('success', 'Unit PPH successfully updated');
+      return redirect()->back()->with('success', 'Setup Unit Payroll successfully updated');
    }
 }

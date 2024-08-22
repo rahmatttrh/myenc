@@ -37,6 +37,10 @@ class HomeController extends Controller
    public function index()
    {
 
+      if (!auth()->user()->hasRole('Administrator|HRD-Manager|HRD|HRD-Spv|HRD-Recruitment|Manager|Asst. Manager|Supervisor|Leader|Karyawan')) {
+         TidakAdaRole;
+         // dd('tidak ada role');
+      } 
       // if (auth()->user()->hasRole('Manager')) {
       //    dd('Manager');
       // } else {

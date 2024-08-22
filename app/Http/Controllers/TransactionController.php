@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Models\Overtime;
 use App\Models\Payroll;
 use App\Models\Reduction;
 use App\Models\Transaction;
@@ -40,47 +41,19 @@ class TransactionController extends Controller
       $transactionReductions = TransactionReduction::where('transaction_id', $transaction->id)->get();
       $reduction = $transaction->reductions->where('type', 'employee')->sum('value');
 
-      // $transaction->update([
-      //    'total' => $payroll->total - $reduction
-      // ]);
-      // dd($transaction->id);
-      // $reductions = Reduction::where('unit_id', $employee->unit_id)->get();
-      // foreach ($reductions as $red) {
-      //    if ($payroll->total <= $red->min_salary) {
-      //       // dd('kurang dari minimum gaju');
-      //       $salary = $red->min_salary;
-      //    } else {
-      //       $salary = $payroll->total;
-      //    }
-      //    $bebanPerusahaan = ($red->company * $salary) / 100;
-      //    $bebanKaryawan = ($red->employee * $salary) / 100;
-      //    // dd($bebanPerusahaan);
+      $overtimes = Overtime::where('month', $transaction->month)->where('employee_id', $employee->id)->get();
+      $totalOvertime = $overtimes->sum('rate');
 
-      //    TransactionReduction::create([
-      //       'transaction_id' => $transaction->id,
-      //       'type' => 'company',
-      //       'name' => $red->name,
-      //       'value' => $bebanPerusahaan
-      //    ]);
+      $this->calculateTotalTransaction($transaction);
 
-      //    TransactionReduction::create([
-      //       'transaction_id' => $transaction->id,
-      //       'type' => 'employee',
-      //       'name' => $red->name,
-      //       'value' => $bebanKaryawan
-      //    ]);
-      // }
-
-      // $transaction->update([
-      //    'total' => $payroll->total - $reduction
-      // ]);
-      
       
 
       return view('pages.payroll.transaction.detail', [
          'employee' => $employee,
          'payroll' => $payroll,
-         'transaction' => $transaction
+         'transaction' => $transaction,
+         'overtimes' => $overtimes,
+         'totalOvertime' => $totalOvertime
       ]);
    }
 
@@ -139,6 +112,7 @@ class TransactionController extends Controller
       // dd($month);
       $year = $now->format('Y');
       // dd($now->format('d/m/Y'));
+
       $transaction = Transaction::create([
          'status' => 0,
          'unit_id' => $emp->unit_id, 
@@ -190,7 +164,6 @@ class TransactionController extends Controller
          'value' => $payroll->insentif,
       ]);
 
-      $transactionDetails = TransactionDetail::where('transaction_id', $transaction->id)->get();
       $reductions = Reduction::where('unit_id', $employee->unit_id)->get();
       foreach ($reductions as $red) {
          if ($payroll->total <= $red->min_salary) {
@@ -223,10 +196,32 @@ class TransactionController extends Controller
             'value' => $bebanKaryawan
          ]);
       }
+
+      $transactionDetails = TransactionDetail::where('transaction_id', $transaction->id)->get();
+      
+      // $overtimes = Overtime::where('month', $transaction->month)->get();
+      // $totalOvertime = $overtimes->sum('rate');
+      
       $transaction->update([
-         'total' => $transactionDetails->sum('value') - $transaction->reductions->where('type', 'employee')->sum('value')
+         'total' => $transactionDetails->sum('value') - $transaction->reductions->where('type', 'employee')->sum('value') 
       ]);
 
+      
+
       return redirect()->back()->with('success', 'Payroll Transaction successfully added');
+   }
+
+
+
+   public function calculateTotalTransaction($transaction){
+      $employee = Employee::find($transaction->employee_id);
+      $payroll = Payroll::find($employee->payroll_id);
+      $transactionDetails = TransactionDetail::where('transaction_id', $transaction->id)->get();
+      $overtimes = Overtime::where('month', $transaction->month)->where('employee_id', $employee->id)->get();
+      $totalOvertime = $overtimes->sum('rate');
+      
+      $transaction->update([
+         'total' => $transactionDetails->sum('value') - $transaction->reductions->where('type', 'employee')->sum('value') + $totalOvertime
+      ]);
    }
 }

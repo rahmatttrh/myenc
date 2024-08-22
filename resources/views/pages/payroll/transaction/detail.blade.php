@@ -90,7 +90,7 @@ Detail Transaction Payroll Employee
                      <div class="row row-nav-line">
                         <ul class="nav nav-tabs nav-line nav-color-secondary" role="tablist">
                            <li class="nav-item"> <a class="nav-link show active" id="pills-basic-tab-nobd" data-toggle="pill" href="#pills-basic-nobd" role="tab" aria-controls="pills-basic-nobd" aria-selected="true">Detail Transaksi Agustus</a> </li>
-                           <li class="nav-item"> <a class="nav-link " id="pills-doc-tab-nobd" data-toggle="pill" href="#pills-doc-nobd" role="tab" aria-controls="pills-doc-nobd" aria-selected="true">Lembur</a> </li>
+                           <li class="nav-item"> <a class="nav-link " id="pills-doc-tab-nobd" data-toggle="pill" href="#pills-doc-nobd" role="tab" aria-controls="pills-doc-nobd" aria-selected="true">Form SPKL</a> </li>
                         </ul>
                      </div>
                   </div>
@@ -109,18 +109,39 @@ Detail Transaction Payroll Employee
                               <div class="col-md-9">
                                  <span>: <b>{{formatRupiah($transaction->total)}}</b></span> <br>
                                  <span>: {{formatRupiah($payroll->total)}}</span> <br>
-                                 <span>: </span> <br>
+                                 <span>: {{formatRupiah($totalOvertime)}} </span> <br>
                                  <span>: {{formatRupiah($transaction->reductions->where('type', 'employee')->sum('value'))}}</span> <br>
                               </div>
                            </div>
                            <hr>
-                           
                            <div class="row">
+                              <div class="col-md-7">
+                                 <table class="mt-2">
+                                    <thead>
+                                       <tr>
+                                          <th colspan="4">Lembur</th>
+                                       </tr>
+                                    </thead>
+                                    <tbody>
+                                       @foreach ($overtimes as $over)
+                                           <tr>
+                                             <td>{{formatDate($over->date)}}</td>
+                                             <td class="text-right">{{$over->hours}} Hour</td>
+                                             <td class="text-right">{{formatRupiah($over->rate)}}</td>
+                                             <td><a href="{{route('payroll.overtime.delete', enkripRambo($over->id))}}">Delete</a></td>
+                                           </tr>
+                                       @endforeach
+                                       
+                                       
+                                       
+                                    </tbody>
+                                 </table>
+                              </div>
                               <div class="col">
                                  <table class="mt-2">
                                     <thead>
                                        <tr>
-                                          <th colspan="3">Potongan Karyawan</th>
+                                          <th colspan="3">Potongan</th>
                                        </tr>
                                     </thead>
                                     <tbody>
@@ -136,8 +157,6 @@ Detail Transaction Payroll Employee
                                        
                                     </tbody>
                                  </table>
-                              </div>
-                              <div class="col">
                                  <table class="mt-2">
                                     <thead>
                                        <tr>
@@ -157,6 +176,12 @@ Detail Transaction Payroll Employee
                                        
                                     </tbody>
                                  </table>
+                              </div>
+                           </div>
+                           <div class="row">
+                              
+                              <div class="col">
+                                 
                               </div>
                            </div>
                            
@@ -197,47 +222,59 @@ Detail Transaction Payroll Employee
                         <div class="tab-pane fade " id="pills-doc-nobd" role="tabpanel" aria-labelledby="pills-doc-tab-nobd">
                            <form action="{{route('payroll.overtime.store')}}" method="POST">
                               @csrf
+                              <input type="number" name="employee" id="employee" value="{{$transaction->employee_id}}" hidden>
+                              <input type="number" name="spkl_type" id="spkl_type" value="{{$transaction->employee->unit->spkl_type}}" hidden>
                               <input type="number" name="transaction" id="transaction" value="{{$transaction->id}}" hidden>
                               <div class="row">
                                  <div class="col-md-4">
                                     <div class="form-group form-group-default">
                                        <label>Date</label>
-                                       <input type="date" class="form-control" id="date" name="date" >
+                                       <input type="date" required class="form-control" id="date" name="date" >
+                                    </div>
+                                 </div>
+                                 <div class="col-md-4">
+                                    <div class="form-group form-group-default">
+                                       <label>Hours Type</label>
+                                       <select class="form-control" required name="hours_type" id="hours_type">
+                                          <option value="" disabled selected>Select</option>
+                                          <option value="1">Aktual</option>
+                                          <option value="2">Multiple</option>
+                                       </select>
+                                       {{-- <input type="number" class="form-control" id="hours" name="hours" > --}}
                                     </div>
                                  </div>
                                  <div class="col-md-2">
                                     <div class="form-group form-group-default">
                                        <label>Hours</label>
-                                       <input type="number" class="form-control" id="hours" name="hours" >
+                                       <input type="number" required class="form-control" id="hours" name="hours" >
                                     </div>
                                  </div>
-                                 <div class="col-md-4">
-                                    <div class="form-group form-group-default">
-                                       <label>Type</label>
-                                       <select name="type" id="type" class="form-control">
-                                          <option value="1">GP/173</option>
-                                          <option value="2">GP+Tunj. Tetap/173</option>
-                                       </select>
-                                    </div>
-                                 </div>
+                                 
                                  <div class="col-md-2">
                                     <button class="btn btn-block btn-primary" type="submit">Add</button>
                                  </div>
                               </div>
                            </form>
-                           <hr>
-                           <div class="table-responsive">
-                              <table>
-                                 <thead>
-                                    <tr>
-                                       <th>Date</th>
-                                       <th>Hours</th>
-                                       <th>Type</th>
-                                       <th>Rupiah</th>
-                                    </tr>
-                                 </thead>
-                              </table>
+
+                           <div class="row">
+                              <div class="col-md-6">
+                                 <table>
+                                    <tbody>
+                                       <tr>
+                                          <td>Lembur/Jam</td>
+                                          <td>
+                                             @if ($employee->unit->spkl_type == 1)
+                                                Gaji Pokok /173
+                                                @elseif($employee->unit->spkl_type == 2)
+                                                Gaji Pokok+Tunjangan Tetap /173
+                                             @endif
+                                          </td>
+                                       </tr>
+                                    </tbody>
+                                 </table>
+                              </div>
                            </div>
+                           
                         </div>
             
                      </div>

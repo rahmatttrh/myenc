@@ -77,9 +77,13 @@ class QuickPEController extends Controller
             //     ->orderBy('pes.release_at', 'desc')
             //     ->get();
 
-                $pes = Pe::where('pes.status', '>', '0')
-                ->orderBy('updated_at', 'desc')
+            $pes = Pe::where('department_id', $employee->department_id)->where('pes.status', '>=', '0')
+                ->orderBy('release_at', 'desc')
                 ->get();
+
+               //  $pes = Pe::where('pes.status', '>', '0')
+               //  ->orderBy('updated_at', 'desc')
+               //  ->get();
 
             // 
             $outAssesments = $this->outstandingAssessment($employee->department_id);
@@ -410,13 +414,23 @@ class QuickPEController extends Controller
 
         $employe = Employee::where('id', $kpa->employe_id)->first();
 
-        if ($employe->designation->golongan == '1' || $employe->designation->golongan == '2') {
-            // Staff
-            $level = 's';
-        } else {
-            // Leader
-            $level = 'l';
-        }
+      //   if ($employe->designation->golongan == '1' || $employe->designation->golongan == '2') {
+      //       // Staff
+      //       $level = 's';
+      //   } else {
+      //       // Leader
+      //       $level = 'l';
+      //   }
+
+         if ($employe->user->hasRole('Karyawan')) {
+               // Staff
+               $level = 's';
+               // dd('s');
+         } else {
+               // Leader
+               $level = 'l';
+               // dd('l');
+         }
 
 
         // Berikut Behavior  Staff

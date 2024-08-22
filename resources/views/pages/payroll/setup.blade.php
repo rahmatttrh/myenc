@@ -36,7 +36,7 @@ Setup Payroll
                                  {{-- @if (auth()->user()->hasRole('Administrator'))
                                  <th>ID</th>
                                  @endif --}}
-                                 
+                                 <th>NIK</th>
                                  <th>Employee</th>
                                  {{-- <th>Name</th> --}}
                                  <th class="text-truncate">Bisnis Unit</th>
@@ -55,7 +55,11 @@ Setup Payroll
                                  @endif --}}
                                  <td class="text-truncate">
                                     <a href="{{route('payroll.detail', enkripRambo($employee->id))}}"> 
-                                       {{$employee->nik}} {{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</a> 
+                                       {{$employee->nik}} </a> 
+                                 </td>
+                                 <td class="text-truncate">
+                                    <a href="{{route('payroll.detail', enkripRambo($employee->id))}}"> 
+                                       {{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</a> 
                                  </td>
                                  {{-- <td><a href="{{route('employee.detail', enkripRambo($employee->id))}}">{{$employee->name}}</a> </td> --}}
                                  {{-- <td class="text-truncate">
@@ -137,6 +141,40 @@ Setup Payroll
                            <div class="tab-content" id="v-pills-tabContent">
                               @foreach ($units as $unit)
                               <div class="tab-pane fade {{$firstUnit->id == $unit->id ? 'show active' : ''}} " id="v-pills-{{$unit->id}}" role="tabpanel" aria-labelledby="v-pills-{{$unit->id}}-tab">
+                                 <div class="row">
+                                    <div class="col-12">
+                                       <form action="{{route('payroll.unit.update')}}" method="POST">
+                                          @csrf
+                                          <input type="number" name="unit" id="unit" value="{{$unit->id}}" hidden>
+                                          <div class="row">
+                                             <div class="col-md-2">
+                                                <div class="form-group form-group-default">
+                                                   <label>PPH</label>
+                                                   <select class="form-control" name="pph" id="pph" required>
+                                                      <option value="" selected disabled>Choose</option>
+                                                      <option {{$unit->pph == '21' ? 'selected' : ''}} value="21">21 </option>
+                                                      <option {{$unit->pph == '22' ? 'selected' : ''}}  value="22">22 </option>
+                                                   </select>
+                                                </div>
+                                             </div>
+                                             <div class="col">
+                                                <div class="form-group form-group-default">
+                                                   <label>Tipe Lembur</label>
+                                                   <select class="form-control" name="spkl_type" id="spkl_type" required>
+                                                      <option value="" selected disabled>Choose</option>
+                                                      <option {{$unit->spkl_type == 1 ? 'selected' : ''}} value="1">Gaji Pokok /173</option>
+                                                      <option {{$unit->spkl_type == 2 ? 'selected' : ''}}  value="2">Gaji Pokok+Tunjangan Tetap /173</option>
+                                                   </select>
+                                                </div>
+                                             </div>
+                                             <div class="col">
+                                                <button class="btn btn-primary btn-sm">Update</button>
+                                             </div>
+                                          </div>
+                                          
+                                       </form>
+                                    </div>
+                                 </div>
                                  <div class="table-responsive">
                                     <table>
                                        <thead>
@@ -219,32 +257,9 @@ Setup Payroll
                                        </tbody>
                                     </table>
                                  </div>
-                                 <hr>
+                                 
 
-                                 <div class="row">
-                                    <div class="col-6">
-                                       <form action="{{route('payroll.unit.update.pph')}}" method="POST">
-                                          @csrf
-                                          <input type="number" name="unit" id="unit" value="{{$unit->id}}" hidden>
-                                          <div class="row">
-                                             <div class="col">
-                                                <div class="form-group form-group-default">
-                                                   <label>PPH</label>
-                                                   <select class="form-control" name="pph" id="pph" required>
-                                                      <option value="" selected disabled>Choose</option>
-                                                      <option {{$unit->pph == '21' ? 'selected' : ''}} value="21">21 </option>
-                                                      <option {{$unit->pph == '22' ? 'selected' : ''}}  value="22">22 </option>
-                                                   </select>
-                                                </div>
-                                             </div>
-                                             <div class="col">
-                                                <button class="btn btn-primary btn-sm">Update</button>
-                                             </div>
-                                          </div>
-                                          
-                                       </form>
-                                    </div>
-                                 </div>
+                                 
                                  
 
 

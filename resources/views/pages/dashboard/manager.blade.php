@@ -183,7 +183,7 @@ Dashboard
                            <td>
                               <x-status.pe :pe="$pe" />
                            </td>
-                        </tr>
+                           </tr>
                          @endforeach
                      @endforeach
 
