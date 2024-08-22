@@ -38,7 +38,8 @@ class HomeController extends Controller
    {
 
       if (!auth()->user()->hasRole('Administrator|HRD-Manager|HRD|HRD-Spv|HRD-Recruitment|Manager|Asst. Manager|Supervisor|Leader|Karyawan')) {
-         TidakAdaRole;
+         // $id = auth()->user()->id;
+         RoleEmptyUser;
          // dd('tidak ada role');
       } 
       // if (auth()->user()->hasRole('Manager')) {
