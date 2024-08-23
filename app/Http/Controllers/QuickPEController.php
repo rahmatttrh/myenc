@@ -47,13 +47,9 @@ class QuickPEController extends Controller
             $kpas = PeKpa::where('status', '!=', '0')
                 ->orderBy('employe_id')
                 ->get();
-
-
-            // 
-
             $outAssesments = $this->outstandingAssessment();
-
-            // 
+            $myteams = [];
+            $allpes = [];
         } else if (auth()->user()->hasRole('HRD|HRD-Spv|HRD-Manager')) {
          // dd('ok');
             $employee = auth()->user()->getEmployee();
@@ -66,7 +62,8 @@ class QuickPEController extends Controller
 
             $outAssesments = $this->outstandingAssessment();
 
-            // 
+            $myteams = [];
+            $allpes = [];
         } else if (auth()->user()->hasRole('Manager|Asst. Manager')) {
          // dd('ok');
          $employee = auth()->user()->getEmployee();
@@ -87,13 +84,21 @@ class QuickPEController extends Controller
 
             // 
             $outAssesments = $this->outstandingAssessment($employee->department_id);
-            // 
+            $myteams = [];
+            $allpes = [];
         } 
        
          else if (auth()->user()->hasRole('Leader|Supervisor')) {
          
 
          $employee = auth()->user()->getEmployee();
+         $myteams = EmployeeLeader::join('employees', 'employee_leaders.employee_id', '=', 'employees.id')
+               ->join('biodatas', 'employees.biodata_id', '=', 'biodatas.id')
+                ->where('leader_id', $employee->id)
+                ->select('employees.*')
+                ->orderBy('biodatas.first_name', 'asc')
+                ->get();
+        $allpes = Pe::orderBy('updated_at', 'desc')->get();
          // dd($employee->id);
             // $pes = Pe::join('employees', 'pes.employe_id', '=', 'employees.id')
             //     ->where('employees.direct_leader_id', $employee->id)
@@ -135,7 +140,8 @@ class QuickPEController extends Controller
 
             // 
             $outAssesments = $this->outstandingAssessment($employee->department_id);
-            // 
+            $myteams = [];
+            $allpes = [];
         }
         
       //   dd($pes);
@@ -145,6 +151,8 @@ class QuickPEController extends Controller
             // 'kpas' => $kpas,
             'employee' => $employee,
             'pes' => $pes,
+            'allpes' => $allpes,
+            'myteams' => $myteams,
             'outAssesments' =>  $outAssesments
         ])->with('i');
     }

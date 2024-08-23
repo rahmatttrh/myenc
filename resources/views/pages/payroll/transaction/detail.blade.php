@@ -115,17 +115,24 @@ Detail Transaction Payroll Employee
                            </div>
                            <hr>
                            <div class="row">
-                              <div class="col-md-7">
+                              <div class="col-md-8">
                                  <table class="mt-2">
                                     <thead>
                                        <tr>
-                                          <th colspan="4">Lembur</th>
+                                          <th colspan="5">Lembur</th>
                                        </tr>
                                     </thead>
                                     <tbody>
                                        @foreach ($overtimes as $over)
                                            <tr>
                                              <td>{{formatDate($over->date)}}</td>
+                                             <td>
+                                                @if ($over->hours_type == 1)
+                                                    Aktual
+                                                    @else
+                                                    Multiple
+                                                @endif
+                                             </td>
                                              <td class="text-right">{{$over->hours}} Hour</td>
                                              <td class="text-right">{{formatRupiah($over->rate)}}</td>
                                              <td><a href="{{route('payroll.overtime.delete', enkripRambo($over->id))}}">Delete</a></td>
@@ -261,12 +268,22 @@ Detail Transaction Payroll Employee
                                  <table>
                                     <tbody>
                                        <tr>
-                                          <td>Lembur/Jam</td>
+                                          <td colspan="2">#Lembur/Jam</td>
+                                       </tr>
+                                       <tr>
+                                          {{-- <td></td> --}}
                                           <td>
                                              @if ($employee->unit->spkl_type == 1)
                                                 Gaji Pokok /173
                                                 @elseif($employee->unit->spkl_type == 2)
                                                 Gaji Pokok+Tunjangan Tetap /173
+                                             @endif
+                                          </td>
+                                          <td>
+                                             @if ($employee->unit->spkl_type == 1)
+                                                {{formatRupiah(round($employee->payroll->pokok / 173))}}
+                                                @elseif($employee->unit->spkl_type == 2)
+                                                {{formatRupiah(round($employee->payroll->total / 173))}}
                                              @endif
                                           </td>
                                        </tr>

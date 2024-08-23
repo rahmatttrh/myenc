@@ -36,7 +36,10 @@ QPE
                       <x-qpe.table.admin :pes="$pes" :i="$i" />
                       @elseif($employee->role == 5 || $employee->role == 8)
                       <x-qpe.table.manager :pes="$pes" :i="$i" :employee="$employee" />
-                      @else<x-qpe.table.other :pes="$pes" :i="$i" />
+                      @elseif($employee->role == 15)
+                      <x-qpe.table.spv :pes="$pes" :i="$i" :employee="$employee" :myteams="$myteams" :allpes="$allpes" />
+                      @else
+                      <x-qpe.table.other :pes="$pes" :i="$i" />
                   @endif
                     {{-- <div class="table-responsive">
                         <table id="basic-datatables" class="display basic-datatables table-sm table-striped ">

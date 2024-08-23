@@ -11,6 +11,15 @@ use Illuminate\Http\Request;
 
 class OvertimeController extends Controller
 {
+   public function index(){
+      $overtimes = Overtime::get();
+      $employees = Employee::get();
+      return view('pages.payroll.overtime',[
+         'overtimes' => $overtimes,
+         'employees' => $employees
+      ])->with('i');
+   }
+
    public function store(Request $req){
       // dd('ok');
 
@@ -26,11 +35,19 @@ class OvertimeController extends Controller
          $rateOvertime = $payroll->total / 173;
       }
 
-      $rate = $req->hours * $rateOvertime;
-      // dd(formatRupiah(round($rate)));
+      if ($req->hours_type == 1) {
+         $rate = $req->hours * $rateOvertime;
+      } else {
+         $multiHours = $req->hours - 1;
+         $totalHours = $multiHours * 2 + 1.5;
+         $rate = $totalHours * $rateOvertime;
+      }
+
+      // dd($totalHours);
+      
+
       $date = Carbon::create($req->date);
-      // dd($date->format('F'));
-      // dd(formatRupiah(round($rateOvertime)));
+
       $overtime = Overtime::create([
          'employee_id' => $employee->id,
          'month' => $date->format('F'),
@@ -44,9 +61,12 @@ class OvertimeController extends Controller
       // $overtimes = Overtime::where('month', $transaction->month)->get();
       // $totalOvertime = $overtimes->sum('rate');
 
-      $transaction->update([
+      if ($transaction) {
+         $transaction->update([
             'total' => $transaction->total +  $overtime->rate
-      ]);
+         ]);
+      }
+      
 
 
 

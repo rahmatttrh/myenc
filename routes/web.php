@@ -278,6 +278,7 @@ Route::middleware(["auth"])->group(function () {
             Route::post('store', [TransactionController::class, 'store'])->name('payroll.transaction.store');
          });
          Route::prefix('overtime')->group(function () {
+            Route::get('/index', [OvertimeController::class, 'index'])->name('payroll.overtime');
             Route::post('/store', [OvertimeController::class, 'store'])->name('payroll.overtime.store');
             Route::get('/delete/{id}', [OvertimeController::class, 'delete'])->name('payroll.overtime.delete');
             // Route::get('/detail/{id}' , [TransactionController::class, 'detail'])->name('payroll.transaction.detail');
@@ -289,6 +290,8 @@ Route::middleware(["auth"])->group(function () {
             // Route::get('/detail/{id}' , [TransactionController::class, 'detail'])->name('payroll.transaction.detail');
             // Route::post('store', [TransactionController::class, 'store'])->name('payroll.transaction.store');
          });
+
+         
       });
 
       Route::prefix('reduction')->group(function () {
