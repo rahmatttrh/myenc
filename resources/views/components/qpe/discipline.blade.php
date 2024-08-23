@@ -2,7 +2,7 @@
 <div class="card shadow-none border">
     <div class="card-header d-flex bg-primary">
         <div class="d-flex  align-items-center">
-            <div class="card-title text-white">Discipline</div>
+            <small class=" text-white">Discipline</small>
         </div>
     </div>
     <div class="card-body">

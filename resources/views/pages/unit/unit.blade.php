@@ -17,7 +17,7 @@
             <div class="card shadow-none border">
                <div class="card-header d-flex"> 
                   <div class="d-flex  align-items-center">
-                     <div class="card-title">Form Create</div> 
+                     <div class="card-title">Form Add Business Unit</div> 
                   </div>
                   {{-- <div class="btn-group btn-group-page-header ml-auto">
                      <button type="button" class="btn btn-light btn-round btn-page-header-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -36,20 +36,71 @@
                   <form action="{{route('unit.store')}}" method="POST">
                      @csrf
                      <div class="form-group form-group-default">
-                        <label>Name</label>
+                        <label>Business Unit Name</label>
                         <input id="name" name="name" type="text" class="form-control" placeholder="Fill Name">
                      </div>
-                     <button type="submit" class="btn btn-block btn-primary">Add</button>
+                     <button type="submit" class="btn btn-block btn-primary">Add New Business Unit</button>
 
                   </form>
                </div>
                <div class="card-footer">
-                  <small>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni at neque inventore vel.</small>
+                  {{-- <small>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni at neque inventore vel.</small> --}}
                </div>
             </div>
          </div>
          <div class="col-md-8">
-            <div class="card shadow-none border" >
+            <div class="card">
+               <div class="card-header p-2 bg-primary text-white">
+                  <small>Bisnis Unit</small>
+               </div>
+               <div class="card-body p-0">
+                  <table class="display  table-sm table-bordered   ">
+                     <thead>
+                        
+                        <tr>
+                           {{-- <th scope="col" class="text-center">ID</th> --}}
+                           <th scope="col">ID - Unit Name</th>
+                           <th>Department</th>
+                           <th>Employee</th>
+                           <th scope="col" class="text-right">Action</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        @if (count($units) > 0)
+                              @foreach ($units as $unit)
+                              <tr>
+                                 {{-- <td class="text-center">{{$unit->id}}</td> --}}
+                                 <td>
+                                    <a href="{{route('unit.detail', enkripRambo($unit->id))}}">
+                                       @if (auth()->user()->hasRole('Administrator'))
+                                           {{$unit->id}}
+                                       @endif
+                                       {{$unit->name}}
+                                    </a>
+                                 </td>
+                                 <td>{{count($unit->departments)}} Department</td>
+                                 <td>{{count($unit->employees->where('status', 1))}}</td>
+
+                              <td class="text-right">
+                                    <a href="" data-toggle="modal" data-target="#modal-edit-unit-{{$unit->id}}">Edit</a> |
+                                    {{-- <a href="#" data-toggle="modal" data-target="#modal-delete-{{$unit->id}}">Delete</a> --}}
+                                 </td>
+                              </tr>
+                              <x-modal.edit-unit :id="$unit->id" :unit="$unit"  />
+                              <x-modal.delete :id="$unit->id" :body="$unit->name" url="{{route('unit.delete', enkripRambo($unit->id))}}" />
+                           @endforeach
+                           @else
+                           <tr>
+                              <td colspan="5" class="text-center">Empty</td>
+                           </tr>
+                        @endif
+                        
+                        
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+            {{-- <div class="card shadow-none border" >
                <div class="card-header d-flex"> 
                   <div class="d-flex  align-items-center">
                      <div class="card-title">Bisnis Unit List</div> 
@@ -62,7 +113,6 @@
                         
                         
                         <a  class="dropdown-item" style="text-decoration: none" href="{{route('employee.create')}}">Create</a>
-                        {{-- <div class="dropdown-divider"></div>            --}}
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" style="text-decoration: none" href="" target="_blank">Print Preview</a>
                      </div>
@@ -70,13 +120,12 @@
                </div> 
                <div class="card-body">
                   <div class="table-responsive">
-                     <table id="basic-datatables" class="display basic-datatables table table-striped " >
-                        {{-- id="basic-datatables" class="display table table-striped table-hover" --}}
+                     <table id="" class="  table table-striped " >
                         <thead>
                            <tr>
                               <th>No</th>
                               <th>Bisnis Unit</th>
-                              <!-- <th class="text-right">Action</th> -->
+                              <th class="text-right">Action</th>
                            </tr>
                         </thead>
                         <tbody>
@@ -84,10 +133,10 @@
                               <tr>
                                  <td>{{++$i}}</td>
                                  <td>{{$unit->name}}</td>
-                                {{-- <td class="text-right">
-                                    <a href="{{route('unit.edit', enkripRambo($unit->id) )}}">Edit</a>
+
+                                <td class="text-right">
                                     <a href="#" data-toggle="modal" data-target="#modal-delete-{{$unit->id}}">Delete</a>
-                                 </td> --}}
+                                 </td>
                               </tr>
                               <x-modal.delete :id="$unit->id" :body="$unit->name" url="{{route('unit.delete', enkripRambo($unit->id))}}" />
                            @endforeach
@@ -95,7 +144,7 @@
                      </table>
                   </div>
                </div>
-            </div>
+            </div> --}}
          </div>
       </div>
    </div>

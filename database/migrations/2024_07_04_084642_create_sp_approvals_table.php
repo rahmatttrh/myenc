@@ -15,9 +15,12 @@ class CreateSpApprovalsTable extends Migration
     {
         Schema::create('sp_approvals', function (Blueprint $table) {
             $table->id();
+            $table->integer('status')->nullable();
             $table->integer('sp_id');
             $table->integer('employee_id');
             $table->string('type');
+            $table->string('level')->nullable();
+            $table->string('desc')->nullable();
             $table->timestamps();
         });
     }

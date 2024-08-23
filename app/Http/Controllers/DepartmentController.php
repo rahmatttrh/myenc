@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Department;
+use App\Models\Employee;
 use App\Models\Position;
 use App\Models\SubDept;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class DepartmentController extends Controller
 {
@@ -22,7 +24,10 @@ class DepartmentController extends Controller
       $req->validate([]);
 
       Department::create([
-         'name' => $req->name
+         'unit_id' => $req->unit,
+         'name' => $req->name,
+         'slug' => Str::slug($req->name)
+
       ]);
 
       return redirect()->back()->with('success', 'Department successfully added');
@@ -44,19 +49,35 @@ class DepartmentController extends Controller
    {
       $department = Department::find($req->department);
       $department->update([
-         'name' => $req->name
+         'name' => $req->name,
+         'slug' => Str::slug($req->name)
       ]);
 
-      return redirect()->route('department')->with('success', 'Department successfully updated');
+      return redirect()->back()->with('success', 'Department successfully updated');
    }
 
    public function delete($id)
    {
       $dekripId = dekripRambo($id);
       $department = Department::find($dekripId);
+      $subs = SubDept::where('department_id', $department->id)->get();
+      $positions = Position::where('department_id', $department->id)->get();
+      $employees = Employee::where('department_id', $department->id)->get();
 
-      $department->delete();
-      return redirect()->route('department')->with('success', 'Department successfully deleted');
+      if (count($employees) > 0) {
+         return redirect()->back()->with('danger', 'Department delete fail, data ini memiliki relasi ke data lain');
+      } else {
+         foreach($subs as $sub){
+            $sub->delete();
+         }
+
+         foreach($positions as $pos){
+            $pos->delete();
+         }
+         $department->delete();
+         return redirect()->back()->with('success', 'Department successfully deleted');
+      }
+      
    }
 
 

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-Designation
+KPI
 @endsection
 @section('content')
 
@@ -59,13 +59,13 @@ Designation
                     </form>
                 </div>
                 <div class="card-footer">
-                    <small>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni at neque inventore vel.</small>
+                    {{-- <small>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni at neque inventore vel.</small> --}}
                 </div>
             </div>
         </div>
         <div class="col-md-8">
             <div class="card shadow-none border">
-                <div class="card-header d-flex">
+                {{-- <div class="card-header d-flex">
                     <div class="d-flex  align-items-center">
                         <div class="card-title">KPI List</div>
                     </div>
@@ -81,30 +81,39 @@ Designation
                             <a class="dropdown-item" style="text-decoration: none" href="" target="_blank">Print Preview</a>
                         </div>
                     </div>
-                </div>
-                <div class="card-body">
+                </div> --}}
+                <div class="card-body p-0 py-2">
                     <div class="table-responsive">
-                        <table id="basic-datatables" class="display basic-datatables table table-striped ">
+                        <table id="basic-datatables" class="display basic-datatables table-sm  ">
                             <thead>
                                 <tr>
-                                    <th>No</th>
+                                    <th class="text-center">No</th>
                                     <th>Title</th>
                                     <th>Divisi</th>
                                     <th>Jabatan</th>
-                                    <th class="text-right">Action</th>
+                                    {{-- <th class="text-right">Action</th> --}}
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($kpis as $kpi)
                                 <tr>
-                                    <td>{{++$i}}</td>
-                                    <td><a href="{{'kpi/'. enkripRambo($kpi->id)}}"> {{$kpi->title}} </a></td>
+                                    <td class="text-center">{{++$i}}</td>
+                                    <td><a href="{{'kpi/'. enkripRambo($kpi->id)}}">
+                                       @if (auth()->user()->hasRole('Administrator'))
+                                       {{$kpi->id}} -
+                                       @endif
+                                       {{$kpi->title}} </a></td>
                                     <td>{{$kpi->departement->name}}</td>
                                     <td>{{$kpi->position->name ?? '-'}}</td>
-                                    <td class="text-right">
-                                        {{--<a href="{{route('kpi.edit', enkripRambo($kpi->id) )}}">Edit</a>--}}
-                                        <a href="#" data-toggle="modal" data-target="#modal-delete-{{$kpi->id}}">Delete</a>
-                                    </td>
+                                    {{-- <td class="text-right">
+                                        <a href="{{route('kpi.edit', enkripRambo($kpi->id) )}}">Edit</a>
+                                        @if (auth()->user()->hasRole('Leader|Supervisor'))
+                                        -
+                                            @else
+                                            <a href="#" data-toggle="modal" data-target="#modal-delete-{{$kpi->id}}">Delete</a>
+                                        @endif
+                                        
+                                    </td> --}}
                                 </tr>
                                 <x-modal.delete :id="$kpi->id" :body="$kpi->title" url="{{route('kpi.delete', enkripRambo($kpi->id))}}" />
                                 @endforeach

@@ -22,19 +22,49 @@
                   <div class="form-group form-group-default">
                      <label>Role</label>
                      <select class="form-control" id="role" name="role">
+                        {{-- @php
+                            if(auth()->user()->hasRole('Karyawan')){
+                              $myRole = 'Karyawan';
+                            }
+                        @endphp --}}
                         <option value="" selected disabled>Select</option>
-                        @foreach ($roles as $role)
+                        @foreach ($roles->where('type', 'employee') as $role)
                             <option {{$employee->role == $role->id ? 'selected' : ''}} value="{{$role->id}}">{{$role->name}}</option>
                         @endforeach
                      </select>
+                     <hr>
+                     
                      
                   </div>
+
+                  
+                     @if ($employee->department->slug == 'hrd')
+                     <div class="form-group form-group-default">
+                        <label>
+                           Second Role
+                           {{-- @if ($employee->user->hasRole('Supervisor'))
+                               Supervisor
+                               @else
+                               -
+                           @endif --}}
+                        </label>
+                        <select class="form-control" id="role2" name="role2">
+                           <option value="" selected disabled>Select</option>
+                           @foreach ($roles->where('type', 'hrd') as $role)
+                              <option {{$employee->role2 == $role->id ? 'selected' : ''}} value="{{$role->id}}">{{$role->name}}</option>
+                           @endforeach
+                        </select>
+                     </div>
+                     @endif
+                  
                   @if ($employee->status == 0)
                         * Publish karyawan untuk menambahkan Role
                      @endif
                </div>
                <div class="col-md-2">
+                  @if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment'))
                   <button type="submit" class="btn btn-block btn-dark" {{$employee->status == 0 ? 'disabled' : ''}}>Update</button>
+                  @endif
                </div>
             </div>
 {{--             

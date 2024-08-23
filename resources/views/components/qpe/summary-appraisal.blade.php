@@ -83,7 +83,7 @@
                         <td>: Manager</td>
                         <td>SP</td>
                         <td>0</td>
-                        <td colspan="2">100 - 91</td>
+                        <td colspan="2">88 - 100</td>
                         <td colspan="2">Memuaskan</td>
                     </tr>
                     <tr>
@@ -91,7 +91,7 @@
                         <td>: Supervisor</td>
                         <td></td>
                         <td></td>
-                        <td colspan="2">90 - 76</td>
+                        <td colspan="2">76 - 87</td>
                         <td colspan="2">Baik</td>
                     </tr>
                     <tr>
@@ -99,7 +99,7 @@
                         <td>: Team Leader</td>
                         <td></td>
                         <td></td>
-                        <td colspan="2">75 - 61</td>
+                        <td colspan="2">61 - 75</td>
                         <td colspan="2">Cukup</td>
                     </tr>
                     <tr>
@@ -107,17 +107,17 @@
                         <td>: Staff</td>
                         <td></td>
                         <td></td>
-                        <td colspan="2">60 - 51</td>
+                        <td colspan="2">0 - 60</td>
                         <td colspan="2">Kurang</td>
                     </tr>
-                    <tr>
+                    {{-- <tr>
                         <td> </td>
                         <td> </td>
                         <td></td>
                         <td></td>
                         <td colspan="2">50 - 0</td>
                         <td colspan="2">Sangat Kurang</td>
-                    </tr>
+                    </tr> --}}
                 </tbody>
             </table>
         </div>

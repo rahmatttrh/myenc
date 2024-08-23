@@ -13,7 +13,7 @@
             </div>
             <div class="modal-body">
                Publish SP <br>
-               SP akan muncul di dashboard Karyawan
+               Send to Employee
             </div>
             <div class="modal-footer">
                <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>

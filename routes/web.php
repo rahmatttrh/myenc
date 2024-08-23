@@ -13,12 +13,16 @@ use App\Http\Controllers\DutyController;
 use App\Http\Controllers\EducationalController;
 use App\Http\Controllers\EmergencyController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\EmployeeLeaderController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\FetchController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\MutationController;
+use App\Http\Controllers\MyController;
 use App\Http\Controllers\OvertimeController;
+use App\Http\Controllers\PasswordController;
+use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\PeComponentController;
 use App\Http\Controllers\PeDisciplineController;
 use App\Http\Controllers\PeKpaController;
@@ -27,17 +31,25 @@ use App\Http\Controllers\PekpiDetailController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\PresenceController;
 use App\Http\Controllers\QuickPEController;
+use App\Http\Controllers\ReductionController;
+use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\SocialAccountController;
 use App\Http\Controllers\SoController;
 use App\Http\Controllers\SpApprovalController;
 use App\Http\Controllers\SpController;
 use App\Http\Controllers\SpklController;
 use App\Http\Controllers\SubDeptController;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\TransactionOvertimeController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\VerificationController;
 use App\Models\Emergency;
+use App\Models\EmployeeLeader;
+use App\Models\Reduction;
 use App\Models\SpApproval;
+use App\Models\TransactionOvertime;
 use Illuminate\Support\Facades\Route;
+use PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer\SpgrContainer\SpContainer;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,6 +63,20 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware(["auth"])->group(function () {
+
+   // Func
+   Route::get('update/position', [MyController::class, 'updatePosition']);
+   Route::get('test/email', [MyController::class, 'testEmail']);
+
+
+   Route::prefix('pass')->group(function () {
+      Route::get('reset', [PasswordController::class, 'index'])->name('pass.reset');
+      Route::put('reset/update', [PasswordController::class, 'update'])->name('pass.reset.update');
+      // Route::get('department/{id}', [FetchController::class, 'fetchDepartment']);
+      // Route::get('subdept/{id}', [FetchController::class, 'fetchSubdept']);
+      // Route::get('position/{id}', [FetchController::class, 'fetchPosition']);
+   });
+
    Route::prefix('fetch')->group(function () {
       Route::get('sp/active/{id}', [FetchController::class, 'fetchSpActive']);
       Route::get('schedule/{date}/{id}', [FetchController::class, 'fetchSchedule']);
@@ -75,7 +101,7 @@ Route::middleware(["auth"])->group(function () {
    Route::get('sub-dept/fetch-data/{id}', [SubDeptController::class, 'fetchData'])->name('department.fetch-data');
    // End Fetch
 
-   Route::group(['middleware' => ['role:Administrator|HRD|HRD-Recruitment|HRD-Spv']], function () {
+   Route::group(['middleware' => ['role:Administrator|HRD|HRD-Manager|HRD-Recruitment|HRD-Spv']], function () {
       Route::prefix('employee')->group(function () {
          Route::get('tab/{tab}', [EmployeeController::class, 'index'])->name('employee');
          Route::get('nonactive', [EmployeeController::class, 'nonactive'])->name('employee.nonactive');
@@ -83,11 +109,14 @@ Route::middleware(["auth"])->group(function () {
 
          Route::get('create', [EmployeeController::class, 'create'])->name('employee.create');
          Route::post('store', [EmployeeController::class, 'store'])->name('employee.store');
+         Route::get('delete/{id}', [EmployeeController::class, 'delete'])->name('employee.delete');
 
          Route::get('export', [EmployeeController::class, 'export'])->name('employee.export');
          Route::get('export/simple', [EmployeeController::class, 'exportSimple'])->name('employee.export.simple');
          Route::get('import', [EmployeeController::class, 'formImport'])->name('employee.import');
-         Route::post('import', [EmployeeController::class, 'import'])->name('employee.import');
+         Route::post('import', [EmployeeController::class, 'import'])->name('employee.import.data');
+
+         Route::get('import/edit', [EmployeeController::class, 'formImportEdit'])->name('employee.import.edit');
 
          Route::prefix('draft')->group(function () {
             Route::get('/', [EmployeeController::class, 'draft'])->name('employee.draft');
@@ -117,6 +146,7 @@ Route::middleware(["auth"])->group(function () {
 
          // Belum
          Route::post('store', [UnitController::class, 'store'])->name('unit.store');
+         Route::get('detail/{id}', [UnitController::class, 'detail'])->name('unit.detail');
          Route::get('edit/{unit:id}', [UnitController::class, 'edit'])->name('unit.edit');
          Route::put('update', [UnitController::class, 'update'])->name('unit.update');
          Route::get('delete/{unit:id}', [UnitController::class, 'delete'])->name('unit.delete');
@@ -128,6 +158,14 @@ Route::middleware(["auth"])->group(function () {
          Route::get('edit/{department:id}', [DepartmentController::class, 'edit'])->name('department.edit');
          Route::put('update', [DepartmentController::class, 'update'])->name('department.update');
          Route::get('delete/{department:id}', [DepartmentController::class, 'delete'])->name('department.delete');
+      });
+
+      Route::prefix('master/subdept')->group(function () {
+         // Route::get('/', [DepartmentController::class, 'index'])->name('department');
+         Route::post('store', [SubDeptController::class, 'store'])->name('subdept.store');
+         // Route::get('edit/{department:id}', [DepartmentController::class, 'edit'])->name('department.edit');
+         Route::put('update', [SubDeptController::class, 'update'])->name('subdept.update');
+         Route::get('delete/{id}', [SubDeptController::class, 'delete'])->name('subdept.delete');
       });
 
       Route::prefix('<master>sub-dept')->group(function () {
@@ -143,10 +181,30 @@ Route::middleware(["auth"])->group(function () {
 
       Route::prefix('master/position')->group(function () {
          Route::get('/', [PositionController::class, 'index'])->name('position');
-         //    Route::post('store', [DesignationController::class, 'store'])->name('position.store');
+            Route::post('store', [PositionController::class, 'store'])->name('position.store');
+            Route::post('department/store', [PositionController::class, 'departmentStore'])->name('position.dept.store');
          //    Route::get('edit/{position:id}', [DesignationController::class, 'edit'])->name('position.edit');
-         //    Route::put('update', [DesignationController::class, 'update'])->name('position.update');
-         //    Route::get('delete/{position:id}', [DesignationController::class, 'delete'])->name('position.delete');
+            Route::put('update', [PositionController::class, 'update'])->name('position.update');
+            Route::put('department/update', [PositionController::class, 'departUpdate'])->name('position.department.update');
+            Route::get('department/delete/{id}', [PositionController::class, 'departDelete'])->name('position.department.delete');
+            Route::get('delete/{position:id}', [PositionController::class, 'delete'])->name('position.delete');
+      });
+
+      Route::prefix('master/shift')->group(function () {
+         Route::get('/', [ShiftController::class, 'index'])->name('shift');
+         Route::post('store', [ShiftController::class, 'store'])->name('shift.store');
+         // Route::get('edit/{department:id}', [DepartmentController::class, 'edit'])->name('department.edit');
+         Route::put('update', [ShiftController::class, 'update'])->name('shift.update');
+         Route::get('delete/{id}', [ShiftController::class, 'delete'])->name('shift.delete');
+      });
+
+      Route::prefix('leader')->group(function () {
+         // Route::get('/', [ShiftController::class, 'index'])->name('shift');
+         Route::post('store', [EmployeeLeaderController::class, 'store'])->name('leader.store');
+         Route::get('delete/{id}', [EmployeeLeaderController::class, 'delete'])->name('leader.revoke');
+         // Route::get('edit/{department:id}', [DepartmentController::class, 'edit'])->name('department.edit');
+         // Route::put('update', [ShiftController::class, 'update'])->name('shift.update');
+         // Route::get('delete/{id}', [ShiftController::class, 'delete'])->name('shift.delete');
       });
 
       Route::prefix('contract')->group(function () {
@@ -155,6 +213,7 @@ Route::middleware(["auth"])->group(function () {
       });
 
       Route::post('deactivate', [DeactivateController::class, 'deactivate'])->name('deactivate');
+      Route::post('activate', [DeactivateController::class, 'activate'])->name('activate');
 
       Route::prefix('emergency')->group(function () {
          Route::post('store', [EmergencyController::class, 'store'])->name('emergency.store');
@@ -204,15 +263,46 @@ Route::middleware(["auth"])->group(function () {
       });
 
       Route::get('/log', [LogController::class, 'index'])->name('log');
+      Route::get('/log/auth', [LogController::class, 'auth'])->name('log.auth');
+
+      Route::prefix('payroll')->group(function () {
+         Route::get('/index', [PayrollController::class, 'index'])->name('payroll');
+         Route::get('/setup', [PayrollController::class, 'setup'])->name('payroll.setup');
+         Route::get('/detail/{id}' , [PayrollController::class, 'detail'])->name('payroll.detail');
+         Route::put('/update', [PayrollController::class, 'update'])->name('payroll.update');
+         Route::prefix('transaction')->group(function () {
+            Route::post('/add/master', [TransactionController::class, 'storeMaster'])->name('payroll.add.master.transaction');
+            Route::get('/monthly/{id}', [TransactionController::class, 'monthly'])->name('payroll.transaction.monthly');
+            Route::get('/index', [TransactionController::class, 'index'])->name('payroll.transaction');
+            Route::get('/detail/{id}' , [TransactionController::class, 'detail'])->name('payroll.transaction.detail');
+            Route::post('store', [TransactionController::class, 'store'])->name('payroll.transaction.store');
+         });
+         Route::prefix('overtime')->group(function () {
+            Route::post('/store', [TransactionOvertimeController::class, 'store'])->name('payroll.overtime.store');
+            // Route::get('/detail/{id}' , [TransactionController::class, 'detail'])->name('payroll.transaction.detail');
+            // Route::post('store', [TransactionController::class, 'store'])->name('payroll.transaction.store');
+         });
+         Route::prefix('unit')->group(function () {
+            Route::get('/index', [PayrollController::class, 'unit'])->name('payroll.unit');
+            // Route::get('/detail/{id}' , [TransactionController::class, 'detail'])->name('payroll.transaction.detail');
+            // Route::post('store', [TransactionController::class, 'store'])->name('payroll.transaction.store');
+         });
+      });
+
+      Route::prefix('reduction')->group(function () {
+         // Route::get('/index', [PayrollController::class, 'unit'])->name('payroll.unit');
+         // Route::get('/detail/{id}' , [TransactionController::class, 'detail'])->name('payroll.transaction.detail');
+         Route::post('store', [ReductionController::class, 'store'])->name('reduction.store');
+      });
 
    });
 
 
    // Semua Role 
 
-   Route::group(['middleware' => ['role:Administrator|HRD|HRD-Recruitment|HRD-Spv|Karyawan|Manager|Supervisor|Leader']], function () {
+   Route::group(['middleware' => ['role:Administrator|HRD|HRD-Manager|HRD-Recruitment|HRD-Spv|Karyawan|Manager|Asst. Manager|Supervisor|Leader']], function () {
       
-      Route::prefix('qpe')->group(function () {
+      Route::prefix('employee')->group(function () {
          Route::put('update', [EmployeeController::class, 'update'])->name('employee.update');
          Route::put('update/doc', [EmployeeController::class, 'updateDoc'])->name('employee.update.doc');
          Route::put('update/bio', [EmployeeController::class, 'updateBio'])->name('employee.update.bio');
@@ -236,7 +326,7 @@ Route::middleware(["auth"])->group(function () {
 
    
 
-   Route::group(['middleware' => ['role:Supervisor|Manager']], function () {
+   Route::group(['middleware' => ['role:Supervisor|Manager|Asst. Manager']], function () {
       Route::prefix('employee')->group(function () {
          Route::get('spv', [EmployeeController::class, 'indexSpv'])->name('supervisor.employee');
       });
@@ -250,16 +340,21 @@ Route::middleware(["auth"])->group(function () {
 
 
    Route::prefix('sp')->group(function () {
-      Route::get('/', [SpController::class, 'index'])->name('sp');
+      Route::get('/index', [SpController::class, 'index'])->name('sp');
       Route::post('store', [SpController::class, 'store'])->name('sp.store');
       Route::get('detail/{id}', [SpController::class, 'detail'])->name('sp.detail');
       Route::put('update', [SpController::class, 'update'])->name('sp.update');
       Route::get('delete/{id}', [SpController::class, 'delete'])->name('sp.delete');
+      Route::get('close/{id}', [SpController::class, 'close'])->name('sp.close');
 
       Route::put('/submit/{id}', [SpApprovalController::class, 'submit'])->name('sp.submit');
       Route::put('/app/hrd/{id}', [SpApprovalController::class, 'appHrd'])->name('sp.app.hrd');
+      Route::put('/reject/hrd', [SpApprovalController::class, 'rejectHrd'])->name('sp.reject.hrd');
       Route::put('/app/manager/{id}', [SpApprovalController::class, 'appManager'])->name('sp.app.manager');
+      Route::put('/release/{id}', [SpApprovalController::class, 'release'])->name('sp.release');
+      Route::put('/discuss/manager', [SpApprovalController::class, 'discussManager'])->name('sp.discuss.manager');
       Route::put('/app/employee/{id}', [SpApprovalController::class, 'appEmployee'])->name('sp.app.employee');
+      Route::put('/complain/employee', [SpApprovalController::class, 'complainEmployee'])->name('sp.complain.employee');
       
       
       Route::put('/app/employee/{id}', [SpApprovalController::class, 'appEmployee'])->name('sp.app.employee');
@@ -267,11 +362,17 @@ Route::middleware(["auth"])->group(function () {
       Route::put('/approved/{id}', [SpApprovalController::class, 'approved'])->name('sp.approved');
 
       Route::patch('/reject/{id}', [SpApprovalController::class, 'reject'])->name('sp.reject');
+
+      Route::prefix('hrd')->group(function () {
+         Route::post('/store', [SpController::class, 'hrdStore'])->name('sp.hrd.store');
+         // Route::get('/approve/supervisor/{id}', [SpklController::class, 'approveSupervisor'])->name('spkl.approve.supervisor');
+         // Route::get('/approve/manager/{id}', [SpklController::class, 'approveManager'])->name('spkl.approve.manager');
+      });
    });
 
    // Role Campuran  
 
-   Route::group(['middleware' => ['role:Administrator|HRD|HRD-Recruitment|HRD-Spv|Leader|Manager|Supervisor']], function () {
+   Route::group(['middleware' => ['role:Administrator|HRD|HRD-Manager|HRD-Recruitment|HRD-Spv|Leader|Manager|Asst. Manager|Supervisor']], function () {
       // kpi
       Route::prefix('kpi')->group(function () {
          Route::get('/', [PeKpiController::class, 'index'])->name('kpi');
@@ -399,7 +500,7 @@ Route::middleware(["auth"])->group(function () {
 
 
 
-   Route::group(['middleware' => ['role:Manager']], function () {
+   Route::group(['middleware' => ['role:Manager|Asst. Manager']], function () {
       Route::prefix('spkl')->group(function () {
          Route::get('manager/index', [SpklController::class, 'indexManager'])->name('manager.spkl');
       });

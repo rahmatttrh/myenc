@@ -41,7 +41,7 @@
 				<div class="card o-hidden border-0 shadow-lg my-5">
 					<div class="card-body p-0">
 						<div class="row">
-							<div class="col-lg-6 d-none d-lg-block " style="background-image: url({{asset('img/bg/kj4.png')}});background-repeat: no-repeat;background-size: cover;border-radius: 5px;">
+							<div class="col-lg-6 d-none d-lg-block " style="background-image: url({{asset('img/bg/kj4_com.png')}});background-repeat: no-repeat;background-size: cover;border-radius: 5px;">
 								<img class="mt-3" src="{{asset('img/logo/enc2.jpg')}}" alt="">
 							</div>
 							<div class="col-lg-6">
@@ -49,7 +49,8 @@
 									<div class="">
 										{{-- <h4 class="text-gray-900">Welcome Back!</h4> --}}
 										<h1 class="" style="font-weight: 900">MY<span class="text-primary">ENC</span></h1>
-                              <small>Ekanuri Human Resource Management System</small>
+                              <small>Ekanuri Human Resource Management System</small> <br>
+                              
 									</div>
 									<hr>
                            {{-- @error('email')
@@ -92,6 +93,8 @@
 									</form>
 									<hr>
 									<div class="login-account">
+                              <small>Sistem KPI & Penerbitan SP</small>
+                              <hr>
 										<span class="msg">Copyright &copy; 2024 ENC IT</span>
 									</div>
 								</div>

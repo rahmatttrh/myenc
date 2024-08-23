@@ -19,4 +19,15 @@ class PeKpi extends Model
     {
         return $this->belongsTo(Department::class);
     }
+
+    public function employees(){
+      return $this->hasMany(Employee::class, 'kpi_id');
+    }
+
+    public function pes(){
+      return $this->hasMany(Pe::class, 'kpi');
+    }
+    public function kpas(){
+      return $this->hasMany(PeKpa::class, 'kpi_id');
+    }
 }

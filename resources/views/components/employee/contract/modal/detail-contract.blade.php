@@ -49,13 +49,13 @@
                      <div class="col-md-4">
                         <div class="form-group form-group-default">
                            <label>Office Shift</label>
-                           <input type="text" class="form-control"  name="id" id="id" value="{{$contract->shift->name}}">
+                           <input type="text" class="form-control"  name="id" id="id" value="{{$contract->shift->name ?? ''}}">
                         </div>
                      </div>
                      <div class="col-md-4">
                         <div class="form-group form-group-default">
                            <label>Level</label>
-                           <input type="text" class="form-control"  name="id" id="id" value="{{$contract->designation->name}}">
+                           <input type="text" class="form-control"  name="id" id="id" value="{{$contract->designation->name ?? ''}}">
                         </div>
                      </div>
                   </div>
@@ -63,14 +63,14 @@
                      <div class="col-md-4">
                         <div class="form-group form-group-default">
                            <label>Department</label>
-                           <input type="text" class="form-control"  name="id" id="id" value="{{$contract->department->name}}">
+                           <input type="text" class="form-control"  name="id" id="id" value="{{$contract->department->name ?? ''}}">
                         </div>
                      </div>
                      
                      <div class="col-md-4">
                         <div class="form-group form-group-default">
                            <label>Jabatan</label>
-                           <input type="text" class="form-control"  name="id" id="id" value="{{$contract->position->name}}">
+                           <input type="text" class="form-control"  name="id" id="id" value="{{$contract->position->name ?? ''}}">
                         </div>
                      </div>
                      <div class="col-md-4">

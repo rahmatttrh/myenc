@@ -17,7 +17,7 @@
             <div class="card shadow-none border">
                <div class="card-header d-flex"> 
                   <div class="d-flex  align-items-center">
-                     <div class="card-title">Form Create</div> 
+                     <div class="card-title">Form Add Shift</div> 
                   </div>
                   {{-- <div class="btn-group btn-group-page-header ml-auto">
                      <button type="button" class="btn btn-light btn-round btn-page-header-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -33,67 +33,76 @@
                   </div> --}}
                </div> 
                <div class="card-body">
-                  <form action="{{route('department.store')}}" method="POST">
+                  <form action="{{route('shift.store')}}" method="POST">
                      @csrf
                      <div class="form-group form-group-default">
-                        <label>Name</label>
-                        <input id="name" name="name" type="text" class="form-control" placeholder="Fill Name">
+                        <label>Shift Name</label>
+                        <input id="name" name="name" type="text" class="form-control" placeholder="Fill Shift Name">
                      </div>
-                     <button type="submit" class="btn btn-block btn-primary">Add</button>
+                     <div class="row">
+                        <div class="col">
+                           <div class="form-group form-group-default">
+                              <label>In</label>
+                              <input id="in" name="in" type="time" class="form-control" >
+                           </div>
+                        </div>
+                        <div class="col">
+                           <div class="form-group form-group-default">
+                              <label>Out</label>
+                              <input id="out" name="out" type="time" class="form-control" >
+                           </div>
+                        </div>
+                     </div>
+                     <button type="submit" class="btn btn-block btn-primary">Add New Shift</button>
 
                   </form>
                </div>
                <div class="card-footer">
-                  <small>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni at neque inventore vel.</small>
+                  {{-- <small>Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni at neque inventore vel.</small> --}}
                </div>
             </div>
          </div>
          <div class="col-md-8">
-            <div class="card shadow-none border" >
-               <div class="card-header d-flex"> 
-                  <div class="d-flex  align-items-center">
-                     <div class="card-title">Shift List</div> 
-                  </div>
-                  <div class="btn-group btn-group-page-header ml-auto">
-                     <button type="button" class="btn btn-light btn-round btn-page-header-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                           <i class="fa fa-ellipsis-h"></i>
-                     </button>
-                     <div class="dropdown-menu">
+            <div class="card">
+               <div class="card-header p-2 bg-primary text-white">
+                  <small>Shift / Work Hour</small>
+               </div>
+               <div class="card-body p-0">
+                  <table class="display  table-sm table-bordered   ">
+                     <thead>
                         
-                        
-                        <a  class="dropdown-item" style="text-decoration: none" href="{{route('employee.create')}}">Create</a>
-                        {{-- <div class="dropdown-divider"></div>            --}}
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" style="text-decoration: none" href="" target="_blank">Print Preview</a>
-                     </div>
-                  </div>
-               </div> 
-               <div class="card-body">
-                  <div class="table-responsive">
-                     <table id="basic-datatables" class="display basic-datatables table table-striped " >
-                        {{-- id="basic-datatables" class="display table table-striped table-hover" --}}
-                        <thead>
-                           <tr>
-                              <th>No</th>
-                              <th>Name</th>
-                              <th class="text-right">Action</th>
-                           </tr>
-                        </thead>
-                        <tbody>
-                           @foreach ($shifts as $shift)
+                        <tr>
+                           {{-- <th scope="col" class="text-center">ID</th> --}}
+                           <th scope="col">Shift Name</th>
+                           <th>Time</th>
+                           <th scope="col" class="text-right">Action</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        @if (count($shifts) > 0)
+                              @foreach ($shifts as $shift)
                               <tr>
-                                 <td>{{++$i}}</td>
-                                 <td>{{$department->name}}</td>
-                                 <td class="text-right">
-                                    <a href="{{route('department.edit', enkripRambo($department->id) )}}">Edit</a>
-                                    <a href="#" data-toggle="modal" data-target="#modal-delete-{{$department->id}}">Delete</a>
+                                 {{-- <td class="text-center">{{$unit->id}}</td> --}}
+                                 <td>{{$shift->id}} - {{$shift->name}}</td>
+                                 <td>{{formatTime($shift->in)}} {{formatTime($shift->out)}}</td>
+
+                              <td class="text-right">
+                                    <a href="" data-toggle="modal" data-target="#modal-edit-shift-{{$shift->id}}">Edit</a> |
+                                    <a href="#" data-toggle="modal" data-target="#modal-delete-{{$shift->id}}">Delete</a>
                                  </td>
                               </tr>
-                              <x-modal.delete :id="$department->id" :body="$department->name" url="{{route('department.delete', enkripRambo($department->id))}}" />
+                              <x-modal.edit-shift :id="$shift->id" :shift="$shift"  />
+                              <x-modal.delete :id="$shift->id" :body="$shift->name" url="{{route('shift.delete', enkripRambo($shift->id))}}" />
                            @endforeach
-                        </tbody>
-                     </table>
-                  </div>
+                           @else
+                           <tr>
+                              <td colspan="5" class="text-center">Empty</td>
+                           </tr>
+                        @endif
+                        
+                        
+                     </tbody>
+                  </table>
                </div>
             </div>
          </div>

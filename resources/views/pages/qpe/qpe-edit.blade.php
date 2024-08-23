@@ -14,88 +14,195 @@ PE
     </nav>
 
 
-    @if($pd->pdds->count() < 6) <div class="row">
-        <div class="col md-12">
-            <div class="card shadow-none border">
-                <div class="card-header d-flex bg-warning">
-                    Informasi !
-                </div>
-                <div class="card-body">
-                    @if($pd->pdds->count() < 6) <h4 class="text-center"> Anda belum bisa melakukan submit karena : </h4>
+    @if ($joinMonth < 6)
+      {{-- {{$pd->pdds->count()}} --}}
+         @if($pd->pdds->count() == null || $pd->pdds->count() == 0) 
+         <div class="row">
+            <div class="col md-12">
+               <div class="card shadow-none border">
+                  <div class="card-header d-flex bg-warning">
+                     Informasi !!!
+                  </div>
+                  <div class="card-body">
+                        <h4 class="text-center"> Anda belum bisa melakukan submit karena : </h4>
                         <h3 class="text-center">
-                            - Data Discipline (Absensi) masih belum lengkap !</h3>
-                        @endif </div>
+                              - Data Discipline (Absensi) masih belum lengkap !</h3>
+                        
+                  </div>
+               </div>
             </div>
-        </div>
-</div>
-@endif
+         </div>
+         @endif
+        @else
+        @if($pd->pdds->count() < 6) 
+         <div class="row">
+            <div class="col md-12">
+               <div class="card shadow-none border">
+                  <div class="card-header d-flex bg-warning">
+                     Informasi !!!
+                  </div>
+                  <div class="card-body">
+                        @if($pd->pdds->count() < 6) <h4 class="text-center"> Anda belum bisa melakukan submit karena : </h4>
+                        <h3 class="text-center">
+                              - Data Discipline (Absensi) masih belum lengkap !</h3>
+                        @endif 
+                  </div>
+               </div>
+            </div>
+         </div>
+      @endif
+    @endif
+   
 
 <div class="row" id="boxCreate">
     <div class="col-md-3">
         <x-qpe.performance-appraisal :kpa="$kpa" />
+        <div class="card shadow-none border">
+         <div class="card-header d-flex bg-primary">
+             <div class="d-flex  align-items-center">
+                 <small class=" text-white">Discipline</small>
+             </div>
+
+         </div>
+         <div class="card-body">
+             <form>
+                 @csrf
+                 <div class="form-group form-group-default">
+                     <label>Alpa</label>
+                     <label for="" class="float-right">{{ $pd ? $pd->alpa : 0 }}</label>
+                 </div>
+                 <div class="form-group form-group-default">
+                     <label>Ijin</label>
+                     <label for="" class="float-right">{{ $pd ? $pd->ijin : 0 }}</label>
+                 </div>
+                 <div class="form-group form-group-default">
+                     <label>Terlambat</label>
+                     <label for="" class="float-right">{{ $pd ? $pd->terlambat : 0 }}</label>
+                 </div>
+                 <div class="form-group form-group-default bg-success">
+                     <label>Value</label>
+                     <label for="" class="float-right">{{ $pd ? $pd->achievement : 0 }}</label>
+                 </div>
+                 <div class="form-group form-group-default ">
+                     <label>Bobot</label>
+                     <label for="" class="float-right">15</label>
+                 </div>
+                 <div class="form-group form-group-default bg-success">
+                     <label> <b>Achievement</b></label>
+                     <label for="" class="float-right">
+                         <h3>{{ $pd ? $pd->contribute_to_pe : 0 }}</h3>
+                     </label>
+                 </div>
+             </form>
+         </div>
+     </div>
     </div>
     <div class="col-md-9">
         <div class="card shadow-none border">
             <div class="card-header d-flex bg-primary">
                 <div class="d-flex  align-items-center">
-                    <div class="card-title text-white">KPI</div>
+                    <small class=" text-white">KPI </small>
+                    
                 </div>
 
-                @if(($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202') && (auth()->user()->hasRole('Leader') || auth()->user()->hasRole('Supervisor') || auth()->user()->hasRole('Administrator') ) )
-                <div class="btn-group btn-group-page-header ml-auto">
-                    <div class="button-group">
-                        @if(isset($pd) && $pd->pdds->count() == 6)
-                        <button class="btn btn-xs btn-warning" data-toggle="modal" data-target="#modal-submit-{{$kpa->id}}"><i class="fas fa-rocket"></i> Submit </button>
-                        <!-- <x-modal.submit :id="$pe->id" :body="'KPI ' . $kpa->employe->biodata->fullName() . ' semester '. $kpa->semester.' '. $pe->tahun " url="{{route('qpe.submit', enkripRambo($pe->id))}}" /> -->
+                {{-- @if(($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202') && (auth()->user()->hasRole('Leader|Supervisor') ) ) --}}
+               @if (auth()->user()->hasRole('Administrator'))
+                  @else
+                  
+                  @if(($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202') && (auth()->user()->getEmployeeId() == $pe->created_by  || auth()->user()->hasRole('Supervisor|Manager|Asst. Manager')) )
+                  <div class="btn-group btn-group-page-header ml-auto">
+                     
+                     <div class="button-group">
+                        @if ($joinMonth < 6)
+                           @if(isset($pd))
+                           <button class="btn btn-xs btn-light" data-toggle="modal" data-target="#modal-submit-{{$kpa->id}}"><i class="fas fa-rocket"></i> Submit </button>
+                           <!-- <x-modal.submit :id="$pe->id" :body="'KPI ' . $kpa->employe->biodata->fullName() . ' semester '. $kpa->semester.' '. $pe->tahun " url="{{route('qpe.submit', enkripRambo($pe->id))}}" /> -->
 
-                        <div class="modal fade" id="modal-submit-{{$kpa->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <form method="POST" action="{{route('qpe.submit', enkripRambo($pe->id))}}" enctype="multipart/form-data">
-                                        @csrf
-                                        @method('PUT')
-                                        <input type="hidden" name="id" value="{{$pe->id}}">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            Submit KPI
+                           <div class="modal fade" id="modal-submit-{{$kpa->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                              <div class="modal-dialog" role="document">
+                                 <div class="modal-content">
+                                       <form method="POST" action="{{route('qpe.submit', enkripRambo($pe->id))}}" enctype="multipart/form-data">
+                                          @csrf
+                                          @method('PUT')
+                                          <input type="hidden" name="id" value="{{$pe->id}}">
+                                          <div class="modal-header">
+                                             <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                   <span aria-hidden="true">&times;</span>
+                                             </button>
+                                          </div>
+                                          <div class="modal-body">
+                                             Submit KPI
 
-                                            <?php echo $kpa->employe->biodata->fullName() . ' semester ' . $kpa->semester . ' ' . $pe->tahun; ?>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-warning ">
-                                                Submit
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
+                                             <?php echo $kpa->employe->biodata->fullName() . ' semester ' . $kpa->semester . ' ' . $pe->tahun; ?>
+                                          </div>
+                                          <div class="modal-footer">
+                                             <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+                                             <button type="submit" class="btn btn-primary ">
+                                                   Submit
+                                             </button>
+                                          </div>
+                                       </form>
+                                 </div>
+                              </div>
+                           </div>
+                           @endif
+                        @else
+                           @if(isset($pd) && $pd->pdds->count() == 6)
+                           <button class="btn btn-xs btn-light" data-toggle="modal" data-target="#modal-submit-{{$kpa->id}}"><i class="fas fa-rocket"></i> Submit </button>
+                           <!-- <x-modal.submit :id="$pe->id" :body="'KPI ' . $kpa->employe->biodata->fullName() . ' semester '. $kpa->semester.' '. $pe->tahun " url="{{route('qpe.submit', enkripRambo($pe->id))}}" /> -->
+
+                           <div class="modal fade" id="modal-submit-{{$kpa->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                              <div class="modal-dialog" role="document">
+                                 <div class="modal-content">
+                                       <form method="POST" action="{{route('qpe.submit', enkripRambo($pe->id))}}" enctype="multipart/form-data">
+                                          @csrf
+                                          @method('PUT')
+                                          <input type="hidden" name="id" value="{{$pe->id}}">
+                                          <div class="modal-header">
+                                             <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                   <span aria-hidden="true">&times;</span>
+                                             </button>
+                                          </div>
+                                          <div class="modal-body">
+                                             Submit KPI
+
+                                             <?php echo $kpa->employe->biodata->fullName() . ' semester ' . $kpa->semester . ' ' . $pe->tahun; ?>
+                                          </div>
+                                          <div class="modal-footer">
+                                             <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+                                             <button type="submit" class="btn btn-primary ">
+                                                   Submit
+                                             </button>
+                                          </div>
+                                       </form>
+                                 </div>
+                              </div>
+                           </div>
+                           @endif
                         @endif
-                    </div>
-                    &nbsp;
-                    <button type="button" class="btn btn-light btn-xs btn-round btn-page-header-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fa fa-ellipsis-h"></i>
-                    </button>
-                    <div class="dropdown-menu">
-                        <btn data-target="#modalAddtional" data-toggle="modal" class="dropdown-item" style="text-decoration: none">Addtional Objective</btn>
-                    </div>
-                </div>
-                @endif
+                           
+                     </div>
+                     &nbsp;
+                     <button type="button" class="btn btn-light btn-xs btn-round btn-page-header-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                           <i class="fa fa-ellipsis-h"></i>
+                     </button>
+                     <div class="dropdown-menu">
+                           <btn data-target="#modalAddtional" data-toggle="modal" class="dropdown-item" style="text-decoration: none">Addtional Objective</btn>
+                     </div>
+                  </div>
+                  @endif
+               @endif
 
-                @if (auth()->user()->hasRole('Administrator|HRD'))
-                @if($isDone)
-                <button onclick="doneValidasi({{$kpa->id}})" class=" btn btn-sm btn-primary ml-auto"><i class="fa fa-check"></i> Done</button>
-                <form id="done-validasi" action="{{route('kpa.done.validasi', $kpa->id)}}" method="POST"> @csrf @method('patch')</form>
-                @elseif($isReject)
-                <button onclick="rejectValidasi({{$kpa->id}})" class="btn btn-sm btn-danger ml-auto"><i class="fa fa-reply"></i> Reject</button>
-                <form id="reject-validasi" action="{{route('kpa.reject.validasi', $kpa->id)}}" method="POST"> @csrf @method('patch') </form>
-                @endif
+                @if (auth()->user()->hasRole('Administrator'))
+                  @if($isDone)
+                  <button onclick="doneValidasi({{$kpa->id}})" class=" btn btn-sm btn-primary ml-auto"><i class="fa fa-check"></i> Done</button>
+                  <form id="done-validasi" action="{{route('kpa.done.validasi', $kpa->id)}}" method="POST"> @csrf @method('patch')</form>
+                  @elseif($isReject)
+                  <button onclick="rejectValidasi({{$kpa->id}})" class="btn btn-sm btn-danger ml-auto"><i class="fa fa-reply"></i> Reject</button>
+                  <form id="reject-validasi" action="{{route('kpa.reject.validasi', $kpa->id)}}" method="POST"> @csrf @method('patch') </form>
+                  @endif
                 @endif
 
                 {{-- @if (auth()->user()->hasRole('Manager') && $kpa->status == '1' ) --}}
@@ -117,12 +224,12 @@ PE
             <input type="hidden" id="kpi_id" name="kpi_id">
             <input type="hidden" id="employee_id" name="employe_id">
             <input type="hidden" id="date" name="date">
-            <div class="card-body">
+            <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table id="tableCreate" class="displays table table-striped ">
+                    <table id="tableCreate" class="displays table-sm">
                         <thead>
                             <tr>
-                                <th>No</th>
+                                <th class="text-center">No</th>
                                 <th>Objective</th>
                                 <th>Weight</th>
                                 <th>Target</th>
@@ -144,11 +251,11 @@ PE
                             $urlPdf = Storage::url($data->evidence) ;
                             @endphp
                             <tr>
-                                <td>{{++$i}}</td>
+                                <td class="text-center">{{++$i}}</td>
                                 <td><a href="#" data-target="#myModal-{{$data->id}}" data-toggle="modal"> {{$data->kpidetail->objective}} </a></td>
-                                <td> {{$data->kpidetail->weight}}</td>
-                                <td> {{$data->kpidetail->target}}</td>
-                                <td> {{$data->value}}</td>
+                                <td class="text-center"> {{$data->kpidetail->weight}}</td>
+                                <td class="text-center"> {{$data->kpidetail->target}}</td>
+                                <td class="text-center"> {{$data->value}}</td>
                                 <td class="text-right"> <b>{{$data->achievement}}</b></td>
                                 @if($kpa->status == '2' || $kpa->status == '202')
                                 <td>
@@ -317,9 +424,9 @@ PE
                             <tr>
                                 <td>Addtional </td>
                                 <td><b><a href="#" data-target="#modalEditAddtional" data-toggle="modal">{{$addtional->addtional_objective}}</a></b></td>
-                                <td>{{$addtional->addtional_weight}}</td>
-                                <td>{{$addtional->addtional_target}}</td>
-                                <td>{{$addtional->value}}</td>
+                                <td class="text-center">{{$addtional->addtional_weight}}</td>
+                                <td class="text-center">{{$addtional->addtional_target}}</td>
+                                <td class="text-center">{{$addtional->value}}</td>
                                 <td class="text-right"><b>{{$addtional->achievement}}</b></td>
                                 @if($kpa->status == '2' || $kpa->status == '202')
                                 <td>
@@ -495,304 +602,260 @@ PE
                 </div>
             </div>
         </div>
+        <div class="card shadow-none border">
+         <div class="card-header bg-primary">
+             <small class=" text-white">Behavior</small>
+         </div>
+         @if($pba == null)
+
+         <form action="{{route('qpe.behavior.store')}}" name="formBehavior" method="POST" enctype="multipart/form-data" accept=".jpg, .jpeg, .png, .pdf">
+
+             @endif
+
+             @csrf
+             <input type="hidden" name="employe_id" value="{{$kpa->employe_id}}">
+             <input type="hidden" name="kpa_id" value="{{$kpa->id}}">
+             <input type="hidden" name="pe_id" value="{{$kpa->pe_id}}">
+             <div class="card-body p-0">
+                 <div class="table-responsive">
+                     <table class="displays table-sm ">
+                         <thead>
+                             <tr>
+                                 <th class="text-center">No</th>
+                                 <th>Objective</th>
+                                 <th>Description</th>
+                                 <th>Bobot</th>
+                                 <th>Value</th>
+                                 <th>Achievement</th>
+                             </tr>
+                         </thead>
+                         <tbody>
+                             @if($pba == null)
+                             @foreach($behaviors as $key => $behavior)
+                             <tr>
+                                 <td class="text-center">{{ ++$key }}</td>
+                                 <td>{{ $behavior->objective }}</td>
+                                 <td>{{ $behavior->description }}</td>
+                                 <td class="text-center">{{ $behavior->bobot }}</td>
+                                 <td>
+                                     <input style="width: 80px" type="text" name="valBehavior[{{ $behavior->id }}]" value="0" min="0.01" max="4" step="0.01">
+                                     <br><span><small>*Max 4</small></span>
+                                 </td>
+                                 <td>
+                                     <input style="width: 50px" type="text" name="acvBehavior[{{ $behavior->id }}]" readonly>
+                                     <br><span>-</span>
+                                 </td>
+                             </tr>
+                             @endforeach
+                             @else
+
+                             @foreach($pbads as $key => $pbda)
+                             <tr>
+                                 <td>{{ ++$key }}</td>
+                                 <td>
+                                     <a href="#" data-target="#modalBehavior-{{$pbda->id}}" data-toggle="modal">{{ $pbda->behavior->objective }}</a>
+                                 </td>
+                                 <td>{{ $pbda->behavior->description }}</td>
+                                 <td>{{ $pbda->behavior->bobot }}</td>
+                                 <td>{{ $pbda->value }}</td>
+                                 <td>{{ $pbda->achievement }}</td>
+                             </tr>
+
+                             <div class="modal fade" id="modalBehavior-{{$pbda->id}}" data-bs-backdrop="static">
+                                 <div class="modal-dialog" style="max-width: 50%;">
+                                     <div class="modal-content">
+                                         <form method="POST" action="{{route('qpe.behavior.update',$pbda->id) }}" enctype="multipart/form-data">
+                                             @csrf
+                                             @method('patch')
+
+                                             <input type="hidden" name="id" value="{{$pbda->id}}">
+                                             <input type="hidden" name="kpa_id" value="{{$kpa->id}}">
+                                             <input type="hidden" name="pba_id" value="{{$pbda->pba_id}}">
+                                             <!-- Bagian header modal -->
+                                             <div class="modal-header bg-primary">
+                                                 <h3 class="modal-title text-white">{{$pbda->behavior->objective}} </h3>
+                                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                             </div>
+                                             <!-- Bagian konten modal -->
+                                             <div class="modal-body">
+                                                 <div class="card-body">
+
+                                                     <div class="form-group">
+                                                         <label for="objective">Objective :</label>
+                                                         <input type="text" class="form-control" id="objective" name="objective" value="{{ $pbda->behavior->objective }}" readonly>
+                                                     </div>
+                                                     <div class="form-group">
+                                                         <label for="objective">Description :</label>
+                                                         <textarea type="text" rows="5" class="form-control" id="objective" name="objective" readonly>{{ $pbda->behavior->description }}</textarea>
+                                                     </div>
+                                                     <div class="form-group">
+                                                         <label for="weight">Weight :</label>
+                                                         <input type="text" class="form-control" id="weight" name="weight" value="{{ $pbda->behavior->bobot }}" readonly>
+                                                     </div>
+
+                                                     <div class="form-group">
+                                                         <label for="value">Value :</label>
+                                                         <input type="text" class="form-control value" id="value" name="valBv" data-key="{{ $pbda->id }}" data-target="{{ $pbda->behavior->target }}" data-weight="{{ $pbda->behavior->weight }}" value="{{ old('value', $pbda->value) }}" autocomplete="off">
+                                                     </div>
+
+                                                     <div class="form-group">
+                                                         <label for="achievement">Achievement :</label>
+                                                         <input type="text" class="form-control" id="achievementBv-{{$pbda->id}}" name="achievement" value="{{ $pbda->achievement }}" readonly>
+                                                     </div>
+
+                                                 </div>
+
+                                             </div>
+
+                                             <!-- Bagian footer modal -->
+                                             <div class="modal-footer">
+                                                 <button type="submit" class="btn btn-warning">Update</button>
+                                                 <button type="button" class="btn btn-danger" data-dismiss="modal">Tutup</button>
+                                             </div>
+                                         </form>
+                                     </div>
+                                 </div>
+                             </div>
+
+                             @endforeach
+
+
+                             @endif
+                         </tbody>
+                         <tfoot>
+                             <tr>
+                                 <th colspan="5" class="text-right">Achievement</th>
+                                 @if(isset($pba))
+                                 <th><span id="totalAcvBehavior" name="totalAcvBehavior">{{$pba->achievement}}</span></th>
+                                 @else
+                                 <th><span id="totalAcvBehavior" name="totalAcvBehavior">-</span></th>
+                                 @endif
+                             </tr>
+                         </tfoot>
+                     </table>
+                 </div>
+
+                 <a href="#" data-target="#modalPanduan" data-toggle="modal" class="text-danger ml-2 "><span class="fa fa-info"></span> Panduan Pengisian Nilai Behavior</a>
+
+                 <div class="modal fade" id="modalPanduan" data-bs-backdrop="static">
+                     <div class="modal-dialog" style="max-width: 90%;">
+                         <div class="modal-content">
+
+                             <!-- Bagian header modal -->
+                             <div class="modal-header">
+                                 <h3 class="modal-title">Panduan Pengisian Nilai Behavior</h3>
+                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
+                             </div>
+
+                             <!-- Konten modal -->
+                             <div class="modal-body">
+                                 <!-- Isi konten modal disini -->
+                                 <table style="font-size: 11px;">
+                                     <thead>
+                                         <tr>
+                                             <th class="text-center">Obyektif</th>
+                                             <th class="text-center">Deskripsi</th>
+                                             <th class="text-center">Bobot</th>
+                                             <th class="text-center">Periode Target</th>
+                                             <th class="text-center">1</th>
+                                             <th class="text-center">2</th>
+                                             <th class="text-center">3</th>
+                                             <th class="text-center">4</th>
+                                         </tr>
+                                     </thead>
+                                     <tbody>
+                                         <tr>
+                                             <td class="text-center text-bold">Kreatifitas dan Inovasi</td>
+                                             <td class="text-center">Memberikan ide, inovasi terkait lingkup pekerjaan dalam departemen</td>
+                                             <td class="text-center">5</td>
+                                             <td class="text-center">Semester</td>
+                                             <td class="text-center">Tidak pernah memberikan masukan dan inovasi terkait pekerjaan</td>
+                                             <td class="text-center">Bersama-sama dengan rekan yang lain berkontribusi dalam memberikan ide maupun inovasi baru</td>
+                                             <td class="text-center">Memberikan Ide atau inovasi minimal 1 dalam 1 semester</td>
+                                             <td class="text-center">Memberikan Ide atau inovasi minimal 1 dalam 1 semester dan dapat diaplikasikan dalam pekerjaan</td>
+                                         </tr>
+                                         <tr>
+                                             <td class="">Kerjasama</td>
+                                             <td class="">kemampuan untuk melakukan koordinasi dan komunikasi dengan berbagai pihak yang terkait; merumuskan tujuan bersama dan berbagi tugas untuk mencapai sasaran kerja yang telah ditetapkan; serta saling menghargai pendapat dan masukan guna peningkatan kinerja tim</td>
+                                             <td class="">5</td>
+                                             <td class="">Semester</td>
+                                             <td class="">
+                                                 <br>- Memiliki kemampuan yang sangat rendah untuk melakukan koordinasi dan komunikasi dengan berbagai pihak yang terkait;
+                                                 <br>- Tidak mampu merumuskan tujuan bersama dan berbagi tugas untuk mencapai sasaran kerja yang telah ditetapkan; serta
+                                                 <br>- Tidak bisa menghargai pendapat dan masukan guna peningkatan kinerja tim.
+                                             </td>
+                                             <td class="">
+                                                 <br>- Memiliki kemampuan yang terbatas untuk melakukan koordinasi dan komunikasi dengan berbagai pihak yang terkait;
+                                                 <br>- Kurang mampu merumuskan tujuan bersama dan berbagi tugas untuk mencapai sasaran kerja yang telah ditetapkan;
+                                                 <br>- Kurang bisa menghargai pendapat dan masukan guna peningkatan kinerja tim.
+                                             </td>
+                                             <td class="">
+                                                 <br>- Memiliki kemampuan yang memadai untuk melakukan koordinasi dan komunikasi dengan berbagai pihak yang terkait;
+                                                 <br>- Mampu merumuskan tujuan bersama dan berbagi tugas untuk mencapai sasaran kerja yang telah ditetapkan; serta
+                                                 <br>- Saling menghargai pendapat dan masukan guna peningkatan kinerja tim
+                                             </td>
+                                             <td class="">
+                                                 <br>- Memiliki kemampuan untuk merencanakan dan mengendalikan proses koordinasi dan komunikasi dengan berbagai pihak yang terkait;
+                                                 <br>- Memiliki kemampuan yang sangat baik dalam merumuskan tujuan bersama dan berbagi tugas untuk mencapai sasaran kerja yang telah ditetapkan; serta
+                                                 <br>- Saling menghargai pendapat dan masukan guna peningkatan kinerja tim
+                                             </td>
+                                         </tr>
+                                         <tr>
+                                             <td class="">Inisiatif</td>
+                                             <td class="">kemampuan untuk menjalankan inisiatif perbaikan mutu kerja tanpa harus diperintah; bersikap proaktif dan memiliki self-motivation yang tinggi untuk menuntaskan pekerjaan; serta mampu dalam mengajukan usulan/masukan untuk peningkatan mutu kerja</td>
+                                             <td class="">5</td>
+                                             <td class="">Semester</td>
+                                             <td class="">
+                                                 <br>- Memiliki kemampuan yang sangat rendah untuk menjalankan inisiatif perbaikan mutu kerja tanpa harus diperintah;
+                                                 <br>- Bersikap pasif dan tidak memiliki self-motivation untuk menuntaskan pekerjaan;
+                                                 <br>- Tidak pernah mengutarakan usulan/masukan untuk peningkatan mutu kerja
+                                             </td>
+                                             <td class="">
+                                                 <br>- Memiliki kemampuan yang terbatas untuk menjalankan inisiatif perbaikan mutu kerja tanpa harus diperintah;
+                                                 <br>- Kadang-kadang bersikap pasif dan kurang memiliki self-motivation untuk menuntaskan pekerjaan;
+                                                 <br>- Terbatas dalam mengutarakan usulan/masukan untuk peningkatan mutu kerja
+                                             </td>
+                                             <td class="">
+                                                 <br>- Memiliki kemampuan yang memadai untuk menjalankan inisiatif perbaikan mutu kerja tanpa harus diperintah;
+                                                 <br>- Bersikap proaktif dan memiliki self-motivation untuk menuntaskan pekerjaan;
+                                                 <br>- Mampu dalam mengutarakan usulan/masukan untuk peningkatan mutu kerja
+                                             </td>
+                                             <td class="">
+                                                 <br>- Memiliki kemampuan untuk merencanakan, dan mengimplementasikan inisiatif perbaikan mutu kerja;
+                                                 <br>- Selalu bersikap proaktif dan memiliki self-motivation yang tinggi dan konsisten untuk menuntaskan pekerjaan;
+                                                 <br>- Mampu dalam mengutarakan usulan/masukan untuk peningkatan mutu kerja
+                                             </td>
+                                         </tr>
+                                     </tbody>
+                                 </table>
+                             </div>
+
+                             <!-- Bagian footer modal -->
+                             <div class="modal-footer">
+                                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                             </div>
+
+                         </div>
+                     </div>
+                 </div>
+
+
+             </div>
+             <div class="card-footer">
+                 <div class="col-md-3 float-right mb-3">
+                     @if($pba == null)
+                     <button type="submit" class="btn btn-block btn-primary ">Save</button>
+                     @endif
+                 </div>
+             </div>
+             @if($pba == null)
+         </form>
+         @endif
+     </div>
     </div>
 </div>
 
-<div class="row" id="boxDetail">
-    <div class="col-md-3">
-        <div class="card shadow-none border">
-            <div class="card-header d-flex bg-primary">
-                <div class="d-flex  align-items-center">
-                    <div class="card-title text-white">Discipline</div>
-                </div>
 
-            </div>
-            <div class="card-body">
-                <form>
-                    @csrf
-                    <div class="form-group form-group-default">
-                        <label>Alpa</label>
-                        <label for="" class="float-right">{{ $pd ? $pd->alpa : 0 }}</label>
-                    </div>
-                    <div class="form-group form-group-default">
-                        <label>Ijin</label>
-                        <label for="" class="float-right">{{ $pd ? $pd->ijin : 0 }}</label>
-                    </div>
-                    <div class="form-group form-group-default">
-                        <label>Terlambat</label>
-                        <label for="" class="float-right">{{ $pd ? $pd->terlambat : 0 }}</label>
-                    </div>
-                    <div class="form-group form-group-default bg-success">
-                        <label>Value</label>
-                        <label for="" class="float-right">{{ $pd ? $pd->achievement : 0 }}</label>
-                    </div>
-                    <div class="form-group form-group-default ">
-                        <label>Bobot</label>
-                        <label for="" class="float-right">15</label>
-                    </div>
-                    <div class="form-group form-group-default bg-success">
-                        <label> <b>Achievement</b></label>
-                        <label for="" class="float-right">
-                            <h3>{{ $pd ? $pd->contribute_to_pe : 0 }}</h3>
-                        </label>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-9">
-        <div class="card shadow-none border">
-            <div class="card-header bg-primary">
-                <div class="card-title text-white">Behavior</div>
-            </div>
-            @if($pba == null)
-
-            <form action="{{route('qpe.behavior.store')}}" name="formBehavior" method="POST" enctype="multipart/form-data" accept=".jpg, .jpeg, .png, .pdf">
-
-                @endif
-
-                @csrf
-                <input type="hidden" name="employe_id" value="{{$kpa->employe_id}}">
-                <input type="hidden" name="kpa_id" value="{{$kpa->id}}">
-                <input type="hidden" name="pe_id" value="{{$kpa->pe_id}}">
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="displays table table-striped ">
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Objective</th>
-                                    <th>Description</th>
-                                    <th>Bobot</th>
-                                    <th>Value</th>
-                                    <th>Achievement</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if($pba == null)
-                                @foreach($behaviors as $key => $behavior)
-                                <tr>
-                                    <td>{{ ++$key }}</td>
-                                    <td>{{ $behavior->objective }}</td>
-                                    <td>{{ $behavior->description }}</td>
-                                    <td>{{ $behavior->bobot }}</td>
-                                    <td>
-                                        <input style="width: 50px" type="text" name="valBehavior[{{ $behavior->id }}]" value="0" min="0.01" max="4" step="0.01">
-                                        <br><span><small>*Max 4</small></span>
-                                    </td>
-                                    <td>
-                                        <input style="width: 50px" type="text" name="acvBehavior[{{ $behavior->id }}]" readonly>
-                                        <br><span>-</span>
-                                    </td>
-                                </tr>
-                                @endforeach
-                                @else
-
-                                @foreach($pbads as $key => $pbda)
-                                <tr>
-                                    <td>{{ ++$key }}</td>
-                                    <td>
-                                        <a href="#" data-target="#modalBehavior-{{$pbda->id}}" data-toggle="modal">{{ $pbda->behavior->objective }}</a>
-                                    </td>
-                                    <td>{{ $pbda->behavior->description }}</td>
-                                    <td>{{ $pbda->behavior->bobot }}</td>
-                                    <td>{{ $pbda->value }}</td>
-                                    <td>{{ $pbda->achievement }}</td>
-                                </tr>
-
-                                <div class="modal fade" id="modalBehavior-{{$pbda->id}}" data-bs-backdrop="static">
-                                    <div class="modal-dialog" style="max-width: 50%;">
-                                        <div class="modal-content">
-                                            <form method="POST" action="{{route('qpe.behavior.update',$pbda->id) }}" enctype="multipart/form-data">
-                                                @csrf
-                                                @method('patch')
-
-                                                <input type="hidden" name="id" value="{{$pbda->id}}">
-                                                <input type="hidden" name="kpa_id" value="{{$kpa->id}}">
-                                                <input type="hidden" name="pba_id" value="{{$pbda->pba_id}}">
-                                                <!-- Bagian header modal -->
-                                                <div class="modal-header bg-primary">
-                                                    <h3 class="modal-title text-white">{{$pbda->behavior->objective}} </h3>
-                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                </div>
-                                                <!-- Bagian konten modal -->
-                                                <div class="modal-body">
-                                                    <div class="card-body">
-
-                                                        <div class="form-group">
-                                                            <label for="objective">Objective :</label>
-                                                            <input type="text" class="form-control" id="objective" name="objective" value="{{ $pbda->behavior->objective }}" readonly>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="objective">Description :</label>
-                                                            <textarea type="text" rows="5" class="form-control" id="objective" name="objective" readonly>{{ $pbda->behavior->description }}</textarea>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="weight">Weight :</label>
-                                                            <input type="text" class="form-control" id="weight" name="weight" value="{{ $pbda->behavior->bobot }}" readonly>
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <label for="value">Value :</label>
-                                                            <input type="text" class="form-control value" id="value" name="valBv" data-key="{{ $pbda->id }}" data-target="{{ $pbda->behavior->target }}" data-weight="{{ $pbda->behavior->weight }}" value="{{ old('value', $pbda->value) }}" autocomplete="off">
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <label for="achievement">Achievement :</label>
-                                                            <input type="text" class="form-control" id="achievementBv-{{$pbda->id}}" name="achievement" value="{{ $pbda->achievement }}" readonly>
-                                                        </div>
-
-                                                    </div>
-
-                                                </div>
-
-                                                <!-- Bagian footer modal -->
-                                                <div class="modal-footer">
-                                                    <button type="submit" class="btn btn-warning">Update</button>
-                                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Tutup</button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                @endforeach
-
-
-                                @endif
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th colspan="5" class="text-right">Achievement</th>
-                                    @if(isset($pba))
-                                    <th><span id="totalAcvBehavior" name="totalAcvBehavior">{{$pba->achievement}}</span></th>
-                                    @else
-                                    <th><span id="totalAcvBehavior" name="totalAcvBehavior">-</span></th>
-                                    @endif
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-
-                    <a data-target="#modalPanduan" data-toggle="modal" class="text-danger "><span class="fa fa-info"></span> Panduan Pengisian Nilai Behavior</a>
-
-                    <div class="modal fade" id="modalPanduan" data-bs-backdrop="static">
-                        <div class="modal-dialog" style="max-width: 90%;">
-                            <div class="modal-content">
-
-                                <!-- Bagian header modal -->
-                                <div class="modal-header">
-                                    <h3 class="modal-title">Panduan Pengisian Nilai Behavior</h3>
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                </div>
-
-                                <!-- Konten modal -->
-                                <div class="modal-body">
-                                    <!-- Isi konten modal disini -->
-                                    <table style="font-size: 11px;">
-                                        <thead>
-                                            <tr>
-                                                <th class="text-center">Obyektif</th>
-                                                <th class="text-center">Deskripsi</th>
-                                                <th class="text-center">Bobot</th>
-                                                <th class="text-center">Periode Target</th>
-                                                <th class="text-center">1</th>
-                                                <th class="text-center">2</th>
-                                                <th class="text-center">3</th>
-                                                <th class="text-center">4</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td class="text-center text-bold">Kreatifitas dan Inovasi</td>
-                                                <td class="text-center">Memberikan ide, inovasi terkait lingkup pekerjaan dalam departemen</td>
-                                                <td class="text-center">5</td>
-                                                <td class="text-center">Semester</td>
-                                                <td class="text-center">Tidak pernah memberikan masukan dan inovasi terkait pekerjaan</td>
-                                                <td class="text-center">Bersama-sama dengan rekan yang lain berkontribusi dalam memberikan ide maupun inovasi baru</td>
-                                                <td class="text-center">Memberikan Ide atau inovasi minimal 1 dalam 1 semester</td>
-                                                <td class="text-center">Memberikan Ide atau inovasi minimal 1 dalam 1 semester dan dapat diaplikasikan dalam pekerjaan</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="">Kerjasama</td>
-                                                <td class="">kemampuan untuk melakukan koordinasi dan komunikasi dengan berbagai pihak yang terkait; merumuskan tujuan bersama dan berbagi tugas untuk mencapai sasaran kerja yang telah ditetapkan; serta saling menghargai pendapat dan masukan guna peningkatan kinerja tim</td>
-                                                <td class="">5</td>
-                                                <td class="">Semester</td>
-                                                <td class="">
-                                                    <br>- Memiliki kemampuan yang sangat rendah untuk melakukan koordinasi dan komunikasi dengan berbagai pihak yang terkait;
-                                                    <br>- Tidak mampu merumuskan tujuan bersama dan berbagi tugas untuk mencapai sasaran kerja yang telah ditetapkan; serta
-                                                    <br>- Tidak bisa menghargai pendapat dan masukan guna peningkatan kinerja tim.
-                                                </td>
-                                                <td class="">
-                                                    <br>- Memiliki kemampuan yang terbatas untuk melakukan koordinasi dan komunikasi dengan berbagai pihak yang terkait;
-                                                    <br>- Kurang mampu merumuskan tujuan bersama dan berbagi tugas untuk mencapai sasaran kerja yang telah ditetapkan;
-                                                    <br>- Kurang bisa menghargai pendapat dan masukan guna peningkatan kinerja tim.
-                                                </td>
-                                                <td class="">
-                                                    <br>- Memiliki kemampuan yang memadai untuk melakukan koordinasi dan komunikasi dengan berbagai pihak yang terkait;
-                                                    <br>- Mampu merumuskan tujuan bersama dan berbagi tugas untuk mencapai sasaran kerja yang telah ditetapkan; serta
-                                                    <br>- Saling menghargai pendapat dan masukan guna peningkatan kinerja tim
-                                                </td>
-                                                <td class="">
-                                                    <br>- Memiliki kemampuan untuk merencanakan dan mengendalikan proses koordinasi dan komunikasi dengan berbagai pihak yang terkait;
-                                                    <br>- Memiliki kemampuan yang sangat baik dalam merumuskan tujuan bersama dan berbagi tugas untuk mencapai sasaran kerja yang telah ditetapkan; serta
-                                                    <br>- Saling menghargai pendapat dan masukan guna peningkatan kinerja tim
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="">Inisiatif</td>
-                                                <td class="">kemampuan untuk menjalankan inisiatif perbaikan mutu kerja tanpa harus diperintah; bersikap proaktif dan memiliki self-motivation yang tinggi untuk menuntaskan pekerjaan; serta mampu dalam mengajukan usulan/masukan untuk peningkatan mutu kerja</td>
-                                                <td class="">5</td>
-                                                <td class="">Semester</td>
-                                                <td class="">
-                                                    <br>- Memiliki kemampuan yang sangat rendah untuk menjalankan inisiatif perbaikan mutu kerja tanpa harus diperintah;
-                                                    <br>- Bersikap pasif dan tidak memiliki self-motivation untuk menuntaskan pekerjaan;
-                                                    <br>- Tidak pernah mengutarakan usulan/masukan untuk peningkatan mutu kerja
-                                                </td>
-                                                <td class="">
-                                                    <br>- Memiliki kemampuan yang terbatas untuk menjalankan inisiatif perbaikan mutu kerja tanpa harus diperintah;
-                                                    <br>- Kadang-kadang bersikap pasif dan kurang memiliki self-motivation untuk menuntaskan pekerjaan;
-                                                    <br>- Terbatas dalam mengutarakan usulan/masukan untuk peningkatan mutu kerja
-                                                </td>
-                                                <td class="">
-                                                    <br>- Memiliki kemampuan yang memadai untuk menjalankan inisiatif perbaikan mutu kerja tanpa harus diperintah;
-                                                    <br>- Bersikap proaktif dan memiliki self-motivation untuk menuntaskan pekerjaan;
-                                                    <br>- Mampu dalam mengutarakan usulan/masukan untuk peningkatan mutu kerja
-                                                </td>
-                                                <td class="">
-                                                    <br>- Memiliki kemampuan untuk merencanakan, dan mengimplementasikan inisiatif perbaikan mutu kerja;
-                                                    <br>- Selalu bersikap proaktif dan memiliki self-motivation yang tinggi dan konsisten untuk menuntaskan pekerjaan;
-                                                    <br>- Mampu dalam mengutarakan usulan/masukan untuk peningkatan mutu kerja
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                                <!-- Bagian footer modal -->
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-
-                </div>
-                <div class="card-footer">
-                    <div class="col-md-3 float-right mb-3">
-                        @if($pba == null)
-                        <button type="submit" class="btn btn-block btn-primary ">Save</button>
-                        @endif
-                    </div>
-                </div>
-                @if($pba == null)
-            </form>
-            @endif
-        </div>
-    </div>
-</div>
 <div class="row">
     <div class="col-md-12">
         <div class="card">
@@ -802,79 +865,79 @@ PE
                 <div class="card-header bg-primary text-white">
                     Komentar Evaluator
                 </div>
-                <div class=" card-body">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label for="form-control">Komentar <span class="text-danger">*</span> : </label>
-                                <textarea name="komentar" id="komentar" class="form-control komentar" rows="4" required placeholder="Tuliskan komentar anda disini disini!">{{$pe->komentar ?? ''}}</textarea>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="form-control">Development & Training : </label>
-                                <textarea name="pengembangan" id="pengembangan" class="form-control pengembangan" rows="4" placeholder="Tuliskan alasan penolakan disini!">{{$pe->pengembangan ?? ''}}</textarea>
-                            </div>
-                            <div class="col-md-6 mt-3">
-                                <div class="form-group mb-3">
-                                    <b>File Bukti Persetujuan Karyawan <span class="text-danger">*</span> </b><br />
-                                    <input type="file" name="evidence">
-                                </div>
-
-                                @if($pe->evidence)
-                                <!-- Button -->
-                                <a href="#" data-target="#modalEvidence" data-toggle="modal"><span class="fa fa-file"></span> Lihat File</a>
-
-                                <!-- Modal -->
-                                <div class="modal fade" id="modalEvidence" data-bs-backdrop="static">
-                                    <div class="modal-dialog modal-lg">
-                                        <div class="modal-content">
-
-                                            <!-- Bagian header modal -->
-                                            <div class="modal-header">
-                                                <h3 class="modal-title"> </h3>
-                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                            </div>
-
-                                            <!-- Bagian konten modal -->
-                                            <div class="modal-body">
-
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="card shadow-none border">
-                                                            <div class="card-header d-flex">
-                                                                <div class="d-flex  align-items-center">
-                                                                    <div class="card-title">File Evidence</div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="card-body">
-                                                                <div class="form-group">
-                                                                    @if ($pe->evidence)
-                                                                    <iframe src="{{ Storage::url($pe->evidence) }}" id="pdfPreview-{{$pe->id}}" width=" 100%" height="575px"></iframe>
-                                                                    @else
-                                                                    <p>No attachment available.</p>
-                                                                    @endif
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- Bagian footer modal -->
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Tutup</button>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- End Modal -->
-                                @endif
-                            </div>
+                
+               <div class="card-body">
+                  <div class="row">
+                        <div class="col-md-6">
+                           <label for="form-control">Komentar <span class="text-danger">*</span> : </label>
+                           <textarea name="komentar" id="komentar" class="form-control komentar" rows="4" required placeholder="Tuliskan komentar anda disini disini!">{{$pe->komentar ?? ''}}</textarea>
                         </div>
-                    </div>
-                </div>
+                        <div class="col-md-6">
+                           <label for="form-control">Development & Training : </label>
+                           <textarea name="pengembangan" id="pengembangan" class="form-control pengembangan" rows="4" placeholder="Tuliskan alasan penolakan disini!">{{$pe->pengembangan ?? ''}}</textarea>
+                        </div>
+                        <div class="col-md-6 mt-3">
+                           <div class="form-group mb-3">
+                              <b>File Bukti Persetujuan Karyawan <span class="text-danger">*</span> </b><br />
+                              <input type="file" name="evidence">
+                           </div>
+
+                           @if($pe->evidence)
+                           <!-- Button -->
+                           <a href="#" data-target="#modalEvidence" data-toggle="modal"><span class="fa fa-file"></span> Lihat File</a>
+
+                           <!-- Modal -->
+                           <div class="modal fade" id="modalEvidence" data-bs-backdrop="static">
+                              <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+
+                                       <!-- Bagian header modal -->
+                                       <div class="modal-header">
+                                          <h3 class="modal-title"> </h3>
+                                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                       </div>
+
+                                       <!-- Bagian konten modal -->
+                                       <div class="modal-body">
+
+                                          <div class="row">
+                                                <div class="col-md-12">
+                                                   <div class="card shadow-none border">
+                                                      <div class="card-header d-flex">
+                                                            <div class="d-flex  align-items-center">
+                                                               <div class="card-title">File Evidence</div>
+                                                            </div>
+                                                      </div>
+                                                      <div class="card-body">
+                                                            <div class="form-group">
+                                                               @if ($pe->evidence)
+                                                               <iframe src="{{ asset('storage/'. $pe->evidence) }}" id="pdfPreview-{{$pe->id}}" width=" 100%" height="575px"></iframe>
+                                                               @else
+                                                               <p>No attachment available.</p>
+                                                               @endif
+                                                            </div>
+                                                      </div>
+                                                   </div>
+                                                </div>
+                                          </div>
+                                       </div>
+
+                                       <!-- Bagian footer modal -->
+                                       <div class="modal-footer">
+                                          <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Tutup</button>
+                                       </div>
+
+                                    </div>
+                              </div>
+                           </div>
+                           <!-- End Modal -->
+                           @endif
+                        </div>
+                  </div>
+               </div>
+                
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-primary float-right"><i class="fa fa-save"></i> Simpan</button>
+                    <button type="submit" class="btn btn-primary float-right mb-3"><i class="fa fa-save"></i> Simpan</button>
                 </div>
             </form>
         </div>
@@ -910,9 +973,9 @@ $pbaAchievement = 0;
             <div class="card-header bg-primary">
                 <div class="card-title text-white text-center">RANGKUMAN HASIL PENILAIAN AKHIR </div>
             </div>
-            <div class="card-body">
+            <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table class="displays table table-striped ">
+                    <table class=" table  table-sm">
                         <thead>
                             <tr>
                                 <th rowspan="2" colspan="2" class="text-white text-center">Indikator</th>
@@ -926,7 +989,7 @@ $pbaAchievement = 0;
                         <tbody>
                             <tr>
                                 <td>1</td>
-                                <td class="text-center">DISIPLIN</td>
+                                <td class="">DISIPLIN</td>
                                 <td class="text-center">3</td>
                                 <td class="text-center">15</td>
                                 <td class="text-center"><b>{{round(($pdAchievement/15)*100)}}</b></td>
@@ -935,7 +998,7 @@ $pbaAchievement = 0;
                             </tr>
                             <tr>
                                 <td>2</td>
-                                <td class="text-center">KPI</td>
+                                <td class="">KPI</td>
                                 <td class="text-center">{{$datas->count()}}</td>
                                 <td class="text-center">{{$kpa->weight}}</td>
                                 <td class="text-center text-bold"><b>{{$kpa->achievement }}</b></td>
@@ -944,7 +1007,7 @@ $pbaAchievement = 0;
                             </tr>
                             <tr>
                                 <td>3</td>
-                                <td class="text-center">BEHAVIOR</td>
+                                <td class="">BEHAVIOR</td>
                                 @if(isset($pba))
                                 <td class="text-center">{{$behaviors->count()}}</td>
                                 <td class="text-center">{{$pba->weight}}</td>
@@ -978,7 +1041,7 @@ $pbaAchievement = 0;
                     </table>
                 </div>
                 <div class="table-responsive mt-3">
-                    <table class="displays table table-striped ">
+                    <table class=" table table-striped table-sm">
                         <tr>
                             <td colspan="2">Note : </td>
                             <td colspan="2">Pengurang</td>
@@ -990,7 +1053,7 @@ $pbaAchievement = 0;
                                 <td>: Manager</td>
                                 <td>SP</td>
                                 <td>0</td>
-                                <td colspan="2">100 - 91</td>
+                                <td colspan="2">88 - 100</td>
                                 <td colspan="2">Memuaskan</td>
                             </tr>
                             <tr>
@@ -998,7 +1061,7 @@ $pbaAchievement = 0;
                                 <td>: Supervisor</td>
                                 <td></td>
                                 <td></td>
-                                <td colspan="2">90 - 76</td>
+                                <td colspan="2">76 - 87</td>
                                 <td colspan="2">Baik</td>
                             </tr>
                             <tr>
@@ -1006,7 +1069,7 @@ $pbaAchievement = 0;
                                 <td>: Team Leader</td>
                                 <td></td>
                                 <td></td>
-                                <td colspan="2">75 - 61</td>
+                                <td colspan="2">61 - 75</td>
                                 <td colspan="2">Cukup</td>
                             </tr>
                             <tr>
@@ -1014,17 +1077,17 @@ $pbaAchievement = 0;
                                 <td>: Staff</td>
                                 <td></td>
                                 <td></td>
-                                <td colspan="2">60 - 51</td>
+                                <td colspan="2">0 - 60</td>
                                 <td colspan="2">Kurang</td>
                             </tr>
-                            <tr>
+                            {{-- <tr>
                                 <td> </td>
                                 <td> </td>
                                 <td></td>
                                 <td></td>
                                 <td colspan="2">50 - 0</td>
                                 <td colspan="2">Sangat Kurang</td>
-                            </tr>
+                            </tr> --}}
                         </tbody>
                     </table>
                 </div>

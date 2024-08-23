@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Log;
 use App\Providers\RouteServiceProvider;
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
@@ -36,6 +38,40 @@ class LoginController extends Controller
    public function __construct()
    {
       $this->middleware('guest')->except('logout');
+   }
+
+   protected function authenticated($user)
+   {
+      if (auth()->user()->hasRole('Administrator')) {
+         
+      } else {
+         Log::create([
+            // 'department_id' => $departmentId,
+            'user_id' => auth()->user()->id,
+            'action' => 'Login',
+            'desc' => formatDateTimeB(NOW())
+         ]);
+      }
+      
+   }
+
+   protected function logout()
+   {
+      // if (auth()->user()->hasRole('Administrator')) {
+         
+      // } else {
+      //    Log::create([
+      //       // 'department_id' => $departmentId,
+      //       'user_id' => auth()->user()->id,
+      //       'action' => 'Logout',
+      //       'desc' => formatDateTimeB(NOW())
+      //    ]);
+         
+      // }
+
+      $this->guard()->logout();
+         return redirect('/');
+      
    }
 
    public function username()

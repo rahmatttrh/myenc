@@ -1,15 +1,14 @@
-
 @extends('layouts.app')
 @section('title')
-      Dashboard
+Dashboard
 @endsection
 @section('content')
-   <div class="page-inner mt--5">
-      <div class="page-header">
-         <h5 class="page-title">
-            <i class="fa fa-home"></i>
-            Dashboard 
-            {{-- @if (auth()->user()->hasRole('Administrator'))
+<div class="page-inner mt--5">
+   <div class="page-header">
+      <h5 class="page-title">
+         <i class="fa fa-home"></i>
+         Dashboard
+         {{-- @if (auth()->user()->hasRole('Administrator'))
                 Administrator
                 
             @endif
@@ -17,190 +16,244 @@
                 HRD
                 
             @endif --}}
-            @if (auth()->user()->email == 'admin@gmail.com' || auth()->user()->email == 'developer@gmail.com')
-               Administrator
-                @else
-                {{auth()->user()->employee->position->name}}
-            @endif
-            
-         </h5>
-      </div>
-      <div class="row">
-         <div class="col-sm-6 col-md-3">
-            <a href="" style="text-decoration: none" data-toggle="tooltip" data-placement="top" title="Total Vessel">
-               <div class="card card-stats card-primary card-round">
-                  <div class="card-body">
-                     <div class="row">
-                        <div class="col-5">
-                           <div class="icon-big text-center">
-                              <i class="flaticon-users"></i>
-                           </div>
+         @if (auth()->user()->email == 'admin@ekanuri.com' || auth()->user()->email == 'developer@gmail.com')
+         Administrator
+         @else
+         {{auth()->user()->employee->position->name}}
+         @endif
+
+      </h5>
+   </div>
+   <div class="row">
+      <div class="col-sm-6 col-md-3">
+         <a href="" style="text-decoration: none" data-toggle="tooltip" data-placement="top" title="Total Karyawan">
+            <div class="card card-stats card-primary card-round">
+               <div class="card-body">
+                  <div class="row">
+                     <div class="col-5">
+                        <div class="icon-big text-center">
+                           <i class="flaticon-users"></i>
                         </div>
-                        <div class="col col-stats">
-                           <div class="numbers">
-                              <p class="card-category">Total Employee</p>
-                              <h4 class="card-title">{{count($employees)}}</h4>
-                           </div>
+                     </div>
+                     <div class="col col-stats">
+                        <div class="numbers">
+                           <p class="card-category">Total Employee</p>
+                           <h4 class="card-title">{{count($employees)}}</h4>
                         </div>
                      </div>
                   </div>
-               </div>
-            </a>
-         </div>
-         <div class="col-sm-6 col-md-3">
-            <a href="#" style="text-decoration: none" data-toggle="tooltip" data-placement="top" title="Total Office">
-               <div class="card card-stats card-info card-round">
-                  <div class="card-body">
-                     <div class="row">
-                        <div class="col-5">
-                           <div class="icon-big text-center">
-                              <i class="flaticon-user"></i>
-                           </div>
-                        </div>
-                        <div class="col col-stats">
-                           <div class="numbers">
-                              <p class="card-category">Male</p>
-                               <h4 class="card-title">{{$male}}</h4> 
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </a>
-         </div>
-         <div class="col-sm-6 col-md-3">
-            <a href="" style="text-decoration: none" data-toggle="tooltip" data-placement="top" title="Total Material">
-               <div class="card card-stats card-secondary card-round">
-                  <div class="card-body">
-                     <div class="row">
-                        <div class="col-5">
-                           <div class="icon-big text-center">
-                              <i class="flaticon-like"></i>
-                           </div>
-                        </div>
-                        <div class="col col-stats">
-                           <div class="numbers">
-                              <p class="card-category">Female</p>
-                              <h4 class="card-title">{{$female}}</h4>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </a>
-         </div>
-         <div class="col-sm-6 col-md-3">
-            <a href="#" style="text-decoration: none" data-toggle="tooltip" data-placement="top" title="Total Material Request">
-               <div class="card card-stats card-danger card-round">
-                  <div class="card-body">
-                     <div class="row">
-                        <div class="col-5">
-                           <div class="icon-big text-center">
-                              <i class="flaticon-clock"></i>
-                           </div>
-                        </div>
-                        <div class="col col-stats">
-                           <div class="numbers">
-                              <p class="card-category">Retired</p>
-                              <h4 class="card-title">{{count($employees->where('status', 202))}}</h4> 
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </a>
-         </div>
-      </div>
-      <div class="row">
-         <div class="col-md-7">
-            {{-- <div class="table-responsive"> --}}
-               {{-- table table-bordered table-sm table-head-bg-info table-bordered-bd-info --}}
-            <div class="card">
-               <div class="card-header p-2 bg-primary text-white">
-                  <small>SPKL Request</small>
-               </div>
-               <div class="card-body p-0">
-                  <table class="display  table-sm table-bordered  table-striped ">
-                     <thead>
-                        
-                        <tr>
-                           {{-- <th scope="col">#</th> --}}
-                           <th scope="col">ID</th>
-                           <th scope="col">Date</th>
-                           <th>Name</th>
-                           {{-- <th>Desc</th> --}}
-                           <th scope="col">Status</th>
-                        </tr>
-                     </thead>
-                     <tbody>
-                        @if (count($spkls) > 0)
-                              @foreach ($spkls as $spkl)
-                              <tr>
-                              <td><a href="{{route('spkl.detail', enkripRambo($spkl->id))}}">{{$spkl->code}}</a></td>
-                              <td>{{formatDate($spkl->date)}}</td>
-                              <td>{{$spkl->employee->biodata->first_name}} {{$spkl->employee->biodata->last_name}}</td>
-                              {{-- <td style="max-width: 190px" class="text-truncate">{{$spkl->desc}}</td> --}}
-                              <td>
-                                 <x-status.spkl :spkl="$spkl" />
-                              </td>
-                           </tr>
-                              @endforeach
-                           @else
-                           <tr>
-                              <td colspan="5" class="text-center">Empty</td>
-                           </tr>
-                        @endif
-                        
-                        
-                     </tbody>
-                  </table>
                </div>
             </div>
-            <div class="card">
-               <div class="card-header p-2 bg-danger text-white">
-                  <small>SP Approval</small>
-               </div>
-               <div class="card-body p-0">
-                  <table class="display  table-sm table-bordered  table-striped ">
-                     <thead>
-                        
-                        <tr>
-                           {{-- <th scope="col">#</th> --}}
-                           <th scope="col">ID</th>
-                           <th scope="col">Name</th>
-                           <th>NIK</th>
-                           <th>Level</th>
-                           <th scope="col">Status</th>
-                        </tr>
-                     </thead>
-                     <tbody>
-                        @if (count($sps) > 0)
-                              @foreach ($sps as $sp)
-                              <tr>
-                              <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->code}}</a></td>
-                              <td>{{$sp->employee->biodata->first_name}} {{$sp->employee->biodata->last_name}}</td>
-                              <td>{{$sp->employee->nik}}</td>
-                              <td>
-                                 SP {{$sp->level}}
-                              </td>
-                              {{-- <td style="max-width: 190px" class="text-truncate">{{$sp->desc}}</td> --}}
-                              <td>
-                                 <x-status.sp :sp="$sp" />
-                              </td>
-                           </tr>
-                              @endforeach
-                           @else
-                           <tr>
-                              <td colspan="5" class="text-center">Empty</td>
-                           </tr>
-                        @endif
-                        
-                        
-                     </tbody>
-                  </table>
+         </a>
+      </div>
+      <div class="col-sm-6 col-md-3">
+         <a href="#" style="text-decoration: none" data-toggle="tooltip" data-placement="top" title="Total Karyawan Tetap">
+            <div class="card card-stats card-info card-round">
+               <div class="card-body">
+                  <div class="row">
+                     <div class="col-5">
+                        <div class="icon-big text-center">
+                           <i class="flaticon-user"></i>
+                        </div>
+                     </div>
+                     <div class="col col-stats">
+                        <div class="numbers">
+                           <p class="card-category">Tetap</p>
+                           <h4 class="card-title">{{$tetap}}</h4>
+                        </div>
+                     </div>
+                  </div>
                </div>
             </div>
-            <table class=" table table-bordered  table-head-bg-info table-bordered-bd-info">
+         </a>
+      </div>
+      <div class="col-sm-6 col-md-3">
+         <a href="" style="text-decoration: none" data-toggle="tooltip" data-placement="top" title="Total Karyawan Kontrak">
+            <div class="card card-stats card-primary card-round">
+               <div class="card-body">
+                  <div class="row">
+                     <div class="col-5">
+                        <div class="icon-big text-center">
+                           <i class="flaticon-user"></i>
+                        </div>
+                     </div>
+                     <div class="col col-stats">
+                        <div class="numbers">
+                           <p class="card-category">Kontrak</p>
+                           <h4 class="card-title">{{$kontrak}}</h4>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </a>
+      </div>
+      <div class="col-sm-6 col-md-3">
+         <a href="#" style="text-decoration: none" data-toggle="tooltip" data-placement="top" title="Total Karyawan Pensiun   ">
+            <div class="card card-stats card-danger card-round">
+               <div class="card-body">
+                  <div class="row">
+                     <div class="col-5">
+                        <div class="icon-big text-center">
+                           <i class="flaticon-clock"></i>
+                        </div>
+                     </div>
+                     <div class="col col-stats">
+                        <div class="numbers">
+                           <p class="card-category">Off</p>
+                           <h4 class="card-title">{{$off}}</h4>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </a>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col-md-8">
+         {{-- <div class="table-responsive"> --}}
+         {{-- table table-bordered table-sm table-head-bg-info table-bordered-bd-info --}}
+         <div class="card">
+            <div class="card-header d-flex justify-content-between p-2 bg-primary text-white">
+               <small>Recent QPE</small>
+               <a href="{{route('qpe')}}" class="text-white">More..</a>
+            </div>
+            <div class="card-body p-0">
+               <table class="display  table-sm table-bordered  ">
+                  <thead>
+
+                     <tr>
+                        {{-- <th scope="col">#</th> --}}
+                        <th scope="col">ID</th>
+                        <th scope="col">Employee</th>
+                        <th>Semester/Tahun</th>
+                        {{-- <th>Desc</th> --}}
+                        <th scope="col">Status</th>
+                        {{-- <th></th> --}}
+                     </tr>
+                  </thead>
+                  <tbody>
+                     @if (count($qpes) > 0)
+                     @foreach ($qpes as $pe)
+                     <tr>
+                        <td>{{$pe->employe->nik}}</td>
+                        <td>{{$pe->employe->biodata->fullName()}}</td>
+                        <td>{{$pe->semester}} / {{$pe->tahun}}</td>
+                        <td class="text-muted">
+                           <x-status.qpe-plain :pe="$pe" />
+                        </td>
+
+                        {{-- <td class="text-right">
+                                    @if($pe->status == 0)
+                                    <!-- <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-delete-{{$pe->id}}"><i class="fas fa-trash"></i> Delete</button> -->
+                        @elseif(($pe->status == '1' || $pe->status == '2' || $pe->status == '101' || $pe->status == '202') && $pe->behavior > 0)
+                        <a href="{{ route('export.qpe', $pe->id) }}" target="_blank"> Preview PDF</a>
+                        @elseif(($pe->status == 0 || $pe->status == 101 || $pe->status == 202) && auth()->user()->hasRole('Leader'))
+                        <!-- <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-submit-{{$pe->id}}"><i class="fas fa-rocket"></i> Submit</button> -->
+                        @endif
+                        </td> --}}
+                     </tr>
+                     @endforeach
+                     @else
+                     <tr>
+                        <td colspan="5" class="text-center">Empty</td>
+                     </tr>
+                     @endif
+
+
+                  </tbody>
+               </table>
+            </div>
+         </div>
+         <div class="card">
+            <div class="card-header d-flex justify-content-between p-2 bg-danger text-white">
+               <small>SP Recent</small>
+               <a href="{{route('sp')}}" class="text-white">More..</a>
+            </div>
+            <div class="card-body p-0">
+               <table class="display  table-sm table-bordered  table-striped ">
+                  <thead>
+
+                     <tr>
+                        {{-- <th scope="col">#</th> --}}
+                        <th scope="col">ID</th>
+                        <th scope="col">Name</th>
+                        <th>NIK</th>
+                        <th>Level</th>
+                        <th scope="col">Status</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     @if (count($sps) > 0)
+                     @foreach ($sps as $sp)
+                     <tr>
+                        <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->code}}</a></td>
+                        <td>{{$sp->employee->biodata->first_name}} {{$sp->employee->biodata->last_name}}</td>
+                        <td>{{$sp->employee->nik}}</td>
+                        <td>
+                           SP {{$sp->level}}
+                        </td>
+                        {{-- <td style="max-width: 190px" class="text-truncate">{{$sp->desc}}</td> --}}
+                        <td>
+                           <x-status.sp :sp="$sp" />
+                        </td>
+                     </tr>
+                     @endforeach
+                     @else
+                     <tr>
+                        <td colspan="5" class="text-center">Empty</td>
+                     </tr>
+                     @endif
+
+
+                  </tbody>
+               </table>
+            </div>
+         </div>
+
+         <div class="card">
+            <div class="card-header p-2 bg-primary text-white">
+               <small>SPKL Request</small>
+            </div>
+            <div class="card-body p-0">
+               <table class="display  table-sm table-bordered  table-striped ">
+                  <thead>
+
+                     <tr>
+                        {{-- <th scope="col">#</th> --}}
+                        <th scope="col">ID</th>
+                        <th scope="col">Date</th>
+                        <th>Name</th>
+                        {{-- <th>Desc</th> --}}
+                        <th scope="col">Status</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     @if (count($spkls) > 0)
+                     @foreach ($spkls as $spkl)
+                     <tr>
+                        <td><a href="{{route('spkl.detail', enkripRambo($spkl->id))}}">{{$spkl->code}}</a></td>
+                        <td>{{formatDate($spkl->date)}}</td>
+                        <td>{{$spkl->employee->biodata->first_name}} {{$spkl->employee->biodata->last_name}}</td>
+                        {{-- <td style="max-width: 190px" class="text-truncate">{{$spkl->desc}}</td> --}}
+                        <td>
+                           <x-status.spkl :spkl="$spkl" />
+                        </td>
+                     </tr>
+                     @endforeach
+                     @else
+                     <tr>
+                        <td colspan="5" class="text-center">Empty</td>
+                     </tr>
+                     @endif
+
+
+                  </tbody>
+               </table>
+            </div>
+         </div>
+         {{-- <table class=" table table-bordered  table-head-bg-info table-bordered-bd-info">
                <thead>
                   <tr>
                      <th scope="">Status</th>
@@ -225,11 +278,11 @@
                      <td class="text-center">0</td>
                   </tr>
                </tbody>
-            </table>
-             {{-- </div> --}}
-            
-            
-            <div class="card">
+            </table> --}}
+         {{-- </div> --}}
+
+
+         {{-- <div class="card">
                <div class="card-header">
                   <div class="badge badge-primary">
                      Recent Activities
@@ -306,8 +359,8 @@
                      </div>
                   </div>
                </div>
-            </div>
-            <div class="card">
+            </div> --}}
+         {{-- <div class="card">
                <div class="card-header">
                   <div class="badge badge-danger">
                      Chart
@@ -318,11 +371,55 @@
                      <canvas id="barChart"></canvas>
                   </div>
                </div>
+            </div> --}}
+
+      </div>
+      <div class="col-md-4">
+         <div class="card">
+            <div class="card-header d-flex justify-content-between p-2 bg-dark text-white">
+               <small>Log Activity</small>
+               <a href="{{route('log.auth')}}" class="text-white">More..</a>
             </div>
-            
+            <div class="card-body p-0">
+               <table class="display  table-sm table-bordered   ">
+                  {{-- <thead>
+                        
+                        <tr>
+                           <th scope="col">User</th>
+                           <th scope="col">Time</th>
+                        </tr>
+                     </thead> --}}
+                  <tbody>
+                     @if (count($logins) > 0)
+                     @foreach ($logins as $log)
+                     <tr>
+                        <td class="text-truncate" style="max-width: 110px;">
+                           {{$log->user->username}} {{$log->user->name}}
+                           <br>
+                           @if ($log->action == 'Login')
+                           {{$log->action}} into system<br>
+                           @else
+                           {{$log->action}} <small>{{$log->desc}}</small> <br>
+                           @endif
+
+                           <small>{{formatDateTime($log->created_at)}}</small>
+                        </td>
+                        {{-- <td>{{$log->action}}</td>
+                        <td>{{$log->desc}}</td> --}}
+                     </tr>
+                     @endforeach
+                     @else
+                     <tr>
+                        <td colspan="5" class="text-center">Empty</td>
+                     </tr>
+                     @endif
+
+
+                  </tbody>
+               </table>
+            </div>
          </div>
-         <div class="col-md-5">
-            <div class="card">
+         {{-- <div class="card">
                <div class="card-header">
                   <div class="badge badge-danger">
                      Today's Not Sign In
@@ -330,125 +427,54 @@
                </div>
                <div class="card-body">
                   <div class="d-flex">
-                     <!-- <div class="avatar avatar-online">
-                        {{-- <span class="avatar-title rounded-circle border border-white bg-info">J</span> --}}
-                        <img src="{{asset('img/jm_denis.jpg')}}" alt="..." class="avatar-img rounded-circle">
-                     </div> -->
                      <div class="flex-1 ml-3 ">
-                        {{-- <h5 class="text-uppercase fw-bold mb-1">9 Januari 1995</h5> --}}
                         <span class="text-muted">Rahmat Hidayat</span>
                      </div>
                   </div>
                   <div class="separator-dashed"></div>
                   <div class="d-flex">
-                     <!-- <div class="avatar avatar-online">
-                        {{-- <span class="avatar-title rounded-circle border border-white bg-secondary">P</span> --}}
-                        <img src="{{asset('img/chadengle.jpg')}}" alt="..." class="avatar-img rounded-circle">
-                     </div> -->
                      <div class="flex-1 ml-3">
-                        {{-- <h5 class="text-uppercase fw-bold mb-1">11 Januari 1965</h5> --}}
                         <span class="text-muted">Ahmad Juantoro</span>
                      </div>
                      
                   </div>
                </div>
-            </div>
-            <div class="card">
-               <div class="card-header">
-                  <div class="badge badge-warning">
-                     Birthday This Week
-                  </div>
-               </div>
-               <div class="card-body">
-                  <div class="d-flex">
-                     <!-- <div class="avatar avatar-online">
-                        {{-- <span class="avatar-title rounded-circle border border-white bg-info">J</span> --}}
-                        <img src="{{asset('img/jm_denis.jpg')}}" alt="..." class="avatar-img rounded-circle">
-                     </div> -->
-                     <div class="flex-1 ml-3 pt-1">
-                        <h5 class="text-uppercase fw-bold mb-1">9 Januari 1995</h5>
-                        <span class="text-muted">Rahmat Hidayat</span>
-                     </div>
-                  </div>
-                  <div class="separator-dashed"></div>
-                  <div class="d-flex">
-                     <!-- <div class="avatar avatar-online">
-                        {{-- <span class="avatar-title rounded-circle border border-white bg-secondary">P</span> --}}
-                        <img src="{{asset('img/chadengle.jpg')}}" alt="..." class="avatar-img rounded-circle">
-                     </div> -->
-                     <div class="flex-1 ml-3 pt-1">
-                        <h5 class="text-uppercase fw-bold mb-1">11 Januari 1965</h5>
-                        <span class="text-muted">Ahmad Juantoro</span>
-                     </div>
-                     
-                  </div>
-               </div>
-            </div>
-            <div class="card">
-               <div class="card-header">
-                  <div class="badge badge-danger">
-                     Contract End This Week
-                  </div>
-               </div>
-               <div class="card-body">
-                  <div class="d-flex">
-                     <!-- <div class="avatar avatar-online">
-                        {{-- <span class="avatar-title rounded-circle border border-white bg-info">J</span> --}}
-                        <img src="{{asset('img/mlane.jpg')}}" alt="..." class="avatar-img rounded-circle">
-                     </div> -->
-                     <div class="flex-1 ml-3 pt-1">
-                        <h5 class="text-uppercase fw-bold mb-1">Contract end at 12 June 2023</h5>
-                        <span class="text-muted">Abdul Fikri</span>
-                     </div>
-                  </div>
-                  <div class="separator-dashed"></div>
-                  <div class="d-flex">
-                     <!-- <div class="avatar avatar-online">
-                        {{-- <span class="avatar-title rounded-circle border border-white bg-secondary">P</span> --}}
-                        <img src="{{asset('img/talha.jpg')}}" alt="..." class="avatar-img rounded-circle">
-                     </div> -->
-                     <div class="flex-1 ml-3 pt-1">
-                        <h5 class="text-uppercase fw-bold mb-1">Contract end at 15 June 2023</h5>
-                        <span class="text-muted">Dareza</span>
-                     </div>
-                     
-                  </div>
-               </div>
-            </div>
-         </div>
+            </div> --}}
+
       </div>
    </div>
+</div>
 
-   @push('chart-dashboard')
-   <script>
-       $(document).ready(function() {
-         var barChart = document.getElementById('barChart').getContext('2d');
+@push('chart-dashboard')
+<script>
+   $(document).ready(function() {
+      var barChart = document.getElementById('barChart').getContext('2d');
 
-         var myBarChart = new Chart(barChart, {
-            type: 'bar',
-            data: {
-               labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-               datasets : [{
-                  label: "Resign",
-                  backgroundColor: 'rgb(23, 125, 255)',
-                  borderColor: 'rgb(23, 125, 255)',
-                  data: [3, 2, 9, 5, 4, 6, 4, 6, 7, 8, 7, 4],
-               }],
+      var myBarChart = new Chart(barChart, {
+         type: 'bar',
+         data: {
+            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            datasets: [{
+               label: "Resign",
+               backgroundColor: 'rgb(23, 125, 255)',
+               borderColor: 'rgb(23, 125, 255)',
+               data: [3, 2, 9, 5, 4, 6, 4, 6, 7, 8, 7, 4],
+            }],
+         },
+         options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+               yAxes: [{
+                  ticks: {
+                     beginAtZero: true
+                  }
+               }]
             },
-            options: {
-               responsive: true, 
-               maintainAspectRatio: false,
-               scales: {
-                  yAxes: [{
-                     ticks: {
-                        beginAtZero:true
-                     }
-                  }]
-               },
-            }
-         });
-      })
-   </script>
-   @endpush
-   
+         }
+      });
+   })
+</script>
+@endpush
+
 @endsection

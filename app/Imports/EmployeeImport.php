@@ -11,100 +11,87 @@ use App\Models\Employee;
 use App\Models\Position;
 use App\Models\SubDept;
 use App\Models\Unit;
+use App\Models\User;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
+use Illuminate\Support\Str;
 
 
 class EmployeeImport implements ToCollection, WithHeadingRow
 {
    public function collection(Collection $rows)
    {
-
+      // dd('ok');
       foreach ($rows as $key => $row) {
+         if($row->filter()->isNotEmpty()){
+         
+            if ($row['email'] == null) {
+               $row['email'] = $key . '-' . time() . '@empty.com';
+            }
 
-         // Cari bis nis unid 
-         $unit = Unit::where('name', $row['business_unit'])->first();
+            // Cek Bisnis Unit
+            $unit = Unit::where('slug', $row['business_unit'])->first();
+            if ($unit == null) {
+               $unit = Unit::create([
+                  'name' => Str::title(str_replace('-', ' ', $row['business_unit'])),
+                  'slug' => $row['business_unit']
+               ]);
+            }
 
-         // Jika tidak ada insert baru
-         if ($unit == null) {
-            $unit = Unit::create([
-               'name' => $row['business_unit'],
-               'created_at' => NOW(),
-               'updated_at' => NOW()
-            ]);
-         }
+            
 
-         // Cari departement
-         $department = Department::where('name', $row['department'])
-            ->where('unit_id', $unit->id)
-            ->first();
-         // Jika tidak ada insert baru
-         if ($department == null) {
+            // Cek Department
+            $department = Department::where('unit_id', $unit->id)->where('slug', $row['department'])->first();
+            if ($department == null) {
+               $department = Department::create([
+                  'unit_id' => $unit->id,
+                  'name' => Str::title(str_replace('-', ' ', $row['department'])),
+                  'slug' => $row['department']
+               ]);
+            }
+            
 
-            $department = Department::create([
-               'unit_id' => $unit->id,
-               'name' => $row['department'],
-               'created_at' => NOW(),
-               'updated_at' => NOW()
-            ]);
-         }
+            // Cek Sub Department
+            $sub = SubDept::where('department_id', $department->id)->where('slug', $row['sub_department'])->first();
+            if ($sub == null) {
+               $sub = SubDept::create([
+                  'department_id' => $department->id,
+                  'name' => Str::title(str_replace('-', ' ', $row['sub_department'])),
+                  'slug' => $row['sub_department']
+               ]);
+            }
+            
 
-         // Cari sub departement
-         $sub_dept = SubDept::where('name', $row['sub_dept'])
-            ->where('department_id', $department->id)
-            ->first();
-         // Jika tidak ada insert baru
-         if ($sub_dept == null) {
+            // Cek Designation
+            $designation = Designation::where('slug', $row['designation'])->first();
+            if ($designation == null) {
+               $designation = Designation::create([
+                  'name' => Str::title(str_replace('-', ' ', $row['designation'])),
+                  'slug' => $row['designation']
+               ]);
+            }
+            
 
-            $sub_dept = SubDept::create([
-               'department_id' => $department->id,
-               'name' => $row['sub_dept'],
-               'created_at' => NOW(),
-               'updated_at' => NOW()
-            ]);
-         }
+            // Cek Position
+            $position = Position::where('designation_id', $designation->id)->where('sub_dept_id', $sub->id)->where('slug', $row['position'])->first();
+            if ($position == null) {
+               $position = Position::create([
+                  'designation_id' => $designation->id,
+                  'sub_dept_id' => $sub->id,
+                  'name' => Str::title(str_replace('-', ' ', $row['position'])),
+                  'slug' => $row['position']
+               ]);
+            }
+            
 
-         // Designation atau level
-         $designation = Designation::where('golongan', $row['golongan'])
-            ->first();
-
-         // Mencari position 
-         $position = Position::where('name', $row['jabatan'])->where('sub_dept_id', $sub_dept->id)->where('designation_id', $designation->id)->first();
-         // jika tidak ada insert baru 
-         if ($position == null) {
-
-            $position = Position::create([
-               'sub_dept_id' => $sub_dept->id,
-               'designation_id' => $designation->id,
-               'name' => $row['jabatan'],
-               'created_at' => NOW(),
-               'updated_at' => NOW()
-            ]);
-         }
-
-         if ($row['email'] == null) {
-            $row['email'] = $key . '-' . time() . '@empty.com';
-         }
-
-         // Mencari Role 
-         if ($row['golongan'] == '1' || $row['golongan'] == '2') {
-            $role = 3;
-         } else if ($row['golongan'] == '3' || $row['golongan'] == '4') {
-            $role = 4;
-         } else if ($row['golongan'] == '5' || $row['golongan'] == '6'  || $row['golongan'] == '7') {
-            $role = 5;
-         }
-
-         DB::beginTransaction();
-
-         // // Insert
-         try {
+        
 
             $biodata = Biodata::create([
                'status' => 0,
@@ -114,80 +101,93 @@ class EmployeeImport implements ToCollection, WithHeadingRow
                'phone' => $row['phone'],
                'gender' => $row['gender'],
                'religion' => $row['agama'], //agama
-               'birth_place' => $row['tempat_lahir'], //
-               'birth_date' => $row['tanggal_lahir'], //tanggal lahir
+               // 'birth_place' => $row['birth_place'], //
+               // 'birth_date' => $row['birth_date'], //tanggal lahir
                'no_ktp' => $row['no_ktp'],
                'no_npwp' => $row['no_npwp'], //
                'no_kk' => $row['no_kk'], //
                'no_bpjs_kesehatan' => $row['no_bpjs_kesehatan'], // bpjs
                'no_jamsostek' => $row['no_jamsostek'], //
-               'marital' => $row['status_nikah'], // status nikah 
-               'last_education' => $row['pendidikan_terakhir'], //pendidikan terakhir
-               'institution_name' => $row['nama_institusi'], // nama institusi
-               'vocational' => $row['jurusan'], //jurusan
-               'status_pajak' => $row['status_pajak'], //
+               // 'marital' => $row['status_nikah'], // status nikah 
+               // 'last_education' => $row['pendidikan_terakhir'], //pendidikan terakhir
+               // 'institution_name' => $row['nama_institusi'], // nama institusi
+               // 'vocational' => $row['jurusan'], //jurusan
+               // 'status_pajak' => $row['status_pajak'], //
                'blood' => $row['gol_darah'], //golongan darah
                'address' => $row['alamat_domisili'], //alamat domisili
                'alamat_ktp' => $row['alamat_ktp'], //alamat ktp
-               'status' => $row['status'],
+               // 'status' => $row['status'],
                'created_at' => NOW(),
                'updated_at' => NOW() //
 
             ]);
-
+            
+            // dd('ok');
             $contract = Contract::create([
-               'id_no' => $row['nik'],
+               // 'type' => $row['status'],
+               'status' => 1,
+               'id_no' => $row['id'],
                'unit_id' => $unit->id,
                'department_id' => $department->id,
+               'sub_dept_id' => $sub->id,
+               'position_id' => $position->id,
                'designation_id' => $designation->id,
-               'location' => $row['lokasi'],
-               'project' => $row['project'],
-               'start' => $row['tanggal_awal_kontrak'],
-               'end' => $row['tanggal_akhir_kontrak'],
-               'salary' => $row['salary'],
-               'payslip' => $row['payslip_type'],
+               // 'designation_id' => $designation->id,
+               // 'location' => $row['lokasi'],
+               // 'project' => $row['project'],
+               // 'start' => $row['tanggal_awal_kontrak'],
+               // 'end' => $row['tanggal_akhir_kontrak'],
+               // 'salary' => $row['salary'],
+               // 'payslip' => $row['payslip_type'],
                'created_at' => NOW(),
                'updated_at' => NOW()
             ]);
+            // dd('ok');
 
-            // Insert Contract udah Oke
-            $emergency = Emergency::create([
-               'name' => $row['nama_kontak_darurat'],
-               'phone' => $row['kontak_darurat'],
-               'hubungan' => $row['hubungan'],
-               'created_at' => NOW(),
-               'updated_at' => NOW()
-            ]);
-
+           
             $employee = Employee::create([
                'status' => 0,
-               'role' => $role,
+               'unit_id' => $unit->id,
                'department_id' => $department->id,
-               'sub_dept_id' => $sub_dept->id,
-               'designation_id' => $designation->id,
+               'sub_dept_id' => $sub->id,
                'position_id' => $position->id,
+               'designation_id' => $designation->id,
+               // 'role' => $role,
+               // 'designation_id' => $designation->id,
                'biodata_id' => $biodata->id,
                'contract_id' => $contract->id,
-               'emergency_id' => $emergency->id,
-               'nik' => $row['nik'],
-               'entry_date' => $row['tanggal_masuk'],
-               'determination_date' => $row['tanggal_penetapan'],
+               // 'emergency_id' => $emergency->id,
+               'nik' => $row['id'],
+               // 'entry_date' => $row['tanggal_masuk'],
+               // 'determination_date' => $row['tanggal_penetapan'],
                'created_at' => NOW(),
                'updated_at' => NOW()
 
             ]);
 
-            DB::commit();
+            // $contract->update([
+            //    'employee_id'
+            // ])
+
+            $user = User::create([
+               'name' => $employee->biodata->first_name . ' ' . $employee->biodata->last_name,
+               'email' => $employee->biodata->email,
+               'username' => $employee->nik,
+               'password' => Hash::make('12345678')
+            ]);
+
+            // DB::commit();
 
 
-            return redirect()->route('success')->with('message', 'Data berhasil disimpan.');
-         } catch (\Exception $e) {
-            // Jika terjadi kesalahan, kita rollback transaksi
-            DB::rollback();
+            // return redirect()->route('success')->with('message', 'Data berhasil disimpan.');
+         // } catch (\Exception $e) {
+         //    // Jika terjadi kesalahan, kita rollback transaksi
+         //    DB::rollback();
 
-            // return back()->with('message', 'Terjadi kesalahan, data tidak dapat disimpan.');
+         //    return back()->with('message', 'Terjadi kesalahan, data tidak dapat disimpan.');
 
-            // Handle atau laporkan kesalahan
+         //    // Handle atau laporkan kesalahan
+         // }
          }
       }
    }

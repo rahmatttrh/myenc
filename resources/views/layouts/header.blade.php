@@ -34,11 +34,11 @@
                <li class="nav-item dropdown hidden-caret">
                   <a class="nav-link dropdown-toggle" href="#" id="notifDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                      <i class="fa fa-bell"></i>
-                     <span class="notification">{{count($notifSp)}}</span>
+                     <span class="notification">{{count($notifSp) + count($peNotifs)}}</span>
                   </a>
                   <ul class="dropdown-menu notif-box animated fadeIn" aria-labelledby="notifDropdown">
                      <li>
-                        <div class="dropdown-title">You have {{count($notifSp)}} new notification</div>
+                        <div class="dropdown-title">You have {{count($notifSp) + count($peNotifs)}} new notification</div>
                      </li>
                      <li>
                         <div class="notif-scroll scrollbar-outer">
@@ -49,9 +49,34 @@
                                  <div class="notif-content pl-4">
                                     <span class="block">
                                        
-                                      SP {{$sp->level}} - {{$sp->employee->nik}} {{$sp->employee->biodata->fullName()}}
+                                      SP {{$sp->level}}  {{$sp->employee->nik}} {{$sp->employee->biodata->fullName()}} <br>
+                                      <small><x-status.sp :sp="$sp" /> </small>
                                     </span>
                                     <span class="time">{{$sp->updated_at->diffForHumans()}}</span> 
+                                 </div>
+                              </a>
+                              @endforeach
+
+                              @foreach ($peNotifs as $pe)
+                                 @if ($pe->status == 1)
+                                 <a href="{{route('qpe.approval', enkripRambo($pe->kpa->id))}}">
+                                    @else
+                                    <a href="{{route('qpe.show', enkripRambo($pe->kpa->id))}}">
+                                 @endif
+                              
+                                 {{-- <div class="notif-icon notif-primary"> <i class="fa fa-user-plus"></i> </div> --}}
+                                 <div class="notif-content pl-4">
+                                    <span class="block">
+                                       
+                                      QPE {{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} <br> Semester {{$pe->semester}} {{$pe->tahun}} <br>
+                                      {{-- <small>Need Discuss Process</small> --}}
+                                      @if ($pe->status == 1)
+                                          Need Approval
+                                          @elseif($pe->status == 202)
+                                          Need Discuss
+                                      @endif
+                                    </span>
+                                    <span class="time">{{$pe->updated_at->diffForHumans()}}</span> 
                                  </div>
                               </a>
                               @endforeach
@@ -75,12 +100,14 @@
 
                         @if (auth()->user()->hasRole('Administrator'))
                            <img src="{{asset('img/businessman.png')}}" alt="..." class="avatar-img bg-light rounded">
-                        @else
+                        @elseif(auth()->user()->hasRole('Karyawan'))
                            @if (auth()->user()->getEmployee()->picture == null)
                            <img src="{{asset('img/businessman.png')}}" alt="..." class="avatar-img bg-light rounded">
                            @else
                            <img src="{{asset('storage/' . auth()->user()->getEmployee()->picture)}}" alt="..." class="avatar-img bg-light rounded">
                            @endif
+                        @else
+                           <img src="{{asset('img/businessman.png')}}" alt="..." class="avatar-img bg-light rounded">
                         @endif
                         
                      </div>
@@ -92,12 +119,14 @@
                                  
                                  @if (auth()->user()->hasRole('Administrator'))
                                     <img src="{{asset('img/businessman.png')}}" alt="image profile" class="avatar-img bg-muted">
-                                    @else
+                                    @elseif(auth()->user()->hasRole('Karyawan'))
                                     @if (auth()->user()->getEmployee()->picture == null)
                                     <img src="{{asset('img/businessman.png')}}" alt="..." class="avatar-img bg-muted  ">
                                     @else
                                     <img src="{{asset('storage/' . auth()->user()->getEmployee()->picture)}}" alt="..." class="avatar-img bg-muted  ">
                                     @endif
+                                    @else
+                                    <img src="{{asset('img/businessman.png')}}" alt="..." class="avatar-img bg-muted  ">
                                  @endif
                                  
                               </div>
@@ -114,18 +143,27 @@
                            <div class="dropdown-divider"></div>
                            
                            {{-- <div class="dropdown-divider"></div> --}}
-                           @if (auth()->user()->hasRole('Karyawan'))
-                           <a class="dropdown-item" href="{{route('employee.detail', [enkripRambo(auth()->user()->employee->id), enkripRambo('contract')])}}">
+                           @if (auth()->user()->hasRole('Administrator'))
+                           
+                           @else
+                           <a class="dropdown-item" href="{{route('employee.detail', [enkripRambo(auth()->user()->getEmployeeId()), enkripRambo('contract')])}}">
                               My Profile
                            </a>
                            @endif
                            
                            
-                           @if (Route::has('password.request'))
+                           {{-- @if (Route::has('password.request'))
                               <a class="dropdown-item" href="{{ route('password.request') }}">
                                     Reset Password
                               </a>
+                           @endif --}}
+                           @if (auth()->user()->hasRole('Administrator'))
+                               @else
+                               <a class="dropdown-item" href="{{ route('pass.reset') }}">
+                                 Reset Password
+                              </a>
                            @endif
+                           
                            
                            {{-- <a class="dropdown-item" href="{{route('change.password')}}">Change Password</a> --}}
                            <div class="dropdown-divider"></div>

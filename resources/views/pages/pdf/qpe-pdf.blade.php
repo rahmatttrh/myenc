@@ -287,12 +287,12 @@ PDF Example
                   </tr>
                   <tr>
                      <td class="text-center">A</td>
-                     <td class="text-center">91 - 100</td>
+                     <td class="text-center">88 - 100</td>
                      <td colspan="4">: Baik sekali (Diatas ekspektasi, mencapai hasil lebih dari yang diharapkan)</td>
                   </tr>
                   <tr>
                      <td class="text-center">B</td>
-                     <td class="text-center">76 - 90</td>
+                     <td class="text-center">76 - 87</td>
                      <td colspan="4">: Baik (Memenuhi ekspektasi, mencapai hasil yang diharapkan)</td>
                   </tr>
                   <tr>
@@ -356,12 +356,19 @@ PDF Example
                      </td>
                   </tr>
                   <tr>
-                     <td colspan="2">Nama &nbsp;&nbsp; : {{$pe->employe->direct_leader ? $pe->employe->direct_leader->biodata->fullName() : ''}}</td>
-                     <td>Nama &nbsp;&nbsp; : {{$pe->employe->manager ? $pe->employe->manager->biodata->fullName() : ''}}</td>
+                     <td colspan="2">Nama &nbsp;&nbsp; : 
+                        {{$pe->getCreatedBy()->biodata->fullName()}}
+                     </td>
+                     <td>Nama &nbsp;&nbsp; : 
+                        @if ($pe->verifikasi_by != null)
+                        {{$pe->getVerifikasiBy()->biodata->fullName()}}
+                        @endif
+                        
+                     </td>
                   </tr>
                   <tr>
-                     <td colspan="2">Tanggal : {{$pe->release_at ? formatDate($pe->release_at) : ''}}</td>
-                     <td>Tanggal : {{$pe->verifikasi_at ? formatDate($pe->verifikasi_at) : ''}}</td>
+                     <td colspan="2">Tanggal : {{$pe->release_at ? formatDateTime($pe->release_at) : ''}}</td>
+                     <td>Tanggal : {{$pe->verifikasi_at ? formatDateTime($pe->verifikasi_at) : ''}}</td>
                   </tr>
                </tbody>
             </table>

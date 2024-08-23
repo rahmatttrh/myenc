@@ -5,107 +5,169 @@ SP
 @section('content')
 
 <div class="page-inner">
-   <div class="page-header d-flex">
-
-      <h5 class="page-title">SP</h5>
-      <ul class="breadcrumbs">
-         <li class="nav-home">
-            <a href="/">
-               <i class="flaticon-home"></i>
-            </a>
-         </li>
-         <li class="separator">
-            <i class="flaticon-right-arrow"></i>
-         </li>
-         <li class="nav-item">
-            <a href="#">SP</a>
-         </li>
-      </ul>
-      <div class="ml-auto">
-         <button class="btn btn-light border btn-round " data-toggle="dropdown">
-            <i class="fa fa-ellipsis-h"></i>
-         </button>
-         <div class="dropdown-menu">
-
-
-            {{-- <a class="dropdown-item" style="text-decoration: none" href="{{route('employee.create')}}">Create</a> --}}
-            <a class="dropdown-item" style="text-decoration: none" data-toggle="modal" data-target="#modal-export">Export</a>
-            <div class="dropdown-divider"></div>
-            {{-- <a class="dropdown-item" style="text-decoration: none" href="" target="_blank">Print Preview</a> --}}
-         </div>
-      </div>
-   </div>
+   <nav aria-label="breadcrumb ">
+      <ol class="breadcrumb  ">
+         <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
+         <li class="breadcrumb-item active" aria-current="page">Surat Peringatan</li>
+      </ol>
+   </nav>
 
    <div class="row">
-      <div class="col-md-4">
-         <h4>Form Create</h4>
-         <hr>
-         <form action="{{route('sp.store')}}" method="POST">
-            @csrf
-            
-            <div class="row">
-               <div class="col-md-8">
-                  <div class="form-group form-group-default">
-                     <label>Employee</label>
-                     <select class="form-control employee" required id="employee" name="employee">
-                        <option value="" selected disabled>Select Employee</option>
-                        @foreach ($employees as $emp)
-                        <option value="{{$emp->id}}">{{$emp->biodata->first_name}} {{$emp->biodata->last_name}} </option>
-                        @endforeach
-                     </select>
-      
-                  </div>
-               </div>
-               <div class="col-md-4">
-                  <div class="form-group form-group-default">
-                     <label>Level</label>
-                     <select class="form-control" required id="level" name="level">
-                        <option value="" selected disabled>Select level</option>
-                        <option value="I">SP I</option>
-                        <option value="II">SP II</option>
-                        <option value="III">SP III</option>
-                     </select>
-
-                  </div>
-               </div>
-               {{-- <div class="col-md-6">
-                  <div class="form-group form-group-default">
-                     <label>Berlaku dari</label>
-                     <input type="date" class="form-control" name="date_from" id="date_from">
-                  </div>
-               </div> --}}
-
-               {{-- <div class="col-md-6">
-                  <small class="text-muted">Masa berlaku SP adalah 6 bulan</small>
-                  <hr>
-               </div> --}}
-               {{-- <div class="col-md-6">
-                  <div class="form-group form-group-default">
-                     <label>Berlaku sampai</label>
-                     <input type="date" class="form-control"  name="date_to" id="date_to">
-                  </div>
-               </div> --}}
-            </div>
-
-            {{-- <div class="form-group form-group-default">
-               <label>Peraturan Perusahaan</label>
-               <input type="text" class="form-control" name="rule" id="rule">
-            </div> --}}
-            <div class="form-group form-group-default">
-               <label>Alasan</label>
-               <input type="text" class="form-control" name="reason" id="reason">
-            </div>
-
-            <div class="form-group form-group-default">
-               <label>Kronologi</label>
-               <textarea class="form-control" name="desc" id="desc" rows="5"></textarea>
-            </div>
+      @if (auth()->user()->hasRole('Administrator'))
+         @elseif(auth()->user()->hasRole('HRD|HRD-Manager'))
+         <div class="col-md-4">
+            <h4>Penerbitan SP dari HRD</h4>
             <hr>
-            <button type="submit" class="btn btn-block btn-primary">Submit</button>
-         </form>
-      </div>
+            <form action="{{route('sp.hrd.store')}}" method="POST" enctype="multipart/form-data">
+               @csrf
+               <div class="row">
+                  <div class="col">
+                     <div class="form-group form-group-default">
+                        <label>Employee*</label>
+                        <select class="form-control employee js-example-basic-single" required id="employee" name="employee">
+                           <option value="" selected disabled>Select Employee</option>
+                           @foreach ($allEmployees as $emp)
+                                 <option value="{{$emp->id}}">{{$emp->nik}} {{$emp->biodata->fullName()}} </option>
+                           @endforeach
+                           
+                        </select>
+                        
+         
+                     </div>
+                     
+                  </div>
+               </div>
+               
+               <div class="row">
+                  <div class="col-md-6">
+                     <div class="form-group form-group-default">
+                        <label>Date</label>
+                        <input type="date" required class="form-control" name="date_from" id="date_from">
+                     </div>
+                  </div>
+                  <div class="col-md-6">
+                     <div class="form-group form-group-default">
+                        <label>Level*</label>
+                        <select class="form-control" required id="level" name="level">
+                           {{-- <option value="" selected disabled>Select level</option> --}}
+                           <option value="I">SP I</option>
+                           <option value="II">SP II</option>
+                           <option value="III">SP III</option>
+                        </select>
 
-      <div class="col-md-8">
+                     </div>
+                  </div>
+                  
+               </div>
+
+            
+               <div class="form-group form-group-default">
+                  <label>Alasan*</label>
+                  <input type="text" required class="form-control" name="reason" id="reason">
+               </div>
+               <div class="form-group form-group-default">
+                  <label>Peraturan yang dilanggar*</label>
+                  <input type="text" required class="form-control" name="rule" id="rule">
+               </div>
+
+               {{-- <div class="form-group form-group-default">
+                  <label>Kronologi</label>
+                  <textarea class="form-control"  name="desc" id="desc" rows="4"></textarea>
+               </div> --}}
+               
+               <div class="form-group form-group-default">
+                  <label>File attachment</label>
+                  <input type="file" class="form-control" name="file" id="file">
+               </div>
+               <hr>
+               <button type="submit" class="btn btn-block btn-primary">Submit</button>
+            </form>
+            <hr>
+            <small>* SP akan otomatis aktif ketika klik Submit</small>
+         </div>
+
+         @else
+         <div class="col-md-4">
+            <h4>Form Pengajuan SP</h4>
+            <hr>
+            <form action="{{route('sp.store')}}" method="POST" enctype="multipart/form-data">
+               @csrf
+               
+               <div class="row">
+                  <div class="col-md-12">
+                     <div class="form-group form-group-default">
+                        <label>Employee*</label>
+                        <select class="form-control employee js-example-basic-single" required id="employee" name="employee">
+                           <option value="" selected disabled>Select Employee</option>
+                           @if (auth()->user()->hasRole('Manager|Asst. Manager|HRD'))
+                              @foreach ($employee->positions as $pos)
+                                 @foreach ($pos->department->employees as $emp)
+                                 <option value="{{$emp->id}}">{{$emp->nik}} {{$emp->biodata->fullName()}} </option>
+                                 @endforeach
+                              @endforeach
+                                 {{-- @foreach ($employees as $emp)
+                                 <option value="{{$emp->id}}">{{$emp->nik}} {{$emp->biodata->fullName()}} </option>
+                                 @endforeach --}}
+                              @elseif(auth()->user()->hasRole('HRD') || auth()->user()->hasRole('HRD-Spv'))
+                                 @foreach ($allEmployees as $emp)
+                                    <option value="{{$emp->id}}">{{$emp->nik}} {{$emp->biodata->fullName()}} </option>
+                                 @endforeach
+                              @else 
+                                 @foreach ($employees as $emp)
+                                    <option value="{{$emp->employee->id}}">{{$emp->employee->nik}} {{$emp->employee->biodata->fullName()}} </option>
+                                 @endforeach
+                           @endif
+                           
+                        </select>
+                        
+         
+                     </div>
+                  </div>
+                  <div class="col-md-6">
+                     <div class="form-group form-group-default">
+                        <label>Level*</label>
+                        <select class="form-control" required id="level" name="level">
+                           <option value="" selected disabled>Select level</option>
+                           <option value="I">SP I</option>
+                           <option value="II">SP II</option>
+                           <option value="III">SP III</option>
+                        </select>
+
+                     </div>
+                  </div>
+                  
+               </div>
+
+            
+               <div class="form-group form-group-default">
+                  <label>Alasan*</label>
+                  <input type="text" required class="form-control" name="reason" id="reason">
+               </div>
+
+               <div class="form-group form-group-default">
+                  <label>Kronologi*</label>
+                  <textarea class="form-control" required name="desc" id="desc" rows="4"></textarea>
+               </div>
+               <div class="form-group form-group-default">
+                  <label>File attachment</label>
+                  <input type="file" class="form-control" name="file" id="file">
+               </div>
+               <hr>
+               <button type="submit" class="btn btn-block btn-primary">Submit</button>
+            </form>
+         </div>
+      @endif
+
+      @if (auth()->user()->hasRole('Administrator'))
+      <div class="col-md-12">
+         {{-- <div class="card shadow-none border">
+            <div class="card-body">
+
+            </div>
+         </div> --}}
+         @else
+         <div class="col-md-8">
+      @endif
          <div class=" sp px-3">
             <table>
                {{-- <thead>
@@ -128,7 +190,7 @@ SP
                      <th class="text-center" style="width: 10px">No</th>
                      <th>ID</th>
                      <th>Name</th>
-                     <th>NIK</th>
+                     {{-- <th>NIK</th> --}}
                      
                      <th>Level</th>
                      <th>Status</th>
@@ -139,8 +201,8 @@ SP
                   <tr>
                      <td class="text-center">{{++$i}}</td>
                      <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->code}}</a> </td>
-                     <td>{{$sp->employee->biodata->first_name}} {{$sp->employee->biodata->last_name}}</td>
-                     <td>{{$sp->employee->nik}}</td>
+                     <td>{{$sp->employee->nik}} {{$sp->employee->biodata->fullName()}}</td>
+                     {{-- <td>{{$sp->employee->nik}}</td> --}}
                      {{-- <td>{{formatDate($sp->date)}}</td> --}}
                      <td>SP {{$sp->level}}</td>
                      <td>

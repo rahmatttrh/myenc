@@ -76,7 +76,7 @@ KPA
                     <input type="hidden" id="date" name="date">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table id="tableCreate" class="displays table table-striped ">
+                            <table id="tableCreate" class="displays table-sm table-striped ">
                                 <thead>
                                     <tr>
                                         <th>No</th>

@@ -15,6 +15,11 @@ class Employee extends Model
       return $this->belongsTo(Biodata::class);
    }
 
+   public function unit()
+   {
+      return $this->belongsTo(Unit::class);
+   }
+
    public function department()
    {
       return $this->belongsTo(Department::class);
@@ -32,7 +37,7 @@ class Employee extends Model
 
    public function role()
    {
-      return $this->belongsTo(Role::class);
+      return $this->belongsTo(Role::class, 'role');
    }
 
    public function socialAccounts()
@@ -140,10 +145,32 @@ class Employee extends Model
       return $this->hasMany(Mutation::class);
    }
 
+   public function sub_dept(){
+      return $this->belongsTo(SubDept::class);
+   }
    // public function shift()
    // {
    //    return $this->belongsTo(Shift::class);
    // }
+
+   public function positions(){
+      return $this->belongsToMany(Position::class);
+   }
+
+   public function getLeaders(){
+      $leaders = EmployeeLeader::where('employee_id', $this->id)->get();
+      return $leaders;
+   }
+
+   public function getKpi(){
+      $kpi = PeKpi::find($this->kpi_id);
+      return $kpi;
+   }
+
+
+   public function payroll(){
+      return $this->belongsTo(Payroll::class);
+   }
 
 
 }

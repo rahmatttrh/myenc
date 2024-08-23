@@ -10,6 +10,7 @@ use App\Models\PekpaDetail;
 use App\Models\PeKpi;
 use App\Models\PekpiDetail;
 use App\Models\PekpiPoint;
+use App\Models\Position;
 use App\Models\Unit;
 use Illuminate\Http\Request;
 
@@ -17,30 +18,47 @@ class PeKpiController extends Controller
 {
     public function index()
     {
-        $employee = auth()->user()->getEmployee();
+      //   $employee = auth()->user()->getEmployee();
+      $kpis = PeKpi::get();
+      foreach($kpis as $kpi){
+         $position = Position::find($kpi->position_id);
+         $kpi->update([
+            'sub_dept_id' => $position->sub_dept_id
+         ]);
+      }
 
         // Data KPI
-        if (auth()->user()->hasRole('Administrator|HRD')) {
+        if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv')) {
             $kpis = PeKpi::get();
-        } else if (auth()->user()->hasRole('Leader|Manager')) {
+            $units = Unit::orderBy('name')->get();
+            $departements = Department::orderBy('name')->get();
+        } else if (auth()->user()->hasRole('Manager|Asst. Manager')) {
+            $employee = auth()->user()->getEmployee();
             $kpis = PeKpi::where('departement_id', $employee->department_id)->get();
-        }
+            $units = Unit::where('id', $employee->department->unit->id)->get();
+            $departements = Department::where('id', $employee->department_id)->get();
+        } else if (auth()->user()->hasRole('Leader|Supervisor')) {
+            $employee = auth()->user()->getEmployee();
+            $kpis = PeKpi::where('sub_dept_id', $employee->sub_dept_id)->get();
+            $units = Unit::where('id', $employee->department->unit->id)->get();
+            $departements = Department::where('id', $employee->department_id)->get();
+         }
 
         //   dd($kpis);
 
         // Data Unit
-        if (auth()->user()->hasRole('Administrator|HRD')) {
-            $units = Unit::orderBy('name')->get();
-        } else if (auth()->user()->hasRole('Leader|Manager')) {
-            $units = Unit::where('id', $employee->department->unit->id)->get();
-        }
+      //   if (auth()->user()->hasRole('Administrator|HRD')) {
+      //       $units = Unit::orderBy('name')->get();
+      //   } else if (auth()->user()->hasRole('Leader|Manager|Supervisor')) {
+      //       $units = Unit::where('id', $employee->department->unit->id)->get();
+      //   }
 
-        // Data Department
-        if (auth()->user()->hasRole('Administrator|HRD')) {
-            $departements = Department::orderBy('name')->get();
-        } else if (auth()->user()->hasRole('Leader|Manager')) {
-            $departements = Department::where('id', $employee->department_id)->get();
-        }
+      //   // Data Department
+      //   if (auth()->user()->hasRole('Administrator|HRD')) {
+      //       $departements = Department::orderBy('name')->get();
+      //   } else if (auth()->user()->hasRole('Leader|Manager|Supervisor')) {
+      //       $departements = Department::where('id', $employee->department_id)->get();
+      //   }
 
         return view('pages.kpi.kpi', [
             'units' => $units,
@@ -94,12 +112,12 @@ class PeKpiController extends Controller
     public function edit($id)
     {
         // dd($id);
-
+         // dd('ok');
         $kpis = PeKpi::get();
         $kpi = PeKpi::find(dekripRambo($id));
         $datas = PekpiDetail::where('kpi_id', dekripRambo($id))->get();
 
-
+         // dd($datas->sum('weight'));
 
         $employes = Employee::where('department_id', $kpi->departement_id)
             ->where('position_id', $kpi->position_id)

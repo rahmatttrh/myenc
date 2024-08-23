@@ -34,7 +34,7 @@ Dashboard
             </div>
             <hr>
          </div> --}}
-         <div class="card card-profile card-secondary ">
+         {{-- <div class="card card-profile card-secondary ">
             <div class="card-header" style="background-image: url({{asset('img/blogpost.jpg')}})">
                <div class="profile-picture">
                   <div class="avatar avatar-xl">
@@ -55,36 +55,53 @@ Dashboard
                
             </div>
              
-            {{-- <div class="card-footer d-flex justify-content-between">
-               
-               @if ($employee->contract_id != null)
-               <div>
-                  {{$employee->contract->shift->name ?? '-'}} <br>
-                  Sisa Cuti <br>
-                  
-               </div>
-               <div class="text-right">
-                  {{formatTime($employee->contract->shift->in)}} - {{formatTime($employee->contract->shift->out)}} <br>
-                  4
-               </div>
-               @endif
-               
-            </div> --}}
+           
             
-         </div>
-
-         <div class="card">
-            <div class="card-header bg-primary text-white p-2">
-               <small>My Team</small>
+         </div> --}}
+         <div class="card card-primary">
+            {{-- <div class="card-header">
+               Dashboard Leader
+            </div> --}}
+            <div class="card-body">
+               Dashboard
+               @if (auth()->user()->hasRole('Supervisor'))
+                   SPV
+                   @elseif(auth()->user()->hasRole('Leader'))
+                   Team Leader
+               @endif
+               <hr class="bg-white">
+               <b>{{$employee->unit->name}}</b> - {{$employee->department->name}} Department<br>
+                
+               {{$employee->position->name}}
             </div>
+         </div>
+         <div class="card">
+            {{-- <div class="card-header bg-primary text-white p-2">
+               <small>Employee</small>
+            </div> --}}
             <div class="card-body p-0">
                <table class=" ">
-                  
+                  <thead>
+                     <tr>
+                        <th colspan="2">Team</th>
+                        {{-- <th>Name</th> --}}
+                     </tr>
+                  </thead>
                   <tbody>
-                     @foreach ($teams as $employee)
+                     {{-- @foreach ($teams as $team)
                          <tr>
-                           <td>{{$employee->nik}} {{$employee->biodata->fullName()}}</td>
-                           {{-- <td></td> --}}
+                           <td>{{$team->employee->department->name}} </td>
+                           <td>{{$team->employee->nik}} {{$team->employee->biodata->fullName()}}</td>
+                         </tr>
+                     @endforeach --}}
+                     @foreach ($myteams as $team)
+                         @php
+                             $bio = DB::table('biodatas')->where('id', $team->biodata_id)->first();
+                         @endphp
+                         <tr>
+                           {{-- <td>{{$team->department->name}} </td> --}}
+                           <td>{{$team->nik}}</td>
+                           <td> {{$bio->first_name}} {{$bio->last_name}}</td>
                          </tr>
                      @endforeach
                      
@@ -95,23 +112,6 @@ Dashboard
          </div>
       </div>
       <div class="col-md-8">
-         {{-- <div class="d-none d-sm-block">
-            <div class="alert alert-info shadow-sm">
-
-                  <div class="card-opening">
-                     <h4>
-                        <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1">
-                        <b>Announcement</b>
-                     </h4>
-                  </div>
-                  <hr>
-                  <div class="card-desc">
-                     Tanggal 8 & 9 Februari Libur Nasional dan Cuti Bersama
-                  </div>
-            </div>
-            <hr>
-         </div> --}}
-
          <div class="card">
             <div class="card-header bg-primary text-white p-2">
                <small>Recent QPE</small>
@@ -121,17 +121,42 @@ Dashboard
                   <thead>
                      
                      <tr>
-                        <th scope="col">No</th>
-                        <th scope="col">Employee</th>
+                        {{-- <th scope="col">No</th> --}}
+                        <th scope="col">Name</th>
                         <th>Semester/Tahun</th>
                         <th scope="col">Achievement</th>
                         <th>Status</th>
                      </tr>
                   </thead>
                   <tbody>
-                     <tr>
-                        <td colspan="5" class="text-center">Empty</td>
-                     </tr>
+                     @if (count($peRecents) > 0)
+                        @foreach ($peRecents as $pe)
+                        <tr>
+                           {{-- <td>{{++$i}}</td> --}}
+                           <td>
+                              @if($pe->status == '0' || $pe->status == '101')
+                              <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} - {{$pe->employe->biodata->fullName()}} </a>
+                              @elseif($pe->status == '1' || $pe->status == '202' )
+                              <a href="/qpe/approval/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} - {{$pe->employe->biodata->fullName()}} </a>
+                              @else
+                              <a href="/qpe/show/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} - {{$pe->employe->biodata->fullName()}} </a>
+                              @endif
+                              
+                           </td>
+                           <td>{{$pe->semester}} / {{$pe->tahun}}</td>
+                           <td>{{$pe->achievement}}</td>
+                           <td>
+                              <x-status.pe :pe="$pe" />
+                           </td>
+                        </tr>
+                        @endforeach
+                        
+                         @else
+                         <tr>
+                           <td colspan="5" class="text-center">Empty</td>
+                        </tr>
+                     @endif
+                     
                      
                      
                   </tbody>
@@ -149,10 +174,12 @@ Dashboard
                      
                      <tr>
                         {{-- <th scope="col">No</th> --}}
-                        <th scope="col">ID</th>
-                        <th>Level</th>
-                        <th scope="col">NIK</th>
+                        {{-- <th scope="col">ID</th> --}}
                         <th>Name</th>
+                        <th>ID</th>
+                        <th>Level</th>
+                        {{-- <th scope="col">NIK</th> --}}
+                        
                         <th>Status</th>
                      </tr>
                   </thead>
@@ -160,10 +187,12 @@ Dashboard
                      @if (count($spRecents) > 0)
                         @foreach ($spRecents as $sp)
                             <tr>
-                              <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->code}}</a></td>
+                              <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->employee->nik}} {{$sp->employee->biodata->fullName()}}</a></td>
+                              <td>{{$sp->code}}</td>
                               <td>SP {{$sp->level}}</td>
-                              <td>{{$sp->employee->nik}}</td>
-                              <td>{{$sp->employee->biodata->fullName()}}</td>
+                              
+                              {{-- <td></td>
+                              <td></td> --}}
                               <td><x-status.sp :sp="$sp" /> </td>
                             </tr>
                         @endforeach

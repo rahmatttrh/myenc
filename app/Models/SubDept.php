@@ -11,9 +11,21 @@ class SubDept extends Model
     use HasFactory;
     protected $guarded = [];
 
+   public function pes(){
+      return $this->hasMany(Pe::class);
+   }
+
     public function department()
     {
         return $this->belongsTo(Department::class);
+    }
+
+    public function positions(){
+      return $this->hasMany(Position::class);
+    }
+
+    public function employees(){
+      return $this->hasMany(Employee::class);
     }
 
     public function outstandingKPI($subDeptId = 2, $tahun = '2024')

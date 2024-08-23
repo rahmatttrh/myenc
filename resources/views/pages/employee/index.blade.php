@@ -5,7 +5,13 @@ Employee
 @section('content')
 
 <div class="page-inner">
-   <div class="page-header d-flex">
+   <nav aria-label="breadcrumb ">
+      <ol class="breadcrumb  ">
+         <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
+         <li class="breadcrumb-item active" aria-current="page">Active Employee</li>
+      </ol>
+   </nav>
+   {{-- <div class="page-header d-flex">
 
       <h5 class="page-title">Active Employee</h5>
       <ul class="breadcrumbs">
@@ -30,92 +36,163 @@ Employee
 
             <a class="dropdown-item" style="text-decoration: none" href="{{route('employee.create')}}">Create</a>
             <a class="dropdown-item" style="text-decoration: none"  data-toggle="modal" data-target="#modal-export">Export</a>
-            <div class="dropdown-divider"></div>
-            {{-- <a class="dropdown-item" style="text-decoration: none" href="" target="_blank">Print Preview</a> --}}
+            <div class="dropdown-divider"></div></div>
+      </div>
+   </div> --}}
+
+   <div class="card shadow-none border">
+      <div class="card-body">
+         <div class="table-responsive">
+            <table id="data" class="display basic-datatables table-sm">
+               <thead>
+                  <tr>
+                     <th class="text-center">No</th>
+                     @if (auth()->user()->hasRole('Administrator'))
+                     <th>ID</th>
+                     <th>User ID</th>
+                     @endif
+                     
+                     <th>NIK</th>
+                     <th>Name</th>
+                     <th>KPI</th>
+                     <th>Leader</th>
+                     {{-- <th>Phone</th> --}}
+                     <th class="text-truncate">Bisnis Unit</th>
+                     <th>Department</th>
+                     <th>Sub</th>
+                     <th  >Posisi</th>
+                     {{-- <th>Kontrak/Tetap</th> --}}
+                     {{-- <th class="text-right">Action</th> --}}
+                  </tr>
+               </thead>
+               <tfoot>
+                  <tr>
+                     <th class=""></th>
+                     <td @disabled(true) colspan=""></td>
+                     <th ></th>
+                     <th></th>
+                     <th></th>
+                     <th></th>
+                     <th></th>
+                     <th></th>
+                     {{-- <th></th> --}}
+                     {{-- <th></th> --}}
+                     {{-- <th class="text-right">Action</th> --}}
+                  </tr>
+               </tfoot>
+               <tbody>
+                  @foreach ($employees as $employee)
+                  <tr>
+                     <td class="text-center">{{++$i}}</td>
+                     @if (auth()->user()->hasRole('Administrator'))
+                     <td>{{$employee->id}}</td>
+                     <td>{{$employee->user_id}}</td>
+                     @endif
+                     <td class="text-truncate">{{$employee->contract->id_no}}</td>
+                     {{-- <td><a href="{{route('employee.detail', enkripRambo($employee->id))}}">{{$employee->name}}</a> </td> --}}
+                     <td class="text-truncate">
+                        <div>
+                           <a href="{{route('employee.detail', [enkripRambo($employee->id), enkripRambo('basic')])}}"> {{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</a> 
+                           {{-- <small class="text-muted">{{$employee->biodata->email}}</small> --}}
+                        </div>
+                       
+                     </td>
+                     
+                     <td>
+                        @if ($employee->kpi_id != null)
+                        {{-- <a href="{{route('kpi.edit', enkripRambo($employee->kpi_id))}}">{{$employee->getKpi()->title}}</a> --}}
+                            {{-- <span class="text-success">OK</span> --}}
+                            <i class="fa fa-check"></i>
+                            @else
+                            Empty
+                        @endif
+                        
+                     </td>
+                     <td>
+                        @if (count($employee->getLeaders()) > 0)
+                            {{-- OK --}}
+                            <i class="fa fa-check"></i>
+                            @else
+                            Empty
+                        @endif
+                     </td>
+                     {{-- <td>{{$employee->biodata->phone}}</td> --}}
+                     
+                     <td class="text-truncate">
+                        @if (auth()->user()->hasRole('Administrator'))
+                            {{$employee->department->unit->id ?? ''}} -
+                        @endif
+                        {{$employee->department->unit->name ?? ''}}
+                        {{-- @if (count($employee->positions) > 0)
+                              Multiple
+                            @else
+                            @if (auth()->user()->hasRole('Administrator'))
+                            {{$employee->department->unit->id ?? ''}}
+                           @endif
+                            {{$employee->department->unit->name ?? ''}}
+                        @endif --}}
+                        
+                     </td>
+                     
+                     <td>
+                        @if (auth()->user()->hasRole('Administrator'))
+                            {{$employee->department->id ?? ''}} -
+                           @endif
+                        {{$employee->department->name ?? ''}}
+                        {{-- @if (count($employee->positions) > 0)
+                              Multiple
+                            @else
+                            
+                            
+                        @endif --}}
+                     </td>
+                     <td>
+                        @if (auth()->user()->hasRole('Administrator'))
+                            {{$employee->sub_dept->id ?? ''}} -
+                           @endif
+                        {{$employee->sub_dept->name ?? ''}}
+                        {{-- @if (count($employee->positions) > 0)
+                              @foreach ($employee->positions as $pos)
+                                  {{$pos->sub_dept->name ?? ''}}
+                              @endforeach
+                            @else
+                            {{$employee->sub_dept->name ?? ''}}
+                        @endif --}}
+                     </td>
+                     {{-- <td>{{$employee->contract->designation->name ?? ''}}</td> --}}
+                     <td>
+                        @if (auth()->user()->hasRole('Administrator'))
+                            {{$employee->position->id ?? ''}} -
+                           @endif
+                        {{$employee->position->name ?? ''}}
+                        {{-- @if (count($employee->positions) > 0)
+                              Multiple
+                            @else
+                            @if (auth()->user()->hasRole('Administrator'))
+                            {{$employee->position->id ?? ''}}
+                           @endif
+                            {{$employee->position->name ?? ''}}
+                        @endif --}}
+                     </td>
+                     {{-- <td>
+                        @if ($employee->contract->type == 'Kontrak')
+                        <span class="badge badge-info">Kontrak</span>
+                        @elseif($employee->contract->type == 'Tetap')
+                        <span class="badge badge-info">Tetap</span>
+                        @else
+                        <span class="badge badge-muted">Empty</span>
+                        @endif
+      
+                     </td> --}}
+                  </tr>
+                  @endforeach
+               </tbody>
+               
+            </table>
          </div>
       </div>
    </div>
-
-   <div class="table-responsive">
-      <table id="" class="display basic-datatables table-sm table-bordered  table-striped ">
-         <thead>
-            <tr>
-               <th class="text-center">No</th>
-               <th>Name</th>
-               <th>ID</th>
-               {{-- <th>Phone</th> --}}
-               <th class="text-truncate">Bisnis Unit</th>
-               <th>Department</th>
-               {{-- <th>Level</th> --}}
-               <th  >Posisi</th>
-               <th>Kontrak/Tetap</th>
-               {{-- <th class="text-right">Action</th> --}}
-            </tr>
-         </thead>
-         <tfoot>
-            <tr>
-               <th class=""></th>
-               <td @disabled(true)></td>
-               {{-- <th></th>
-               <th></th> --}}
-               <th></th>
-               <th></th>
-               <th></th>
-               <th></th>
-               <th></th>
-               {{-- <th class="text-right">Action</th> --}}
-            </tr>
-         </tfoot>
-         <tbody>
-            @foreach ($employees as $employee)
-            <tr>
-               <td class="text-center">{{++$i}}</td>
-               {{-- <td><a href="{{route('employee.detail', enkripRambo($employee->id))}}">{{$employee->name}}</a> </td> --}}
-               <td class="text-truncate">
-                  <div>
-                     <a href="{{route('employee.detail', [enkripRambo($employee->id), enkripRambo('basic')])}}">{{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</a>
-                     {{-- <small class="text-muted">{{$employee->biodata->email}}</small> --}}
-                  </div>
-                  {{-- <div class="profile-picture mr-3">
-                     @if ($employee->biodata->status == 1)
-                     <div class="avatar avatar-sm avatar-online">
-                        @else
-                        <div class="avatar avatar-sm avatar-offline">
-                           @endif
-                           @if ($employee->picture)
-                           <img src="{{asset('storage/' . $employee->picture)}}" alt="..." class="avatar-img rounded-circle">
-                           @else
-                           <img src="{{asset('img/user.png')}}" alt="..." class="avatar-img rounded-circle">
-                           @endif
-                        </div>
-                     </div>
-                     <div>
-                        <a href="{{route('employee.detail', [enkripRambo($employee->id), enkripRambo('contract')])}}">{{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</a><br>
-                        <small class="text-muted">{{$employee->biodata->email}}</small>
-                     </div> --}}
-               </td>
-               <td class="text-truncate">{{$employee->contract->id_no}}</td>
-               {{-- <td>{{$employee->biodata->phone}}</td> --}}
-               <td>{{$employee->department->unit->name ?? ''}}</td>
-               <td>{{$employee->department->name ?? ''}}</td>
-               {{-- <td>{{$employee->contract->designation->name ?? ''}}</td> --}}
-               <td>{{$employee->position->name}}</td>
-               <td>
-                  @if ($employee->contract->type == 'Kontrak')
-                  <span class="badge badge-info">Kontrak</span>
-                  @elseif($employee->contract->type == 'Tetap')
-                  <span class="badge badge-info">Tetap</span>
-                  @else
-                  <span class="badge badge-muted">Empty</span>
-                  @endif
-
-               </td>
-            </tr>
-            @endforeach
-         </tbody>
-         
-      </table>
-   </div>
+   
 </div>
 
 <div class="modal fade" id="modal-export" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -145,6 +222,8 @@ Employee
 
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script>
+   
+
    $(document).ready(function() {
       $('.tanggal').datepicker({
          format: "yyyy-mm-dd",

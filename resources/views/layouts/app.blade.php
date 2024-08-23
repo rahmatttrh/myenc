@@ -105,6 +105,9 @@
             padding: 4px;
             }
       </style>
+
+      <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+      <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
    </head>
    <body>
       <div class="wrapper">
@@ -178,6 +181,8 @@
       @stack('myjs')
 
       <script >
+
+
          $(document).ready(function() {
             
             $('.select2').select2({});
@@ -191,7 +196,7 @@
                "pageLength": 10,
                "ordering": false,
                initComplete: function () {
-                     this.api().columns([4,5,6,7]).every( function () {
+                     this.api().columns([5,6,7]).every( function () {
                         var column = this;
                         var select = $('<select class="form-control-sm "><option value=""></option></select>')
                         .appendTo( $(column.footer()).empty() )

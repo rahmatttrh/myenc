@@ -17,7 +17,7 @@ Discipline
                 <div class="card-header">
                     <x-tab-discipline :activeTab="request()->route()->getName()" />
                 </div>
-                <div class="card-header d-flex">
+                {{-- <div class="card-header d-flex">
                     <div class="d-flex  align-items-center">
                         <div class="card-title">List Draft Discipline assessment</div>
                     </div>
@@ -31,12 +31,12 @@ Discipline
                             <a class="dropdown-item" style="text-decoration: none" href="" target="_blank">Print Preview</a>
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 <div class="card-body">
                     <form action="{{route('discipline.apply')}}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="table-responsive">
-                            <table id="basic-datatables" class="display basic-datatables table table-striped ">
+                            <table id="basic-datatables" class="display basic-datatables table-sm mt-2 table-striped ">
                                 <thead>
                                     <tr>
                                         <th><input type="checkbox" name="" id="checkboxAll"></th>
@@ -58,6 +58,7 @@ Discipline
                                         <button class="btn btn-sm btn-success" name="apply" value="1" type="submit"><i class="fas fa-check"></i> Terapkan</button>
                                         <button class="btn btn-sm btn-danger" name="delete" value="1" type="submit"><i class="fas fa-trash"></i> Delete</button>
                                     </div>
+                                    <hr>
                                     <!-- <button type="submit">SSS</button> -->
                                     @foreach ($datas as $data)
                                     <tr>

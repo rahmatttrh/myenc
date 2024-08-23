@@ -71,7 +71,10 @@ class User extends Authenticatable implements MustVerifyEmail
 
    public function getEmployee()
    {
-      return Employee::where('user_id', auth()->user()->id)->first() ?? null;
+      $biodata = Biodata::where('email', $this->email)->first();
+      $employee = Employee::where('biodata_id', $biodata->id)->first();
+      // return Employee::where('user_id', auth()->user()->id)->first() ?? null;
+      return $employee;
    }
    // auth()->user()->id
 

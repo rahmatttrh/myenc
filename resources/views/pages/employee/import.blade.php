@@ -13,7 +13,7 @@ Import Employee
    </ol>
    </nav> --}}
 
-   <div class="page-header d-flex">
+   {{-- <div class="page-header d-flex">
       <h5 class="page-title">Import Employee</h5>
       <ul class="breadcrumbs">
          <li class="nav-home">
@@ -34,12 +34,19 @@ Import Employee
             <a href="#">Import</a>
          </li>
       </ul>
-   </div>
+   </div> --}}
+
+   <nav aria-label="breadcrumb ">
+      <ol class="breadcrumb  ">
+         <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
+         <li class="breadcrumb-item active" aria-current="page">Import Employee</li>
+      </ol>
+   </nav>
 
    <div class="card shadow-none border">
       <div class="card-header d-flex">
          <div class="d-flex  align-items-center">
-            <div class="card-title">Employee Import</div>
+            <div class="card-title">Employee Import by Excel</div>
          </div>
 
       </div>
@@ -66,20 +73,23 @@ Import Employee
             <div class="col-md-7">
                <div class="card card-light card-annoucement card-round shadow-none border">
                   <div class="card-body text-center">
-                     <div class="card-opening">Import Excel</div>
-                     <div class="card-desc">
+                     {{-- <div class="card-opening">Import Excel</div> --}}
+                     {{-- <div class="card-desc">
                         Make sure your document format is the same as the system requirements. Or you can download the template in the link below
-                     </div>
+                     </div> --}}
                      <div class="card-detail">
-                        <a href="/documents/new-template-employee.xlsx" class="btn btn-success btn-rounded">Download Template</a>
+                        <a href="/documents/template-employee-fix.xlsx" class="btn btn-success btn-rounded">Download Template</a>
                      </div>
+                     {{-- <div class="card-desc text-left">
+                        Kolom Business Unit, Department, Sub Department, Position diisi dengan angka ID yang bisa dilihat di Master Data
+                     </div> --}}
                   </div>
                </div>
             </div>
          </div>
       </div>
       <div class="card-footer">
-         <small>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quo, autem laborum?</small>
+         {{-- <small>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quo, autem laborum?</small> --}}
       </div>
    </div>
 </div>

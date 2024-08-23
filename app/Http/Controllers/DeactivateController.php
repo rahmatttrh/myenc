@@ -36,4 +36,31 @@ class DeactivateController extends Controller
 
       return redirect()->back()->with('success', 'Employee succesfully deactivated');
    }
+
+   public function activate(Request $req)
+   {
+      $employee = Employee::find($req->employee);
+      $contract = Contract::find($employee->contract_id);
+      $employee->update([
+         'status' => 1
+      ]);
+      $contract->update([
+         'status' => 1
+      ]);
+
+      // Deactivate::create([
+      //    'status' => 1,
+      //    'employee_id' => $employee->id,
+      //    'reason' => $req->reason,
+      //    'date' => $req->date
+      // ]);
+
+      // Log::create([
+      //    'user_id' => auth()->user()->id,
+      //    'action' => 'Deactivate',
+      //    'desc' =>  $employee->nik . ' ' . $employee->biodata->fullname()
+      // ]);
+
+      return redirect()->back()->with('success', 'Employee succesfully activated');
+   }
 }

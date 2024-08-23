@@ -6,12 +6,14 @@
             <div class="avatar-sm border rounded float-left mr-2">
                @if (auth()->user()->hasRole('Administrator'))
                <img src="{{asset('img/businessman.png')}}" alt="..." class="avatar-img bg-muted  ">
+               @elseif(auth()->user()->hasRole('Karyawan'))
+                  @if (auth()->user()->getEmployee()->picture == null)
+                  <img src="{{asset('img/businessman.png')}}" alt="..." class="avatar-img bg-muted  ">
+                  @else
+                  <img src="{{asset('storage/' . auth()->user()->getEmployee()->picture)}}" alt="..." class="avatar-img bg-muted  ">
+                  @endif
                @else
-               @if (auth()->user()->getEmployee()->picture == null)
                <img src="{{asset('img/businessman.png')}}" alt="..." class="avatar-img bg-muted  ">
-               @else
-               <img src="{{asset('storage/' . auth()->user()->getEmployee()->picture)}}" alt="..." class="avatar-img bg-muted  ">
-               @endif
                @endif
 
 
@@ -23,7 +25,12 @@
                      @if (auth()->user()->hasRole('Administrator'))
                      <span class="user-level">{{auth()->user()->getRoleName()}}</span>
                      @else
-                     <span class="user-level">{{auth()->user()->getEmployee()->position->name}}</span>
+                        @if (count(auth()->user()->getEmployee()->positions) > 0)
+                           <span class="user-level">{{auth()->user()->getEmployee()->designation->name}}</span> 
+                            @else
+                            <span class="user-level">{{auth()->user()->getEmployee()->position->name}}</span>
+                        @endif
+                     
                      @endif
                   </span>
                </a>
@@ -45,19 +52,24 @@
                </span>
                <h4 class="text-section">Main Menu</h4>
             </li>
-            @if (auth()->user()->hasRole('Administrator|HRD'))
+            @if (auth()->user()->hasRole('Administrator'))
                <x-sidebar.administrator />
             @endif
 
-            @if (auth()->user()->hasRole('HRD-Spv'))
+            @if (auth()->user()->hasRole('HRD&Supervisor'))
+            
                <x-sidebar.hrd-spv />
             @endif
+
+            {{-- @if (auth()->user()->hasRole('HRD-Spv'))
+               <x-sidebar.hrd-spv />
+            @endif --}}
             
             @if (auth()->user()->hasRole('HRD-Recruitment'))
                <x-sidebar.hrd-recruitment />
             @endif
 
-            @if (auth()->user()->hasRole('Manager'))
+            @if (auth()->user()->hasRole('Manager|Asst. Manager'))
             <x-sidebar.manager />
             @endif
 

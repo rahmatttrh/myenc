@@ -10,6 +10,14 @@ class Pe extends Model
     use HasFactory;
     protected $guarded = [];
 
+    public function department(){
+      return $this->belongsTo(Department::class);
+    }
+
+    public function sub_dept(){
+      return $this->belongsTo(SubDept::class);
+    }
+
     public function employe()
     {
         return $this->belongsTo(Employee::class);
@@ -19,5 +27,15 @@ class Pe extends Model
     public function kpa()
     {
         return $this->hasOne(PeKpa::class);
+    }
+
+    public function getCreatedBy(){
+      $by = Employee::find($this->created_by);
+      return $by;
+    }
+
+    public function getVerifikasiBy(){
+      $by = Employee::find($this->verifikasi_by);
+      return $by;
     }
 }
