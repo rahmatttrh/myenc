@@ -37,6 +37,14 @@ class HomeController extends Controller
    public function index()
    {
 
+      if (!auth()->user()->hasRole('Administrator|HRD-Manager|HRD|HRD-Spv|HRD-Recruitment|Manager|Asst. Manager|Supervisor|Leader|Karyawan')) {
+         // $id = auth()->user()->id;
+         RoleEmptyUser;
+         // dd('tidak ada role');
+      } 
+      // if (auth()->user()->hasRoles) {
+      //    # code...
+      // }
       // if (auth()->user()->hasRole('Manager')) {
       //    dd('Manager');
       // } else {
@@ -190,7 +198,7 @@ class HomeController extends Controller
          $spkls = Spkl::orderBy('updated_at', 'desc')->paginate(5);
          $sps = Sp::orderBy('updated_at', 'desc')->get();
          $recentSps = Sp::orderBy('updated_at', 'desc')->paginate(5);
-         $logins = Log::orderBy('created_at', 'desc')->paginate(10);
+         $logins = Log::where('department_id', '!=', null)->orderBy('created_at', 'desc')->paginate(10);
          $qpes = Pe::orderBy('updated_at', 'desc')->get();
          $recentQpes = Pe::orderBy('updated_at', 'desc')->paginate(8);
 
@@ -298,7 +306,7 @@ class HomeController extends Controller
             'tetap' => $tetap,
             'empty' => $empty
          ])->with('i');
-      } elseif (auth()->user()->hasRole('Manager')) {
+      } elseif (auth()->user()->hasRole('Manager|Asst. Managaer')) {
          // dd('ok');
          $employee = Employee::where('nik', auth()->user()->username)->first();
          $biodata = Biodata::where('email', auth()->user()->email)->first();
@@ -313,6 +321,7 @@ class HomeController extends Controller
          if (count($employee->positions) > 0) {
             $teams = null;
             $pes = null;
+            $recentPes = null;
          } else {
             if ($employee->position->sub_dept_id != null) {
                // dd('ada sub');
@@ -321,9 +330,13 @@ class HomeController extends Controller
                $teams = Employee::where('status', 1)->where('department_id', $employee->position->department_id)->get();
             }
 
-            $pes = Pe::where('department_id', $employee->department_id)->where('status', '>', '0')
+            $pes = Pe::where('department_id', $employee->department_id)->where('status', '>=', '0')
             ->orderBy('release_at', 'desc')
             ->get();
+
+            $recentPes = Pe::where('department_id', $employee->department_id)->where('status', '>=', '0')
+            ->orderBy('release_at', 'desc')
+            ->paginate(8);
          }
          
          
@@ -339,7 +352,8 @@ class HomeController extends Controller
             'sps' => $sps,
             'teams' => $teams,
             'positions' => $employeePositions,
-            'pes' => $pes
+            'pes' => $pes,
+            'recentPes' => $recentPes
          ]);
       } elseif (auth()->user()->hasRole('Supervisor|Leader')) {
          // dd('ok');
@@ -378,6 +392,7 @@ class HomeController extends Controller
          } else {
             $peRecents = Pe::where('created_by', $employee->id)->where('status', '!=', 2)->orderBy('updated_at', 'desc')->paginate(8);
          }
+         $allpes = Pe::orderBy('updated_at', 'desc')->get();
          return view('pages.dashboard.supervisor', [
             'employee' => $biodata->employee,
             'teams' => $teams,
@@ -387,6 +402,7 @@ class HomeController extends Controller
             'pending' => $pending,
 
             'spkls' => $spkls,
+            'allpes' => $allpes,
             'spRecents' => $spRecents,
             'peRecents' => $peRecents
          ]);

@@ -3,13 +3,13 @@
    @elseif($pe->status == '1')
    
       @if (auth()->user()->hasRole('Manager'))
-      <span >Perlu Diverifikasi</span>
+      <span class="text-info">Perlu Diverifikasi</span>
       @else
-      <span >Verifikasi Manager</span>
+      <span class="text-primary">Verifikasi Manager</span>
       @endif
    
    @elseif($pe->status == '2')
-   <span >Done</span>
+   <span class="text-success" >Done</span>
    @elseif($pe->status == '3')
    <span >Validasi HRD</span>
    @elseif($pe->status == '101')

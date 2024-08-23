@@ -357,7 +357,12 @@ class EmployeeController extends Controller
          // dd($department->id);
       $myManagers = [];  
       // dd($subdept->id);
-      $managerPositions = Position::where('department_id', $department->id)->where('type', 'dept')->get();
+      if ($department) {
+         $managerPositions = Position::where('department_id', $department->id)->where('type', 'dept')->get();
+      } else {
+         $managerPositions = [];
+      }
+      
       if ($subdept) {
          $subManPositions = Position::where('department_id', $department->id)->where('sub_dept_id', $subdept->id)->where('type', 'subdept')->get();
          if (count($subManPositions) > 0) {

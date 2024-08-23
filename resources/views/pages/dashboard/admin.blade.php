@@ -8,7 +8,7 @@
       <div class="page-header">
          <h5 class="page-title">
             <i class="fa fa-home"></i>
-            Dashboard 
+            Dashboard Administrator
            
             
          </h5>

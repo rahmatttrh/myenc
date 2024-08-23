@@ -37,25 +37,27 @@
                      
                   </div>
 
-                  
-                     @if ($employee->department->slug == 'hrd')
-                     <div class="form-group form-group-default">
-                        <label>
-                           Second Role
-                           {{-- @if ($employee->user->hasRole('Supervisor'))
-                               Supervisor
-                               @else
-                               -
-                           @endif --}}
-                        </label>
-                        <select class="form-control" id="role2" name="role2">
-                           <option value="" selected disabled>Select</option>
-                           @foreach ($roles->where('type', 'hrd') as $role)
-                              <option {{$employee->role2 == $role->id ? 'selected' : ''}} value="{{$role->id}}">{{$role->name}}</option>
-                           @endforeach
-                        </select>
-                     </div>
-                     @endif
+                  @if ($employee->department)
+                  @if ($employee->department->slug == 'hrd')
+                  <div class="form-group form-group-default">
+                     <label>
+                        Second Role
+                        {{-- @if ($employee->user->hasRole('Supervisor'))
+                            Supervisor
+                            @else
+                            -
+                        @endif --}}
+                     </label>
+                     <select class="form-control" id="role2" name="role2">
+                        <option value="" selected disabled>Select</option>
+                        @foreach ($roles->where('type', 'hrd') as $role)
+                           <option {{$employee->role2 == $role->id ? 'selected' : ''}} value="{{$role->id}}">{{$role->name}}</option>
+                        @endforeach
+                     </select>
+                  </div>
+                  @endif
+                  @endif
+                     
                   
                   @if ($employee->status == 0)
                         * Publish karyawan untuk menambahkan Role

@@ -115,7 +115,7 @@ Dashboard
       <div class="col-md-8">
          <div class="card">
             <div class="card-header bg-primary text-white p-2">
-               <small>8 Latest QPE</small>
+               <small>Latest QPE</small>
             </div>
             <div class="card-body p-0">
                <table class=" ">
@@ -130,10 +130,33 @@ Dashboard
                      </tr>
                   </thead>
                   <tbody>
-                     @if (count($peRecents) > 0)
+                     @foreach ($myteams as $team)
+                         @foreach ($allpes as $pe)
+                             @if ($pe->employe_id == $team->id)
+                             <tr>
+                              {{-- <td>{{++$i}}</td> --}}
+                              <td>
+                                 @if($pe->status == '0' || $pe->status == '101')
+                                 <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} - {{$pe->employe->biodata->fullName()}} </a>
+                                 @elseif($pe->status == '1' || $pe->status == '202' )
+                                 <a href="/qpe/approval/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} - {{$pe->employe->biodata->fullName()}} </a>
+                                 @else
+                                 <a href="/qpe/show/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} - {{$pe->employe->biodata->fullName()}} </a>
+                                 @endif
+                                 
+                              </td>
+                              <td>{{$pe->semester}} / {{$pe->tahun}}</td>
+                              <td>{{$pe->achievement}}</td>
+                              <td>
+                                 <x-status.pe :pe="$pe" />
+                              </td>
+                           </tr>
+                             @endif
+                         @endforeach
+                     @endforeach
+                     {{-- @if (count($peRecents) > 0)
                         @foreach ($peRecents as $pe)
                         <tr>
-                           {{-- <td>{{++$i}}</td> --}}
                            <td>
                               @if($pe->status == '0' || $pe->status == '101')
                               <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} - {{$pe->employe->biodata->fullName()}} </a>
@@ -156,16 +179,16 @@ Dashboard
                          <tr>
                            <td colspan="5" class="text-center">Empty</td>
                         </tr>
-                     @endif
+                     @endif --}}
                      
                      
                      
                   </tbody>
                </table>
             </div>
-            <div class="card-footer">
+            {{-- <div class="card-footer">
                <small class="text-muted">*Ini adalah 8 data QPE terkini, klik <a href="{{route('qpe')}}">Disini</a> untuk melihat seluruh data QPE.</small>
-            </div>
+            </div> --}}
          </div>
 
          <div class="card">

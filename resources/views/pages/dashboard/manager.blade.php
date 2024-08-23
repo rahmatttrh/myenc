@@ -125,7 +125,7 @@ Dashboard
                          @foreach ($teams as $emp)
                               <tr>
                               <td></td>
-                              <td>{{$emp->sub_dept->name}}</td>
+                              {{-- <td>{{$emp->sub_dept->name}}</td> --}}
                               {{-- <td></td> --}}
                               <td>{{$emp->nik}} {{$emp->biodata->fullName()}}</td>
                               </tr>
@@ -144,7 +144,7 @@ Dashboard
 
          <div class="card">
             <div class="card-header d-flex justify-content-between p-2 bg-primary text-white">
-               <small>Recent QPE</small>
+               <small>8 Latest QPE</small>
                <a href="{{route('qpe')}}" class="text-white">more...</a>
             </div>
             <div class="card-body p-0">
@@ -191,8 +191,8 @@ Dashboard
                      <tr>
                         <td colspan="6"></td>
                      </tr>
-                     @if ($pes)
-                     @foreach ($pes as $pe)
+                     @if ($recentPes)
+                     @foreach ($recentPes as $pe)
                      <tr>
                      <th></th>
                      <td>
@@ -216,6 +216,9 @@ Dashboard
                      
                   </tbody>
                </table>
+            </div>
+            <div class="card-footer">
+               <small class="text-muted">*Ini adalah 8 data QPE terkini, klik <a href="{{route('qpe')}}">Disini</a> untuk melihat seluruh data QPE.</small>
             </div>
          </div>
          
