@@ -278,21 +278,27 @@ Route::middleware(["auth"])->group(function () {
             Route::post('store', [TransactionController::class, 'store'])->name('payroll.transaction.store');
          });
          Route::prefix('overtime')->group(function () {
-            Route::post('/store', [TransactionOvertimeController::class, 'store'])->name('payroll.overtime.store');
+            Route::get('/index', [OvertimeController::class, 'index'])->name('payroll.overtime');
+            Route::post('/store', [OvertimeController::class, 'store'])->name('payroll.overtime.store');
+            Route::get('/delete/{id}', [OvertimeController::class, 'delete'])->name('payroll.overtime.delete');
             // Route::get('/detail/{id}' , [TransactionController::class, 'detail'])->name('payroll.transaction.detail');
             // Route::post('store', [TransactionController::class, 'store'])->name('payroll.transaction.store');
          });
          Route::prefix('unit')->group(function () {
             Route::get('/index', [PayrollController::class, 'unit'])->name('payroll.unit');
+            Route::post('/update/pph', [PayrollController::class, 'unitUpdatePph'])->name('payroll.unit.update');
             // Route::get('/detail/{id}' , [TransactionController::class, 'detail'])->name('payroll.transaction.detail');
             // Route::post('store', [TransactionController::class, 'store'])->name('payroll.transaction.store');
          });
+
+         
       });
 
       Route::prefix('reduction')->group(function () {
          // Route::get('/index', [PayrollController::class, 'unit'])->name('payroll.unit');
-         // Route::get('/detail/{id}' , [TransactionController::class, 'detail'])->name('payroll.transaction.detail');
+         Route::put('/update' , [ReductionController::class, 'update'])->name('reduction.update');
          Route::post('store', [ReductionController::class, 'store'])->name('reduction.store');
+         Route::get('delete/{id}', [ReductionController::class, 'delete'])->name('reduction.delete');
       });
 
    });

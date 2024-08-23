@@ -7,6 +7,7 @@ use App\Models\Employee;
 use App\Models\Payroll;
 use App\Models\Unit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PayrollController extends Controller
 {
@@ -44,6 +45,18 @@ class PayrollController extends Controller
       $payroll = Payroll::find($employee->payroll_id);
       $total = $req->pokok + $req->tunj_jabatan + $req->tunj_ops + $req->tunj_kinerja + $req->tunj_fungsional + $req->insentif;
       if ($payroll) {
+
+         if (request('doc')) {
+            if ($payroll->doc) {
+               Storage::delete($payroll->doc);
+            }
+            
+            $doc = request()->file('doc')->store('doc/payroll');
+         } elseif ($payroll->doc) {
+            $doc = $payroll->doc;
+         } else {
+            $doc = null;
+         }
          
          $payroll->update([
             'pokok' => $req->pokok,
@@ -52,9 +65,23 @@ class PayrollController extends Controller
             'tunj_kinerja' => $req->tunj_kinerja,
             'tunj_fungsional' => $req->tunj_fungsional,
             'insentif' => $req->insentif, 
-            'total' => $total
+            'total' => $total,
+            'doc' => $doc
          ]);
       } else {
+
+         if (request('doc')) {
+            if ($payroll->doc) {
+               Storage::delete($payroll->doc);
+            }
+            
+            $doc = request()->file('doc')->store('doc/payroll');
+         } elseif ($payroll->doc) {
+            $doc = $payroll->doc;
+         } else {
+            $doc = null;
+         }
+
         $payroll = Payroll::create([
             'pokok' => $req->pokok,
             'tunj_jabatan' => $req->tunj_jabatan,
@@ -62,7 +89,8 @@ class PayrollController extends Controller
             'tunj_kinerja' => $req->tunj_kinerja,
             'tunj_fungsional' => $req->tunj_fungsional,
             'insentif' => $req->insentif,
-            'total' => $total
+            'total' => $total,
+            'doc' => $doc
          ]);
 
          $employee->update([
@@ -81,5 +109,15 @@ class PayrollController extends Controller
          'units' => $units,
          'firstUnit' => $firstUnit
       ])->with('i');
+   }
+
+   public function unitUpdatePph(Request $req){
+      $unit = Unit::find($req->unit);
+      $unit->update([
+         'pph' => $req->pph,
+         'spkl_type' => $req->spkl_type
+      ]);
+
+      return redirect()->back()->with('success', 'Setup Unit Payroll successfully updated');
    }
 }

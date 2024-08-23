@@ -5,59 +5,37 @@ Logs Activity
 @section('content')
 
 <div class="page-inner">
-   <div class="page-header d-flex">
-
-      <h5 class="page-title">Logs Activity</h5>
-      <ul class="breadcrumbs">
-         <li class="nav-home">
-            <a href="/">
-               <i class="flaticon-home"></i>
-            </a>
-         </li>
-         <li class="separator">
-            <i class="flaticon-right-arrow"></i>
-         </li>
-         <li class="nav-item">
-            <a href="#">Logs Activity</a>
-         </li>
-      </ul>
-      <div class="ml-auto">
-         <button class="btn btn-light border btn-round " data-toggle="dropdown">
-            <i class="fa fa-ellipsis-h"></i>
-         </button>
-         <div class="dropdown-menu">
-
-
-            {{-- <a class="dropdown-item" style="text-decoration: none" href="{{route('employee.create')}}">Create</a> --}}
-            <a class="dropdown-item" style="text-decoration: none" data-toggle="modal" data-target="#modal-export">Export</a>
-            <div class="dropdown-divider"></div>
-            {{-- <a class="dropdown-item" style="text-decoration: none" href="" target="_blank">Print Preview</a> --}}
-         </div>
-      </div>
-   </div>
+   <nav aria-label="breadcrumb ">
+      <ol class="breadcrumb  ">
+         <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
+         <li class="breadcrumb-item active" aria-current="page">Log Activity</li>
+      </ol>
+   </nav>
 
    <div class="row">
       <div class="col-md-12">
-         <div class="card">
+         <div class="card shadow-none border">
             <div class="card-body px-0">
                <div class="table-responsive">
                   <table id="" class="display basic-datatables table-sm  ">
                      <thead>
                         <tr>
-                           <th class="text-center" style="width: 10px">No</th>
+                           {{-- <th class="text-center" style="width: 10px">No</th> --}}
+                           <th>Timestamp</th>
                            <th>User</th>
                            <th>Action</th>
                            
                            {{-- <th>Desc</th> --}}
                            
-                           <th>Timestamp</th>
+                           
                         </tr>
                      </thead>
                      <tbody>
                         @foreach ($logs as $log)
                         <tr>
-                           <td class="text-center">{{++$i}}</td>
-                           <td>{{$log->user->username}} {{$log->user->name}}</td>
+                           {{-- <td class="text-center">{{++$i}}</td> --}}
+                           <td class="text-truncate">{{formatDateTimeB($log->created_at)}}</td>
+                           <td class="text-truncate">{{$log->user->username}} {{$log->user->name}}</td>
                            <td>
                               @if ($log->action == 'Login')
                                  {{$log->action}} into system
@@ -69,7 +47,7 @@ Logs Activity
                            
                            
                            {{-- <td>{{$log->desc}}</td> --}}
-                           <td>{{formatDateTime($log->created_at)}}</td>
+                           
                         </tr>
                         @endforeach
                      </tbody>

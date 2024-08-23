@@ -194,6 +194,9 @@ class SpController extends Controller
 
       // dd($req->date_from);
       $from = Carbon::make($req->date_from);
+      $to = $from->addMonths(6);
+      // dd($to->addDays(-1));
+
 
       $bulan = $from->format('m');
       $tahun = $from->format('Y');
@@ -217,27 +220,27 @@ class SpController extends Controller
          'semester' => $semester,
          'rule' => $req->rule,
          'date_from' => $req->date_from,
-         'date_to' => $from->addMonths(6),
+         'date_to' => $to->addDays(-1),
          'reason' => $req->reason,
          'desc' => $req->desc,
          'file' => $file
       ]);
 
-      SpApproval::create([
-         'status' => 1,
-         'sp_id' => $sp->id,
-         'type' => 'Submit',
-         'level' => 'HRD',
-         'employee_id' => auth()->user()->getEmployeeId(),
-      ]);
+      // SpApproval::create([
+      //    'status' => 1,
+      //    'sp_id' => $sp->id,
+      //    'type' => 'Submit',
+      //    'level' => 'user',
+      //    'employee_id' => auth()->user()->getEmployeeId(),
+      // ]);
 
-      SpApproval::create([
-         'status' => 1,
-         'sp_id' => $sp->id,
-         'type' => 'Approved',
-         'level' => 'HRD',
-         'employee_id' => auth()->user()->getEmployeeId(),
-      ]);
+      // SpApproval::create([
+      //    'status' => 1,
+      //    'sp_id' => $sp->id,
+      //    'type' => 'Approved',
+      //    'level' => 'hrd',
+      //    'employee_id' => auth()->user()->getEmployeeId(),
+      // ]);
 
       $posMan = Position::where('department_id', $sp->department->id)->where('designation_id', 6)->first();
       $empPos = EmployeePosition::where('position_id', $posMan->id)->first();

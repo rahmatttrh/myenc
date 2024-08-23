@@ -47,13 +47,9 @@ class QuickPEController extends Controller
             $kpas = PeKpa::where('status', '!=', '0')
                 ->orderBy('employe_id')
                 ->get();
-
-
-            // 
-
             $outAssesments = $this->outstandingAssessment();
-
-            // 
+            $myteams = [];
+            $allpes = [];
         } else if (auth()->user()->hasRole('HRD|HRD-Spv|HRD-Manager')) {
          // dd('ok');
             $employee = auth()->user()->getEmployee();
@@ -66,7 +62,8 @@ class QuickPEController extends Controller
 
             $outAssesments = $this->outstandingAssessment();
 
-            // 
+            $myteams = [];
+            $allpes = [];
         } else if (auth()->user()->hasRole('Manager|Asst. Manager')) {
          // dd('ok');
          $employee = auth()->user()->getEmployee();
@@ -77,19 +74,31 @@ class QuickPEController extends Controller
             //     ->orderBy('pes.release_at', 'desc')
             //     ->get();
 
-                $pes = Pe::where('pes.status', '>', '0')
-                ->orderBy('updated_at', 'desc')
+            $pes = Pe::where('department_id', $employee->department_id)->where('pes.status', '>=', '0')
+                ->orderBy('release_at', 'desc')
                 ->get();
+
+               //  $pes = Pe::where('pes.status', '>', '0')
+               //  ->orderBy('updated_at', 'desc')
+               //  ->get();
 
             // 
             $outAssesments = $this->outstandingAssessment($employee->department_id);
-            // 
+            $myteams = [];
+            $allpes = [];
         } 
        
          else if (auth()->user()->hasRole('Leader|Supervisor')) {
          
 
          $employee = auth()->user()->getEmployee();
+         $myteams = EmployeeLeader::join('employees', 'employee_leaders.employee_id', '=', 'employees.id')
+               ->join('biodatas', 'employees.biodata_id', '=', 'biodatas.id')
+                ->where('leader_id', $employee->id)
+                ->select('employees.*')
+                ->orderBy('biodatas.first_name', 'asc')
+                ->get();
+        $allpes = Pe::orderBy('updated_at', 'desc')->get();
          // dd($employee->id);
             // $pes = Pe::join('employees', 'pes.employe_id', '=', 'employees.id')
             //     ->where('employees.direct_leader_id', $employee->id)
@@ -131,7 +140,8 @@ class QuickPEController extends Controller
 
             // 
             $outAssesments = $this->outstandingAssessment($employee->department_id);
-            // 
+            $myteams = [];
+            $allpes = [];
         }
         
       //   dd($pes);
@@ -141,6 +151,8 @@ class QuickPEController extends Controller
             // 'kpas' => $kpas,
             'employee' => $employee,
             'pes' => $pes,
+            'allpes' => $allpes,
+            'myteams' => $myteams,
             'outAssesments' =>  $outAssesments
         ])->with('i');
     }
@@ -383,7 +395,7 @@ class QuickPEController extends Controller
                'department_id' => $leader->department_id,
                'user_id' => auth()->user()->id,
                'action' => 'Create',
-               'desc' => 'QPE ' . $employe->nik . ' ' . $employe->biodata->fullName() . ' ' . $req->semester . '/' . $req->tahun 
+               'desc' => 'QPE ' . $employe->nik . ' ' . $employe->biodata->fullName() . ' Semester ' . $req->semester . '/' . $req->tahun 
             ]);
 
             return redirect('/qpe/edit/' . $kpaId)->with('success', 'KPI successfully added');
@@ -410,13 +422,23 @@ class QuickPEController extends Controller
 
         $employe = Employee::where('id', $kpa->employe_id)->first();
 
-        if ($employe->designation->golongan == '1' || $employe->designation->golongan == '2') {
-            // Staff
-            $level = 's';
-        } else {
-            // Leader
-            $level = 'l';
-        }
+      //   if ($employe->designation->golongan == '1' || $employe->designation->golongan == '2') {
+      //       // Staff
+      //       $level = 's';
+      //   } else {
+      //       // Leader
+      //       $level = 'l';
+      //   }
+
+         if ($employe->user->hasRole('Karyawan')) {
+               // Staff
+               $level = 's';
+               // dd('s');
+         } else {
+               // Leader
+               $level = 'l';
+               // dd('l');
+         }
 
 
         // Berikut Behavior  Staff
@@ -645,18 +667,18 @@ class QuickPEController extends Controller
 
         $this->calculatePe($pba->pe_id);
 
-      //   if (auth()->user()->hasRole('Administrator')) {
-      //    $departmentId = null;
-      //    } else {
-      //       $user = Employee::find(auth()->user()->getEmployeeId());
-      //       $departmentId = $user->department_id;
-      //    }
-      //    Log::create([
-      //       'department_id' => $departmentId,
-      //       'user_id' => auth()->user()->id,
-      //       'action' => 'Create',
-      //       'desc' => 'QPE Behavior ' . $employe->nik . ' ' . $employe->biodata->fullName() . ' Semester ' . $pe->semester . ' Tahun ' . $pe->tahun 
-      //    ]);
+        if (auth()->user()->hasRole('Administrator')) {
+         $departmentId = null;
+         } else {
+            $user = Employee::find(auth()->user()->getEmployeeId());
+            $departmentId = $user->department_id;
+         }
+         Log::create([
+            'department_id' => $departmentId,
+            'user_id' => auth()->user()->id,
+            'action' => 'Update',
+            'desc' => 'QPE Behavior ' . $employe->nik . ' ' . $employe->biodata->fullName() . ' Semester ' . $pe->semester . '/' . $pe->tahun 
+         ]);
 
         return back()->with('success', 'Behavior berhasil di Create');
         // } catch (\Exception $e) {
@@ -681,6 +703,20 @@ class QuickPEController extends Controller
         $this->calculateAcvBehavior($pba->id);
 
         $this->calculatePe($pba->pe_id);
+        
+
+      //   if (auth()->user()->hasRole('Administrator')) {
+      //    $departmentId = null;
+      //    } else {
+      //       $user = Employee::find(auth()->user()->getEmployeeId());
+      //       $departmentId = $user->department_id;
+      //    }
+      //    Log::create([
+      //       'department_id' => $departmentId,
+      //       'user_id' => auth()->user()->id,
+      //       'action' => 'Update',
+      //       'desc' => 'QPE Behavior ' . $employe->nik . ' ' . $employe->biodata->fullName() . ' Semester ' . $pe->semester . '/' . $pe->tahun 
+      //    ]);
 
         return redirect()->back()->with('success', 'Behavior Karyawan Berhasil di Update');
     }
@@ -737,7 +773,7 @@ class QuickPEController extends Controller
          'department_id' => $user->department_id,
          'user_id' => auth()->user()->id,
          'action' => 'Submit',
-         'desc' => 'QPE ' . $pe->employe->nik . ' ' . $pe->employe->biodata->fullName() . ' ' . $pe->semester . '/' . $pe->tahun 
+         'desc' => 'QPE ' . $pe->employe->nik . ' ' . $pe->employe->biodata->fullName() . ' Semester ' . $pe->semester . '/' . $pe->tahun 
       ]);
 
       return redirect('qpe')->with('success', 'Perfomance Evaluation berhasil di Sumbit');

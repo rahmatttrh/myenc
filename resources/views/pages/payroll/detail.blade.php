@@ -126,6 +126,7 @@ Setup Payroll Employee
                         <ul class="nav nav-tabs nav-line nav-color-secondary" role="tablist">
                            <li class="nav-item"> <a class="nav-link show active" id="pills-basic-tab-nobd" data-toggle="pill" href="#pills-basic-nobd" role="tab" aria-controls="pills-basic-nobd" aria-selected="true">Upah</a> </li>
                            <li class="nav-item"> <a class="nav-link " id="pills-doc-tab-nobd" data-toggle="pill" href="#pills-doc-nobd" role="tab" aria-controls="pills-doc-nobd" aria-selected="true">Riwayat Slip Gaji</a> </li>
+                           <li class="nav-item"> <a class="nav-link " id="pills-document-tab-nobd" data-toggle="pill" href="#pills-document-nobd" role="tab" aria-controls="pills-document-nobd" aria-selected="true">Document</a> </li>
                            {{-- <li class="nav-item"> <a class="nav-link" id="pills-profile-tab-nobd" data-toggle="pill" href="#pills-profile-nobd" role="tab" aria-controls="pills-profile-nobd" aria-selected="false">Profile Picture</a> </li>
                            <li class="nav-item"> <a class="nav-link  " id="pills-bio-tab-nobd" data-toggle="pill" href="#pills-bio-nobd" role="tab" aria-controls="pills-bio-nobd" aria-selected="true">Notes</a> </li> --}}
                            {{-- <li class="nav-item"> <a class="nav-link" id="pills-contact-tab-nobd" data-toggle="pill" href="#pills-contact-nobd" role="tab" aria-controls="pills-contact-nobd" aria-selected="false">Social Networking</a> </li> --}}
@@ -135,7 +136,7 @@ Setup Payroll Employee
                   <div class="card-body">
                      <div class="tab-content mt-2 mb-3" id="pills-without-border-tabContent">
                         <div class="tab-pane fade show active" id="pills-basic-nobd" role="tabpanel" aria-labelledby="pills-basic-tab-nobd">
-                           <form action="{{route('payroll.update')}}" method="POST">
+                           <form action="{{route('payroll.update')}}" method="POST" enctype="multipart/form-data" >
                               @csrf
                               @method('PUT')
                               <input type="number" name="employee" id="employee" value="{{$employee->id}}" hidden>
@@ -154,6 +155,10 @@ Setup Payroll Employee
                                     <div class="form-group form-group-default">
                                        <label>Insentif</label>
                                        <input type="text" class="form-control" id="insentif" name="insentif" value="{{$employee->payroll->insentif ?? 0}}">
+                                    </div>
+                                    <div class="form-group form-group-default">
+                                       <label>Document</label>
+                                       <input type="file" class="form-control" id="doc" name="doc" ">
                                     </div>
                                  </div>
                                  <div class="col">
@@ -217,33 +222,8 @@ Setup Payroll Employee
                            
                         </div>
             
-                        <div class="tab-pane fade " id="pills-profile-nobd" role="tabpanel" aria-labelledby="pills-profile-tab-nobd">
-                           <form action="{{route('employee.update.picture')}}" method="POST" enctype="multipart/form-data">
-                              @csrf
-                              @method('PUT')
-                              <input type="number" name="employee" id="employee" value="{{$employee->id}}" hidden>
-                              <div class="row">
-                                 <div class="col-md-6">
-                                    @if ($employee->picture)
-                                    <img src="{{asset('storage/' .$employee->picture)}}" alt="..." class="img-thumbnail">
-                                    @else
-                                    <img src="{{asset('img/user.png')}}" alt="..." class="img-thumbnail">
-                                    @endif
-            
-            
-                                 </div>
-                                 <div class="col-md-6">
-                                    <div class="form-group form-group-default">
-                                       <label>Select</label>
-                                       <input type="file" class="form-control" name="picture" id="picture">
-                                    </div>
-                                 </div>
-                              </div>
-                              <hr>
-                              {{-- @if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment')) --}}
-                              <button type="submit" class="btn btn-dark" >Update</button>
-                              {{-- @endif --}}
-                           </form>
+                        <div class="tab-pane fade " id="pills-document-nobd" role="tabpanel" aria-labelledby="pills-document-tab-nobd">
+                           <iframe style="width: 100%; height:400px" src="{{asset('storage/' . $employee->payroll->doc)}}" frameborder="0"></iframe>
                         </div>
                         <div class="tab-pane fade" id="pills-bio-nobd" role="tabpanel" aria-labelledby="pills-bio-tab-nobd">
                            <form action="{{route('employee.update.bio')}}" method="POST">
