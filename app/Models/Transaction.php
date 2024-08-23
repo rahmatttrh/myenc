@@ -26,5 +26,9 @@ class Transaction extends Model
       return $this->hasMany(TransactionOvertime::class);
    }
 
+   public function location(){
+      return $this->belongsTo(Location::class);
+   }
+
    
 }

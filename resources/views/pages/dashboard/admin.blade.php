@@ -116,7 +116,7 @@
          <div class="col-md-4">
             <div class="card">
                <div class="card-header p-2 bg-primary text-white">
-                  <small>Monitoring</small>
+                  <i class="fas fa-desktop"></i> <small>Monitoring</small>
                </div>
                <div class="card-body p-0">
                   <table class="display  table-sm table-bordered">
@@ -243,7 +243,7 @@
          <div class="col-md-8">
             <div class="card">
                <div class="card-header d-flex justify-content-between p-2 bg-primary text-white">
-                  <small>8 Latest QPE</small>
+                   <small> <i class="fas fa-file-contract"></i> Latest QPE</small>
                   <a href="{{route('qpe')}}" class="text-white">More..</a>
                </div>
                <div class="card-body p-0">

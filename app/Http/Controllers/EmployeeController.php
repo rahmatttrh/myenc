@@ -235,6 +235,12 @@ class EmployeeController extends Controller
 
       $dekripId = dekripRambo($id);
       $employee = Employee::find($dekripId);
+
+      // if ($employee->contract->loc = 'HWW') {
+      //    dd('ada');
+      // } else {
+      //    dd('tidak ada');
+      // }
       // $empUnit = Unit::find($employee->unit_id);
       // $empDepartment = Department::find($employee->department_id);
       // $empSubdept = SubDept::find($employee->sub_dept_id);
@@ -485,7 +491,7 @@ class EmployeeController extends Controller
       $contract = Contract::create([
          'id_no' => $req->nik,
          'type' => $req->type,
-         
+
          'unit_id' => $req->unit,
          'department_id' => $req->department,
          'sub_dept_id' => $req->subdept,
