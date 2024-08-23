@@ -43,17 +43,10 @@ class QuickPEController extends Controller
             $kpas = PeKpa::where('status', '!=', '0')
                 ->orderBy('employe_id')
                 ->get();
-
-
-            // 
-
             $outAssesments = $this->outstandingAssessment();
-
-            // 
-
-            $allpes = [];
             $myteams = [];
-        } else if (auth()->user()->hasRole('HRD|HRD-Spv')) {
+            $allpes = [];
+        } else if (auth()->user()->hasRole('HRD|HRD-Spv|HRD-Manager')) {
          // dd('ok');
             $employee = auth()->user()->getEmployee();
             // $kpas = PeKpa::where('status', '!=', '0')
@@ -65,9 +58,9 @@ class QuickPEController extends Controller
                ->get();
 
             $outAssesments = $this->outstandingAssessment();
-            $allpes = [];
+
             $myteams = [];
-            // 
+            $allpes = [];
         } else if (auth()->user()->hasRole('Manager|Asst. Manager')) {
         //  dd('ok');
          $employee = auth()->user()->getEmployee();
@@ -78,15 +71,18 @@ class QuickPEController extends Controller
             //     ->orderBy('pes.release_at', 'desc')
             //     ->get();
 
-                $pes = Pe::where('department_id', $employee->department_id)->where('pes.status', '>=', '0')
+            $pes = Pe::where('department_id', $employee->department_id)->where('pes.status', '>=', '0')
                 ->orderBy('release_at', 'desc')
                 ->get();
 
+               //  $pes = Pe::where('pes.status', '>', '0')
+               //  ->orderBy('updated_at', 'desc')
+               //  ->get();
+
             // 
             $outAssesments = $this->outstandingAssessment($employee->department_id);
-            //
+            $myteams = [];
             $allpes = [];
-            $myteams = []; 
         } 
         // else if (auth()->user()->hasRole('Supervisor')) {
         //  $employee = auth()->user()->getEmployee();
@@ -146,9 +142,8 @@ class QuickPEController extends Controller
 
             // 
             $outAssesments = $this->outstandingAssessment($employee->department_id);
-            // 
-            $allpes = [];
             $myteams = [];
+            $allpes = [];
         }
         
       //   dd($pes);
@@ -429,13 +424,23 @@ class QuickPEController extends Controller
 
         $employe = Employee::where('id', $kpa->employe_id)->first();
 
-        if ($employe->designation->golongan == '1' || $employe->designation->golongan == '2') {
-            // Staff
-            $level = 's';
-        } else {
-            // Leader
-            $level = 'l';
-        }
+      //   if ($employe->designation->golongan == '1' || $employe->designation->golongan == '2') {
+      //       // Staff
+      //       $level = 's';
+      //   } else {
+      //       // Leader
+      //       $level = 'l';
+      //   }
+
+         if ($employe->user->hasRole('Karyawan')) {
+               // Staff
+               $level = 's';
+               // dd('s');
+         } else {
+               // Leader
+               $level = 'l';
+               // dd('l');
+         }
 
 
         // Berikut Behavior  Staff

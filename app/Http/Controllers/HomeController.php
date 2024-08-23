@@ -42,9 +42,6 @@ class HomeController extends Controller
          RoleEmptyUser;
          // dd('tidak ada role');
       } 
-      // if (auth()->user()->hasRoles) {
-      //    # code...
-      // }
       // if (auth()->user()->hasRole('Manager')) {
       //    dd('Manager');
       // } else {

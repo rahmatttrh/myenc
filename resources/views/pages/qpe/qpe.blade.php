@@ -30,23 +30,18 @@ QPE
 
                     </ul>
                 </div>
-                <div class="card-header d-flex">
-                    <div class="d-flex  align-items-center">
-                        <small class="">List All Performance Evaluation</small>
-                    </div>
-                    {{-- <div class="btn-group btn-group-page-header ml-auto">
-                        <button type="button" class="btn btn-light btn-round btn-page-header-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fa fa-ellipsis-h"></i>
-                        </button>
-                        <div class="dropdown-menu">
-                            <btn id="btnCreate" class="dropdown-item" style="text-decoration: none">Create</btn>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" style="text-decoration: none" href="" target="_blank">Print Preview</a>
-                        </div>
-                    </div> --}}
-                </div>
+                
                 <div class="card-body p-0 py-2">
-                    <div class="table-responsive">
+                  @if (auth()->user()->hasRole('Administrator'))
+                      <x-qpe.table.admin :pes="$pes" :i="$i" />
+                      @elseif($employee->role == 5 || $employee->role == 8)
+                      <x-qpe.table.manager :pes="$pes" :i="$i" :employee="$employee" />
+                      @elseif($employee->role == 15)
+                      <x-qpe.table.spv :pes="$pes" :i="$i" :employee="$employee" :myteams="$myteams" :allpes="$allpes" />
+                      @else
+                      <x-qpe.table.other :pes="$pes" :i="$i" />
+                  @endif
+                    {{-- <div class="table-responsive">
                         <table id="basic-datatables" class="display basic-datatables table-sm table-striped ">
                             <thead>
                                 <tr>
@@ -322,7 +317,7 @@ QPE
                               @endif
                             </tbody>
                         </table>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>

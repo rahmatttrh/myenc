@@ -1,5 +1,5 @@
 @if($pe->status == 0)
-   <span >Draft</span>
+   <span class="text-muted" >Draft</span>
    @elseif($pe->status == '1')
    
       @if (auth()->user()->hasRole('Manager'))
