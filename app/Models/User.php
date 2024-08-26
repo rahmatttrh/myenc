@@ -82,10 +82,12 @@ class User extends Authenticatable implements MustVerifyEmail
    {
       // dd($this->email);
       // dd($this->id);
-      $biodata = Biodata::where('email', $this->email)->first();
+      // $biodata = Biodata::where('email', $this->email)->first();
       // dd($biodata->id);
-      $employee = Employee::where('biodata_id', $biodata->id)->first();
+      // $employee = Employee::where('biodata_id', $biodata->id)->first();
+
+      $employee = Employee::where('nik', $this->username)->first();
       // dd($biodata->email);
-      return $biodata->employee->id;
+      return $employee->id;
    }
 }

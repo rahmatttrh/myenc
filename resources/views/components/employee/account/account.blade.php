@@ -38,7 +38,7 @@
                   </div>
 
                   
-                     @if ($employee->department->slug == 'hrd')
+                     @if ($employee->department->slug == 'hrd' || $employee->department->slug == 'HRD')
                      <div class="form-group form-group-default">
                         <label>
                            Second Role
