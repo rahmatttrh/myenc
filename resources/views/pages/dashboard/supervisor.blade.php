@@ -114,7 +114,7 @@ Dashboard
       <div class="col-md-8">
          <div class="card">
             <div class="card-header bg-primary text-white p-2">
-               <small>Recent QPE</small>
+               <small>8 Latest QPE</small>
             </div>
             <div class="card-body p-0">
                <table class=" ">
@@ -161,6 +161,9 @@ Dashboard
                      
                   </tbody>
                </table>
+            </div>
+            <div class="card-footer">
+               <small class="text-muted">*Ini adalah 8 data QPE terkini, klik <a href="{{route('qpe')}}">Disini</a> untuk melihat seluruh data QPE.</small>
             </div>
          </div>
 

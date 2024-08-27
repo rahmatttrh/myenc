@@ -69,6 +69,10 @@
                <x-sidebar.hrd-recruitment />
             @endif
 
+            @if (auth()->user()->hasRole('HRD-Payroll'))
+               <x-sidebar.hrd-payroll />
+            @endif
+
             @if (auth()->user()->hasRole('Manager|Asst. Manager'))
             <x-sidebar.manager />
             @endif

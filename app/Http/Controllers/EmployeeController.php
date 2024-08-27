@@ -235,6 +235,12 @@ class EmployeeController extends Controller
 
       $dekripId = dekripRambo($id);
       $employee = Employee::find($dekripId);
+
+      // if ($employee->contract->loc = 'HWW') {
+      //    dd('ada');
+      // } else {
+      //    dd('tidak ada');
+      // }
       // $empUnit = Unit::find($employee->unit_id);
       // $empDepartment = Department::find($employee->department_id);
       // $empSubdept = SubDept::find($employee->sub_dept_id);
@@ -485,6 +491,7 @@ class EmployeeController extends Controller
       $contract = Contract::create([
          'id_no' => $req->nik,
          'type' => $req->type,
+
          'unit_id' => $req->unit,
          'department_id' => $req->department,
          'sub_dept_id' => $req->subdept,
@@ -513,6 +520,7 @@ class EmployeeController extends Controller
          'position_id' => $req->position,
          'contract_id' => $contract->id,
          'biodata_id' => $biodata->id,
+         'join' => $req->join,
          'picture' => request('picture') ? request()->file('picture')->store('employee/picture') : '',
       ]);
 
@@ -802,6 +810,9 @@ class EmployeeController extends Controller
       $biodata = Biodata::find($employee->biodata_id);
       // dd($biodata->id);
 
+      $nik = $employee->nik;
+      $name = $employee->biodata->fullName();
+
       if ($contract) {
          $contract->delete();
       }
@@ -815,6 +826,19 @@ class EmployeeController extends Controller
       }
 
       $employee->delete();
+
+      if (auth()->user()->hasRole('Administrator')) {
+         $departmentId = null;
+      } else {
+         $user = Employee::find(auth()->user()->getEmployeeId());
+         $departmentId = $user->department_id;
+      }
+      Log::create([
+         'department_id' => $departmentId,
+         'user_id' => auth()->user()->id,
+         'action' => 'Delete',
+         'desc' => 'Employee ' . $nik . ' ' . $name
+      ]);
       return redirect()->back()->with('success', 'Employee successfully deleted');
    }
 }

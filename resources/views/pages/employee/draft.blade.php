@@ -11,7 +11,7 @@
             <li class="breadcrumb-item active" aria-current="page">Employee Draft</li>
          </ol>
       </nav> --}}
-      <div class="page-header">
+      {{-- <div class="page-header">
          <h5 class="page-title">Employee Draft</h5>
          <ul class="breadcrumbs">
             <li class="nav-home">
@@ -25,12 +25,6 @@
             <li class="nav-item">
                <a href="#">Employee Draft</a>
             </li>
-            {{-- <li class="separator">
-               <i class="flaticon-right-arrow"></i>
-            </li>
-            <li class="nav-item">
-               <a href="#">Draft</a>
-            </li> --}}
          </ul>
          <div class="ml-auto">
             <button class="btn btn-light border btn-round " data-toggle="dropdown">
@@ -40,19 +34,23 @@
    
    
                <a class="dropdown-item" style="text-decoration: none" href="{{route('employee.create')}}">Create</a>
-               {{-- <a class="dropdown-item" style="text-decoration: none"  data-toggle="modal" data-target="#modal-export">Export</a> --}}
-               <div class="dropdown-divider"></div>
-               {{-- <a class="dropdown-item" style="text-decoration: none" href="" target="_blank">Print Preview</a> --}}
-            </div>
+                <div class="dropdown-divider"></div></div>
          </div>
-      </div>
+      </div> --}}
+
+      <nav aria-label="breadcrumb ">
+         <ol class="breadcrumb  ">
+            <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Draft Employee</li>
+         </ol>
+      </nav>
       
       <form action="{{route('employee.publish')}}" method="post" >
          @csrf
          @error('id_item')
             <div class="alert alert-danger mt-2">{{ $message }}</div>
          @enderror
-         <div class="card ">
+         <div class="card shadow-none border">
             {{-- <div class="card-header"> 
                <div class="card-title">Draft</div>
             </div>  --}}

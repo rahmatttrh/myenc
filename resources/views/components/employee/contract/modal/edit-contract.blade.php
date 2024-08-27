@@ -72,7 +72,7 @@
                               <div class="form-group form-group-default">
                                  <label>Lokasi</label>
                                  <select class="form-control" id="loc" <?= auth()->user()->hasRole('Administrator|HRD|HRD-Recruitment') ? '' : 'readonly' ?> name="loc">
-                                    <option value="" disabled >Select</option>
+                                    <option value="" selected disabled >Select</option>
                                     <option {{$employee->contract->loc == 'hw' ? 'selected' : ''}} value="hw">HW</option>
                                     <option {{$employee->contract->loc == 'jgc' ? 'selected' : ''}} value="jgc">JGC</option>
                                     <option {{$employee->contract->loc == 'kj1-2' ? 'selected' : ''}} value="kj1-2">KJ 1-2</option>

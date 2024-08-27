@@ -100,10 +100,18 @@ SP Detail
                   @endif
                @endif
 
-               @if($sp->status == '1' && auth()->user()->hasRole('HRD|HRD-Spv'))
+               @if($sp->status == '1' && auth()->user()->hasRole('HRD|HRD-Manager|HRD-Spv'))
                   {{-- <button class="btn btn-md btn-primary" data-toggle="modal" data-target="#modal-app-hrd-{{$sp->id}}"><i class="fas fa-check"></i> Approve </button> --}}
                   <button data-target="#modal-reject-hrd" data-toggle="modal" class="btn btn-md btn-danger "><i class="fa fa-reply"></i> Reject</button>
                   {{-- <x-sp.modal.hrd-reject :sp="$sp" /> --}}
+               @endif
+
+               @if(auth()->user()->hasRole('HRD|HRD-Manager|HRD-Spv'))
+               <a href="#" class="btn btn-danger " data-toggle="modal" data-target="#modal-sp-delete">
+                  <i class="fa fa-trash"></i> Delete
+               </a>
+
+               <x-sp.modal.delete :sp="$sp" />
                @endif
 
                @if (auth()->user()->hasRole('Manager'))
@@ -214,7 +222,7 @@ SP Detail
                   <b>Form SP {{$sp->level}}</b>
                </div>
                <div class="card-body">
-                  @if (auth()->user()->hasRole('HRD|HRD-Spv'))
+                  @if (auth()->user()->hasRole('HRD|HRD-Manager|HRD-Spv'))
                         @if ($sp->status == 1 )
                         <form action="{{route('sp.app.hrd', enkripRambo($sp->id))}}" method="POST" enctype="multipart/form-data">
                            @csrf
@@ -224,7 +232,7 @@ SP Detail
                                  
                                     <input type="hidden" name="id" value="{{$sp->id}}">
                                     <div class="form-group form-group-default">
-                                       <label>Employee </label>
+                                       <label>Employee</label>
                                        <input type="text" readonly class="form-control" name="date_from" required id="date_from" value="{{$sp->employee->biodata->fullName()}}">
                                     </div>
                                     <div class="row">

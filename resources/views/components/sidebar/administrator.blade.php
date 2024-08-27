@@ -111,7 +111,7 @@
 </li>
 
 {{-- Employee --}}
-<li class="nav-item">
+<li class="nav-item {{ (request()->is('employee/*')) ? 'active' : '' }}">
    <a data-toggle="collapse" href="#employee">
       <i class="fas fa-users"></i>
       <p>Employee</p>
@@ -127,6 +127,11 @@
          <li>
             <a href="{{route('employee.nonactive')}}">
                <span class="sub-item">Non Active</span>
+            </a>
+         </li>
+         <li>
+            <a href="{{route('employee.create')}}">
+               <span class="sub-item">Create</span>
             </a>
          </li>
          <li>
@@ -156,3 +161,70 @@
       <p>SP</p>
    </a>
 </li>
+<hr>
+
+<li class="nav-item {{ (request()->is('payroll/transaction/*')) ? 'active' : '' }}">
+   <a href="{{route('payroll.transaction')}}">
+      <i class="fas fa-money-bill"></i>
+      <p>Transaction</p>
+   </a>
+</li>
+<li class="nav-item {{ (request()->is('payroll/overtime/*')) ? 'active' : '' }}">
+   <a href="{{route('payroll.overtime')}}">
+      <i class="fas fa-file-signature"></i>
+      <p>SPKL</p>
+   </a>
+</li>
+
+<li class="nav-item {{ (request()->is('payroll/setup/*')) ? 'active' : '' }}">
+   <a data-toggle="collapse" href="#payroll">
+      <i class="fas fa-cog"></i>
+      <p>Setup Payroll</p>
+      <span class="caret"></span>
+   </a>
+   <div class="collapse" id="payroll">
+      <ul class="nav nav-collapse">
+         {{-- <li>
+            <a href="{{route('payroll.transaction')}}">
+               <span class="sub-item">Transaction</span>
+            </a>
+         </li> --}}
+         {{-- <li>
+            <a href="{{route('payroll.overtime')}}">
+               <span class="sub-item">SPKL</span>
+            </a>
+         </li> --}}
+         <li>
+            <a href="{{route('holiday')}}">
+               <span class="sub-item">Libur Nasional</span>
+            </a>
+         </li>
+         {{-- <li>
+            <a href="{{route('payroll.setup')}}">
+               <span class="sub-item">Setup</span>
+            </a>
+         </li> --}}
+         <li>
+            <a href="{{route('payroll')}}">
+               <span class="sub-item">Gaji Karyawan</span>
+            </a>
+         </li>
+         <li>
+            <a href="{{route('payroll.unit')}}">
+               <span class="sub-item">Potongan Unit</span>
+            </a>
+         </li>
+         
+         
+
+      </ul>
+   </div>
+</li>
+
+
+{{-- <li class="nav-item {{ (request()->is('payroll/*')) ? 'active' : '' }}">
+   <a href="{{route('payroll')}}">
+      <i class="fas fa-money-bill"></i>
+      <p>Payroll</p>
+   </a>
+</li> --}}

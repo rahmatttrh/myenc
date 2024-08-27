@@ -2,8 +2,16 @@
     <span class="badge badge-lights">HRD Manager</span>
 @endif
 
+@if (auth()->user()->hasRole('HRD'))
+    <span class="badge badge-lights">HRD</span>
+@endif
+
 @if (auth()->user()->hasRole('HRD-Recruitment'))
     <span class="badge badge-light">HRD Recruitment</span>
+@endif
+
+@if (auth()->user()->hasRole('HRD-Payroll'))
+    <span class="badge badge-light">HRD Payroll</span>
 @endif
 
 {{-- @if (auth()->user()->hasRole('Manager'))

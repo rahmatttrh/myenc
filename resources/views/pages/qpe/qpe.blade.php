@@ -22,31 +22,26 @@ QPE
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('kpa.summary')}}">Summary</a>
                         </li>
-                        @if (auth()->user()->hasRole('Administrator|HRD'))
+                        {{-- @if (auth()->user()->hasRole('Administrator'))
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('kpa.monitoring')}}">Monitoring</a>
                         </li>
-                        @endif
+                        @endif --}}
 
                     </ul>
                 </div>
-                <div class="card-header d-flex">
-                    <div class="d-flex  align-items-center">
-                        <small class="">List All Performance Evaluation</small>
-                    </div>
-                    {{-- <div class="btn-group btn-group-page-header ml-auto">
-                        <button type="button" class="btn btn-light btn-round btn-page-header-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fa fa-ellipsis-h"></i>
-                        </button>
-                        <div class="dropdown-menu">
-                            <btn id="btnCreate" class="dropdown-item" style="text-decoration: none">Create</btn>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" style="text-decoration: none" href="" target="_blank">Print Preview</a>
-                        </div>
-                    </div> --}}
-                </div>
+                
                 <div class="card-body p-0 py-2">
-                    <div class="table-responsive">
+                  @if (auth()->user()->hasRole('Administrator'))
+                      <x-qpe.table.admin :pes="$pes" :i="$i" />
+                      @elseif($employee->role == 5 || $employee->role == 8)
+                      <x-qpe.table.manager :pes="$pes" :i="$i" :employee="$employee" />
+                      @elseif($employee->role == 15)
+                      <x-qpe.table.spv :pes="$pes" :i="$i" :employee="$employee" :myteams="$myteams" :allpes="$allpes" />
+                      @else
+                      <x-qpe.table.other :pes="$pes" :i="$i" />
+                  @endif
+                    {{-- <div class="table-responsive">
                         <table id="basic-datatables" class="display basic-datatables table-sm table-striped ">
                             <thead>
                                 <tr>
@@ -63,9 +58,9 @@ QPE
                             </thead>
                             <tbody>
                               @if (auth()->user()->hasRole('Administrator'))
-                                    @foreach ($pes as $pe)
+                                    @foreach ($pes->sortByDesc('updated_at') as $pe)
                                        <tr>
-                                             <td class="text-center">{{++$i}} </td>
+                                             <td class="text-center">{{++$i}} 11 </td>
                                              <td>
                                                 @if (auth()->user()->hasRole('Administrator'))
                                                    {{$pe->id}} 
@@ -120,9 +115,9 @@ QPE
                                     @if (count($employee->positions) > 0)
                                        @foreach ($employee->positions as $pos)
                                              
-                                          @foreach ($pos->department->pes->where('status', '>', 0) as $pe)
+                                          @foreach ($pos->department->pes->where('status', '>', 0)->sortByDesc('updated_at') as $pe)
                                              <tr>
-                                                <td class="text-center">{{++$i}} -{{$pe->kpa->id}} </td>
+                                                <td class="text-center">{{++$i}} </td>
                                                 <td>
                                                    @if($pe->status == '0' || $pe->status == '101')
                                                    <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
@@ -169,7 +164,7 @@ QPE
                                           @endforeach
                                        @endforeach
                                        @else
-                                       @foreach ($pes as $pe)
+                                       @foreach ($pes->sortByDesc('updated_at') as $pe)
                                        <tr>
                                              <td class="text-center">{{++$i}}  </td>
                                              <td>
@@ -218,7 +213,7 @@ QPE
                                     @endif
                                       
                                     @else
-                                    @foreach ($pes as $pe)
+                                    @foreach ($pes->sortByDesc('updated_at') as $pe)
                                        <tr>
                                              <td class="text-center">{{++$i}}  </td>
                                              <td>
@@ -269,7 +264,7 @@ QPE
                               @endif
                             </tbody>
                         </table>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>

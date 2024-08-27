@@ -20,6 +20,10 @@ class Unit extends Model
       return $this->hasMany(Employee::class);
     }
 
+    public function reductions(){
+      return $this->hasMany(Reduction::class);
+    }
+
     public function totalSubDept($unitId = 2)
     {
         // Memanggil ModelA dan salah satu metodenya
@@ -32,4 +36,8 @@ class Unit extends Model
         }
         return $totalSubDept;
     }
+
+   public function unitTransactions(){
+      return $this->hasMany(UnitTransaction::class);
+   }
 }

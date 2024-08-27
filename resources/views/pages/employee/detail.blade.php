@@ -17,11 +17,12 @@ Detail Employee
    <nav aria-label="breadcrumb ">
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
-         @if ($employee->status == 1)
+         {{-- @if ($employee->status == 1)
             <li class="breadcrumb-item" aria-current="page"><a href="{{route('employee', enkripRambo('active'))}}">Employee</a></li>
              @else
              <li class="breadcrumb-item" aria-current="page"><a href="{{route('employee.nonactive')}}">Employee</a></li>
-         @endif
+         @endif --}}
+         <li class="breadcrumb-item active" aria-current="page">Employee</li>
          
          <li class="breadcrumb-item active" aria-current="page">Detail</li>
       </ol>
@@ -56,9 +57,13 @@ Detail Employee
    </div> --}}
    <div class="row">
       <div class="col-md-4">
-         @if ($employee->status == 0)
-             <a href="#" data-toggle="modal" data-target="#modal-publish-employee" class="btn btn-block btn-primary mb-2">Publish</a>
+         @if (auth()->user()->hasRole('Karyawan'))
+             @else
+             @if ($employee->status == 0 )
+               <a href="#" data-toggle="modal" data-target="#modal-publish-employee" class="btn btn-block btn-primary mb-2">Publish</a>
+            @endif
          @endif
+         
          <div class="card card-light shadow-none border">
             <div class="card-header">
                @if ($employee->status == 1)

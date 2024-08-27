@@ -49,6 +49,7 @@ Employee
                      <th class="text-center">No</th>
                      @if (auth()->user()->hasRole('Administrator'))
                      <th>ID</th>
+                     <th>User ID</th>
                      @endif
                      
                      <th>NIK</th>
@@ -58,7 +59,7 @@ Employee
                      {{-- <th>Phone</th> --}}
                      <th class="text-truncate">Bisnis Unit</th>
                      <th>Department</th>
-                     {{-- <th>Sub</th> --}}
+                     <th>Sub</th>
                      <th  >Posisi</th>
                      {{-- <th>Kontrak/Tetap</th> --}}
                      {{-- <th class="text-right">Action</th> --}}
@@ -85,6 +86,7 @@ Employee
                      <td class="text-center">{{++$i}}</td>
                      @if (auth()->user()->hasRole('Administrator'))
                      <td>{{$employee->id}}</td>
+                     <td>{{$employee->user_id}}</td>
                      @endif
                      <td class="text-truncate">{{$employee->contract->id_no}}</td>
                      {{-- <td><a href="{{route('employee.detail', enkripRambo($employee->id))}}">{{$employee->name}}</a> </td> --}}
@@ -117,56 +119,60 @@ Employee
                      {{-- <td>{{$employee->biodata->phone}}</td> --}}
                      
                      <td class="text-truncate">
-                        @if (count($employee->positions) > 0)
-                              {{-- @foreach ($employee->positions as $pos)
-                                  {{$pos->department->unit->name}}
-                              @endforeach --}}
+                        @if (auth()->user()->hasRole('Administrator'))
+                            {{$employee->department->unit->id ?? ''}} -
+                        @endif
+                        {{$employee->department->unit->name ?? ''}}
+                        {{-- @if (count($employee->positions) > 0)
                               Multiple
                             @else
                             @if (auth()->user()->hasRole('Administrator'))
                             {{$employee->department->unit->id ?? ''}}
                            @endif
                             {{$employee->department->unit->name ?? ''}}
-                        @endif
+                        @endif --}}
                         
                      </td>
                      
                      <td>
-                        {{-- {{$employee->department->name ?? ''}} --}}
-                        @if (count($employee->positions) > 0)
-                              {{-- @foreach ($employee->positions as $pos)
-                                  {{$pos->department->name}}
-                              @endforeach --}}
+                        @if (auth()->user()->hasRole('Administrator'))
+                            {{$employee->department->id ?? ''}} -
+                           @endif
+                        {{$employee->department->name ?? ''}}
+                        {{-- @if (count($employee->positions) > 0)
                               Multiple
                             @else
-                            @if (auth()->user()->hasRole('Administrator'))
-                            {{$employee->department->id ?? ''}}
-                           @endif
-                            {{$employee->department->name ?? ''}}
-                        @endif
+                            
+                            
+                        @endif --}}
                      </td>
-                     {{-- <td>
-                        @if (count($employee->positions) > 0)
+                     <td>
+                        @if (auth()->user()->hasRole('Administrator'))
+                            {{$employee->sub_dept->id ?? ''}} -
+                           @endif
+                        {{$employee->sub_dept->name ?? ''}}
+                        {{-- @if (count($employee->positions) > 0)
                               @foreach ($employee->positions as $pos)
                                   {{$pos->sub_dept->name ?? ''}}
                               @endforeach
                             @else
                             {{$employee->sub_dept->name ?? ''}}
-                        @endif
-                     </td> --}}
+                        @endif --}}
+                     </td>
                      {{-- <td>{{$employee->contract->designation->name ?? ''}}</td> --}}
                      <td>
-                        @if (count($employee->positions) > 0)
-                              {{-- @foreach ($employee->positions as $pos)
-                                  {{$pos->name}}
-                              @endforeach --}}
+                        @if (auth()->user()->hasRole('Administrator'))
+                            {{$employee->position->id ?? ''}} -
+                           @endif
+                        {{$employee->position->name ?? ''}}
+                        {{-- @if (count($employee->positions) > 0)
                               Multiple
                             @else
                             @if (auth()->user()->hasRole('Administrator'))
                             {{$employee->position->id ?? ''}}
                            @endif
                             {{$employee->position->name ?? ''}}
-                        @endif
+                        @endif --}}
                      </td>
                      {{-- <td>
                         @if ($employee->contract->type == 'Kontrak')
