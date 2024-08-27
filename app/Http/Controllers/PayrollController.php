@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Department;
 use App\Models\Employee;
+use App\Models\Location;
 use App\Models\Payroll;
+use App\Models\Transaction;
 use App\Models\Unit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -71,9 +73,7 @@ class PayrollController extends Controller
       } else {
 
          if (request('doc')) {
-            if ($payroll->doc) {
-               Storage::delete($payroll->doc);
-            }
+            
             
             $doc = request()->file('doc')->store('doc/payroll');
          } elseif ($payroll->doc) {
@@ -119,5 +119,48 @@ class PayrollController extends Controller
       ]);
 
       return redirect()->back()->with('success', 'Setup Unit Payroll successfully updated');
+   }
+
+
+   public function report(){
+      $units = Unit::get();
+      $locations = Location::get();
+      $transactions = Transaction::get();
+      return view('pages.payroll.report', [
+         
+         'units' => $units,
+         'locations' => $locations,
+         'transactions' => $transactions,
+         'location' => null,
+         'month' => null,
+         'year' => null
+      ]);
+   }
+
+   public function getReport(Request $req){
+      // if ($req->unit) {
+      //    if ($req->location) {
+      //       $transactions = Transaction::where('unit_id', $req->unit)->where('location_id', $req->location)->where('month', $req->month)->where('year', $req->year)->get();
+      //    } else {
+      //       $transactions = Transaction::where('unit_id', $req->unit)->where('month', $req->month)->where('year', $req->year)->get();
+      //    }
+
+         
+      // } else {
+      //    $transactions = Transaction::where('location_id', $req->location)->where('month', $req->month)->where('year', $req->year)->get();
+      // }
+      $transactions = Transaction::where('location_id', $req->location)->where('month', $req->month)->where('year', $req->year)->get();
+      $units = Unit::get();
+      $locations = Location::get();
+
+      return view('pages.payroll.report', [
+         'transactions' => $transactions,
+         'locations' => $locations,
+         'units' => $units,
+         'location' => $req->location,
+         'month' => $req->month,
+         'year' => $req->year
+      ]);
+
    }
 }

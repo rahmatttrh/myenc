@@ -38,7 +38,7 @@ class DesignationSeeder extends Seeder
       Designation::create([
          'name' => 'Supervisor',
          'golongan' => '4',
-         'created_at' => NOW(),
+         'created_at' =>  NOW(),
          'updated_at' => NOW()
       ]);
 
@@ -64,3 +64,4 @@ class DesignationSeeder extends Seeder
       ]);
    }
 }
+ 
