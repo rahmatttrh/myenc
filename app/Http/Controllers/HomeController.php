@@ -186,6 +186,7 @@ class HomeController extends Controller
 
       if (auth()->user()->hasRole('Administrator')) {
          $employees = Employee::get();
+         
          $tetap = Contract::where('status', 1)->where('type', 'Tetap')->get()->count();
          $kontrak = Contract::where('status', 1)->where('type', 'Kontrak')->get()->count();
          $off = Employee::where('status', 3)->get()->count();

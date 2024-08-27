@@ -115,7 +115,7 @@ QPE
                                     @if (count($employee->positions) > 0)
                                     
                                        @foreach ($employee->positions as $pos)
-                                            {{-- {{count($pos->department->pes)}} --}}
+                                            {{count($pos->department->pes)}}
                                             {{$pos->department->name}}
                                           @foreach ($pos->department->pes->where('status', '>', 0)->sortByDesc('updated_at') as $pe)
                                              <tr>
