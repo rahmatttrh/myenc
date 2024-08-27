@@ -161,10 +161,6 @@ class HomeController extends Controller
       //       'unit_id' => $contract->unit_id
       //    ]);
       // }
-<<<<<<< HEAD
-=======
-
->>>>>>> e02e799e268e9403abc32106b45f956af0c6cb19
 
 
 
@@ -196,7 +192,7 @@ class HomeController extends Controller
 
       if (auth()->user()->hasRole('Administrator')) {
          $employees = Employee::get();
-         
+         asdadasd
          $tetap = Contract::where('status', 1)->where('type', 'Tetap')->get()->count();
          $kontrak = Contract::where('status', 1)->where('type', 'Kontrak')->get()->count();
          $off = Employee::where('status', 3)->get()->count();
@@ -314,9 +310,6 @@ class HomeController extends Controller
             'tetap' => $tetap,
             'empty' => $empty
          ])->with('i');
-<<<<<<< HEAD
-      } elseif (auth()->user()->hasRole('Manager|Asst. Managaer')) {
-=======
       } elseif (auth()->user()->hasRole('HRD-Payroll')) {
          $user = Employee::find(auth()->user()->getEmployeeId());
          $units = Unit::get()->count();
@@ -350,7 +343,6 @@ class HomeController extends Controller
             'transactions' => $transactions
          ])->with('i');
       } elseif (auth()->user()->hasRole('Manager')) {
->>>>>>> e02e799e268e9403abc32106b45f956af0c6cb19
          // dd('ok');
          $employee = Employee::where('nik', auth()->user()->username)->first();
          $biodata = Biodata::where('email', auth()->user()->email)->first();
