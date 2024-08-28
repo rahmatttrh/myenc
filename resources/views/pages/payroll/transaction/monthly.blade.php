@@ -32,14 +32,14 @@ Payroll Transaction
          </div>
          <a href="" class="btn btn-block btn-info">Submit</a>
 
-         <a href="" class="btn btn-block btn-light border">
+         {{-- <a href="" class="btn btn-block btn-light border">
             <i class="fas fa-upload"></i>
             Upload Lembur
          </a>
          <a href="" class="btn btn-block btn-light border">
             <i class="fas fa-upload"></i>
             Upload Absensi
-         </a>
+         </a> --}}
 
          
       </div>

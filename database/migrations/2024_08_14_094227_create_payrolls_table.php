@@ -6,33 +6,35 @@ use Illuminate\Support\Facades\Schema;
 
 class CreatePayrollsTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
-    {
-        Schema::create('payrolls', function (Blueprint $table) {
-            $table->id();
-            // $table->integer('employee_id');
-            $table->integer('pokok');
-            $table->integer('tunj_jabatan');
-            $table->integer('tunj_ops');
-            $table->integer('tunj_fungsional');
-            $table->integer('insentif');
+   /**
+    * Run the migrations.
+    *
+    * @return void
+    */
+   public function up()
+   {
+      Schema::create('payrolls', function (Blueprint $table) {
+         $table->id();
+         // $table->integer('employee_id');
+         $table->integer('pokok');
+         $table->integer('tunj_jabatan');
+         $table->integer('tunj_ops');
+         $table->integer('tunj_fungsional');
+         $table->integer('insentif');
+         $table->integer('tunj_kinerja');
+         $table->integer('total');
 
-            $table->timestamps();
-        });
-    }
+         $table->timestamps();
+      });
+   }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('payrolls');
-    }
+   /**
+    * Reverse the migrations.
+    *
+    * @return void
+    */
+   public function down()
+   {
+      Schema::dropIfExists('payrolls');
+   }
 }

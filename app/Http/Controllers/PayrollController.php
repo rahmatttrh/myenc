@@ -13,7 +13,8 @@ use Illuminate\Support\Facades\Storage;
 
 class PayrollController extends Controller
 {
-   public function index(){
+   public function index()
+   {
       $employees = Employee::where('status', 1)->get();
       $units = Unit::get();
       return view('pages.payroll.index', [
@@ -22,7 +23,8 @@ class PayrollController extends Controller
       ])->with('i');
    }
 
-   public function setup(){
+   public function setup()
+   {
       $employees = Employee::where('status', 1)->get();
       $units = Unit::get();
       $firstUnit = Unit::get()->first();
@@ -33,15 +35,17 @@ class PayrollController extends Controller
       ])->with('i');
    }
 
-   public function detail($id){
-      $employee= Employee::find(dekripRambo($id));
+   public function detail($id)
+   {
+      $employee = Employee::find(dekripRambo($id));
 
       return view('pages.payroll.detail', [
          'employee' => $employee
       ]);
    }
 
-   public function update(Request $req){
+   public function update(Request $req)
+   {
       $employee = Employee::find($req->employee);
 
       $payroll = Payroll::find($employee->payroll_id);
@@ -52,37 +56,35 @@ class PayrollController extends Controller
             if ($payroll->doc) {
                Storage::delete($payroll->doc);
             }
-            
+
             $doc = request()->file('doc')->store('doc/payroll');
          } elseif ($payroll->doc) {
             $doc = $payroll->doc;
          } else {
             $doc = null;
          }
-         
+
          $payroll->update([
             'pokok' => $req->pokok,
             'tunj_jabatan' => $req->tunj_jabatan,
             'tunj_ops' => $req->tunj_ops,
             'tunj_kinerja' => $req->tunj_kinerja,
             'tunj_fungsional' => $req->tunj_fungsional,
-            'insentif' => $req->insentif, 
+            'insentif' => $req->insentif,
             'total' => $total,
             'doc' => $doc
          ]);
       } else {
 
          if (request('doc')) {
-            
-            
+
+
             $doc = request()->file('doc')->store('doc/payroll');
-         } elseif ($payroll->doc) {
-            $doc = $payroll->doc;
          } else {
             $doc = null;
          }
 
-        $payroll = Payroll::create([
+         $payroll = Payroll::create([
             'pokok' => $req->pokok,
             'tunj_jabatan' => $req->tunj_jabatan,
             'tunj_ops' => $req->tunj_ops,
@@ -102,7 +104,8 @@ class PayrollController extends Controller
    }
 
 
-   public function unit(){
+   public function unit()
+   {
       $units = Unit::get();
       $firstUnit = Unit::get()->first();
       return view('pages.payroll.unit.index', [
@@ -111,7 +114,8 @@ class PayrollController extends Controller
       ])->with('i');
    }
 
-   public function unitUpdatePph(Request $req){
+   public function unitUpdatePph(Request $req)
+   {
       $unit = Unit::find($req->unit);
       $unit->update([
          'pph' => $req->pph,
@@ -122,12 +126,13 @@ class PayrollController extends Controller
    }
 
 
-   public function report(){
+   public function report()
+   {
       $units = Unit::get();
       $locations = Location::get();
       $transactions = Transaction::get();
       return view('pages.payroll.report', [
-         
+
          'units' => $units,
          'locations' => $locations,
          'transactions' => $transactions,
@@ -137,7 +142,8 @@ class PayrollController extends Controller
       ]);
    }
 
-   public function getReport(Request $req){
+   public function getReport(Request $req)
+   {
       // if ($req->unit) {
       //    if ($req->location) {
       //       $transactions = Transaction::where('unit_id', $req->unit)->where('location_id', $req->location)->where('month', $req->month)->where('year', $req->year)->get();
@@ -145,7 +151,7 @@ class PayrollController extends Controller
       //       $transactions = Transaction::where('unit_id', $req->unit)->where('month', $req->month)->where('year', $req->year)->get();
       //    }
 
-         
+
       // } else {
       //    $transactions = Transaction::where('location_id', $req->location)->where('month', $req->month)->where('year', $req->year)->get();
       // }
@@ -161,6 +167,5 @@ class PayrollController extends Controller
          'month' => $req->month,
          'year' => $req->year
       ]);
-
    }
 }

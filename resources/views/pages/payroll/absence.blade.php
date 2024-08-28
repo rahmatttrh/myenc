@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-Payroll Overtime
+Payroll Absence
 @endsection
 @section('content')
 
@@ -9,15 +9,15 @@ Payroll Overtime
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
          <li class="breadcrumb-item" aria-current="page">Payroll</li>
-         <li class="breadcrumb-item active" aria-current="page">Overtime</li>
+         <li class="breadcrumb-item active" aria-current="page">Absence</li>
       </ol>
    </nav>
 
    <div class="row">
       <div class="col-md-4">
-         <h4>Form SPKL</h4>
+         <h4>Form Absence</h4>
          <hr>
-         <form action="{{route('payroll.overtime.store')}}" method="POST" enctype="multipart/form-data">
+         <form action="{{route('payroll.absence.store')}}" method="POST" enctype="multipart/form-data">
             @csrf
             {{-- <input type="number" name="employee" id="employee" value="{{$transaction->employee_id}}" hidden>
             <input type="number" name="spkl_type" id="spkl_type" value="{{$transaction->employee->unit->spkl_type}}" hidden>
@@ -39,18 +39,19 @@ Payroll Overtime
                      <input type="date" required class="form-control" id="date" name="date" >
                   </div>
                </div>
-               {{-- <div class="col">
+               <div class="col">
                   <div class="form-group form-group-default">
                      <label>Type</label>
-                     <select class="form-control " required name="employee" id="employee">
+                     <select class="form-control " required name="type" id="type">
                         <option value="" disabled selected>Select</option>
-                        <option value="1">Lembur</option>
-                        <option value="2">Piket</option>
+                        <option value="1">Ketidakhadiran</option>
+                        <option value="2">Keterlambatan</option>
+                        <option value="3">Cuti/Ijin/Sakit</option>
                      </select>
                   </div>
-               </div> --}}
+               </div>
             </div>
-            <div class="row">
+            {{-- <div class="row">
                <div class="col">
                   <div class="form-group form-group-default">
                      <label>Hours Type</label>
@@ -59,7 +60,6 @@ Payroll Overtime
                         <option value="1">Aktual</option>
                         <option value="2">Multiple</option>
                      </select>
-                     {{-- <input type="number" class="form-control" id="hours" name="hours" > --}}
                   </div>
                </div>
                <div class="col">
@@ -68,7 +68,13 @@ Payroll Overtime
                      <input type="number"  class="form-control" id="hours" name="hours" >
                   </div>
                </div>
+            </div> --}}
+            
+            <div class="form-group form-group-default">
+               <label>Desc</label>
+               <input type="text" required class="form-control" id="desc" name="desc" >
             </div>
+         
             <div class="form-group form-group-default">
                <label>Document</label>
                <input type="file"  class="form-control" id="doc" name="doc" >
@@ -77,50 +83,7 @@ Payroll Overtime
             
             <button class="btn btn-block btn-primary" type="submit">Add</button>
          </form>
-         <hr>
-         <div class="card">
-            {{-- <div class="card-header p-2 bg-primary text-white">
-               <i class="fas fa-desktop"></i> <small>Monitoring</small>
-            </div> --}}
-            <div class="card-body p-0">
-               <table class="display  table-sm table-bordered">
-                  <thead>
-                     <tr>
-                        <th colspan="3">Hari Libur</th>
-                        {{-- <th colspan="2">QPE</th> --}}
-                     </tr>
-                  </thead>
-                  <tbody>
-                     @foreach ($holidays as $holi)
-                         <tr>
-                           <td>
-                              @if ($holi->type == 1)
-                                  <span class="badge badge-info">i</span>
-                                  @elseif($holi->type == 2)
-                                  <span class="badge badge-warning">i</span>
-                                  @elseif($holi->type == 3)
-                                  <span class="badge badge-danger">i</span>
-                              @endif
-                           </td>
-                           <td>{{formatDateDayMonth($holi->date)}}</td>
-                           <td class="text-truncate" style="max-width: 110px">{{$holi->desc}}</td>
-                         </tr>
-                     @endforeach
-                     <tr>
-                        <td colspan="3"></td>
-                     </tr>
-                     <tr>
-                        <td colspan="3">
-                           <span class="badge badge-info">i</span> Libur
-                           <span class="badge badge-warning">i</span>  Nasional
-                           <span class="badge badge-danger">i</span> Idul Fitri
-                        </td>
-                     </tr>
-                  </tbody>
-               </table>
-               
-            </div>
-         </div>
+         
       </div>
       <div class="col">
          <div class="table-responsive">
@@ -139,9 +102,8 @@ Payroll Overtime
                </thead>
                
                <tbody>
-                  @foreach ($overtimes as $over)
+                  {{-- @foreach ($overtimes as $over)
                       <tr>
-                        {{-- <td>{{++$i}}</td> --}}
                         <td>{{$over->employee->nik}}</td>
                         <td>{{$over->employee->biodata->fullName()}}</td>
                         <td>
@@ -172,7 +134,7 @@ Payroll Overtime
                            <a href="{{route('payroll.overtime.delete', enkripRambo($over->id))}}">Delete</a>
                         </td>
                       </tr>
-                  @endforeach
+                  @endforeach --}}
                </tbody>
                
             </table>
@@ -185,7 +147,7 @@ Payroll Overtime
 </div>
 
 
-@foreach ($overtimes as $over)
+{{-- @foreach ($overtimes as $over)
 <div class="modal fade" id="modal-overtime-doc-{{$over->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
@@ -202,7 +164,7 @@ Payroll Overtime
       </div>
    </div>
 </div>
-@endforeach
+@endforeach --}}
 
 
 @endsection

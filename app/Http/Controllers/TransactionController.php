@@ -18,7 +18,8 @@ use Illuminate\Http\Request;
 class TransactionController extends Controller
 {
 
-   public function index(){
+   public function index()
+   {
       $employees = Employee::get();
       $transactions = Transaction::get();
       $units = Unit::get();
@@ -31,8 +32,9 @@ class TransactionController extends Controller
       ])->with('i');
    }
 
-   public function detail($id){
-      
+   public function detail($id)
+   {
+
       // dd($employee->id);
       // $payroll = Payroll::find($employee->payroll_id);
       $transaction = Transaction::find(dekripRambo($id));
@@ -47,7 +49,7 @@ class TransactionController extends Controller
 
       $this->calculateTotalTransaction($transaction);
 
-      
+
 
       return view('pages.payroll.transaction.detail', [
          'employee' => $employee,
@@ -58,32 +60,32 @@ class TransactionController extends Controller
       ]);
    }
 
-   public function storeMaster(Request $req){
+   public function storeMaster(Request $req)
+   {
       $unit = Unit::find($req->unit);
       $employees = Employee::where('unit_id', $unit->id)->where('status', 1)->get();
       $current = UnitTransaction::where('unit_id', $unit->id)->where('month', $req->month)->where('year', $req->year)->first();
       if ($current) {
          return redirect()->back()->with('danger', 'Slip Gaji ' . $unit->name . ' Bulan ' . $req->month . ' ' . $req->year . ' sudah ada');
-      } 
+      }
       $totalSalary = 0;
       $totalEmployee = 0;
 
-      foreach($employees as $employee){
+      foreach ($employees as $employee) {
          if ($employee->payroll_id != null) {
             if ($employee->contract->loc == null) {
-               return redirect()->back()->with('danger', 'Data Lokasi Kerja Kosong '. $employee->nik . ' ' . $employee->biodata->fullName());
+               return redirect()->back()->with('danger', 'Data Lokasi Kerja Kosong ' . $employee->nik . ' ' . $employee->biodata->fullName());
             }
          }
       }
 
-      foreach($employees as $emp){
+      foreach ($employees as $emp) {
          if ($emp->payroll_id != null) {
             $totalSalary = $totalSalary + $emp->payroll->total;
             $totalEmployee = $totalEmployee + 1;
-            
+
             $this->store($emp, $req);
          }
-         
       }
 
       UnitTransaction::create([
@@ -95,19 +97,21 @@ class TransactionController extends Controller
          'total_salary' => $totalSalary
       ]);
 
-      
+
 
       return redirect()->back()->with('success', 'Master Transaction successfully created');
 
       // dd($totalSalary);
    }
 
-   public function deleteMaster($id){
+   public function deleteMaster($id)
+   {
       $unitTransaction = UnitTransaction::find(dekripRambo($id));
       dd($unitTransaction->id);
    }
 
-   public function monthly($id){
+   public function monthly($id)
+   {
       $unitTransaction = UnitTransaction::find(dekripRambo($id));
       $unit = Unit::find($unitTransaction->unit_id);
       $units = Unit::get();
@@ -121,12 +125,13 @@ class TransactionController extends Controller
       ])->with('i');
    }
 
-   public function store($emp, $req){
+   public function store($emp, $req)
+   {
       $employee = Employee::find($emp->id);
       $payroll = Payroll::find($employee->payroll_id);
       $locations = Location::get();
 
-      foreach($locations as $loc){
+      foreach ($locations as $loc) {
          if ($loc->code == $employee->contract->loc) {
             $location = $loc->id;
          }
@@ -145,7 +150,7 @@ class TransactionController extends Controller
 
       $transaction = Transaction::create([
          'status' => 0,
-         'unit_id' => $emp->unit_id, 
+         'unit_id' => $emp->unit_id,
          'location_id' => $location,
          'employee_id' => $employee->id,
          'month' => $req->month,
@@ -229,28 +234,29 @@ class TransactionController extends Controller
       }
 
       $transactionDetails = TransactionDetail::where('transaction_id', $transaction->id)->get();
-      
+
       // $overtimes = Overtime::where('month', $transaction->month)->get();
       // $totalOvertime = $overtimes->sum('rate');
-      
+
       $transaction->update([
-         'total' => $transactionDetails->sum('value') - $transaction->reductions->where('type', 'employee')->sum('value') 
+         'total' => $transactionDetails->sum('value') - $transaction->reductions->where('type', 'employee')->sum('value')
       ]);
 
-      
+
 
       return redirect()->back()->with('success', 'Payroll Transaction successfully added');
    }
 
 
 
-   public function calculateTotalTransaction($transaction){
+   public function calculateTotalTransaction($transaction)
+   {
       $employee = Employee::find($transaction->employee_id);
       $payroll = Payroll::find($employee->payroll_id);
       $transactionDetails = TransactionDetail::where('transaction_id', $transaction->id)->get();
       $overtimes = Overtime::where('month', $transaction->month)->where('employee_id', $employee->id)->get();
       $totalOvertime = $overtimes->sum('rate');
-      
+
       $transaction->update([
          'total' => $transactionDetails->sum('value') - $transaction->reductions->where('type', 'employee')->sum('value') + $totalOvertime
       ]);

@@ -12,6 +12,13 @@
    </a>
 </li>
 
+<li class="nav-item {{ (request()->is('payroll/absence/*')) ? 'active' : '' }}">
+   <a href="{{route('payroll.absence')}}">
+      <i class="fas fa-file-signature"></i>
+      <p>Absence</p>
+   </a>
+</li>
+
 <li class="nav-item {{ (request()->is('payroll/report/*')) ? 'active' : '' }}">
    <a href="{{route('payroll.report')}}">
       <i class="fas fa-search-plus"></i>

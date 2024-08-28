@@ -31,7 +31,7 @@
       <div class="container mt-5">
         <div class="page-error">
           <div class="page-inner">
-            <h1>ERROR</h1>
+            <h2>ERROR</h2>
             <div class="page-description">
             	<b>Maaf, ada kesalahan</b> <br>
                Screenshoot halaman ini dan segera laporkan kepada tim IT/HRD, terimakasih :)
