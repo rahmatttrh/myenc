@@ -8,8 +8,7 @@ Payroll Transaction
    <nav aria-label="breadcrumb ">
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
-         <li class="breadcrumb-item" aria-current="page">Payroll</li>
-         <li class="breadcrumb-item active" aria-current="page">Unit</li>
+         <li class="breadcrumb-item active" aria-current="page">Transaction</li>
       </ol>
    </nav>
    
@@ -62,7 +61,7 @@ Payroll Transaction
                            <td class="text-right">{{formatRupiah($trans->total_salary)}}</td>
                            <td>Draft</td>
                            <td>
-                              <a href="{{route('payroll.transaction.monthly', enkripRambo($trans->id))}}">Detail</a> | <a href="#" data-target="#modal-delete-master-transaction-{{$trans->id}}" data-toggle="modal">Delete</a>
+                              <a href="{{route('payroll.transaction.monthly.all', enkripRambo($trans->id))}}">Detail</a> | <a href="{{route('payroll.transaction.monthly', enkripRambo($trans->id))}}">Report</a> | <a href="#" data-target="#modal-delete-master-transaction-{{$trans->id}}" data-toggle="modal">Delete</a>
                            </td>
                         </tr>
 

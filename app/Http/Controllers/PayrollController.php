@@ -17,9 +17,19 @@ class PayrollController extends Controller
    {
       $employees = Employee::where('status', 1)->get();
       $units = Unit::get();
-      return view('pages.payroll.index', [
+      return view('pages.payroll.setup.gaji', [
          'employees' => $employees,
          'units' => $units
+      ])->with('i');
+   }
+
+   public function unit()
+   {
+      $units = Unit::get();
+      $firstUnit = Unit::get()->first();
+      return view('pages.payroll.setup.unit', [
+         'units' => $units,
+         'firstUnit' => $firstUnit
       ])->with('i');
    }
 
@@ -50,6 +60,16 @@ class PayrollController extends Controller
 
       $payroll = Payroll::find($employee->payroll_id);
       $total = $req->pokok + $req->tunj_jabatan + $req->tunj_ops + $req->tunj_kinerja + $req->tunj_fungsional + $req->insentif;
+      $locations = Location::get();
+      $locId = null;
+      foreach ($locations as $loc) {
+         if ($employee->contract->loc == $loc->code) {
+            $locId = $loc->id;
+         }
+      }
+
+      // dd($locId);
+
       if ($payroll) {
 
          if (request('doc')) {
@@ -65,6 +85,7 @@ class PayrollController extends Controller
          }
 
          $payroll->update([
+            'location_id' => $locId,
             'pokok' => $req->pokok,
             'tunj_jabatan' => $req->tunj_jabatan,
             'tunj_ops' => $req->tunj_ops,
@@ -85,6 +106,7 @@ class PayrollController extends Controller
          }
 
          $payroll = Payroll::create([
+            'location_id' => $locId,
             'pokok' => $req->pokok,
             'tunj_jabatan' => $req->tunj_jabatan,
             'tunj_ops' => $req->tunj_ops,
@@ -104,22 +126,15 @@ class PayrollController extends Controller
    }
 
 
-   public function unit()
-   {
-      $units = Unit::get();
-      $firstUnit = Unit::get()->first();
-      return view('pages.payroll.unit.index', [
-         'units' => $units,
-         'firstUnit' => $firstUnit
-      ])->with('i');
-   }
+
 
    public function unitUpdatePph(Request $req)
    {
       $unit = Unit::find($req->unit);
       $unit->update([
-         'pph' => $req->pph,
-         'spkl_type' => $req->spkl_type
+         // 'pph' => $req->pph,
+         'spkl_type' => $req->spkl_type,
+         'hour_type' => $req->hour_type
       ]);
 
       return redirect()->back()->with('success', 'Setup Unit Payroll successfully updated');

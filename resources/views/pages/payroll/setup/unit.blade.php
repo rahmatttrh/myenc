@@ -60,6 +60,16 @@
                                     </select>
                                  </div>
                               </div>
+                              <div class="col-md-3">
+                                 <div class="form-group form-group-default">
+                                    <label>Hour Type</label>
+                                    <select class="form-control" name="hour_type" id="hour_type" required>
+                                       <option value="" selected disabled>Choose</option>
+                                       <option {{$unit->hour_type == 1 ? 'selected' : ''}} value="1">Aktual </option>
+                                       <option {{$unit->hour_type == 2 ? 'selected' : ''}}  value="2">Multiple</option>
+                                    </select>
+                                 </div>
+                              </div>
                               <div class="col">
                                  <button class="btn btn-primary btn-sm">Update</button>
                               </div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Absence;
 use App\Models\Employee;
 use App\Models\Location;
 use App\Models\Overtime;
@@ -42,10 +43,35 @@ class TransactionController extends Controller
       $reductions = Reduction::where('unit_id', $employee->unit_id)->get();
       $payroll = Payroll::find($employee->payroll_id);
       $transactionReductions = TransactionReduction::where('transaction_id', $transaction->id)->get();
-      $reduction = $transaction->reductions->where('type', 'employee')->sum('value');
+
 
       $overtimes = Overtime::where('month', $transaction->month)->where('employee_id', $employee->id)->get();
       $totalOvertime = $overtimes->sum('rate');
+      $bruto = $payroll->total + $totalOvertime;
+
+      $absences = $employee->absences->where('month', $transaction->month)->where('year', $transaction->year);
+      $alphas = $employee->absences->where('month', $transaction->month)->where('year', $transaction->year)->where('type', 1);
+      $lates = $employee->absences->where('month', $transaction->month)->where('year', $transaction->year)->where('type', 2);
+      $izins = $employee->absences->where('month', $transaction->month)->where('year', $transaction->year)->where('type', 3);
+      // dd($alphas);
+      $reductionAlpha = null;
+      foreach ($alphas as $alpha) {
+         $reductionAlpha = $reductionAlpha + 1 * 1 / 30 * $payroll->total;
+         $alpha->update([
+            'value' => $reductionAlpha
+         ]);
+      }
+      // dd($reductionAlpha);
+
+      $reduction = $transaction->reductions->where('type', 'employee')->sum('value') + $reductionAlpha;
+
+      $transaction->update([
+         'bruto' => $bruto,
+         'overtime' => $totalOvertime,
+         'reduction' => $reduction,
+
+      ]);
+
 
       $this->calculateTotalTransaction($transaction);
 
@@ -56,7 +82,11 @@ class TransactionController extends Controller
          'payroll' => $payroll,
          'transaction' => $transaction,
          'overtimes' => $overtimes,
-         'totalOvertime' => $totalOvertime
+         'totalOvertime' => $totalOvertime,
+         'alphas' => $alphas,
+         'lates' => $lates,
+         'izins' => $izins,
+         'absences' => $absences
       ]);
    }
 
@@ -115,11 +145,48 @@ class TransactionController extends Controller
       $unitTransaction = UnitTransaction::find(dekripRambo($id));
       $unit = Unit::find($unitTransaction->unit_id);
       $units = Unit::get();
+      $locations = Location::get();
+      $firstLoc = Location::orderBy('id', 'asc')->first();
       $transactions = Transaction::where('unit_id', $unit->id)->where('month', $unitTransaction->month)->where('year', $unitTransaction->year)->get();
 
-      return view('pages.payroll.transaction.monthly', [
+      return view('pages.payroll.transaction.monthly-loc', [
          'unit' => $unit,
          'units' => $units,
+         'locations' => $locations,
+         'firstLoc' => $firstLoc,
+         'unitTransaction' => $unitTransaction,
+         'transactions' => $transactions
+      ])->with('i');
+   }
+
+   public function location($unit, $loc)
+   {
+      $unitTransaction = UnitTransaction::find(dekripRambo($unit));
+      $location = Location::find(dekripRambo($loc));
+      $transactions = Transaction::where('month', $unitTransaction->month)->where('year', $unitTransaction->year)->where('location_id', $location->id)->get();
+      // dd($unitTransaction->id);
+
+      return view('pages.payroll.transaction.location', [
+         'unitTransaction' => $unitTransaction,
+         'transactions' => $transactions,
+         'location' => $location
+      ])->with('i');
+   }
+
+   public function monthlyAll($id)
+   {
+      $unitTransaction = UnitTransaction::find(dekripRambo($id));
+      $unit = Unit::find($unitTransaction->unit_id);
+      $units = Unit::get();
+      $locations = Location::get();
+      $firstLoc = Location::orderBy('id', 'asc')->first();
+      $transactions = Transaction::where('unit_id', $unit->id)->where('month', $unitTransaction->month)->where('year', $unitTransaction->year)->get();
+
+      return view('pages.payroll.transaction.monthly-all', [
+         'unit' => $unit,
+         'units' => $units,
+         'locations' => $locations,
+         'firstLoc' => $firstLoc,
          'unitTransaction' => $unitTransaction,
          'transactions' => $transactions
       ])->with('i');
@@ -153,6 +220,7 @@ class TransactionController extends Controller
          'unit_id' => $emp->unit_id,
          'location_id' => $location,
          'employee_id' => $employee->id,
+         'payroll_id' => $payroll->id,
          'month' => $req->month,
          'year' => $req->year,
          'total' => 0
@@ -221,6 +289,8 @@ class TransactionController extends Controller
          TransactionReduction::create([
             'transaction_id' => $transaction->id,
             'type' => 'company',
+            'location_id' => $location,
+
             'name' => $red->name,
             'value' => $bebanPerusahaan
          ]);
@@ -228,6 +298,7 @@ class TransactionController extends Controller
          TransactionReduction::create([
             'transaction_id' => $transaction->id,
             'type' => 'employee',
+            'location_id' => $location,
             'name' => $red->name,
             'value' => $bebanKaryawan
          ]);
@@ -257,8 +328,17 @@ class TransactionController extends Controller
       $overtimes = Overtime::where('month', $transaction->month)->where('employee_id', $employee->id)->get();
       $totalOvertime = $overtimes->sum('rate');
 
+      $alphas = $employee->absences->where('month', $transaction->month)->where('year', $transaction->year)->where('type', 1);
+      $lates = $employee->absences->where('month', $transaction->month)->where('year', $transaction->year)->where('type', 2);
+      $izins = $employee->absences->where('month', $transaction->month)->where('year', $transaction->year)->where('type', 3);
+
+      $reductionAlpha = null;
+      foreach ($alphas as $alpha) {
+         $reductionAlpha = $reductionAlpha + 1 * 1 / 30 * $payroll->total;
+      }
+
       $transaction->update([
-         'total' => $transactionDetails->sum('value') - $transaction->reductions->where('type', 'employee')->sum('value') + $totalOvertime
+         'total' => $transactionDetails->sum('value') - $transaction->reductions->where('type', 'employee')->sum('value') + $totalOvertime - $reductionAlpha
       ]);
    }
 }

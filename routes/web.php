@@ -285,9 +285,12 @@ Route::middleware(["auth"])->group(function () {
             Route::post('/add/master', [TransactionController::class, 'storeMaster'])->name('payroll.add.master.transaction');
             Route::get('/delete/master/{id}', [TransactionController::class, 'deleteMaster'])->name('payroll.delete.master.transaction');
             Route::get('/monthly/{id}', [TransactionController::class, 'monthly'])->name('payroll.transaction.monthly');
+            Route::get('/monthly/all/{id}', [TransactionController::class, 'monthlyAll'])->name('payroll.transaction.monthly.all');
             Route::get('/index', [TransactionController::class, 'index'])->name('payroll.transaction');
             Route::get('/detail/{id}', [TransactionController::class, 'detail'])->name('payroll.transaction.detail');
             Route::post('store', [TransactionController::class, 'store'])->name('payroll.transaction.store');
+
+            Route::get('location/{unit}/{loc}', [TransactionController::class, 'location'])->name('transaction.location');
          });
          Route::prefix('overtime')->group(function () {
             Route::get('/index', [OvertimeController::class, 'index'])->name('payroll.overtime');

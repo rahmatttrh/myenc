@@ -15,7 +15,7 @@ Payroll Absence
 
    <div class="row">
       <div class="col-md-4">
-         <h4>Form Absence</h4>
+         <h4>Form Ketidakhadiran</h4>
          <hr>
          <form action="{{route('payroll.absence.store')}}" method="POST" enctype="multipart/form-data">
             @csrf
@@ -42,11 +42,11 @@ Payroll Absence
                <div class="col">
                   <div class="form-group form-group-default">
                      <label>Type</label>
-                     <select class="form-control " required name="type" id="type">
+                     <select class="form-control" required name="type" id="type">
                         <option value="" disabled selected>Select</option>
-                        <option value="1">Ketidakhadiran</option>
-                        <option value="2">Keterlambatan</option>
-                        <option value="3">Cuti/Ijin/Sakit</option>
+                        <option value="1">Alpha</option>
+                        <option value="2">Terlambat</option>
+                        <option value="3">Cuti/Ijin</option>
                      </select>
                   </div>
                </div>
@@ -72,17 +72,30 @@ Payroll Absence
             
             <div class="form-group form-group-default">
                <label>Desc</label>
-               <input type="text" required class="form-control" id="desc" name="desc" >
+               <input type="text"  class="form-control" id="desc" name="desc" >
             </div>
          
-            <div class="form-group form-group-default">
-               <label>Document</label>
-               <input type="file"  class="form-control" id="doc" name="doc" >
+            <div class="row">
+               <div class="col-md-4">
+                  <div class="form-group form-group-default">
+                     <label>Menit</label>
+                     <input type="number"  class="form-control" id="minute" name="minute" >
+                  </div>
+               </div>
+               <div class="col">
+                  <div class="form-group form-group-default">
+                     <label>Document</label>
+                     <input type="file"  class="form-control" id="doc" name="doc" >
+                  </div>
+               </div>
             </div>
+            
             
             
             <button class="btn btn-block btn-primary" type="submit">Add</button>
          </form>
+         <hr>
+         <small>Input Field 'Menit' wajib diisi untuk tipe 'Terlambat'</small>
          
       </div>
       <div class="col">
@@ -91,50 +104,34 @@ Payroll Absence
                <thead>
                   <tr>
                      {{-- <th class="text-center">No</th> --}}
+                     <th>Type</th>
+                     <th>Date</th>
                      <th>NIK</th>
                      <th>Employee</th>
-                     <th>Date</th>
-                     {{-- <th>Type</th> --}}
-                     <th>Hours</th>
-                     <th>Rate</th>
                      <th></th>
                   </tr>
                </thead>
                
                <tbody>
-                  {{-- @foreach ($overtimes as $over)
+                  @foreach ($absences as $absence)
                       <tr>
-                        <td>{{$over->employee->nik}}</td>
-                        <td>{{$over->employee->biodata->fullName()}}</td>
                         <td>
-                           <a href="#" data-target="#modal-overtime-doc-{{$over->id}}" data-toggle="modal">{{formatDate($over->date)}}</a>
-                           
-                           @foreach ($holidays as $holi)
-                               @if ($holi->date == $over->date)
-                                 @if ($holi->type == 1)
-                                 <span class="badge badge-info">i</span>
-                                 @elseif($holi->type == 2)
-                                 <span class="badge badge-warning">i</span>
-                                 @else
-                                 <span class="badge badge-danger">i</span>
-                                 @endif
-                               @endif
-                           @endforeach
-                        </td>
-                        
-                        <td>{{$over->hours}} (
-                           @if ($over->hours_type == 1)
-                               Aktual
-                               @else
-                               Multiple
+                           @if ($absence->type == 1)
+                              Alpha
+                              @elseif($absence->type == 2)
+                              Terlambat ({{$absence->minute}})
+                              @elseif($absence->type == 3)
+                              Cuti/Izin
                            @endif
-                        )</td>
-                        <td>{{formatRupiah($over->rate)}}</td>
+                        </td>
+                        <td>{{formatDate($absence->date)}}</td>
+                        <td>{{$absence->employee->nik}}</td>
+                        <td>{{$absence->employee->biodata->fullName()}}</td>
                         <td>
-                           <a href="{{route('payroll.overtime.delete', enkripRambo($over->id))}}">Delete</a>
+                           <a href="">Delete</a>
                         </td>
                       </tr>
-                  @endforeach --}}
+                  @endforeach
                </tbody>
                
             </table>

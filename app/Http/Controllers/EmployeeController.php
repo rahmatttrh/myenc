@@ -40,11 +40,27 @@ class EmployeeController extends Controller
       foreach ($employees as $emp) {
          $user = User::where('username', $emp->nik)->first();
          if ($user) {
-            $emp->update([
-               'role' => 3,
-               'user_id' => $user->id
-            ]);
-            $user->assignRole('Karyawan');
+            if ($user->hasRole('BOD')) {
+               $emp->update([
+                  'role' => 6,
+               ]);
+            } elseif ($user->hasRole('Manager')) {
+               $emp->update([
+                  'role' => 5,
+               ]);
+            } elseif ($user->hasRole('Asst. Manager')) {
+               $emp->update([
+                  'role' => 9,
+               ]);
+            } elseif ($user->hasRole('Supervisor')) {
+               $emp->update([
+                  'role' => 8,
+               ]);
+            } elseif ($user->hasRole('Leader')) {
+               $emp->update([
+                  'role' => 4,
+               ]);
+            }
          }
       }
 
@@ -247,6 +263,8 @@ class EmployeeController extends Controller
 
       $dekripId = dekripRambo($id);
       $employee = Employee::find($dekripId);
+      $user = User::where('username', $employee->nik)->first();
+      // $user->roles()->detach('Karyawan');
 
       // if ($employee->contract->loc = 'HWW') {
       //    dd('ada');

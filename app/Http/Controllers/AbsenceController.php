@@ -13,8 +13,10 @@ class AbsenceController extends Controller
    public function index()
    {
       $employees = Employee::get();
+      $absences = Absence::get();
       return view('pages.payroll.absence', [
-         'employees' => $employees
+         'employees' => $employees,
+         'absences' => $absences
       ])->with('i');
    }
 
@@ -27,18 +29,14 @@ class AbsenceController extends Controller
          return redirect()->back()->with('danger', $employee->nik . ' ' . $employee->biodata->fullName() . ' belum ada data Gaji Karyawan');
       }
 
-      if ($) {
-         # code...
+      if ($req->type == 2) {
+         $req->validate([
+            'minute' => 'required'
+         ]);
       }
 
-      
-      
-      
-      
-      
-      
-      
-      
+
+
       $date = Carbon::create($req->date);
       if (request('doc')) {
          $doc = request()->file('doc')->store('doc/overtime');
@@ -53,7 +51,8 @@ class AbsenceController extends Controller
          'year' => $date->format('Y'),
          'date' => $req->date,
          'desc' => $req->desc,
-         'doc' => $doc
+         'doc' => $doc,
+         'minute' => $req->minute
       ]);
 
       return redirect()->back()->with('success', 'Data Absence successfully added');

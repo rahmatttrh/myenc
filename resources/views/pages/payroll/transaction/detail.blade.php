@@ -103,14 +103,14 @@ Detail Transaction Payroll Employee
                               <div class="col-3">
                                  <span><b>Gaji Bersih</b></span> <br>
                                  <span>Pendapatan</span> <br>
-                                 <span>Uang Lembur</span> <br>
+                                 <span>Lembur</span> <br>
                                  <span>Potongan</span>
                               </div>
                               <div class="col-md-9">
                                  <span>: <b>{{formatRupiah($transaction->total)}}</b></span> <br>
                                  <span>: {{formatRupiah($payroll->total)}}</span> <br>
                                  <span>: {{formatRupiah($totalOvertime)}} </span> <br>
-                                 <span>: {{formatRupiah($transaction->reductions->where('type', 'employee')->sum('value'))}}</span> <br>
+                                 <span>: {{formatRupiah($transaction->reduction)}}</span> <br>
                               </div>
                            </div>
                            <hr>
@@ -119,7 +119,7 @@ Detail Transaction Payroll Employee
                                  <table class="mt-2">
                                     <thead>
                                        <tr>
-                                          <th colspan="5">Lembur</th>
+                                          <th colspan="5">Penambahan</th>
                                        </tr>
                                     </thead>
                                     <tbody>
@@ -127,10 +127,10 @@ Detail Transaction Payroll Employee
                                            <tr>
                                              <td>{{formatDate($over->date)}}</td>
                                              <td>
-                                                @if ($over->hours_type == 1)
-                                                    Aktual
+                                                @if ($over->type == 1)
+                                                    Lembur
                                                     @else
-                                                    Multiple
+                                                    Piket
                                                 @endif
                                              </td>
                                              <td class="text-right">{{$over->hours}} Hour</td>
@@ -167,7 +167,7 @@ Detail Transaction Payroll Employee
                                  <table class="mt-2">
                                     <thead>
                                        <tr>
-                                          <th colspan="3">Potongan Perusahaan</th>
+                                          <th colspan="3">Beban Perusahaan</th>
                                        </tr>
                                     </thead>
                                     <tbody>
@@ -186,9 +186,33 @@ Detail Transaction Payroll Employee
                               </div>
                            </div>
                            <div class="row">
-                              
-                              <div class="col">
-                                 
+                              <div class="col-md-6">
+                                 <table class="mt-2">
+                                    <thead>
+                                       <tr>
+                                          <th colspan="5">Potongan</th>
+                                       </tr>
+                                    </thead>
+                                    <tbody>
+                                       @foreach ($absences as $abs)
+                                           <tr>
+                                             <td>
+                                                @if ($abs->type == 1)
+                                                   Alpha
+                                                   @elseif($abs->type == 2)
+                                                   Terlambat ({{$abs->minute}})
+                                                   @elseif($abs->type == 3)
+                                                   Cuti/Izin
+                                                @endif
+                                             </td>
+                                             <td>{{formatDate($abs->date)}}</td>
+                                          </tr>
+                                       @endforeach
+                                       
+                                       
+                                       
+                                    </tbody>
+                                 </table>
                               </div>
                            </div>
                            

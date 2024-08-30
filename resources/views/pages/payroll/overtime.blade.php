@@ -15,7 +15,7 @@ Payroll Overtime
 
    <div class="row">
       <div class="col-md-4">
-         <h4>Form SPKL</h4>
+         <h4>Form add SPKL</h4>
          <hr>
          <form action="{{route('payroll.overtime.store')}}" method="POST" enctype="multipart/form-data">
             @csrf
@@ -39,35 +39,39 @@ Payroll Overtime
                      <input type="date" required class="form-control" id="date" name="date" >
                   </div>
                </div>
-               {{-- <div class="col">
+               <div class="col">
                   <div class="form-group form-group-default">
-                     <label>Type</label>
-                     <select class="form-control " required name="employee" id="employee">
+                     <label>Piket/Lembur</label>
+                     <select class="form-control " required name="type" id="type">
                         <option value="" disabled selected>Select</option>
                         <option value="1">Lembur</option>
                         <option value="2">Piket</option>
                      </select>
                   </div>
-               </div> --}}
+               </div>
+               
+               
             </div>
             <div class="row">
                <div class="col">
                   <div class="form-group form-group-default">
-                     <label>Hours Type</label>
-                     <select class="form-control"  name="hours_type" id="hours_type">
+                     <label>Masuk/Libur</label>
+                     <select class="form-control " required name="holiday_type" id="holiday_type">
                         <option value="" disabled selected>Select</option>
-                        <option value="1">Aktual</option>
-                        <option value="2">Multiple</option>
+                        <option value="1">Masuk</option>
+                        <option value="2">Libur</option>
+                        <option value="3">Libur Nasional</option>
+                        <option value="4">Idul Fitri</option>
                      </select>
-                     {{-- <input type="number" class="form-control" id="hours" name="hours" > --}}
                   </div>
                </div>
                <div class="col">
                   <div class="form-group form-group-default">
                      <label>Hours</label>
-                     <input type="number"  class="form-control" id="hours" name="hours" >
+                     <input type="number" required class="form-control" id="hours" name="hours" >
                   </div>
                </div>
+
             </div>
             <div class="form-group form-group-default">
                <label>Document</label>
@@ -78,16 +82,12 @@ Payroll Overtime
             <button class="btn btn-block btn-primary" type="submit">Add</button>
          </form>
          <hr>
-         <div class="card">
-            {{-- <div class="card-header p-2 bg-primary text-white">
-               <i class="fas fa-desktop"></i> <small>Monitoring</small>
-            </div> --}}
+         {{-- <div class="card">
             <div class="card-body p-0">
                <table class="display  table-sm table-bordered">
                   <thead>
                      <tr>
                         <th colspan="3">Hari Libur</th>
-                        {{-- <th colspan="2">QPE</th> --}}
                      </tr>
                   </thead>
                   <tbody>
@@ -120,7 +120,7 @@ Payroll Overtime
                </table>
                
             </div>
-         </div>
+         </div> --}}
       </div>
       <div class="col">
          <div class="table-responsive">
@@ -130,10 +130,10 @@ Payroll Overtime
                      {{-- <th class="text-center">No</th> --}}
                      <th>NIK</th>
                      <th>Employee</th>
-                     <th>Date</th>
-                     {{-- <th>Type</th> --}}
-                     <th>Hours</th>
-                     <th>Rate</th>
+                     <th class="text-right">Date</th>
+                     <th>Type</th>
+                     <th class="text-center">Hours</th>
+                     <th class="text-right">Rate</th>
                      <th></th>
                   </tr>
                </thead>
@@ -144,30 +144,29 @@ Payroll Overtime
                         {{-- <td>{{++$i}}</td> --}}
                         <td>{{$over->employee->nik}}</td>
                         <td>{{$over->employee->biodata->fullName()}}</td>
+                        <td class="text-right">
+                           @if ($over->holiday_type == 1)
+                              <span  class="badge badge-info ">
+                              @elseif($over->holiday_type == 2)
+                              <span class="badge badge-danger">
+                              @elseif($over->holiday_type == 3)
+                              <span class="badge badge-danger">LN -
+                              @elseif($over->holiday_type == 4)
+                              <span class="badge badge-danger">LR -
+                           @endif
+                           <a href="#" data-target="#modal-overtime-doc-{{$over->id}}" data-toggle="modal" class="text-white">{{formatDate($over->date)}}</a>
+                           </span>
+                        </td>
                         <td>
-                           <a href="#" data-target="#modal-overtime-doc-{{$over->id}}" data-toggle="modal">{{formatDate($over->date)}}</a>
-                           
-                           @foreach ($holidays as $holi)
-                               @if ($holi->date == $over->date)
-                                 @if ($holi->type == 1)
-                                 <span class="badge badge-info">i</span>
-                                 @elseif($holi->type == 2)
-                                 <span class="badge badge-warning">i</span>
-                                 @else
-                                 <span class="badge badge-danger">i</span>
-                                 @endif
-                               @endif
-                           @endforeach
+                           @if ($over->type == 1)
+                               Lembur
+                               @else
+                               Piket
+                           @endif
                         </td>
                         
-                        <td>{{$over->hours}} (
-                           @if ($over->hours_type == 1)
-                               Aktual
-                               @else
-                               Multiple
-                           @endif
-                        )</td>
-                        <td>{{formatRupiah($over->rate)}}</td>
+                        <td class="text-center">{{$over->hours}} </td>
+                        <td class="text-right">{{formatRupiah($over->rate)}}</td>
                         <td>
                            <a href="{{route('payroll.overtime.delete', enkripRambo($over->id))}}">Delete</a>
                         </td>

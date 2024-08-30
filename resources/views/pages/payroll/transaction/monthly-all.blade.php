@@ -8,8 +8,7 @@ Payroll Transaction
    <nav aria-label="breadcrumb ">
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
-         <li class="breadcrumb-item" aria-current="page">Payroll</li>
-         <li class="breadcrumb-item" aria-current="page"><a href="{{route('payroll.transaction')}}">Unit</a></li>
+         <li class="breadcrumb-item" aria-current="page"><a href="{{route('payroll.transaction')}}">Transaction</a></li>
          <li class="breadcrumb-item active" aria-current="page">Monthly</li>
       </ol>
    </nav>
@@ -30,20 +29,13 @@ Payroll Transaction
             
             
          </div>
-         <a href="" class="btn btn-block btn-info">Submit</a>
+         {{-- <a href="" class="btn btn-block btn-info">Submit</a> --}}
 
-         {{-- <a href="" class="btn btn-block btn-light border">
-            <i class="fas fa-upload"></i>
-            Upload Lembur
-         </a>
-         <a href="" class="btn btn-block btn-light border">
-            <i class="fas fa-upload"></i>
-            Upload Absensi
-         </a> --}}
+         
 
          
       </div>
-      <div class="col-md-9">
+      <div class="col">
          <div class="tab-content" id="v-pills-tabContent">
             @foreach ($units as $u)
             <div class="tab-pane fade {{$unit->id == $u->id ? 'show active' : ''}} " id="v-pills-{{$u->id}}" role="tabpanel" aria-labelledby="v-pills-{{$u->id}}-tab">
