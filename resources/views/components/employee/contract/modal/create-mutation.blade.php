@@ -88,12 +88,12 @@
                            <div class="col-md-6">
                               <div class="form-group form-group-default">
                                  <label>Sub Department</label>
-                                 <select class="form-control subdept_mutation" id="department_mutation" name="department_mutation" >
+                                 <select class="form-control subdept_mutation" id="subdept_mutation" name="subdept_mutation" >
                                     @foreach ($subdepts as $sub)
                                     <option {{$employee->contract->sub_dept_id == $sub->id ? 'selected' : ''}} value="{{$sub->id}}">{{$sub->name}}</option>
                                     @endforeach
                                  </select>
-                                 @error('department_mutation')
+                                 @error('subdept_mutation')
                                  <small class="text-danger"><i>{{ $message }}</i></small>
                                  @enderror
                               </div>

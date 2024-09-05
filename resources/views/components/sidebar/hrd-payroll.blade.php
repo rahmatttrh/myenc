@@ -20,7 +20,7 @@
 </li>
 
 <li class="nav-item {{ (request()->is('payroll/additional/*')) ? 'active' : '' }}">
-   <a href="{{route('payroll.absence')}}">
+   <a href="{{route('payroll.additional')}}">
       <i class="fas fa-calendar"></i>
       <p>Lain-lain</p>
    </a>
@@ -76,6 +76,13 @@
 
       </ul>
    </div>
+</li>
+<hr>
+<li class="nav-item {{ (request()->is('payroll/perdin/*')) ? 'active' : '' }}">
+   <a href="{{route('perdin')}}">
+      <i class="fas fa-calendar"></i>
+      <p>Perdin</p>
+   </a>
 </li>
 <hr>
 

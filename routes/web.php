@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AbsenceController;
+use App\Http\Controllers\AdditionalController;
 use App\Http\Controllers\AllowanceController;
 use App\Http\Controllers\BankAccountController;
 use App\Http\Controllers\CommissionController;
@@ -30,6 +31,7 @@ use App\Http\Controllers\PeDisciplineController;
 use App\Http\Controllers\PeKpaController;
 use App\Http\Controllers\PeKpiController;
 use App\Http\Controllers\PekpiDetailController;
+use App\Http\Controllers\PerdinController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\PresenceController;
 use App\Http\Controllers\QuickPEController;
@@ -302,7 +304,7 @@ Route::middleware(["auth"])->group(function () {
          Route::prefix('absence')->group(function () {
             Route::get('/index', [AbsenceController::class, 'index'])->name('payroll.absence');
             Route::post('/store', [AbsenceController::class, 'store'])->name('payroll.absence.store');
-            // Route::get('/delete/{id}', [OvertimeController::class, 'delete'])->name('payroll.overtime.delete');
+            Route::get('/delete/{id}', [AbsenceController::class, 'delete'])->name('payroll.absence.delete');
             // Route::get('/detail/{id}' , [TransactionController::class, 'detail'])->name('payroll.transaction.detail');
             // Route::post('store', [TransactionController::class, 'store'])->name('payroll.transaction.store');
          });
@@ -313,12 +315,25 @@ Route::middleware(["auth"])->group(function () {
             // Route::post('store', [TransactionController::class, 'store'])->name('payroll.transaction.store');
          });
 
+         Route::prefix('additional')->group(function () {
+            Route::get('index', [AdditionalController::class, 'index'])->name('payroll.additional');
+            Route::post('store', [AdditionalController::class, 'store'])->name('payroll.additional.store');
+            Route::get('delete/{id}', [AdditionalController::class, 'delete'])->name('payroll.additional.delete');
+            // Route::get('/detail/{id}' , [TransactionController::class, 'detail'])->name('payroll.transaction.detail');
+            // Route::post('store', [TransactionController::class, 'store'])->name('payroll.transaction.store');
+         });
+
          Route::prefix('holiday')->group(function () {
 
             Route::post('/store', [HolidayController::class, 'store'])->name('holiday.store');
             Route::get('/delete/{id}', [HolidayController::class, 'delete'])->name('holiday.delete');
             // Route::get('/detail/{id}' , [TransactionController::class, 'detail'])->name('payroll.transaction.detail');
             // Route::post('store', [TransactionController::class, 'store'])->name('payroll.transaction.store');
+         });
+
+         Route::prefix('perdin')->group(function () {
+            Route::get('index', [PerdinController::class, 'index'])->name('perdin');
+            Route::get('store', [PerdinController::class, 'store'])->name('perdin.store');
          });
       });
 

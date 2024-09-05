@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Absence;
 use App\Models\Employee;
+use App\Models\Location;
 use App\Models\Payroll;
+use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -44,6 +46,14 @@ class AbsenceController extends Controller
          $doc = null;
       }
 
+      $locations = Location::get();
+
+      foreach ($locations as $loc) {
+         if ($loc->code == $employee->contract->loc) {
+            $location = $loc->id;
+         }
+      }
+
       Absence::create([
          'type' => $req->type,
          'employee_id' => $req->employee,
@@ -52,9 +62,24 @@ class AbsenceController extends Controller
          'date' => $req->date,
          'desc' => $req->desc,
          'doc' => $doc,
-         'minute' => $req->minute
+         'minute' => $req->minute,
+         'location_id' => $location->id
       ]);
 
       return redirect()->back()->with('success', 'Data Absence successfully added');
+   }
+
+   public function delete($id)
+   {
+      $absence = Absence::find(dekripRambo($id));
+      $transaction = Transaction::where('employee_id', $absence->employee_id)->where('month', $absence->month)->where('year', $absence->year)->first();
+      $absence->delete();
+
+      if ($transaction) {
+         $trans = new TransactionController;
+         $trans->calculateTotalTransaction($transaction);
+      }
+
+      return redirect()->back()->with('success', 'Absence Data successfully deleted');
    }
 }

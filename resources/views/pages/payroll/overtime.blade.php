@@ -82,6 +82,9 @@ Payroll Overtime
             <button class="btn btn-block btn-primary" type="submit">Add</button>
          </form>
          <hr>
+         <small>
+            Data pada form ini akan <b>Menambah</b> nilai Transaksi Gaji Karyawan
+         </small>
          {{-- <div class="card">
             <div class="card-body p-0">
                <table class="display  table-sm table-bordered">
@@ -127,11 +130,10 @@ Payroll Overtime
             <table id="data" class="display basic-datatables table-sm">
                <thead>
                   <tr>
-                     {{-- <th class="text-center">No</th> --}}
-                     <th>NIK</th>
+                     <th>Type</th>
                      <th>Employee</th>
                      <th class="text-right">Date</th>
-                     <th>Type</th>
+                     
                      <th class="text-center">Hours</th>
                      <th class="text-right">Rate</th>
                      <th></th>
@@ -142,8 +144,14 @@ Payroll Overtime
                   @foreach ($overtimes as $over)
                       <tr>
                         {{-- <td>{{++$i}}</td> --}}
-                        <td>{{$over->employee->nik}}</td>
-                        <td>{{$over->employee->biodata->fullName()}}</td>
+                        <td>
+                           @if ($over->type == 1)
+                               Lembur
+                               @else
+                               Piket
+                           @endif
+                        </td>
+                        <td>{{$over->employee->nik}} {{$over->employee->biodata->fullName()}}</td>
                         <td class="text-right">
                            @if ($over->holiday_type == 1)
                               <span  class="badge badge-info ">
@@ -157,20 +165,44 @@ Payroll Overtime
                            <a href="#" data-target="#modal-overtime-doc-{{$over->id}}" data-toggle="modal" class="text-white">{{formatDate($over->date)}}</a>
                            </span>
                         </td>
-                        <td>
-                           @if ($over->type == 1)
-                               Lembur
-                               @else
-                               Piket
-                           @endif
-                        </td>
+                        
                         
                         <td class="text-center">{{$over->hours}} </td>
                         <td class="text-right">{{formatRupiah($over->rate)}}</td>
                         <td>
-                           <a href="{{route('payroll.overtime.delete', enkripRambo($over->id))}}">Delete</a>
+                           <a href="#" data-target="#modal-delete-overtime-{{$over->id}}" data-toggle="modal">Delete</a>
                         </td>
                       </tr>
+
+                     <div class="modal fade" id="modal-delete-overtime-{{$over->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-sm" role="document">
+                           <div class="modal-content text-dark">
+                              <div class="modal-header">
+                                 <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                 </button>
+                              </div>
+                              <div class="modal-body ">
+                                 Delete data 
+                                 @if ($over->type == 1)
+                                    Lembur
+                                    @else
+                                    Piket
+                                 @endif
+                                 {{$over->employee->nik}} {{$over->employee->biodata->fullName()}}
+                                 tanggal {{formatDate($over->date)}}
+                                 ?
+                              </div>
+                              <div class="modal-footer">
+                                 <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+                                 <button type="button" class="btn btn-danger ">
+                                    <a class="text-light" href="{{route('payroll.overtime.delete', enkripRambo($over->id))}}">Delete</a>
+                                 </button>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
                   @endforeach
                </tbody>
                

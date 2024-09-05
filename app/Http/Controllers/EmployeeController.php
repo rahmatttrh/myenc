@@ -561,12 +561,18 @@ class EmployeeController extends Controller
          'password' => Hash::make('12345678')
       ]);
 
+      $employee->update([
+         'user_id' => $user->id
+      ]);
+
       if (auth()->user()->hasRole('Administrator')) {
          $departmentId = null;
       } else {
          $userNow = Employee::find(auth()->user()->getEmployeeId());
          $departmentId = $userNow->department_id;
       }
+
+
       Log::create([
          'department_id' => $departmentId,
          'user_id' => auth()->user()->id,

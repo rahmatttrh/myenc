@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Location;
+use App\Models\Log;
 use App\Models\Payroll;
 use App\Models\Transaction;
 use App\Models\Unit;
@@ -122,6 +123,19 @@ class PayrollController extends Controller
          ]);
       }
 
+      if (auth()->user()->hasRole('Administrator')) {
+         $departmentId = null;
+      } else {
+         $user = Employee::find(auth()->user()->getEmployeeId());
+         $departmentId = $user->department_id;
+      }
+      Log::create([
+         'department_id' => $departmentId,
+         'user_id' => auth()->user()->id,
+         'action' => 'Update',
+         'desc' => 'Payroll ' . $employee->nik . ' ' . $employee->biodata->fullname()
+      ]);
+
       return redirect()->back()->with('success', 'Payroll successfully updated');
    }
 
@@ -135,6 +149,19 @@ class PayrollController extends Controller
          // 'pph' => $req->pph,
          'spkl_type' => $req->spkl_type,
          'hour_type' => $req->hour_type
+      ]);
+
+      if (auth()->user()->hasRole('Administrator')) {
+         $departmentId = null;
+      } else {
+         $user = Employee::find(auth()->user()->getEmployeeId());
+         $departmentId = $user->department_id;
+      }
+      Log::create([
+         'department_id' => $departmentId,
+         'user_id' => auth()->user()->id,
+         'action' => 'Update',
+         'desc' => 'Setup Default ' . $unit->name
       ]);
 
       return redirect()->back()->with('success', 'Setup Unit Payroll successfully updated');

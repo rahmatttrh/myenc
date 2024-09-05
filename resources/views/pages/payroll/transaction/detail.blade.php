@@ -103,23 +103,23 @@ Detail Transaction Payroll Employee
                               <div class="col-3">
                                  <span><b>Gaji Bersih</b></span> <br>
                                  <span>Pendapatan</span> <br>
-                                 <span>Lembur</span> <br>
-                                 <span>Potongan</span>
+                                 {{-- <span>Lembur</span> <br>
+                                 <span>Potongan</span> --}}
                               </div>
                               <div class="col-md-9">
                                  <span>: <b>{{formatRupiah($transaction->total)}}</b></span> <br>
                                  <span>: {{formatRupiah($payroll->total)}}</span> <br>
-                                 <span>: {{formatRupiah($totalOvertime)}} </span> <br>
-                                 <span>: {{formatRupiah($transaction->reduction)}}</span> <br>
+                                 {{-- <span>: {{formatRupiah($totalOvertime)}} </span> <br>
+                                 <span>: {{formatRupiah($transaction->reduction)}}</span> <br> --}}
                               </div>
                            </div>
                            <hr>
                            <div class="row">
-                              <div class="col-md-8">
+                              <div class="col-md-6">
                                  <table class="mt-2">
                                     <thead>
                                        <tr>
-                                          <th colspan="5">Penambahan</th>
+                                          <th colspan="5">Lembur & Piket</th>
                                        </tr>
                                     </thead>
                                     <tbody>
@@ -128,13 +128,13 @@ Detail Transaction Payroll Employee
                                              <td>{{formatDate($over->date)}}</td>
                                              <td>
                                                 @if ($over->type == 1)
-                                                    Lembur
+                                                    L
                                                     @else
-                                                    Piket
+                                                    P
                                                 @endif
                                              </td>
-                                             <td class="text-right">{{$over->hours}} Hour</td>
-                                             <td class="text-right">{{formatRupiah($over->rate)}}</td>
+                                             <td class="text-right">{{$over->hours}} Jam</td>
+                                             <td class="text-right text-info">{{formatRupiah($over->rate)}}</td>
                                              <td><a href="{{route('payroll.overtime.delete', enkripRambo($over->id))}}">Delete</a></td>
                                            </tr>
                                        @endforeach
@@ -144,53 +144,11 @@ Detail Transaction Payroll Employee
                                     </tbody>
                                  </table>
                               </div>
-                              <div class="col">
-                                 <table class="mt-2">
-                                    <thead>
-                                       <tr>
-                                          <th colspan="3">Potongan</th>
-                                       </tr>
-                                    </thead>
-                                    <tbody>
-                                       @foreach ($transaction->reductions->where('type', 'employee') as $red)
-                                           <tr>
-                                             <td>{{$red->name}}</td>
-                                             {{-- <td></td> --}}
-                                             <td class="text-right">{{formatRupiah($red->value)}}</td>
-                                           </tr>
-                                       @endforeach
-                                       
-                                       
-                                       
-                                    </tbody>
-                                 </table>
-                                 <table class="mt-2">
-                                    <thead>
-                                       <tr>
-                                          <th colspan="3">Beban Perusahaan</th>
-                                       </tr>
-                                    </thead>
-                                    <tbody>
-                                       @foreach ($transaction->reductions->where('type', 'company') as $red)
-                                           <tr>
-                                             <td>{{$red->name}}</td>
-                                             {{-- <td></td> --}}
-                                             <td class="text-right">{{formatRupiah($red->value)}}</td>
-                                           </tr>
-                                       @endforeach
-                                       
-                                       
-                                       
-                                    </tbody>
-                                 </table>
-                              </div>
-                           </div>
-                           <div class="row">
                               <div class="col-md-6">
                                  <table class="mt-2">
                                     <thead>
                                        <tr>
-                                          <th colspan="5">Potongan</th>
+                                          <th colspan="5">Potongan Kehadiran</th>
                                        </tr>
                                     </thead>
                                     <tbody>
@@ -206,6 +164,7 @@ Detail Transaction Payroll Employee
                                                 @endif
                                              </td>
                                              <td>{{formatDate($abs->date)}}</td>
+                                             <td class="text-danger">{{formatRupiah($abs->value)}}</td>
                                           </tr>
                                        @endforeach
                                        
@@ -213,9 +172,95 @@ Detail Transaction Payroll Employee
                                        
                                     </tbody>
                                  </table>
+                                 
                               </div>
                            </div>
-                           
+                           <div class="row">
+                              <div class="col-md-6">
+                                 <table class="mt-2">
+                                    <thead>
+                                       <tr>
+                                          <th colspan="3">Potongan Karyawan</th>
+                                          
+                                       </tr>
+                                    </thead>
+                                    <tbody>
+                                       @foreach ($transaction->reductions->where('type', 'employee') as $red)
+                                           <tr>
+                                             <td>{{$red->name}}</td>
+                                             {{-- <td></td> --}}
+                                             <td class="text-right text-danger"><b>{{formatRupiah($red->value)}}</b></td>
+                                           </tr>
+                                           @if ($red->value_real != 0)
+                                           <tr>
+                                             <td class="text-right text-muted">Seharusnya</td>
+                                             <td class="text-right text-muted text-danger">{{formatRupiah($red->value_real)}}</td>
+                                           </tr>
+                                           @endif
+                                           
+                                       @endforeach
+                                       
+                                       
+                                       
+                                    </tbody>
+                                 </table>
+                                 
+                              </div>
+                              <div class="col">
+                                 <table class="mt-2">
+                                    <thead>
+                                       <tr>
+                                          <th colspan="3">Beban Perusahaan</th>
+                                       </tr>
+                                    </thead>
+                                    <tbody>
+                                       @foreach ($transaction->reductions->where('type', 'company') as $red)
+                                           <tr>
+                                             <td>{{$red->name}}</td>
+                                             {{-- <td></td> --}}
+                                             <td class="text-right">{{formatRupiah($red->value)}}</td>
+                                           </tr>
+                                           @if ($red->value_real != $red->value)
+                                           <tr>
+                                             <td class="text-right">+ Selisih</td>
+                                             <td class="text-right"><b>{{formatRupiah($red->value_real)}}</b></td>
+                                           </tr>
+                                           @endif
+                                       @endforeach
+                                    </tbody>
+                                 </table>
+                              </div>
+                           </div>
+                           <hr>
+
+                           <table class="mt-2">
+                              <thead>
+                                 <tr>
+                                    <th colspan="5">Additional</th>
+                                    
+                                 </tr>
+                              </thead>
+                              <tbody>
+                                 @foreach ($additionals as $add)
+                                    <tr>
+                                       <td>
+                                          @if ($add->type == 1)
+                                              Penambahan
+                                              @else
+                                              Pengurangan
+                                          @endif
+                                       </td>
+                                       <td>{{formatDate($add->date)}}</td>
+                                       <td>{{formatRupiah($add->value)}}</td>
+                                       <td>{{$add->desc}}</td>
+                                       <td><a href="">Delete</a></td>
+                                    </tr>
+                                 @endforeach
+                                 
+                                 
+                                 
+                              </tbody>
+                           </table>
                            
                            <hr>
                            <p>
@@ -251,42 +296,69 @@ Detail Transaction Payroll Employee
                         </div>
             
                         <div class="tab-pane fade " id="pills-doc-nobd" role="tabpanel" aria-labelledby="pills-doc-tab-nobd">
-                           <form action="{{route('payroll.overtime.store')}}" method="POST">
+                           <form action="{{route('payroll.overtime.store')}}" method="POST" enctype="multipart/form-data">
                               @csrf
-                              <input type="number" name="employee" id="employee" value="{{$transaction->employee_id}}" hidden>
-                              <input type="number" name="spkl_type" id="spkl_type" value="{{$transaction->employee->unit->spkl_type}}" hidden>
-                              <input type="number" name="transaction" id="transaction" value="{{$transaction->id}}" hidden>
+                               <input type="number" name="employee" id="employee" value="{{$transaction->employee_id}}" hidden>
+                              {{--<input type="number" name="spkl_type" id="spkl_type" value="{{$transaction->employee->unit->spkl_type}}" hidden>
+                              <input type="number" name="transaction" id="transaction" value="{{$transaction->id}}" hidden> --}}
+                              
                               <div class="row">
-                                 <div class="col-md-4">
+                                 <div class="col-md-3">
                                     <div class="form-group form-group-default">
-                                       <label>Date</label>
+                                       <label>Date*</label>
                                        <input type="date" required class="form-control" id="date" name="date" >
                                     </div>
                                  </div>
-                                 <div class="col-md-4">
+                                 <div class="col-md-3">
                                     <div class="form-group form-group-default">
-                                       <label>Hours Type</label>
-                                       <select class="form-control" required name="hours_type" id="hours_type">
+                                       <label>Piket/Lembur*</label>
+                                       <select class="form-control " required name="type" id="type">
                                           <option value="" disabled selected>Select</option>
-                                          <option value="1">Aktual</option>
-                                          <option value="2">Multiple</option>
+                                          <option value="1">Lembur</option>
+                                          <option value="2">Piket</option>
                                        </select>
-                                       {{-- <input type="number" class="form-control" id="hours" name="hours" > --}}
                                     </div>
                                  </div>
-                                 <div class="col-md-2">
+                                 <div class="col">
                                     <div class="form-group form-group-default">
-                                       <label>Hours</label>
-                                       <input type="number" required class="form-control" id="hours" name="hours" >
+                                       <label>Masuk/Libur*</label>
+                                       <select class="form-control " required name="holiday_type" id="holiday_type">
+                                          <option value="" disabled selected>Select</option>
+                                          <option value="1">Masuk</option>
+                                          <option value="2">Libur</option>
+                                          <option value="3">Libur Nasional</option>
+                                          <option value="4">Idul Fitri</option>
+                                       </select>
                                     </div>
                                  </div>
                                  
-                                 <div class="col-md-2">
+                                 
+                              </div>
+                              <div class="row">
+                                 
+                                 <div class="col-md-3">
+                                    <div class="form-group form-group-default">
+                                       <label>Hours*</label>
+                                       <input type="number" required class="form-control" id="hours" name="hours" >
+                                    </div>
+                                 </div>
+                                 <div class="col-md-6">
+                                    <div class="form-group form-group-default">
+                                       <label>Document</label>
+                                       <input type="file"  class="form-control" id="doc" name="doc" >
+                                    </div>
+                                 </div>
+                                 <div class="col">
                                     <button class="btn btn-block btn-primary" type="submit">Add</button>
                                  </div>
+                  
                               </div>
+                              
+                              
+                              
+                              
                            </form>
-
+                           <hr>
                            <div class="row">
                               <div class="col-md-6">
                                  <table>

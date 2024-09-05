@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-Payroll Absence
+Payroll Additional
 @endsection
 @section('content')
 
@@ -9,15 +9,15 @@ Payroll Absence
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
          <li class="breadcrumb-item" aria-current="page">Payroll</li>
-         <li class="breadcrumb-item active" aria-current="page">Absence</li>
+         <li class="breadcrumb-item active" aria-current="page">Additional</li>
       </ol>
    </nav>
 
    <div class="row">
       <div class="col-md-4">
-         <h4>Form Ketidakhadiran</h4>
+         <h4>Form add Additional</h4>
          <hr>
-         <form action="{{route('payroll.absence.store')}}" method="POST" enctype="multipart/form-data">
+         <form action="{{route('payroll.additional.store')}}" method="POST" enctype="multipart/form-data">
             @csrf
             {{-- <input type="number" name="employee" id="employee" value="{{$transaction->employee_id}}" hidden>
             <input type="number" name="spkl_type" id="spkl_type" value="{{$transaction->employee->unit->spkl_type}}" hidden>
@@ -42,64 +42,42 @@ Payroll Absence
                <div class="col">
                   <div class="form-group form-group-default">
                      <label>Type</label>
-                     <select class="form-control" required name="type" id="type">
+                     <select class="form-control " required name="type" id="type">
                         <option value="" disabled selected>Select</option>
-                        <option value="1">Alpha</option>
-                        <option value="2">Terlambat</option>
-                        <option value="3">Cuti/Ijin</option>
+                        <option value="1">Penambahan</option>
+                        <option value="2">Pengurangan</option>
                      </select>
                   </div>
                </div>
+               
+               
             </div>
-            {{-- <div class="row">
+            <div class="row">
+               
                <div class="col">
                   <div class="form-group form-group-default">
-                     <label>Hours Type</label>
-                     <select class="form-control"  name="hours_type" id="hours_type">
-                        <option value="" disabled selected>Select</option>
-                        <option value="1">Aktual</option>
-                        <option value="2">Multiple</option>
-                     </select>
+                     <label>Value(Rupiah)</label>
+                     <input type="number" required class="form-control" id="value" name="value" >
                   </div>
                </div>
-               <div class="col">
-                  <div class="form-group form-group-default">
-                     <label>Hours</label>
-                     <input type="number"  class="form-control" id="hours" name="hours" >
-                  </div>
-               </div>
-            </div> --}}
-            
+
+            </div>
             <div class="form-group form-group-default">
-               <label>Desc</label>
+               <label>Description</label>
                <input type="text"  class="form-control" id="desc" name="desc" >
             </div>
-         
-            <div class="row">
-               <div class="col-md-4">
-                  <div class="form-group form-group-default">
-                     <label>Menit</label>
-                     <input type="number"  class="form-control" id="minute" name="minute" >
-                  </div>
-               </div>
-               <div class="col">
-                  <div class="form-group form-group-default">
-                     <label>Document</label>
-                     <input type="file"  class="form-control" id="doc" name="doc" >
-                  </div>
-               </div>
+            <div class="form-group form-group-default">
+               <label>Document</label>
+               <input type="file"  class="form-control" id="doc" name="doc" >
             </div>
-            
             
             
             <button class="btn btn-block btn-primary" type="submit">Add</button>
          </form>
          <hr>
          <small>
-            Data pada form ini akan <b>Mengurangi</b> nilai Transaksi Gaji Karyawan <br>
-            Input Field Menit wajib diisi untuk tipe 'Terlambat'
+            Data pada form ini akan <b>Menambah / Mengurangi</b> nilai Transaksi Gaji Karyawan
          </small>
-         
       </div>
       <div class="col">
          <div class="table-responsive">
@@ -108,34 +86,34 @@ Payroll Absence
                   <tr>
                      {{-- <th class="text-center">No</th> --}}
                      <th>Type</th>
-                     <th>Date</th>
-                     {{-- <th>NIK</th> --}}
                      <th>Employee</th>
+                     <th class="">Date</th>
+                     <th class="text-center">Value</th>
+                     {{-- <th class="">Desc</th> --}}
                      <th></th>
                   </tr>
                </thead>
                
                <tbody>
-                  @foreach ($absences as $absence)
+                  @foreach ($additionals as $add)
                       <tr>
                         <td>
-                           @if ($absence->type == 1)
-                              Alpha
-                              @elseif($absence->type == 2)
-                              Terlambat ({{$absence->minute}})
-                              @elseif($absence->type == 3)
-                              Cuti/Izin
+                           @if ($add->type == 1)
+                               Penambah
+                               @else
+                               Pengurang
                            @endif
                         </td>
-                        <td>{{formatDate($absence->date)}}</td>
-                        {{-- <td>{{$absence->employee->nik}}</td> --}}
-                        <td>{{$absence->employee->nik}} {{$absence->employee->biodata->fullName()}}</td>
-                        <td>
-                           <a href="#" data-target="#modal-delete-absence-{{$absence->id}}" data-toggle="modal">Delete</a>
+                        <td class="text-truncate">
+                           {{$add->employee->nik}} {{$add->employee->biodata->fullName()}}
                         </td>
+                        <td><a href="#" data-target="#modal-additional-doc-{{$add->id}}" data-toggle="modal">{{formatDate($add->date)}}</a></td>
+                        <td class="text-right text-truncate">{{formatRupiah($add->value)}}</td>
+                        {{-- <td>{{$add->desc}}</td> --}}
+                        <td><a href="#" data-target="#modal-delete-additional-{{$add->id}}" data-toggle="modal">Delete</a></td>
                       </tr>
 
-                     <div class="modal fade" id="modal-delete-absence-{{$absence->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal fade" id="modal-delete-additional-{{$add->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-sm" role="document">
                            <div class="modal-content text-dark">
                               <div class="modal-header">
@@ -146,21 +124,19 @@ Payroll Absence
                               </div>
                               <div class="modal-body ">
                                  Delete data 
-                                 @if ($absence->type == 1)
-                                    Alpha
-                                    @elseif($absence->type == 2)
-                                    Terlambat ({{$absence->minute}})
-                                    @elseif($absence->type == 3)
-                                    Cuti/Izin
+                                 @if ($add->type == 1)
+                                    Penambah
+                                    @else
+                                    Pengurang
                                  @endif
-                                 {{$absence->employee->nik}} {{$absence->employee->biodata->fullName()}}
-                                 tanggal {{formatDate($absence->date)}}
+                                 {{$add->employee->nik}} {{$add->employee->biodata->fullName()}}
+                                 tanggal {{formatDate($add->date)}}
                                  ?
                               </div>
                               <div class="modal-footer">
                                  <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
                                  <button type="button" class="btn btn-danger ">
-                                    <a class="text-light" href="{{route('payroll.absence.delete', enkripRambo($absence->id))}}">Delete</a>
+                                    <a class="text-light" href="{{route('payroll.additional.delete', enkripRambo($add->id))}}">Delete</a>
                                  </button>
                               </div>
                            </div>
@@ -178,25 +154,30 @@ Payroll Absence
    
 </div>
 
-
-{{-- @foreach ($overtimes as $over)
-<div class="modal fade" id="modal-overtime-doc-{{$over->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+@foreach ($additionals as $additional)
+<div class="modal fade" id="modal-additional-doc-{{$additional->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Document SPKL</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Document Additional</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
          </div>
         <div class="modal-body">
-
-         <iframe src="{{asset('storage/' . $over->doc)}}" frameborder="0" style="width:100%"  height="500px"></iframe>
+         <div class="form-group form-group-default">
+            <label>Desc</label>
+            <b>{{$additional->desc}}</b>
+         </div>
+         <iframe src="{{asset('storage/' . $additional->doc)}}" frameborder="0" style="width:100%"  height="500px"></iframe>
         </div>
       </div>
    </div>
 </div>
-@endforeach --}}
+@endforeach
+
+
+
 
 
 @endsection
