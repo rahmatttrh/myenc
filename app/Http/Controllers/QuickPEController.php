@@ -53,8 +53,7 @@ class QuickPEController extends Controller
             //     ->orderBy('employe_id')
             //     ->get();
             
-               $pes = Pe::where('department_id', $employee->department_id)
-               ->orderBy('release_at', 'desc')
+               $pes = Pe::orderBy('updated_at', 'desc')
                ->get();
 
             $outAssesments = $this->outstandingAssessment();
@@ -62,7 +61,7 @@ class QuickPEController extends Controller
             $myteams = [];
             $allpes = [];
         } else if (auth()->user()->hasRole('Manager|Asst. Manager')) {
-        //  dd('ok');
+            //  dd('ok');
          $employee = auth()->user()->getEmployee();
             // $pes = Pe::join('employees', 'pes.employe_id', '=', 'employees.id')
             //     ->where('employees.manager_id', $employee->id)
@@ -102,7 +101,7 @@ class QuickPEController extends Controller
                 ->select('employees.*')
                 ->orderBy('biodatas.first_name', 'asc')
                 ->get();
-        $allpes = Pe::orderBy('updated_at', 'desc')->get();
+            $allpes = Pe::orderBy('updated_at', 'desc')->get();
          // dd($employee->id);
             // $pes = Pe::join('employees', 'pes.employe_id', '=', 'employees.id')
             //     ->where('employees.direct_leader_id', $employee->id)
@@ -119,13 +118,14 @@ class QuickPEController extends Controller
             //    dd('ko');
             //    $pes = Pe::where('created_by', $employee->id)->get();
             // }
-            if ($employee->designation->slug == 'supervisor') {
+            if (auth()->user()->hasRole('Supervisor')) {
                $pes = Pe::where('department_id', $employee->department_id)->get();
             } else {
+                // dd('ok');
                $pes = Pe::where('created_by', $employee->id)->get();
             }
             
-            
+            // dd(count($pes));
 
             // 
             $outAssesments = $this->outstandingAssessment($employee->department_id);
@@ -442,10 +442,12 @@ class QuickPEController extends Controller
                // dd('l');
          }
 
+        //  dd($level);
+
 
         // Berikut Behavior  Staff
         $behaviors = PeBehavior::where('level', $level)->get();
-
+        //  dd($behaviors);
 
 
         // $pcc = new PeComponentController();
@@ -481,6 +483,7 @@ class QuickPEController extends Controller
         }
 
         $pba = PeBehaviorApprasial::where('pe_id', $kpa->pe_id)->first();
+        // dd($pba);
 
         if (isset($pba)) {
             $pbads = PeBehaviorApprasialDetail::where('pba_id', $pba->id)->get();
@@ -498,7 +501,7 @@ class QuickPEController extends Controller
 
         $pd = PeDiscipline::where('pe_id', $kpa->pe_id)->first();
 
-        // dd($employes);
+        // dd($pba->id);
 
         return view('pages.qpe.qpe-edit', [
             'kpa' => $kpa,

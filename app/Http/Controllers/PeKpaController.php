@@ -529,7 +529,7 @@ class PeKpaController extends Controller
 
     public function summary()
     {
-        $employee = auth()->user()->getEmployee();
+        // $employee = auth()->user()->getEmployee();
 
         if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment')) {
             $kpas = PeKpa::orderBy('date', 'desc')

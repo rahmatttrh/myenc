@@ -70,15 +70,10 @@
             @endif
 
             @if (auth()->user()->hasRole('Manager|Asst. Manager'))
-            <x-sidebar.manager />
-            @endif
-
-            @if (auth()->user()->hasRole('Leader|Supervisor'))
+               <x-sidebar.manager />
+               @elseif(auth()->user()->hasRole('Leader|Supervisor'))
                <x-sidebar.leader />
-            @endif
-
-            @if (auth()->user()->hasRole('Karyawan'))
-            
+               @elseif(auth()->user()->hasRole('Karyawan'))
                <x-sidebar.employee />
             @endif
 

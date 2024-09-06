@@ -32,12 +32,12 @@ QPE
                 </div>
                 
                 <div class="card-body p-0 py-2">
-                  @if (auth()->user()->hasRole('Administrator'))
+                  @if (auth()->user()->hasRole('Administrator|HRD|HRD-Manager'))
                       <x-qpe.table.admin :pes="$pes" :i="$i" />
                       @elseif($employee->role == 5 || $employee->role == 8)
                       <x-qpe.table.manager :pes="$pes" :i="$i" :employee="$employee" />
-                      @elseif($employee->role == 15)
-                      <x-qpe.table.spv :pes="$pes" :i="$i" :employee="$employee" :myteams="$myteams" :allpes="$allpes" />
+                      @elseif($employee->role == 4 || $employee->role == 7 )
+                      <x-qpe.table.spv :pes="$pes" :allpes="$allpes" :i="$i" :employee="$employee" :myteams="$myteams" :allpes="$allpes" />
                       @else
                       <x-qpe.table.other :pes="$pes" :i="$i" />
                   @endif

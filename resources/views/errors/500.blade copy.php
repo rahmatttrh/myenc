@@ -27,17 +27,14 @@
 	<div class="wrapper not-found">
 		<h1 class="animated fadeIn">ERROR</h1>
 		<div class="desc ">Maaf, ada kesalahan didalam sistem</div>
-      <span class="">Screenshoot halaman ini dan segera laporkan kepada tim IT/HRD, terimakasih :)</span>
-      {{-- <span>{{$exception->getMessage()}}</span> --}}
+      <span class="">Silahkan screenshoot halaman ini beserta alamat url dan laporkan kepada tim IT Development Ekanuri</span>
+      <span>{{$exception->getMessage()}}</span>
 		<a href="/" class="btn btn-primary btn-back-home mt-4 Up">
 			<span class="btn-label mr-2">
 				<i class="flaticon-home"></i>
 			</span>
 			Back To Home
 		</a>
-		<hr>
-		{{Request::url()}} <br>
-    	{{$exception->getMessage() . ' line: ' . __LINE__}}
 	</div>
 	<script src="{{asset('js/core/jquery.3.2.1.min.js')}}"></script>
 	<script src="{{asset('js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js')}}"></script>

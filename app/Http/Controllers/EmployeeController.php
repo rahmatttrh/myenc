@@ -56,9 +56,48 @@ class EmployeeController extends Controller
       //    ->orderBy('designation_id')
       //    ->orderBy('position_id')
       //    ->get();
-         $employees = Employee::where('status', 1)
+      $employees = Employee::where('status', 1)
          ->orderBy('updated_at', 'desc')
          ->get();
+
+      // foreach ($employees as $emp) {
+      //    $user = User::where('username', $emp->nik)->first();
+      //    if ($user) {
+      //       if ($user->hasRole('BOD')) {
+      //          $emp->update([
+      //             'role' => 6,
+      //          ]);
+      //       } elseif ($user->hasRole('Manager')) {
+      //          $emp->update([
+      //             'role' => 5,
+      //          ]);
+      //       } elseif ($user->hasRole('Asst. Manager')) {
+      //          $emp->update([
+      //             'role' => 8,
+      //          ]);
+      //       } elseif ($user->hasRole('Supervisor')) {
+      //          $emp->update([
+      //             'role' => 7,
+      //          ]);
+      //       } elseif ($user->hasRole('Leader')) {
+      //          $emp->update([
+      //             'role' => 4,
+      //          ]);
+      //       }
+      //    }
+      // }
+      
+
+         // foreach ($employees as $emp) {
+         //    $user = User::where('username', $emp->nik)->first();
+         //    if ($user) {
+         //       $emp->update([
+         //          'role' => 3,
+         //          'user_id' => $user->id
+         //       ]);
+         //       $user->assignRole('Karyawan');
+         //    }
+         // }
       $draftEmployees = Employee::where('status', 0)->get();
       return view('pages.employee.index', [
          'employees' => $employees,
@@ -257,6 +296,14 @@ class EmployeeController extends Controller
 
       $dekripId = dekripRambo($id);
       $employee = Employee::find($dekripId);
+      $user = User::where('username', $employee->nik)->first();
+
+      if ($user) {
+         // dd('ok');
+        $employee->update([
+         'user_id' => $user->id
+        ]);
+      }
 
       // if ($employee->contract->loc = 'HWW') {
       //    dd('ada');
@@ -341,9 +388,11 @@ class EmployeeController extends Controller
 
       $managers = Employee::where('status', 1)->where('designation_id', 6)->get();
       $spvs = Employee::where('status', 1)->where('designation_id', 4)->where('department_id', $employee->department_id)->get();
-      $leaders = Employee::where('role', 4)->orWhere('role', 7)->orWhere('role', 8)->orWhere('role', 5)->orWhere('role', 9)->get();
+      // $leaders = Employee::where('role', 4)->orWhere('role', 7)->orWhere('role', 8)->orWhere('role', 5)->orWhere('role', 9)->get();
+      $leaders = Employee::where('designation_id', 3)->orWhere('designation_id', 4)->orWhere('designation_id', 5)->orWhere('designation_id', 6)->get();
       // dd($leaders);
       $finalLeaders = $leaders->where('status', 1);
+      // dd($finalLeaders);
       $managers = Position::where('type', 'dept');
       // $managers = Position::where('');
       // dd($finalLeaders);
@@ -368,9 +417,12 @@ class EmployeeController extends Controller
       } else {
          $managerPositions = [];
       }
+
+      // dd($myManagers);
       
       if ($subdept) {
-         $subManPositions = Position::where('department_id', $department->id)->where('sub_dept_id', $subdept->id)->where('type', 'subdept')->get();
+         $subManPositions = Position::where('department_id', $department->id)->where('sub_dept_id', $subdept->id)->where('type', 'subdept')->where('designation_id', '>', 4)->get();
+         // dd($subManPositions);
          if (count($subManPositions) > 0) {
             // dd('ok');
             // dd($subman->id);
@@ -391,6 +443,8 @@ class EmployeeController extends Controller
       } else {
          $subManPositions = null;
       }
+
+      // dd($myManagers);
       
       // foreach($managerPositions as $manpos){
       //    foreach($manpos->employees as $man){
@@ -415,11 +469,14 @@ class EmployeeController extends Controller
       //    }
       // }
 
+      // dd($managerPositions);
+      //  dd($myManagers);
+
       if (count($managerPositions) > 0){
          foreach($managerPositions as $manpos){
             
             foreach($manpos->employees as $man){
-               // dd($man);
+               // dd($manpos->employees);
                $myManagers[] = $man;
             }
          }
@@ -437,6 +494,8 @@ class EmployeeController extends Controller
 
       // dd($employee->position_id);
       // dd($employee->designation->name);  
+
+      // dd($myManagers);
 
       return view('pages.employee.detail', [
          'employee' => $employee,
@@ -556,6 +615,10 @@ class EmployeeController extends Controller
          'email' => $employee->biodata->email,
          'username' => $employee->nik,
          'password' => Hash::make('12345678')
+      ]);
+
+      $employee->update([
+         'user_id' => $user->id
       ]);
 
       if (auth()->user()->hasRole('Administrator')) {

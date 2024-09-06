@@ -112,7 +112,7 @@ Dashboard
                                  <td colspan="4">{{$pos->department->unit->name}} {{$pos->department->name}} ({{count($pos->department->employees)}}) </td>
                                  {{-- <td>{{$employee->biodata->fullName()}}</td> --}}
                                  </tr>
-                                 @foreach ($pos->department->employees as $emp)
+                                 @foreach ($pos->department->employees->where('status', 1) as $emp)
                                     <tr>
                                     <td></td>
                                     {{-- <td>{{$emp->sub_dept->name ?? ''}}</td> --}}

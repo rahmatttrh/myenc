@@ -289,9 +289,9 @@
                      </div>
                   </div>
                   <hr>
-                  {{-- @if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment')) --}}
+                  @if (auth()->user()->hasRole('Administrator|HRD|HRD-Manager|HRD-Spv|HRD-Recruitment'))
                   <button type="submit" class="btn btn-dark" >Update</button>
-                  {{-- @endif --}}
+                  @endif
                </form>
             </div>
             <div class="tab-pane fade" id="pills-bio-nobd" role="tabpanel" aria-labelledby="pills-bio-tab-nobd">

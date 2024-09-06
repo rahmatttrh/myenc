@@ -81,7 +81,7 @@
                            </div>
                         </div>
       
-                        <div class="row">
+                        {{-- <div class="row">
                            <div class="col-md-6">
                               <div class="form-group form-group-default">
                                  <label>Manager</label>
@@ -94,7 +94,7 @@
                                  <input type="text" class="form-control" name="desc" id="desc" value="{{$mutation->before->direct_leader->biodata->first_name}} {{$mutation->before->direct_leader->biodata->last_name}}" >
                               </div>
                            </div>
-                        </div>
+                        </div> --}}
                         
                      </div>
                      <div class="col-md-6">
@@ -167,7 +167,7 @@
                            </div>
                         </div>
       
-                        <div class="row">
+                        {{-- <div class="row">
                            <div class="col-md-6">
                               <div class="form-group form-group-default">
                                  <label>Manager</label>
@@ -180,7 +180,7 @@
                                  <input type="text" class="form-control" name="desc" id="desc" value="{{$mutation->become->direct_leader->biodata->first_name}} {{$mutation->become->direct_leader->biodata->last_name}}" >
                               </div>
                            </div>
-                        </div>
+                        </div> --}}
                      </div>
                   </div>
                   

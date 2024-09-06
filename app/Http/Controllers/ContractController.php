@@ -81,7 +81,7 @@ class ContractController extends Controller
    {
       // dd('ok');
       $req->validate([
-         'nik' => 'required'
+         'nik' => 'required|unique:employees'
       ]);
 
       // dd($req->subdept);
@@ -91,6 +91,7 @@ class ContractController extends Controller
       //    DB::transaction(function () use ($req) {
       $contract = Contract::find($req->contract);
       $employee = Employee::where('nik', $contract->id_no)->first();
+      $user = User::where('username', $employee->nik)->first();
       // dd($req->position);
 
       // dd($req->designation);
@@ -134,6 +135,10 @@ class ContractController extends Controller
          'position_id' => $position->id,
          
          
+      ]);
+
+      $user->update([
+         'username' => $req->nik
       ]);
       // });
 
