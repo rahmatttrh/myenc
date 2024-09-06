@@ -141,8 +141,8 @@ Setup Payroll Employee
                         <ul class="nav nav-tabs nav-line nav-color-secondary" role="tablist">
                            <li class="nav-item"> <a class="nav-link show active" id="pills-basic-tab-nobd" data-toggle="pill" href="#pills-basic-nobd" role="tab" aria-controls="pills-basic-nobd" aria-selected="true">Upah</a> </li>
                            
-                           <li class="nav-item"> <a class="nav-link " id="pills-document-tab-nobd" data-toggle="pill" href="#pills-document-nobd" role="tab" aria-controls="pills-document-nobd" aria-selected="true">Document</a> </li>
-                           <li class="nav-item"> <a class="nav-link " id="pills-doc-tab-nobd" data-toggle="pill" href="#pills-doc-nobd" role="tab" aria-controls="pills-doc-nobd" aria-selected="true">Riwayat Slip Gaji</a> </li>
+                           {{-- <li class="nav-item"> <a class="nav-link " id="pills-document-tab-nobd" data-toggle="pill" href="#pills-document-nobd" role="tab" aria-controls="pills-document-nobd" aria-selected="true">Document</a> </li> --}}
+                           <li class="nav-item"> <a class="nav-link " id="pills-doc-tab-nobd" data-toggle="pill" href="#pills-doc-nobd" role="tab" aria-controls="pills-doc-nobd" aria-selected="true"> Potongan</a> </li>
                            {{-- <li class="nav-item"> <a class="nav-link" id="pills-profile-tab-nobd" data-toggle="pill" href="#pills-profile-nobd" role="tab" aria-controls="pills-profile-nobd" aria-selected="false">Profile Picture</a> </li>
                            <li class="nav-item"> <a class="nav-link  " id="pills-bio-tab-nobd" data-toggle="pill" href="#pills-bio-nobd" role="tab" aria-controls="pills-bio-nobd" aria-selected="true">Notes</a> </li> --}}
                            {{-- <li class="nav-item"> <a class="nav-link" id="pills-contact-tab-nobd" data-toggle="pill" href="#pills-contact-nobd" role="tab" aria-controls="pills-contact-nobd" aria-selected="false">Social Networking</a> </li> --}}
@@ -203,7 +203,25 @@ Setup Payroll Employee
                         </div>
             
                         <div class="tab-pane fade" id="pills-doc-nobd" role="tabpanel" aria-labelledby="pills-doc-tab-nobd">
-                           <h3>Under Development</h3>
+                           <form action="">
+                              {{-- <div class="form-group form-group-default">
+                                 <label>Potongan BPJS</label>
+                                 <input type="text" class="form-control" id="pokok" name="pokok" value="">
+                              </div> --}}
+                              
+                              <div class="form-check">
+                                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                 <label class="form-check-label" for="flexCheckDefault">
+                                   Default checkbox
+                                 </label>
+                               </div>
+                               <div class="form-check">
+                                 <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                                 <label class="form-check-label" for="flexCheckChecked">
+                                   Checked checkbox
+                                 </label>
+                               </div>
+                           </form>
                            
                         </div>
             

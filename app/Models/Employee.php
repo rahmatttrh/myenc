@@ -181,4 +181,11 @@ class Employee extends Model
    {
       return $this->hasMany(Absence::class);
    }
+
+   public function getQpe($semester, $year)
+   {
+      $qpe = Pe::where('employe_id', $this->id)->where('semester', $semester)->where('tahun', $year)->first();
+
+      return $qpe;
+   }
 }

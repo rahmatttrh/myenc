@@ -190,6 +190,7 @@ Detail Transaction Payroll Employee
                                              <td>{{$red->name}}</td>
                                              {{-- <td></td> --}}
                                              <td class="text-right text-danger"><b>{{formatRupiah($red->value)}}</b></td>
+                                             <td><a href="{{route('transaction.reduction.delete', enkripRambo($red->id))}}">Delete</a></td>
                                            </tr>
                                            @if ($red->value_real != 0)
                                            <tr>

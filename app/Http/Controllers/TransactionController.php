@@ -57,10 +57,10 @@ class TransactionController extends Controller
       // dd($alphas);
       $reductionAlpha = null;
       foreach ($alphas as $alpha) {
-         $reductionAlpha = $reductionAlpha + 1 * 1 / 30 * $payroll->total;
-         $alpha->update([
-            'value' => $reductionAlpha
-         ]);
+         $reductionAlpha = $reductionAlpha + $alpha->value;
+         // $alpha->update([
+         //    'value' => $reductionAlpha
+         // ]);
       }
       // dd($reductionAlpha);
 

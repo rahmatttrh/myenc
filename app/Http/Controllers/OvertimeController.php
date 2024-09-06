@@ -18,7 +18,9 @@ class OvertimeController extends Controller
 {
    public function index()
    {
-      $overtimes = Overtime::orderBy('date', 'desc')->get();
+
+      $now = Carbon::now();
+      $overtimes = Overtime::where('month', $now->format('F'))->where('year', $now->format('Y'))->orderBy('date', 'desc')->get();
 
       // $transactionReductions = TransactionReduction::get();
       // foreach ($transactionReductions as $tr) {
@@ -30,13 +32,52 @@ class OvertimeController extends Controller
       // }
 
       $employees = Employee::get();
-      $holidays = Holiday::orderBy('date', 'asc')->get();
+      // $holidays = Holiday::orderBy('date', 'asc')->get();
       return view('pages.payroll.overtime', [
          'overtimes' => $overtimes,
          'employees' => $employees,
-         'holidays' => $holidays
+         'month' => $now->format('F'),
+         'year' => $now->format('Y')
+         // 'holidays' => $holidays
       ])->with('i');
    }
+
+   public function filter(Request $req)
+   {
+      $req->validate([]);
+
+      $employees = Employee::get();
+
+      if ($req->month == 'all') {
+         if ($req->year == 'all') {
+            $overtimes = Overtime::orderBy('date', 'desc')->get();
+         } else {
+            // dd('ok');
+            $overtimes = Overtime::where('year', $req->year)->orderBy('date', 'desc')->get();
+         }
+      } elseif ($req->year == 'all') {
+         if ($req->month == 'all') {
+            $overtimes = Overtime::orderBy('date', 'desc')->get();
+         } else {
+            $overtimes = Overtime::where('month', $req->month)->orderBy('date', 'desc')->get();
+         }
+      } else {
+         $overtimes = Overtime::where('month', $req->month)->where('year', $req->year)->orderBy('date', 'desc')->get();
+      }
+
+
+
+
+
+      $employees = Employee::get();
+      return view('pages.payroll.overtime', [
+         'overtimes' => $overtimes,
+         'employees' => $employees,
+         'month' => $req->month,
+         'year' => $req->year
+      ])->with('i');
+   }
+
 
    public function store(Request $req)
    {
@@ -44,8 +85,6 @@ class OvertimeController extends Controller
       // $req->validate([
       //    'doc' => 'required|image|mimes:jpg,jpeg,png|max:5120',
       // ]);
-
-
 
       $employee = Employee::find($req->employee);
       $transaction = Transaction::find($req->transaction);
@@ -133,7 +172,6 @@ class OvertimeController extends Controller
 
 
       if (request('doc')) {
-
          $doc = request()->file('doc')->store('doc/overtime');
       } else {
          $doc = null;
@@ -153,6 +191,7 @@ class OvertimeController extends Controller
          'holiday_type' => $req->holiday_type,
          'hours' => $req->hours,
          'rate' => round($rate),
+         'desc' => $req->desc,
          'doc' => $doc
       ]);
 

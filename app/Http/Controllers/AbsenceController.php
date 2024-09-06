@@ -24,6 +24,8 @@ class AbsenceController extends Controller
 
    public function store(Request $req)
    {
+
+      // dd('ok');
       $employee = Employee::find($req->employee);
       $payroll = Payroll::find($employee->payroll_id);
       // Cek jika karyawan tsb blm di set payroll
@@ -54,6 +56,16 @@ class AbsenceController extends Controller
          }
       }
 
+      $value =  1 * 1 / 30 * $payroll->total;
+
+      // $reductionAlpha = null;
+      // foreach ($alphas as $alpha) {
+      //    $reductionAlpha =  1 * 1 / 30 * $payroll->total;
+      //    $alpha->update([
+      //       'value' => $reductionAlpha
+      //    ]);
+      // }
+
       Absence::create([
          'type' => $req->type,
          'employee_id' => $req->employee,
@@ -63,7 +75,8 @@ class AbsenceController extends Controller
          'desc' => $req->desc,
          'doc' => $doc,
          'minute' => $req->minute,
-         'location_id' => $location->id
+         'location_id' => $location,
+         'value' => $value
       ]);
 
       return redirect()->back()->with('success', 'Data Absence successfully added');

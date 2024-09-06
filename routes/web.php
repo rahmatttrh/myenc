@@ -45,6 +45,7 @@ use App\Http\Controllers\SpklController;
 use App\Http\Controllers\SubDeptController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\TransactionOvertimeController;
+use App\Http\Controllers\TransactionReductionController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\VerificationController;
 use App\Models\Emergency;
@@ -291,13 +292,19 @@ Route::middleware(["auth"])->group(function () {
             Route::get('/index', [TransactionController::class, 'index'])->name('payroll.transaction');
             Route::get('/detail/{id}', [TransactionController::class, 'detail'])->name('payroll.transaction.detail');
             Route::post('store', [TransactionController::class, 'store'])->name('payroll.transaction.store');
-
             Route::get('location/{unit}/{loc}', [TransactionController::class, 'location'])->name('transaction.location');
+
+            Route::prefix('reduction')->group(function () {
+               Route::get('/delete/{id}', [TransactionReductionController::class, 'delete'])->name('transaction.reduction.delete');
+               // Route::post('store', [ReductionController::class, 'store'])->name('reduction.store');
+               // Route::get('delete/{id}', [ReductionController::class, 'delete'])->name('reduction.delete');
+            });
          });
          Route::prefix('overtime')->group(function () {
-            Route::get('/index', [OvertimeController::class, 'index'])->name('payroll.overtime');
-            Route::post('/store', [OvertimeController::class, 'store'])->name('payroll.overtime.store');
-            Route::get('/delete/{id}', [OvertimeController::class, 'delete'])->name('payroll.overtime.delete');
+            Route::get('index', [OvertimeController::class, 'index'])->name('payroll.overtime');
+            Route::post('filter', [OvertimeController::class, 'filter'])->name('payroll.overtime.filter');
+            Route::post('store', [OvertimeController::class, 'store'])->name('payroll.overtime.store');
+            Route::get('delete/{id}', [OvertimeController::class, 'delete'])->name('payroll.overtime.delete');
             // Route::get('/detail/{id}' , [TransactionController::class, 'detail'])->name('payroll.transaction.detail');
             // Route::post('store', [TransactionController::class, 'store'])->name('payroll.transaction.store');
          });
@@ -363,6 +370,10 @@ Route::middleware(["auth"])->group(function () {
          Route::get('/', [QuickPEController::class, 'index'])->name('qpe');
 
          Route::get('show/{id}', [QuickPEController::class, 'show'])->name('qpe.show');
+         Route::get('report', [QuickPEController::class, 'report'])->name('qpe.report');
+         Route::post('report/filter', [QuickPEController::class, 'reportFilter'])->name('qpe.report.filter');
+         Route::get('report/unit/{id}/{semester}/{year}', [QuickPEController::class, 'reportUnit'])->name('qpe.report.unit');
+         Route::get('report/department/{id}/{semester}/{year}', [QuickPEController::class, 'reportDepartment'])->name('qpe.report.department');
 
          Route::get('approval/{id}', [QuickPEController::class, 'approval'])->name('qpe.approval');
 
