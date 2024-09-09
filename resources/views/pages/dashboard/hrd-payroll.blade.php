@@ -62,30 +62,7 @@
                </div>
             </div>
 
-            <div class="card">
-               {{-- <div class="card-header p-2 bg-primary text-white">
-                  <i class="fas fa-desktop"></i> <small>Monitoring</small>
-               </div> --}}
-               <div class="card-body p-0">
-                  <table class="display  table-sm table-bordered">
-                     <thead>
-                        <tr>
-                           <th colspan="2">Hari Libur</th>
-                           {{-- <th colspan="2">QPE</th> --}}
-                        </tr>
-                     </thead>
-                     <tbody>
-                        @foreach ($holidays as $holi)
-                            <tr>
-                              <td>{{formatDateDayMonth($holi->date)}}</td>
-                              <td class="text-truncate" style="max-width: 110px">{{$holi->desc}}</td>
-                            </tr>
-                        @endforeach
-                     </tbody>
-                  </table>
-                  
-               </div>
-            </div>
+            
            
 
             {{-- <span>Hari Libur {{$month}}</span> 

@@ -1,45 +1,75 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<title>404</title>
-	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
-	<link rel="icon" href="{{asset('img/icon.ico')}}" type="image/x-icon"/>
-	
-	<!-- Fonts and icons -->
-	<script src="{{asset('js/plugin/webfont/webfont.min.js')}}"></script>
-	<script>
-		WebFont.load({
-			google: {"families":["Open+Sans:300,400,600,700"]},
-			custom: {"families":["Flaticon", "Font Awesome 5 Solid", "Font Awesome 5 Regular", "Font Awesome 5 Brands"], urls: ['../assets/css/fonts.css']},
-			active: function() {
-				sessionStorage.fonts = true;
-			}
-		});
-	</script>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+  <title>DSP - 500</title>
 
-	<!-- CSS Files -->
-	<link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
-	<link rel="stylesheet" href="{{asset('css/azzara.min.css')}}">
-</head>
-<body class="page-not-found">
-	<div class="wrapper not-found">
-		<h1 class="animated fadeIn">ERROR</h1>
-		<div class="desc ">Maaf, ada kesalahan didalam sistem</div>
-      <span class="">Silahkan screenshoot halaman ini beserta alamat url dan laporkan kepada tim IT Development Ekanuri</span>
-      <span>{{$exception->getMessage()}}</span>
-		<a href="/" class="btn btn-primary btn-back-home mt-4 Up">
-			<span class="btn-label mr-2">
-				<i class="flaticon-home"></i>
-			</span>
-			Back To Home
-		</a>
-	</div>
-	<script src="{{asset('js/core/jquery.3.2.1.min.js')}}"></script>
-	<script src="{{asset('js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js')}}"></script>
-	<script src="{{asset('js/core/popper.min.js')}}"></script>
-	<script src="{{asset('js/core/bootstrap.min.js')}}"></script>
-	<script type="text/javascript" src="//themera.net/embed/themera.js?id=71769"></script>
+  <!-- General CSS Files -->
+  <link rel="stylesheet" href="{{asset('stisla/modules/bootstrap/css/bootstrap.min.css')}}">
+  <link rel="stylesheet" href="{{asset('stisla/modules/fontawesome/css/all.min.css')}}">
+
+  <!-- CSS Libraries -->
+
+  <!-- Template CSS -->
+  <link rel="stylesheet" href="{{asset('stisla/css/style.css')}}">
+  <link rel="stylesheet" href="{{asset('stisla/css/components.css')}}">
+<!-- Start GA -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-94034622-3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-94034622-3');
+</script>
+<!-- /END GA --></head>
+
+<body>
+  <div id="app">
+    <section class="section">
+      <div class="container mt-5">
+        <div class="page-error">
+          <div class="page-inner">
+            <h2>ERROR</h2>
+            <div class="page-description">
+            	<b>Maaf, ada kesalahan</b> <br>
+               Screenshoot halaman ini dan segera laporkan kepada tim IT/HRD, terimakasih :)
+            </div>
+            <div class="page-search">
+              
+              <div class="mt-3">
+                  {{-- <button onclick="history.back()" class="btn btn-primary btn-lg">take me back</button> --}}
+                <a href="/" class="btn btn-primary btn-lg">Back Home</a>
+              </div>
+              <hr>
+              {{Request::url()}} <br>
+              {{$exception->getMessage() . ' line: ' . __LINE__}}
+            </div>
+          </div>
+        </div>
+        <div class="simple-footer mt-5">
+          Copyright &copy; 2024 MyENC | ENC Development
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- General JS Scripts -->
+  <script src="{{asset('stisla/modules/jquery.min.js')}}"></script>
+  <script src="{{asset('stisla/modules/popper.js')}}"></script>
+  <script src="{{asset('stisla/modules/tooltip.js')}}"></script>
+  <script src="{{asset('stisla/modules/bootstrap/js/bootstrap.min.js')}}"></script>
+  <script src="{{asset('stisla/modules/nicescroll/jquery.nicescroll.min.js')}}"></script>
+  <script src="{{asset('stisla/modules/moment.min.js')}}"></script>
+  <script src="{{asset('stisla/js/stisla.js')}}"></script>
+  
+  <!-- JS Libraies -->
+
+  <!-- Page Specific JS File -->
+  
+  <!-- Template JS File -->
+  <script src="{{asset('stisla/js/scripts.js')}}"></script>
+  <script src="{{asset('stisla/js/custom.js')}}"></script>
 </body>
 </html>

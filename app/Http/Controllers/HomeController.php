@@ -4,20 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Models\Biodata;
 use App\Models\Contract;
+use App\Models\Department;
+use App\Models\Designation;
 use App\Models\Employee;
 use App\Models\EmployeeLeader;
 use App\Models\EmployeePosition;
 use App\Models\Holiday;
 use App\Models\Log;
 use App\Models\Pe;
+use App\Models\Position;
 use App\Models\Presence;
 use App\Models\Sp;
 use App\Models\Spkl;
+use App\Models\SubDept;
 use App\Models\Transaction;
 use App\Models\Unit;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class HomeController extends Controller
 {
@@ -43,7 +48,7 @@ class HomeController extends Controller
          // $id = auth()->user()->id;
          RoleEmptyUser;
          // dd('tidak ada role');
-      } 
+      }
       // if (auth()->user()->hasRole('Manager')) {
       //    dd('Manager');
       // } else {
@@ -82,7 +87,7 @@ class HomeController extends Controller
       // foreach ($users as $user) {
       //    $user->roles()->detach();
       //    $employee = Employee::where('nik', $user->username)->first();
-       // $hrds = Employee::where('department_id', 8)->get();
+      // $hrds = Employee::where('department_id', 8)->get();
       //    // dd($hrds);
       //    // JIKA EMPLOYEE DARI DIVISI HRD
       //    // ASSIGN 2 ROLE  (ADMINISTRATOR DAN HRD)
@@ -149,15 +154,15 @@ class HomeController extends Controller
       // }
 
       // Aktifkan sekali
-      $employees = Employee::get();
-      foreach($employees as $emp){
-         $contract = Contract::find($emp->contract_id);
-         $emp->update([
-            'unit_id' => $contract->unit_id
-         ]);
-      }
+      // $employees = Employee::get();
+      // foreach($employees as $emp){
+      //    $contract = Contract::find($emp->contract_id);
+      //    $emp->update([
+      //       'unit_id' => $contract->unit_id
+      //    ]);
+      // }
 
-      
+
 
 
 
@@ -187,6 +192,7 @@ class HomeController extends Controller
 
       if (auth()->user()->hasRole('Administrator')) {
          $employees = Employee::get();
+
          $tetap = Contract::where('status', 1)->where('type', 'Tetap')->get()->count();
          $kontrak = Contract::where('status', 1)->where('type', 'Kontrak')->get()->count();
          $off = Employee::where('status', 3)->get()->count();
@@ -204,9 +210,9 @@ class HomeController extends Controller
          $tetap = Contract::where('status', 1)->where('type', 'Tetap')->get()->count();
          $empty = Contract::where('type', null)->get()->count();
          // $empty = Contract::where('type', null)->get()->count();
-         
+
          // Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit culpa tenetur sed
-         
+
          return view('pages.dashboard.admin', [
             'employees' => $employees,
             'male' => $male,
@@ -263,7 +269,7 @@ class HomeController extends Controller
          $male = Biodata::where('gender', 'Male')->count();
          $female = Biodata::where('gender', 'Female')->count();
          $spkls = Spkl::orderBy('updated_at', 'desc')->paginate(5);
-         $sps = Sp::where('status', '>' ,1)->orderBy('created_at', 'desc')->paginate('5');
+         $sps = Sp::where('status', '>', 1)->orderBy('created_at', 'desc')->paginate('5');
          $kontrak = Contract::where('status', 1)->where('type', 'Kontrak')->get()->count();
          $tetap = Contract::where('status', 1)->where('type', 'Tetap')->get()->count();
          $empty = Contract::where('type', null)->get()->count();
@@ -358,8 +364,8 @@ class HomeController extends Controller
                $teams = Employee::where('status', 1)->where('department_id', $employee->position->department_id)->get();
             }
          }
-         
-         
+
+
          // dd(count($final));
          $employeePositions = $employee->positions;
          // dd($employeePositions);
@@ -386,12 +392,12 @@ class HomeController extends Controller
          $teams = EmployeeLeader::where('leader_id', $employee->id)->get();
 
          $myteams = EmployeeLeader::join('employees', 'employee_leaders.employee_id', '=', 'employees.id')
-               ->join('biodatas', 'employees.biodata_id', '=', 'biodatas.id')
-                ->where('leader_id', $employee->id)
-                ->select('employees.*')
-                ->orderBy('biodatas.first_name', 'asc')
-                ->get();
-               //  dd($myteams);
+            ->join('biodatas', 'employees.biodata_id', '=', 'biodatas.id')
+            ->where('leader_id', $employee->id)
+            ->select('employees.*')
+            ->orderBy('biodatas.first_name', 'asc')
+            ->get();
+         //  dd($myteams);
 
          // $pes = Pe::join('employees', 'pes.employe_id', '=', 'employees.id')
          // ->where('employees.id', $employee->id)
@@ -400,9 +406,9 @@ class HomeController extends Controller
          // ->orderBy('pes.release_at', 'desc')
          // ->get();
 
-                
+
          // dd($teams);
-         $spRecents = Sp::where('by_id',auth()->user()->getEmployeeId())->orderBy('updated_at', 'desc')->paginate('5');
+         $spRecents = Sp::where('by_id', auth()->user()->getEmployeeId())->orderBy('updated_at', 'desc')->paginate('5');
          $peRecents = Pe::where('created_by', $employee->id)->where('status', '!=', 2)->orderBy('updated_at', 'desc')->get();
          if ($employee->designation->slug == 'supervisor') {
             $peRecents = Pe::where('department_id', $employee->department_id)->where('status', '!=', 2)->orderBy('updated_at', 'desc')->paginate(8);

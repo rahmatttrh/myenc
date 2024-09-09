@@ -6,28 +6,29 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateHolidaysTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
-    {
-        Schema::create('holidays', function (Blueprint $table) {
-            $table->id();
-            $table->date('date');
-            $table->string('desc');
-            $table->timestamps();
-        });
-    }
+   /**
+    * Run the migrations.
+    *
+    * @return void
+    */
+   public function up()
+   {
+      Schema::create('holidays', function (Blueprint $table) {
+         $table->id();
+         $table->integer('type');
+         $table->date('date');
+         $table->string('desc');
+         $table->timestamps();
+      });
+   }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('holidays');
-    }
+   /**
+    * Reverse the migrations.
+    *
+    * @return void
+    */
+   public function down()
+   {
+      Schema::dropIfExists('holidays');
+   }
 }

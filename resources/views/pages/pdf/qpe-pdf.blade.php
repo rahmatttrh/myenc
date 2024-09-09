@@ -92,7 +92,14 @@ PDF Example
                      <td colspan="2">Periode</td>
                      <td>: Semester {{$pe->semester}} - {{$pe->tahun}}</td>
                      <td></td>
-                     <td colspan="2" class="text-center" style="background-color: rgb(227, 243, 149)"><b>Level : Staf</b></td>
+                     <td colspan="2" class="text-center" style="background-color: rgb(227, 243, 149)"><b>Level : 
+                           @if ($pe->employe->designation_id < 3)
+                               Staff
+
+                               @else
+                               Leader
+                           @endif
+                     </b></td>
                   </tr>
                   <tr>
                      <td colspan="2">Nama</td>
@@ -117,14 +124,14 @@ PDF Example
                   </tr>
                   <tr>
                      <td colspan="2">Jabatan</td>
-                     <td>: {{$pe->employe->designation->name}}</td>
+                     <td>: {{$pe->employe->position->name}}</td>
                      <td></td>
                      <td></td>
                      <td></td>
                   </tr>
                   <tr>
                      <td colspan="2">Lokasi Kerja</td>
-                     <td>: {{$pe->employe->area}}</td>
+                     <td class="text-uppercase">: {{$pe->employe->contract->loc}}</td>
                      <td></td>
                      <td></td>
                      <td></td>
@@ -357,11 +364,11 @@ PDF Example
                   </tr>
                   <tr>
                      <td colspan="2">Nama &nbsp;&nbsp; : 
-                        {{$pe->getCreatedBy()->biodata->fullName()}}
+                        {{-- {{$pe->getCreatedBy()->biodata->fullName()}} --}}
                      </td>
                      <td>Nama &nbsp;&nbsp; : 
                         @if ($pe->verifikasi_by != null)
-                        {{$pe->getVerifikasiBy()->biodata->fullName()}}
+                        {{-- {{$pe->getVerifikasiBy()->biodata->fullName()}} --}}
                         @endif
                         
                      </td>

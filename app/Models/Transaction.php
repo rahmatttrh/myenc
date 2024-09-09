@@ -10,25 +10,33 @@ class Transaction extends Model
    use HasFactory;
    protected $guarded = [];
 
-   public function employee(){
+   public function employee()
+   {
       return $this->belongsTo(Employee::class);
    }
 
-   public function details(){
+   public function details()
+   {
       return $this->hasMany(TransactionDetail::class);
    }
 
-   public function reductions(){
+   public function reductions()
+   {
       return $this->hasMany(TransactionReduction::class);
    }
 
-   public function overtimes(){
+   public function overtimes()
+   {
       return $this->hasMany(TransactionOvertime::class);
    }
 
-   public function location(){
+   public function location()
+   {
       return $this->belongsTo(Location::class);
    }
 
-   
+   public function payroll()
+   {
+      return $this->belongsTo(Payroll::class);
+   }
 }

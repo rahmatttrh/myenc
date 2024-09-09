@@ -19,15 +19,15 @@
             <input type="number" name="employee" id="employee" value="{{$employee->id}}" hidden>
             <div class="row">
                <div class="col-md-10">
+                  <x-role-1 :employee="$employee" />
                   <div class="form-group form-group-default">
                      <label>Role</label>
                      <select class="form-control" id="role" name="role">
-                        {{-- @php
-                            if(auth()->user()->hasRole('Karyawan')){
-                              $myRole = 'Karyawan';
-                            }
-                        @endphp --}}
-                        <option value="" selected disabled>Select</option>
+                        
+                        <option value="" selected disabled>
+                           
+                           Select
+                        </option>
                         @foreach ($roles->where('type', 'employee') as $role)
                             <option {{$employee->role == $role->id ? 'selected' : ''}} value="{{$role->id}}">{{$role->name}}</option>
                         @endforeach
@@ -38,7 +38,7 @@
                   </div>
 
                   
-                     @if ($employee->department->slug == 'hrd')
+                     @if ($employee->department->slug == 'hrd' || $employee->department->slug == 'HRD')
                      <div class="form-group form-group-default">
                         <label>
                            Second Role
@@ -49,7 +49,9 @@
                            @endif --}}
                         </label>
                         <select class="form-control" id="role2" name="role2">
-                           <option value="" selected disabled>Select</option>
+                           <option value="" selected disabled>
+                              <x-role-2 :employee="$employee" />
+                           </option>
                            @foreach ($roles->where('type', 'hrd') as $role)
                               <option {{$employee->role2 == $role->id ? 'selected' : ''}} value="{{$role->id}}">{{$role->name}}</option>
                            @endforeach
