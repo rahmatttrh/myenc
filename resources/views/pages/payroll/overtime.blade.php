@@ -32,9 +32,13 @@ Payroll Overtime
                </select>
                {{-- <input type="number" class="form-control" id="hours" name="hours" > --}}
             </div>
-            <div class="form-group form-group-default">
-               <label>Date</label>
-               <input type="date" required class="form-control" id="date" name="date" >
+            <div class="row">
+               <div class="col-md-8">
+                  <div class="form-group form-group-default">
+                     <label>Date</label>
+                     <input type="date" required class="form-control" id="date" name="date" >
+                  </div>
+               </div>
             </div>
             <div class="form-group form-group-default">
                <label>Hours Type</label>

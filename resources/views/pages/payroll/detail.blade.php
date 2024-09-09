@@ -82,6 +82,21 @@ Setup Payroll Employee
                <b>{{formatRupiah($employee->payroll->total ?? 0)}}</b>
             </div>
             <div class="card-footer d-flex justify-content-between">
+               <div>
+                  <span>NIK</span> <br>
+                  <span>Unit</span> <br>
+                  <span>Department</span> <br>
+                  <span>Sub Dept</span> <br>
+                  <span>Position</span>
+               </div>
+               <div class="text-right">
+                  <span>{{$employee->nik ?? ''}}</span> <br>
+                  <span>{{$employee->unit->name ?? ''}}</span> <br>
+                  <span>{{$employee->department->name ?? ''}}</span> <br>
+                  <span>{{$employee->sub_dept->name ?? ''}}</span> <br>
+                  <span>{{$employee->position->name ?? ''}}</span>
+               </div>
+               
                {{-- <div>
                   Gaji Pokok <br>
                   Tunj. Jabatan <br>
@@ -125,8 +140,9 @@ Setup Payroll Employee
                      <div class="row row-nav-line">
                         <ul class="nav nav-tabs nav-line nav-color-secondary" role="tablist">
                            <li class="nav-item"> <a class="nav-link show active" id="pills-basic-tab-nobd" data-toggle="pill" href="#pills-basic-nobd" role="tab" aria-controls="pills-basic-nobd" aria-selected="true">Upah</a> </li>
-                           <li class="nav-item"> <a class="nav-link " id="pills-doc-tab-nobd" data-toggle="pill" href="#pills-doc-nobd" role="tab" aria-controls="pills-doc-nobd" aria-selected="true">Riwayat Slip Gaji</a> </li>
+                           
                            <li class="nav-item"> <a class="nav-link " id="pills-document-tab-nobd" data-toggle="pill" href="#pills-document-nobd" role="tab" aria-controls="pills-document-nobd" aria-selected="true">Document</a> </li>
+                           <li class="nav-item"> <a class="nav-link " id="pills-doc-tab-nobd" data-toggle="pill" href="#pills-doc-nobd" role="tab" aria-controls="pills-doc-nobd" aria-selected="true">Riwayat Slip Gaji</a> </li>
                            {{-- <li class="nav-item"> <a class="nav-link" id="pills-profile-tab-nobd" data-toggle="pill" href="#pills-profile-nobd" role="tab" aria-controls="pills-profile-nobd" aria-selected="false">Profile Picture</a> </li>
                            <li class="nav-item"> <a class="nav-link  " id="pills-bio-tab-nobd" data-toggle="pill" href="#pills-bio-nobd" role="tab" aria-controls="pills-bio-nobd" aria-selected="true">Notes</a> </li> --}}
                            {{-- <li class="nav-item"> <a class="nav-link" id="pills-contact-tab-nobd" data-toggle="pill" href="#pills-contact-nobd" role="tab" aria-controls="pills-contact-nobd" aria-selected="false">Social Networking</a> </li> --}}
@@ -187,43 +203,15 @@ Setup Payroll Employee
                         </div>
             
                         <div class="tab-pane fade" id="pills-doc-nobd" role="tabpanel" aria-labelledby="pills-doc-tab-nobd">
-                           <table class=" ">
-                              
-                              <tbody>
-                                 <tr>
-                                    <td class="d-flex justify-content-between">
-                                       {{-- <span></span> --}}
-                                       <a href="">Januari</a>
-                                       <span class="text-success">Done</span>
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                    <td class="d-flex justify-content-between">
-                                       <span>Februari</span>
-                                       <span class="text-success">Done</span>
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                    <td class="d-flex justify-content-between">
-                                       <span>Maret</span>
-                                       <span class="text-success">Done</span>
-                                    </td>
-                                 </tr>
-                                 <tr>
-                                    <td class="d-flex justify-content-between">
-                                       <span>April</span>
-                                       <span class="text-success">Done</span>
-                                    </td>
-                                 </tr>
-                                 
-                                 
-                              </tbody>
-                           </table>
+                           <h3>Under Development</h3>
                            
                         </div>
             
                         <div class="tab-pane fade " id="pills-document-nobd" role="tabpanel" aria-labelledby="pills-document-tab-nobd">
+                           @if ($employee->payroll_id != null)
                            <iframe style="width: 100%; height:400px" src="{{asset('storage/' . $employee->payroll->doc)}}" frameborder="0"></iframe>
+                           @endif
+                           
                         </div>
                         <div class="tab-pane fade" id="pills-bio-nobd" role="tabpanel" aria-labelledby="pills-bio-tab-nobd">
                            <form action="{{route('employee.update.bio')}}" method="POST">

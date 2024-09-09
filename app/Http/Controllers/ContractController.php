@@ -130,7 +130,7 @@ class ContractController extends Controller
 
          'unit_id' => $contract->unit_id,
          'department_id' => $contract->department_id,
-         'sub_dept_id' => $contract->subdept_id,
+         'sub_dept_id' => $contract->sub_dept_id,
          'position_id' => $position->id,
          
          

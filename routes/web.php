@@ -16,6 +16,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EmployeeLeaderController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\FetchController;
+use App\Http\Controllers\HolidayController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\MutationController;
@@ -101,7 +102,7 @@ Route::middleware(["auth"])->group(function () {
    Route::get('sub-dept/fetch-data/{id}', [SubDeptController::class, 'fetchData'])->name('department.fetch-data');
    // End Fetch
 
-   Route::group(['middleware' => ['role:Administrator|HRD|HRD-Manager|HRD-Recruitment|HRD-Spv']], function () {
+   Route::group(['middleware' => ['role:Administrator|HRD|HRD-Manager|HRD-Recruitment|HRD-Payroll|HRD-Spv']], function () {
       Route::prefix('employee')->group(function () {
          Route::get('tab/{tab}', [EmployeeController::class, 'index'])->name('employee');
          Route::get('nonactive', [EmployeeController::class, 'nonactive'])->name('employee.nonactive');
@@ -266,12 +267,22 @@ Route::middleware(["auth"])->group(function () {
       Route::get('/log/auth', [LogController::class, 'auth'])->name('log.auth');
 
       Route::prefix('payroll')->group(function () {
-         Route::get('/index', [PayrollController::class, 'index'])->name('payroll');
-         Route::get('/setup', [PayrollController::class, 'setup'])->name('payroll.setup');
+         Route::prefix('setup')->group(function () {
+            Route::get('/index', [PayrollController::class, 'index'])->name('payroll');
+            Route::get('/unit/index', [PayrollController::class, 'unit'])->name('payroll.unit');
+            Route::get('/holiday/index', [HolidayController::class, 'index'])->name('holiday');
+            
+
+            Route::get('/setup', [PayrollController::class, 'setup'])->name('payroll.setup');
+         });
+
+         Route::get('/report/index', [PayrollController::class, 'report'])->name('payroll.report');
+         Route::post('/report/get', [PayrollController::class, 'getReport'])->name('payroll.report.get');
          Route::get('/detail/{id}' , [PayrollController::class, 'detail'])->name('payroll.detail');
          Route::put('/update', [PayrollController::class, 'update'])->name('payroll.update');
          Route::prefix('transaction')->group(function () {
             Route::post('/add/master', [TransactionController::class, 'storeMaster'])->name('payroll.add.master.transaction');
+            Route::get('/delete/master/{id}', [TransactionController::class, 'deleteMaster'])->name('payroll.delete.master.transaction');
             Route::get('/monthly/{id}', [TransactionController::class, 'monthly'])->name('payroll.transaction.monthly');
             Route::get('/index', [TransactionController::class, 'index'])->name('payroll.transaction');
             Route::get('/detail/{id}' , [TransactionController::class, 'detail'])->name('payroll.transaction.detail');
@@ -285,8 +296,16 @@ Route::middleware(["auth"])->group(function () {
             // Route::post('store', [TransactionController::class, 'store'])->name('payroll.transaction.store');
          });
          Route::prefix('unit')->group(function () {
-            Route::get('/index', [PayrollController::class, 'unit'])->name('payroll.unit');
+            // Route::get('/index', [PayrollController::class, 'unit'])->name('payroll.unit');
             Route::post('/update/pph', [PayrollController::class, 'unitUpdatePph'])->name('payroll.unit.update');
+            // Route::get('/detail/{id}' , [TransactionController::class, 'detail'])->name('payroll.transaction.detail');
+            // Route::post('store', [TransactionController::class, 'store'])->name('payroll.transaction.store');
+         });
+
+         Route::prefix('holiday')->group(function () {
+            
+            Route::post('/store', [HolidayController::class, 'store'])->name('holiday.store');
+            Route::get('/delete/{id}', [HolidayController::class, 'delete'])->name('holiday.delete');
             // Route::get('/detail/{id}' , [TransactionController::class, 'detail'])->name('payroll.transaction.detail');
             // Route::post('store', [TransactionController::class, 'store'])->name('payroll.transaction.store');
          });

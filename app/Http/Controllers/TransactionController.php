@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Models\Location;
 use App\Models\Overtime;
 use App\Models\Payroll;
 use App\Models\Reduction;
@@ -60,14 +61,26 @@ class TransactionController extends Controller
    public function storeMaster(Request $req){
       $unit = Unit::find($req->unit);
       $employees = Employee::where('unit_id', $unit->id)->where('status', 1)->get();
+      $current = UnitTransaction::where('unit_id', $unit->id)->where('month', $req->month)->where('year', $req->year)->first();
+      if ($current) {
+         return redirect()->back()->with('danger', 'Slip Gaji ' . $unit->name . ' Bulan ' . $req->month . ' ' . $req->year . ' sudah ada');
+      } 
       $totalSalary = 0;
       $totalEmployee = 0;
+
+      foreach($employees as $employee){
+         if ($employee->payroll_id != null) {
+            if ($employee->contract->loc == null) {
+               return redirect()->back()->with('danger', 'Data Lokasi Kerja Kosong '. $employee->nik . ' ' . $employee->biodata->fullName());
+            }
+         }
+      }
 
       foreach($employees as $emp){
          if ($emp->payroll_id != null) {
             $totalSalary = $totalSalary + $emp->payroll->total;
             $totalEmployee = $totalEmployee + 1;
-
+            
             $this->store($emp, $req);
          }
          
@@ -89,6 +102,11 @@ class TransactionController extends Controller
       // dd($totalSalary);
    }
 
+   public function deleteMaster($id){
+      $unitTransaction = UnitTransaction::find(dekripRambo($id));
+      dd($unitTransaction->id);
+   }
+
    public function monthly($id){
       $unitTransaction = UnitTransaction::find(dekripRambo($id));
       $unit = Unit::find($unitTransaction->unit_id);
@@ -106,6 +124,17 @@ class TransactionController extends Controller
    public function store($emp, $req){
       $employee = Employee::find($emp->id);
       $payroll = Payroll::find($employee->payroll_id);
+      $locations = Location::get();
+
+      foreach($locations as $loc){
+         if ($loc->code == $employee->contract->loc) {
+            $location = $loc->id;
+         }
+      }
+
+      // if ($employee->contract->loc == null) {
+      //    return redirect()->back()->with('danger', 'Data Lokasi Kerja Kosong '. $employee->nik . ' ' . $employee->biodata->fullName());
+      // }
 
       $now = Carbon::today();
       $month = $now->format('F');
@@ -113,9 +142,11 @@ class TransactionController extends Controller
       $year = $now->format('Y');
       // dd($now->format('d/m/Y'));
 
+
       $transaction = Transaction::create([
          'status' => 0,
          'unit_id' => $emp->unit_id, 
+         'location_id' => $location,
          'employee_id' => $employee->id,
          'month' => $req->month,
          'year' => $req->year,

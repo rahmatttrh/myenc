@@ -38,15 +38,16 @@ Payroll Transaction
                   <table>
                      <thead>
                         <tr>
-                           <th colspan="4" class="text-uppercase">SLIP GAJI {{$unit->name}}</th>
+                           <th colspan="5" class="text-uppercase">SLIP GAJI {{$unit->name}}</th>
                            <th>
-                              <a href="" class="btn btn-sm btn-light btn-block" data-target="#modal-add-master-transaction" data-toggle="modal">Generate</a>
+                              <a href="" class="btn  btn-light btn-block" data-target="#modal-add-master-transaction" data-toggle="modal"><i class="fas fa-sync"></i> Generate</a>
                            </th>
                         </tr>
                         <tr>
                            <th>Month</th>
-                           <th>Total Employee</th>
-                           <th>Total Salary</th>
+                           <th>Year</th>
+                           <th class="text-center">Total Employee</th>
+                           <th class="text-right">Total Salary</th>
                            <th>Status</th>
                            <th>Action</th>
                         </tr>
@@ -56,13 +57,36 @@ Payroll Transaction
                         @foreach ($unit->unitTransactions as $trans)
                         <tr>
                            <td>{{$trans->month}}</td>
-                           <td>{{$trans->total_employee}} / {{count($trans->unit->employees->where('status', 1))}}</td>
-                           <td>{{formatRupiah($trans->total_salary)}}</td>
+                           <td>{{$trans->year}}</td>
+                           <td class="text-center">{{$trans->total_employee}} / {{count($trans->unit->employees->where('status', 1))}}</td>
+                           <td class="text-right">{{formatRupiah($trans->total_salary)}}</td>
                            <td>Draft</td>
                            <td>
-                              <a href="{{route('payroll.transaction.monthly', enkripRambo($trans->id))}}">Detail</a>
+                              <a href="{{route('payroll.transaction.monthly', enkripRambo($trans->id))}}">Detail</a> | <a href="#" data-target="#modal-delete-master-transaction-{{$trans->id}}" data-toggle="modal">Delete</a>
                            </td>
                         </tr>
+
+                        <div class="modal fade" id="modal-delete-master-transaction-{{$trans->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                           <div class="modal-dialog modal-sm" role="document">
+                              <div class="modal-content text-dark">
+                                 <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                       <span aria-hidden="true">&times;</span>
+                                    </button>
+                                 </div>
+                                 <div class="modal-body ">
+                                    Delete data transaction {{$trans->month}} {{$trans->year}} {{$trans->unit->name}} ?
+                                 </div>
+                                 <div class="modal-footer">
+                                    <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-danger ">
+                                       <a class="text-light" href="{{route('payroll.delete.master.transaction', enkripRambo($trans->id))}}">Delete</a>
+                                    </button>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
                         @endforeach
                         
                         
@@ -183,6 +207,8 @@ Payroll Transaction
                   </div>
                </div>
             </div>
+
+
               
             @endforeach
          </div>

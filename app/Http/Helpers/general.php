@@ -84,6 +84,18 @@ function formatDateTimeB($data)
    return $date;
 }
 
+function formatDateDay($data)
+{
+   $date = \Carbon\Carbon::parse($data)->format('d');
+   return $date;
+}
+
+function formatDateDayMonth($data)
+{
+   $date = \Carbon\Carbon::parse($data)->format('d F');
+   return $date;
+}
+
 
 
 

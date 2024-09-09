@@ -10,6 +10,10 @@
     <span class="badge badge-light">HRD Recruitment</span>
 @endif
 
+@if (auth()->user()->hasRole('HRD-Payroll'))
+    <span class="badge badge-light">HRD Payroll</span>
+@endif
+
 {{-- @if (auth()->user()->hasRole('Manager'))
     <span class="badge badge-light">Manager</span>
 @endif

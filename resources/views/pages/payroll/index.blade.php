@@ -8,8 +8,8 @@ Payroll
    <nav aria-label="breadcrumb ">
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
-         <li class="breadcrumb-item" aria-current="page">Payroll</li>
-         <li class="breadcrumb-item active" aria-current="page">Employee List</li>
+         <li class="breadcrumb-item" aria-current="page">Setup Payroll</li>
+         <li class="breadcrumb-item active" aria-current="page">Gaji Karyawan</li>
       </ol>
    </nav>
    
