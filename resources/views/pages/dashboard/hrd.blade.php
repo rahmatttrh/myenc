@@ -62,7 +62,7 @@
                               <tr>
                                  <td>Tetap</td>
                                  <td class="text-center">{{$tetap}}</td>
-                                 <td>Porgress</td>
+                                 <td>Progress</td>
                                  <td class="text-center">{{count($pes->where('status', 1))}}</td>
                               </tr>
                               <tr>

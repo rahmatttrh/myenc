@@ -57,17 +57,19 @@
             @endif
 
             @if (auth()->user()->hasRole('HRD&Supervisor'))
-            
                <x-sidebar.hrd-spv />
+               
             @endif
-
-            {{-- @if (auth()->user()->hasRole('HRD-Spv'))
-               <x-sidebar.hrd-spv />
-            @endif --}}
-            
             @if (auth()->user()->hasRole('HRD-Recruitment'))
                <x-sidebar.hrd-recruitment />
+               
             @endif
+            @if (auth()->user()->hasRole('HRD-Payroll'))
+               <x-sidebar.hrd-payroll />
+               
+            @endif
+
+
 
             @if (auth()->user()->hasRole('Manager|Asst. Manager'))
                <x-sidebar.manager />
@@ -77,7 +79,8 @@
                <x-sidebar.employee />
             @endif
 
-           
+
+
 
             {{-- @if (auth()->user()->hasRole('Administrator|HRD|Leader|Supervisor|Manager'))
 
@@ -149,7 +152,6 @@
                </div>
             </li>
 
-            
 
             <li class="nav-item {{ (request()->is('sp/*')) ? 'active' : '' }}">
                <a href="{{route('sp')}}">
@@ -159,8 +161,6 @@
             </li>
 
             @endif --}}
-
-
             
 
             

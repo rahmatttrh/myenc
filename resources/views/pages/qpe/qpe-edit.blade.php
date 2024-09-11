@@ -607,35 +607,35 @@ PE
                          </thead>
                          <tbody>
                              @if($pba == null)
-                             @foreach($behaviors as $key => $behavior)
-                             <tr>
-                                 <td class="text-center">{{ ++$key }}</td>
-                                 <td>{{ $behavior->objective }}</td>
-                                 <td>{{ $behavior->description }}</td>
-                                 <td class="text-center">{{ $behavior->bobot }}</td>
-                                 <td>
-                                     <input style="width: 80px" type="text" name="valBehavior[{{ $behavior->id }}]" value="0" min="0.01" max="4" step="0.01">
-                                     <br><span><small>*Max 4</small></span>
-                                 </td>
-                                 <td>
-                                     <input style="width: 50px" type="text" name="acvBehavior[{{ $behavior->id }}]" readonly>
-                                     <br><span>-</span>
-                                 </td>
-                             </tr>
-                             @endforeach
+                              @foreach($behaviors as $key => $behavior)
+                              <tr>
+                                    <td class="text-center">{{ ++$key }}</td>
+                                    <td>{{ $behavior->objective }}</td>
+                                    <td>{{ $behavior->description }}</td>
+                                    <td class="text-center">{{ $behavior->bobot }}</td>
+                                    <td>
+                                       <input style="width: 80px" type="text" name="valBehavior[{{ $behavior->id }}]" value="0" min="0.01" max="4" step="0.01">
+                                       <br><span><small>*Max 4</small></span>
+                                    </td>
+                                    <td>
+                                       <input style="width: 50px" type="text" name="acvBehavior[{{ $behavior->id }}]" readonly>
+                                       <br><span>-</span>
+                                    </td>
+                              </tr>
+                              @endforeach
                              @else
 
                              @foreach($pbads as $key => $pbda)
-                             <tr>
-                                 <td>{{ ++$key }}</td>
-                                 <td>
-                                     <a href="#" data-target="#modalBehavior-{{$pbda->id}}" data-toggle="modal">{{ $pbda->behavior->objective }}</a>
-                                 </td>
-                                 <td>{{ $pbda->behavior->description }}</td>
-                                 <td>{{ $pbda->behavior->bobot }}</td>
-                                 <td>{{ $pbda->value }}</td>
-                                 <td>{{ $pbda->achievement }}</td>
-                             </tr>
+                              <tr>
+                                    <td>{{ ++$key }}</td>
+                                    <td>
+                                       <a href="#" data-target="#modalBehavior-{{$pbda->id}}" data-toggle="modal">{{ $pbda->behavior->objective }}</a>
+                                    </td>
+                                    <td>{{ $pbda->behavior->description }}</td>
+                                    <td>{{ $pbda->behavior->bobot }}</td>
+                                    <td>{{ $pbda->value }}</td>
+                                    <td>{{ $pbda->achievement }}</td>
+                              </tr>
 
                              <div class="modal fade" id="modalBehavior-{{$pbda->id}}" data-bs-backdrop="static">
                                  <div class="modal-dialog" style="max-width: 50%;">

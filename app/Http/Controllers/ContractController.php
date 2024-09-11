@@ -92,9 +92,11 @@ class ContractController extends Controller
       $contract = Contract::find($req->contract);
       $employee = Employee::where('nik', $contract->id_no)->first();
       $user = User::where('username', $employee->nik)->first();
+      $user = User::where('username', $employee->nik)->first();
       // dd($req->position);
 
       // dd($req->designation);
+
 
 
       $contract->update([
@@ -112,6 +114,7 @@ class ContractController extends Controller
          'salary' => $req->salary,
          'hourly_rate' => $req->hourly_rate,
          'payslip' => $req->payslip,
+
 
          'start' => $req->start,
          'end' => $req->end,
@@ -132,7 +135,10 @@ class ContractController extends Controller
          'unit_id' => $contract->unit_id,
          'department_id' => $contract->department_id,
          'sub_dept_id' => $contract->sub_dept_id,
+         'sub_dept_id' => $contract->sub_dept_id,
          'position_id' => $position->id,
+
+
 
 
       ]);
@@ -146,6 +152,7 @@ class ContractController extends Controller
       ]);
       // });
 
+      $user = User::where('username', $employee->nik)->first();
       $user = User::where('username', $employee->nik)->first();
       // $user->roles()->detach();
       // if ($req->designation == 3) {

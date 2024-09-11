@@ -61,4 +61,13 @@ class CreateTransactionsTable extends Migration
    {
       Schema::dropIfExists('transactions');
    }
+   /**
+    * Reverse the migrations.
+    *
+    * @return void
+    */
+   public function down()
+   {
+      Schema::dropIfExists('transactions');
+   }
 }

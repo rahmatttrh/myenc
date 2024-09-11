@@ -5,14 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Biodata;
 use App\Models\Contract;
 use App\Models\Department;
-use App\Models\Designation;
+use App\Models\Designation; 
 use App\Models\Employee;
-use App\Models\EmployeeLeader;
-use App\Models\EmployeePosition;
-use App\Models\Holiday;
+use App\Models\EmployeeLeader; 
+use App\Models\Holiday; 
 use App\Models\Log;
 use App\Models\Pe;
-use App\Models\Position;
+use App\Models\Position; 
 use App\Models\Presence;
 use App\Models\Sp;
 use App\Models\Spkl;
@@ -49,6 +48,7 @@ class HomeController extends Controller
          RoleEmptyUser;
          // dd('tidak ada role');
       }
+      // }
       // if (auth()->user()->hasRole('Manager')) {
       //    dd('Manager');
       // } else {
@@ -87,6 +87,7 @@ class HomeController extends Controller
       // foreach ($users as $user) {
       //    $user->roles()->detach();
       //    $employee = Employee::where('nik', $user->username)->first();
+      // $hrds = Employee::where('department_id', 8)->get();
       // $hrds = Employee::where('department_id', 8)->get();
       //    // dd($hrds);
       //    // JIKA EMPLOYEE DARI DIVISI HRD
@@ -165,7 +166,7 @@ class HomeController extends Controller
 
 
 
-      $employeeUsers = User::where('');
+      // $employeeUsers = User::where('');
 
       $now = Carbon::now();
       // dd($now->format('Y-m-d'));
@@ -192,6 +193,7 @@ class HomeController extends Controller
 
       if (auth()->user()->hasRole('Administrator')) {
          $employees = Employee::get();
+
          $tetap = Contract::where('status', 1)->where('type', 'Tetap')->get()->count();
          $kontrak = Contract::where('status', 1)->where('type', 'Kontrak')->get()->count();
          $off = Employee::where('status', 3)->get()->count();
@@ -210,7 +212,9 @@ class HomeController extends Controller
          $empty = Contract::where('type', null)->get()->count();
          // $empty = Contract::where('type', null)->get()->count();
 
+
          // Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit culpa tenetur sed
+
 
          return view('pages.dashboard.admin', [
             'employees' => $employees,
@@ -268,6 +272,7 @@ class HomeController extends Controller
          $male = Biodata::where('gender', 'Male')->count();
          $female = Biodata::where('gender', 'Female')->count();
          $spkls = Spkl::orderBy('updated_at', 'desc')->paginate(5);
+         $sps = Sp::where('status', '>', 1)->orderBy('created_at', 'desc')->paginate('5');
          $sps = Sp::where('status', '>', 1)->orderBy('created_at', 'desc')->paginate('5');
          $kontrak = Contract::where('status', 1)->where('type', 'Kontrak')->get()->count();
          $tetap = Contract::where('status', 1)->where('type', 'Tetap')->get()->count();
@@ -375,6 +380,8 @@ class HomeController extends Controller
          }
 
 
+
+
          // dd(count($final));
          $employeePositions = $employee->positions;
          // dd($employeePositions);
@@ -410,6 +417,12 @@ class HomeController extends Controller
             ->orderBy('biodatas.first_name', 'asc')
             ->get();
          //  dd($myteams);
+            // ->join('biodatas', 'employees.biodata_id', '=', 'biodatas.id')
+            // ->where('leader_id', $employee->id)
+            // ->select('employees.*')
+            // ->orderBy('biodatas.first_name', 'asc')
+            // ->get();
+         //  dd($myteams);
 
          // $pes = Pe::join('employees', 'pes.employe_id', '=', 'employees.id')
          // ->where('employees.id', $employee->id)
@@ -419,7 +432,9 @@ class HomeController extends Controller
          // ->get();
 
 
+
          // dd($teams);
+         $spRecents = Sp::where('by_id', auth()->user()->getEmployeeId())->orderBy('updated_at', 'desc')->paginate('5');
          $spRecents = Sp::where('by_id', auth()->user()->getEmployeeId())->orderBy('updated_at', 'desc')->paginate('5');
          $peRecents = Pe::where('created_by', $employee->id)->where('status', '!=', 2)->orderBy('updated_at', 'desc')->get();
          if ($employee->designation->slug == 'supervisor') {

@@ -159,6 +159,7 @@ class EmployeeController extends Controller
       ])->with('i');
    }
 
+   
    public function publishSingle($id)
    {
       $employee = Employee::find(dekripRambo($id));
@@ -173,16 +174,38 @@ class EmployeeController extends Controller
       // } catch (Exception $e) {
       //    return redirect()->back()->with('danger', 'Can not activate employee  ' . $employee->biodata->first_name . ' ' . $employee->biodata->last_name . ', Error log : ' . $e->getMessage());
       // }
+      // try {
+      //    $user = User::create([
+      //       'name' => $employee->biodata->first_name . ' ' . $employee->biodata->last_name,
+      //       'email' => $employee->biodata->email,
+      //       'username' => $employee->nik,
+      //       'password' => Hash::make('12345678')
+      //    ]);
+      // } catch (Exception $e) {
+      //    return redirect()->back()->with('danger', 'Can not activate employee  ' . $employee->biodata->first_name . ' ' . $employee->biodata->last_name . ', Error log : ' . $e->getMessage());
+      // }
 
+      
       $employee->update([
          'status' => 1,
          // 'user_id' => $user->id
       ]);
 
+      
       $employee->biodata->update([
          'status' => 1,
       ]);
 
+      // $user = User::where('username', $employee->nik)->first();
+      // if ($employee->contract->designation_id == 1) {
+      //    $user->assignRole('Manager');
+      // } elseif ($employee->contract->designation_id == 2) {
+      //    $user->assignRole('Asst. Manager');
+      // } elseif ($employee->contract->designation_id == 3) {
+      //    $user->assignRole('Supervisor');
+      // } else {
+      //    $user->assignRole('Karyawan');
+      // }
       $user = User::where('username', $employee->nik)->first();
       if ($employee->contract->designation_id == 1) {
          $user->assignRole('Manager');
@@ -194,6 +217,7 @@ class EmployeeController extends Controller
          $user->assignRole('Karyawan');
       }
 
+      // $user->assignRole('Karyawan');
       // $user->assignRole('Karyawan');
 
       if (auth()->user()->hasRole('Administrator')) {
@@ -209,6 +233,7 @@ class EmployeeController extends Controller
          'desc' => 'Employee ' . $employee->nik . ' ' . $employee->biodata->fullname()
       ]);
       return redirect()->back()->with('success', 'Employee successfully activated');
+      
    }
 
    public function publish(Request $req)
@@ -247,6 +272,7 @@ class EmployeeController extends Controller
          $contract->update([
             'status' => 1
          ]);
+
 
 
          $user = User::where('username', $employee->nik)->first();
@@ -351,6 +377,7 @@ class EmployeeController extends Controller
          //    // dd($manager->biodata->fullName());
          //    // dd('kosong');
       }
+      
 
       // $pos = Position::where('designation_id', 6)->orWhere('designation_id', 7)->get();
       // $position = $pos->where('department_id', $department->id)->first();
@@ -365,7 +392,22 @@ class EmployeeController extends Controller
       //       'direct_leader_id' => null
       //    ]);
       // }
+      // $pos = Position::where('designation_id', 6)->orWhere('designation_id', 7)->get();
+      // $position = $pos->where('department_id', $department->id)->first();
+      // // dd($position->name);
+      // // dd($position->name);
+      // // dd($position->employees()->first()->biodata->fullName());
+      // // dd($employee->contract_id);
+      // // $contract = Contract::find($employee->contract_id);
+      // if (count($position->employees) > 0) {
+      //    $employee->update([
+      //       'manager_id' => $position->employees()->first()->id,
+      //       'direct_leader_id' => null
+      //    ]);
       // }
+      // }
+
+
 
 
       $contracts = Contract::where('id_no', $employee->nik)->where('status', 0)->get();
@@ -411,6 +453,8 @@ class EmployeeController extends Controller
       // dd($employee->department_id);
       $department = Department::find($employee->department_id);
       $subdept = SubDept::find($employee->sub_dept_id);
+      // // dd($department->id);
+      // $myManagers = [];
       // dd($department->id);
       $myManagers = [];
       // dd($subdept->id);
@@ -428,11 +472,13 @@ class EmployeeController extends Controller
          if (count($subManPositions) > 0) {
             // dd('ok');
             // dd($subman->id);
+            // foreach ($subManPositions as $submanpos) {
             foreach ($subManPositions as $submanpos) {
                // dd($submanpos->employee);
                if ($submanpos->employee) {
                   $myManagers[] = $submanpos->employee;
                }
+
 
                // dd($submanpos->employee);
                // foreach($submanpos->employees as $subman){
@@ -441,6 +487,7 @@ class EmployeeController extends Controller
                // }
             }
             // dd($myManagers);
+         
          }
       } else {
          $subManPositions = null;
@@ -461,8 +508,10 @@ class EmployeeController extends Controller
       // }
 
 
+
       // else {
       //    foreach($managerPositions as $manpos){
+
 
       //       foreach($manpos->employees as $man){
       //          // dd($man);
@@ -485,6 +534,7 @@ class EmployeeController extends Controller
       }
 
       // dd($subManPositions);
+
 
 
 
@@ -580,6 +630,7 @@ class EmployeeController extends Controller
          'id_no' => $req->nik,
          'type' => $req->type,
 
+
          'unit_id' => $req->unit,
          'department_id' => $req->department,
          'sub_dept_id' => $req->subdept,
@@ -587,6 +638,7 @@ class EmployeeController extends Controller
          'position_id' => $req->position,
          'shift_id' => $req->shift,
          'salary' => $req->salary,
+
 
          // 'hourly_rate' => $req->hourly_rate,
          // 'payslip' => $req->payslip,
@@ -623,6 +675,10 @@ class EmployeeController extends Controller
          'user_id' => $user->id
       ]);
 
+      $employee->update([
+         'user_id' => $user->id
+      ]);
+
       if (auth()->user()->hasRole('Administrator')) {
          $departmentId = null;
       } else {
@@ -637,6 +693,15 @@ class EmployeeController extends Controller
          'action' => 'Create',
          'desc' => 'Employee ' . $employee->nik . ' ' . $employee->biodata->fullname()
       ]);
+
+
+      // Log::create([
+      //    'department_id' => $departmentId,
+      //    'user_id' => auth()->user()->id,
+      //    'action' => 'Create',
+      //    'desc' => 'Employee ' . $employee->nik . ' ' . $employee->biodata->fullname()
+      // ]);
+
 
 
 
@@ -662,6 +727,7 @@ class EmployeeController extends Controller
 
    public function update(Request $req)
    {
+      // $req->validate([]);
       $req->validate([]);
 
       $employee = Employee::find($req->employee);
@@ -687,6 +753,7 @@ class EmployeeController extends Controller
          'nationality' => $req->nationality,
          'state' => $req->state,
          'city' => $req->city,
+
 
       ]);
 
@@ -809,11 +876,13 @@ class EmployeeController extends Controller
       return redirect()->route('employee.detail', [enkripRambo($employee->id), enkripRambo('basic')])->with('success', 'Employee successfully updated');
    }
 
+   
    public function updateRole(Request $req)
    {
       $employee = Employee::find($req->employee);
       $role = Role::find($req->role);
       $user = User::where('username', $employee->nik)->first();
+
 
       $user->roles()->detach();
 
@@ -830,6 +899,7 @@ class EmployeeController extends Controller
          $user->assignRole($role2->name);
       }
       // dd($req->role);
+
 
 
       // $user = Employee::find(auth()->user()->getEmployeeId());
@@ -906,6 +976,7 @@ class EmployeeController extends Controller
       return redirect()->route('employee.draft')->with('success', 'Employee Data successfully imported');
    }
 
+  
    public function delete($id)
    {
       $dekripId = dekripRambo($id);
@@ -926,6 +997,7 @@ class EmployeeController extends Controller
          $biodata->delete();
       }
 
+      // if ($user) {
       if ($user) {
          $user->delete();
       }

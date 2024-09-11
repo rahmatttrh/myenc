@@ -125,12 +125,14 @@ PDF Example
                   <tr>
                      <td colspan="2">Jabatan</td>
                      <td>: {{$pe->employe->position->name}}</td>
+                     <td>: {{$pe->employe->position->name}}</td>
                      <td></td>
                      <td></td>
                      <td></td>
                   </tr>
                   <tr>
                      <td colspan="2">Lokasi Kerja</td>
+                     <td class="text-uppercase">: {{$pe->employe->contract->loc}}</td>
                      <td class="text-uppercase">: {{$pe->employe->contract->loc}}</td>
                      <td></td>
                      <td></td>
@@ -364,11 +366,11 @@ PDF Example
                   </tr>
                   <tr>
                      <td colspan="2">Nama &nbsp;&nbsp; : 
-                        {{$pe->getCreatedBy()->biodata->fullName()}}
+                        {{-- {{$pe->getCreatedBy()->biodata->fullName()}} --}}
                      </td>
                      <td>Nama &nbsp;&nbsp; : 
                         @if ($pe->verifikasi_by != null)
-                        {{$pe->getVerifikasiBy()->biodata->fullName()}}
+                        {{-- {{$pe->getVerifikasiBy()->biodata->fullName()}} --}}
                         @endif
                         
                      </td>

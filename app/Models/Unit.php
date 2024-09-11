@@ -7,25 +7,39 @@ use Illuminate\Database\Eloquent\Model;
 
 class Unit extends Model
 {
+   // use HasFactory;
+   // protected $guarded = [];
    use HasFactory;
    protected $guarded = [];
 
 
+   // public function departments()
+   // {
+   //    return $this->hasMany(Department::class);
+   // }
    public function departments()
    {
       return $this->hasMany(Department::class);
    }
 
+   
    public function employees()
    {
       return $this->hasMany(Employee::class);
    }
-
+   
    public function reductions()
    {
       return $this->hasMany(Reduction::class);
    }
+   
 
+   // public function totalSubDept($unitId = 2)
+   // {
+   //    // Memanggil ModelA dan salah satu metodenya
+   //    $ModelDepartments = new Department();
+   //    $departments = $ModelDepartments->where('unit_id', $unitId)->get();
+   //    $totalSubDept = 0;
    public function totalSubDept($unitId = 2)
    {
       // Memanggil ModelA dan salah satu metodenya
@@ -38,7 +52,7 @@ class Unit extends Model
       }
       return $totalSubDept;
    }
-
+      
    public function unitTransactions()
    {
       return $this->hasMany(UnitTransaction::class);
