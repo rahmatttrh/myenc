@@ -145,7 +145,8 @@ class Employee extends Model
       return $this->hasMany(Mutation::class);
    }
 
-   public function sub_dept(){
+   public function sub_dept()
+   {
       return $this->belongsTo(SubDept::class);
    }
    // public function shift()
@@ -153,24 +154,38 @@ class Employee extends Model
    //    return $this->belongsTo(Shift::class);
    // }
 
-   public function positions(){
+   public function positions()
+   {
       return $this->belongsToMany(Position::class);
    }
 
-   public function getLeaders(){
+   public function getLeaders()
+   {
       $leaders = EmployeeLeader::where('employee_id', $this->id)->get();
       return $leaders;
    }
 
-   public function getKpi(){
+   public function getKpi()
+   {
       $kpi = PeKpi::find($this->kpi_id);
       return $kpi;
    }
 
 
-   public function payroll(){
+   public function payroll()
+   {
       return $this->belongsTo(Payroll::class);
    }
 
+   public function absences()
+   {
+      return $this->hasMany(Absence::class);
+   }
 
+   public function getQpe($semester, $year)
+   {
+      $qpe = Pe::where('employe_id', $this->id)->where('semester', $semester)->where('tahun', $year)->first();
+
+      return $qpe;
+   }
 }

@@ -324,6 +324,11 @@ Route::middleware(["auth"])->group(function () {
 
          Route::get('approval/{id}', [QuickPEController::class, 'approval'])->name('qpe.approval');
 
+         Route::get('report', [QuickPEController::class, 'report'])->name('qpe.report');
+         Route::post('report/filter', [QuickPEController::class, 'reportFilter'])->name('qpe.report.filter');
+         Route::get('report/unit/{id}/{semester}/{year}', [QuickPEController::class, 'reportUnit'])->name('qpe.report.unit');
+         Route::get('report/department/{id}/{semester}/{year}', [QuickPEController::class, 'reportDepartment'])->name('qpe.report.department');
+
          Route::patch('complain/{id}', [QuickPEController::class, 'complain'])->name('qpe.complain.patch');
          Route::patch('close-complain/{id}', [QuickPEController::class, 'closeComplain'])->name('qpe.closecomplain.patch');
       });

@@ -80,9 +80,9 @@ class ContractController extends Controller
    public function update(Request $req)
    {
       // dd('ok');
-      $req->validate([
-         'nik' => 'required|unique:employees'
-      ]);
+      // $req->validate([
+      //    'nik' => 'required|unique:employees'
+      // ]);
 
       // dd($req->subdept);
 
@@ -95,7 +95,7 @@ class ContractController extends Controller
       // dd($req->position);
 
       // dd($req->designation);
-      
+
 
       $contract->update([
          'status' => 1,
@@ -112,7 +112,7 @@ class ContractController extends Controller
          'salary' => $req->salary,
          'hourly_rate' => $req->hourly_rate,
          'payslip' => $req->payslip,
-         
+
          'start' => $req->start,
          'end' => $req->end,
          'determination' => $req->determination,
@@ -133,8 +133,12 @@ class ContractController extends Controller
          'department_id' => $contract->department_id,
          'sub_dept_id' => $contract->sub_dept_id,
          'position_id' => $position->id,
-         
-         
+
+
+      ]);
+
+      $user->update([
+         'username' => $req->nik
       ]);
 
       $user->update([
@@ -142,7 +146,7 @@ class ContractController extends Controller
       ]);
       // });
 
-      // $user = User::where('username', $employee->nik)->first();
+      $user = User::where('username', $employee->nik)->first();
       // $user->roles()->detach();
       // if ($req->designation == 3) {
       //    $user->assignRole('Leader');

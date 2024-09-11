@@ -167,7 +167,7 @@ Dashboard
                          <tr>
                            <td colspan="6">{{$pos->department->unit->name}} {{$pos->department->name}}</td>
                          </tr>
-                         @foreach ($pos->department->pes()->where('status', 1)->get() as $pe)
+                         @foreach ($pos->department->pes()->get() as $pe)
                            <tr>
                            <th></th>
                            <td>
