@@ -112,7 +112,7 @@ Dashboard
                                  <td colspan="4">{{$pos->department->unit->name}} {{$pos->department->name}} ({{count($pos->department->employees)}}) </td>
                                  {{-- <td>{{$employee->biodata->fullName()}}</td> --}}
                                  </tr>
-                                 @foreach ($pos->department->employees as $emp)
+                                 @foreach ($pos->department->employees->where('status', 1) as $emp)
                                     <tr>
                                     <td></td>
                                     {{-- <td>{{$emp->sub_dept->name ?? ''}}</td> --}}
@@ -125,7 +125,7 @@ Dashboard
                          @foreach ($teams as $emp)
                               <tr>
                               <td></td>
-                              <td>{{$emp->sub_dept->name}}</td>
+                              {{-- <td>{{$emp->sub_dept->name}}</td> --}}
                               {{-- <td></td> --}}
                               <td>{{$emp->nik}} {{$emp->biodata->fullName()}}</td>
                               </tr>
@@ -144,7 +144,7 @@ Dashboard
 
          <div class="card">
             <div class="card-header d-flex justify-content-between p-2 bg-primary text-white">
-               <small>Recent QPE</small>
+               <small>8 Latest QPE</small>
                <a href="{{route('qpe')}}" class="text-white">more...</a>
             </div>
             <div class="card-body p-0">
@@ -161,12 +161,14 @@ Dashboard
                      </tr>
                   </thead>
                   <tbody>
+
+                     
                      @foreach ($positions as $pos)
                          <tr>
                            <td colspan="6">{{$pos->department->unit->name}} {{$pos->department->name}}</td>
                          </tr>
-                         @foreach ($pos->department->pes()->where('status', 1)->get() as $pe)
-                         <tr>
+                         @foreach ($pos->department->pes()->get() as $pe)
+                           <tr>
                            <th></th>
                            <td>
                               {{-- <a href="{{route('sp.detail', enkripRambo($pe->id))}}">{{$pe->code}}</a> --}}
@@ -186,9 +188,37 @@ Dashboard
                            </tr>
                          @endforeach
                      @endforeach
-
+                     <tr>
+                        <td colspan="6"></td>
+                     </tr>
+                     @if ($recentPes)
+                     @foreach ($recentPes as $pe)
+                     <tr>
+                     <th></th>
+                     <td>
+                        {{-- <a href="{{route('sp.detail', enkripRambo($pe->id))}}">{{$pe->code}}</a> --}}
+                        @if($pe->status == '0' || $pe->status == '101')
+                        <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
+                        @elseif($pe->status == '1' || $pe->status == '202' )
+                        <a href="/qpe/approval/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
+                        @else
+                        <a href="/qpe/show/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
+                        @endif
+                     </td>
+                     <td>{{$pe->semester}} / {{$pe->tahun}}</td>
+                     <td>{{$pe->achievement}}</td>
+                     <td>
+                        <x-status.pe :pe="$pe" />
+                     </td>
+                     </tr>
+            @endforeach
+                     @endif
+                     
                   </tbody>
                </table>
+            </div>
+            <div class="card-footer">
+               <small class="text-muted">*Ini adalah 8 data QPE terkini, klik <a href="{{route('qpe')}}">Disini</a> untuk melihat seluruh data QPE.</small>
             </div>
          </div>
          

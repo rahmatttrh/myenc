@@ -62,8 +62,8 @@ QPE Report
                            </tr>
                            <tr>
                               
-                              <th class="text-center">Complete</th>
-                              <th class="text-center">Pending</th>
+                              <th class="text-center">Created</th>
+                              <th class="text-center">Empty</th>
                            </tr>
                         </thead>
                         <tbody>

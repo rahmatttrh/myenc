@@ -20,12 +20,25 @@ class PeKpiController extends Controller
     {
       //   $employee = auth()->user()->getEmployee();
       $kpis = PeKpi::get();
-      foreach($kpis as $kpi){
-         $position = Position::find($kpi->position_id);
-         $kpi->update([
-            'sub_dept_id' => $position->sub_dept_id
-         ]);
-      }
+    //   foreach($kpis as $kpi){
+    //      $position = Position::find($kpi->position_id);
+    //     //  if ($position) {
+    //     //     dd('ada');
+    //     //  } else {
+    //     //     dd('kosong');
+    //     //  }
+
+    //     if ($position) {
+    //         // dd($kpi->id);
+    //         if ($position->sub_dept_id != null) {
+    //             $kpi->update([
+    //                 'sub_dept_id' => $position->sub_dept_id
+    //              ]);
+    //          }
+    //     }
+        
+         
+    //   }
 
         // Data KPI
         if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv')) {
@@ -39,6 +52,7 @@ class PeKpiController extends Controller
             $departements = Department::where('id', $employee->department_id)->get();
         } else if (auth()->user()->hasRole('Leader|Supervisor')) {
             $employee = auth()->user()->getEmployee();
+            // $kpis = PeKpi::where('departement_id', $employee->department_id)->get();
             $kpis = PeKpi::where('sub_dept_id', $employee->sub_dept_id)->get();
             $units = Unit::where('id', $employee->department->unit->id)->get();
             $departements = Department::where('id', $employee->department_id)->get();

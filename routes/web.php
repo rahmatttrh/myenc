@@ -22,7 +22,6 @@ use App\Http\Controllers\HolidayController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\MutationController;
-use App\Http\Controllers\MyController;
 use App\Http\Controllers\OvertimeController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\PayrollController;
@@ -48,6 +47,7 @@ use App\Http\Controllers\TransactionOvertimeController;
 use App\Http\Controllers\TransactionReductionController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\VerificationController;
+use App\Http\Controllers\FuncController;
 use App\Models\Emergency;
 use App\Models\EmployeeLeader;
 use App\Models\Reduction;
@@ -68,10 +68,12 @@ use PhpOffice\PhpSpreadsheet\Shared\Escher\DgContainer\SpgrContainer\SpContainer
 */
 
 Route::middleware(["auth"])->group(function () {
-
+   // Route::get('{any?}', function ($any = null) {
+   //    return view('errors.maintenance');
+   // })->where('any', '.*');
    // Func
-   Route::get('update/position', [MyController::class, 'updatePosition']);
-   Route::get('test/email', [MyController::class, 'testEmail']);
+   Route::get('update/position', [FuncController::class, 'updatePosition']);
+   Route::get('test/email', [FuncController::class, 'testEmail']);
 
 
    Route::prefix('pass')->group(function () {
@@ -376,6 +378,11 @@ Route::middleware(["auth"])->group(function () {
          Route::get('report/department/{id}/{semester}/{year}', [QuickPEController::class, 'reportDepartment'])->name('qpe.report.department');
 
          Route::get('approval/{id}', [QuickPEController::class, 'approval'])->name('qpe.approval');
+
+         Route::get('report', [QuickPEController::class, 'report'])->name('qpe.report');
+         Route::post('report/filter', [QuickPEController::class, 'reportFilter'])->name('qpe.report.filter');
+         Route::get('report/unit/{id}/{semester}/{year}', [QuickPEController::class, 'reportUnit'])->name('qpe.report.unit');
+         Route::get('report/department/{id}/{semester}/{year}', [QuickPEController::class, 'reportDepartment'])->name('qpe.report.department');
 
          Route::patch('complain/{id}', [QuickPEController::class, 'complain'])->name('qpe.complain.patch');
          Route::patch('close-complain/{id}', [QuickPEController::class, 'closeComplain'])->name('qpe.closecomplain.patch');

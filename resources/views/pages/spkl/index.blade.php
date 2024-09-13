@@ -99,8 +99,10 @@ Employee
                <label>Desc</label>
                <textarea id="desc" name="desc" type="text" class="form-control" placeholder="Deskripsi pekerjaan"  rows="3"></textarea>
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary" disabled>Submit</button>
          </form>
+         <hr>
+         Fitur masih dalam tahap pengembangan :)
       </div>
       <div class="col-md-9">
          {{-- <div class="row">

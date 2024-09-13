@@ -194,7 +194,7 @@ class SpController extends Controller
 
       // dd($req->date_from);
       $from = Carbon::make($req->date_from);
-      $to = $from->addMonths(6);
+     
       // dd($to->addDays(-1));
 
 
@@ -207,8 +207,7 @@ class SpController extends Controller
          $semester =  2; // Semester 2: Juli sampai Desember
       }
 
-      
-
+      $to = $from->addMonths(6);
       $sp = Sp::create([
          'department_id' => $employee->department_id,
          'employee_id' => $req->employee,

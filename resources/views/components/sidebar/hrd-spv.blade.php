@@ -101,6 +101,11 @@
                <span class="sub-item">Daftar PE</span>
             </a>
          </li>
+         <li>
+            <a href="{{route('qpe.report')}}">
+               <span class="sub-item">Monitoring</span>
+            </a>
+         </li>
       </ul>
    </div>
 </li>

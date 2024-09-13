@@ -90,7 +90,7 @@ Detail Employee
                         </div>
                         <div class="info-user ml-3">
                            <div class="username">
-                              <h3>{{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</h3>
+                              <h3> {{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</h3>
                            </div>
                            <div class="status"> {{$employee->position->name ?? '-'}} </div>
                         </div>

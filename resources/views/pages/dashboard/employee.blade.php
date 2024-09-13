@@ -113,6 +113,8 @@ Dashboard
             </div>
          </div>
 
+         <small>Data diatas adalah data dummy, fitur absensi dan cuti masih dalam tahap pengembangan, harap bersabar :)</small>
+         <hr>
          <div class="card">
             <div class="card-header bg-danger text-white p-2">
                <small class="text-uppercase">SP History</small>
@@ -430,7 +432,7 @@ Dashboard
 @endforeach
 
 <div class="modal fade" id="modal-in" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-   <div class="modal-dialog modal-sm" role="document">
+   <div class="modal-dialog" role="document">
       <div class="modal-content">
          <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">Kamu sudah tiba dikantor?</h5>
@@ -465,11 +467,15 @@ Dashboard
                      </div>
                   </div>
                </div>
+               <hr>
+               Fitur ini masih dalam tahap pengembangan :)
 
             </div>
             <div class="modal-footer">
                {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
-               <button type="submit" class="btn btn-primary">Submit</button>
+               <button type="submit" class="btn btn-primary" disabled>Submit</button>
+               
+               
             </div>
          </form>
       </div>

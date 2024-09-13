@@ -167,9 +167,9 @@
                                              
                                           </td>
                                           <td class="text-right">
-                                             @if ($pos->designation_id == 6)
+                                             {{-- @if ($pos->designation_id == 6)
                                              <a href="" data-toggle="modal" data-target="#modal-change-position-{{$pos->id}}">Assign</a> |
-                                             @endif
+                                             @endif --}}
                                              
                                              <a href="#" data-toggle="modal" data-target="#modal-edit-position-{{$pos->id}}">Edit</a> | 
                                              <a href="#" data-toggle="modal" data-target="#modal-delete-{{$pos->id}}">Delete</a>

@@ -62,12 +62,12 @@
                <span class="sub-item">KPI</span>
             </a>
          </li>
-         {{-- <li>
+       <!-- <li>
             <a href="{{route('kpa')}}">
                <span class="sub-item">KPI Apprasial</span>
             </a>
-         </li>
-         <li>
+         </li> -->
+         <!-- <li>
             <a href="{{route('kpi')}}">
                <span class="sub-item">Behavior</span>
             </a>
@@ -76,13 +76,13 @@
             <a href="#">
                <span class="sub-item">...</span>
             </a>
-         </li> --}}
+         </li> -->
       </ul>
    </div>
 </li>
 <li class="nav-item">
    <a data-toggle="collapse" href="#qpe">
-      <!-- <a  href="{{route('qpe')}}"> -->
+    {{-- <a  href="{{route('qpe')}}"> --}}
       <i class="fas fa-file"></i>
       <p>Quick PE</p>
       <span class="caret"></span>

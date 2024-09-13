@@ -7,20 +7,8 @@ Dashboard
    <div class="page-header">
       <h5 class="page-title">
          <i class="fa fa-home"></i>
-         Dashboard
-         {{-- @if (auth()->user()->hasRole('Administrator'))
-                Administrator
-                
-            @endif
-            @if (auth()->user()->hasRole('HRD'))
-                HRD
-                
-            @endif --}}
-         @if (auth()->user()->email == 'admin@gmail.com' || auth()->user()->email == 'developer@gmail.com')
-         Administrator
-         @else
-         {{auth()->user()->employee->position->name}}
-         @endif
+         Dashboard Administrator
+
 
       </h5>
    </div>
@@ -195,204 +183,285 @@ Dashboard
          {{-- <div class="card-header d-flex justify-content-between p-2 text-white" style="background-color: rgb(120, 121, 122)">
                   <small><b>Latest Log Activity</b></small>
                   <a href="{{route('log.auth')}}" class="text-white">More..</a>
-      </div> --}}
-      <div class="card-body p-0">
-         <table class="display  table-sm table-bordered   ">
-            <thead>
+         <<<<<<< HEAD </div> --}}
+            <div class="card-body p-0">
+               <table class="display  table-sm table-bordered   ">
+                  <thead>
 
-               <tr>
-                  <th colspan="2" class="d-flex justify-content-between py-2">
-                     <span>Latest Log Activity</span>
-                     <a href="{{route('log.auth')}}" class="text-white">More..</a>
-                  </th>
-                  {{-- <th scope="col">Time</th> --}}
-               </tr>
-            </thead>
-            <tbody>
-               @if (count($logins) > 0)
-               @foreach ($logins as $log)
-               <tr>
-                  <td class="text-truncate" style="max-width: 110px;">
-                     <small>{{formatDateTime($log->created_at)}}</small> {{$log->user->username}} {{$log->user->name}}
-                     <br>
-                     @if ($log->action == 'Login')
-                     {{$log->action}} into system<br>
+                     <tr>
+                        <th colspan="2" class="d-flex justify-content-between py-2">
+                           <span>Latest Log Activity</span>
+                           <a href="{{route('log.auth')}}" class="text-white">More..</a>
+                        </th>
+                        {{-- <th scope="col">Time</th> --}}
+                     </tr>
+                  </thead>
+                  <tbody>
+                     @if (count($logins) > 0)
+                     @foreach ($logins as $log)
+                     <tr>
+                        <td class="text-truncate" style="max-width: 110px;">
+                           <small>{{formatDateTime($log->created_at)}}</small> {{$log->user->username}} {{$log->user->name}}
+                           <br>
+                           @if ($log->action == 'Login')
+                           {{$log->action}} into system<br>
+                           @else
+                           {{$log->action}} <small>{{$log->desc}}</small>
+                           @endif
+
+
+                        </td>
+                        {{-- <td>{{$log->action}}</td>
+                        <td>{{$log->desc}}</td> --}}
+                     </tr>
+                     @endforeach
                      @else
-                     {{$log->action}} <small>{{$log->desc}}</small>
+                     <tr>
+                        <td colspan="5" class="text-center">Empty</td>
+                     </tr>
                      @endif
 
 
-                  </td>
-                  {{-- <td>{{$log->action}}</td>
-                  <td>{{$log->desc}}</td> --}}
-               </tr>
-               @endforeach
-               @else
-               <tr>
-                  <td colspan="5" class="text-center">Empty</td>
-               </tr>
-               @endif
-
-
-            </tbody>
-         </table>
+                  </tbody>
+               </table>
+            </div>
       </div>
    </div>
-</div>
-<div class="col-md-8">
-   <div class="card">
-      <div class="card-header d-flex justify-content-between p-2 bg-primary text-white">
-         <small> <i class="fas fa-file-contract"></i> Latest QPE</small>
-         <a href="{{route('qpe')}}" class="text-white">More..</a>
+   <div class="col-md-8">
+      <div class="card">
+         <div class="card-header d-flex justify-content-between p-2 bg-primary text-white">
+            <small> <i class="fas fa-file-contract"></i> Latest QPE</small>
+            <a href="{{route('qpe')}}" class="text-white">More..</a>
+         </div>
+         <div class="card-body p-0">
+            <table class="display  table-sm table-bordered  ">
+               <thead>
+
+                  <tr>
+                     {{-- <th scope="col">#</th> --}}
+                     <th scope="col">NIK</th>
+                     <th scope="col">Employee</th>
+                     <th>Semester</th>
+                     {{-- <th>Desc</th> --}}
+                     <th scope="col">Status</th>
+                     <th>Last Update</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  @if (count($recentQpes) > 0)
+                  @foreach ($recentQpes as $pe)
+                  <tr>
+                     <td>{{$pe->employe->nik}}</td>
+                     <td>{{$pe->employe->biodata->fullName()}}</td>
+                     <td>{{$pe->semester}} / {{$pe->tahun}}</td>
+                     <td class="text-muted">
+                        <x-status.qpe-plain :pe="$pe" />
+                     </td>
+                     <td>
+                        {{formatDateTimeB($pe->updated_at)}}
+                     </td>
+
+                     {{-- <td class="text-right">
+=======
+               </div> --}}
+                     <div class="card-body p-0">
+                        <table class="display  table-sm table-bordered   ">
+                           <thead>
+
+                              <tr>
+                                 <th colspan="2" class="d-flex justify-content-between py-2">
+                                    <span>Latest Log Activity</span>
+                                    <a href="{{route('log.auth')}}" class="text-white">More..</a>
+                                 </th>
+                                 {{-- <th scope="col">Time</th> --}}
+                              </tr>
+                           </thead>
+                           <tbody>
+                              @if (count($logins) > 0)
+                              @foreach ($logins as $log)
+                              <tr>
+                                 <td class="text-truncate" style="max-width: 110px;">
+                                    <small>{{formatDateTimeB($log->created_at)}}</small> {{$log->user->username}} {{$log->user->name}}
+                                    <br>
+                                    @if ($log->action == 'Login')
+                                    {{$log->action}} into system<br>
+                                    @else
+                                    {{$log->action}} <small>{{$log->desc}}</small>
+                                    @endif
+
+
+                                 </td>
+                                 {{-- <td>{{$log->action}}</td>
+                                 <td>{{$log->desc}}</td> --}}
+                              </tr>
+                              @endforeach
+                              @else
+                              <tr>
+                                 <td colspan="5" class="text-center">Empty</td>
+                              </tr>
+                              @endif
+
+
+                           </tbody>
+                        </table>
+                     </div>
+         </div>
       </div>
-      <div class="card-body p-0">
-         <table class="display  table-sm table-bordered  ">
-            <thead>
+      <div class="col-md-8">
+         <div class="card">
+            <div class="card-header d-flex justify-content-between p-2 bg-primary text-white">
+               <small> <i class="fas fa-file-contract"></i> Latest QPE</small>
+               <a href="{{route('qpe')}}" class="text-white">More..</a>
+            </div>
+            <div class="card-body p-0">
+               <table class="display  table-sm table-bordered  ">
+                  <thead>
 
-               <tr>
-                  {{-- <th scope="col">#</th> --}}
-                  <th scope="col">NIK</th>
-                  <th scope="col">Employee</th>
-                  <th>Semester</th>
-                  {{-- <th>Desc</th> --}}
-                  <th scope="col">Status</th>
-                  <th>Last Update</th>
-               </tr>
-            </thead>
-            <tbody>
-               @if (count($recentQpes) > 0)
-               @foreach ($recentQpes as $pe)
-               <tr>
-                  <td>{{$pe->employe->nik}}</td>
-                  <td>{{$pe->employe->biodata->fullName()}}</td>
-                  <td>{{$pe->semester}} / {{$pe->tahun}}</td>
-                  <td class="text-muted">
-                     <x-status.qpe-plain :pe="$pe" />
-                  </td>
-                  <td>
-                     {{formatDateTimeB($pe->updated_at)}}
-                  </td>
+                     <tr>
+                        {{-- <th scope="col">#</th> --}}
+                        <th scope="col">NIK</th>
+                        <th scope="col">Employee</th>
+                        <th>Semester</th>
+                        {{-- <th>Desc</th> --}}
+                        <th scope="col">Status</th>
+                        <th>Last Update</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     @if (count($recentQpes) > 0)
+                     @foreach ($recentQpes as $pe)
+                     <tr>
+                        <td>{{$pe->employe->nik}}</td>
+                        <td>{{$pe->employe->biodata->fullName()}}</td>
+                        <td>{{$pe->semester}} / {{$pe->tahun}}</td>
+                        <td class="text-muted">
+                           <x-status.qpe-plain :pe="$pe" />
+                        </td>
+                        <td>
+                           {{formatDateTimeB($pe->updated_at)}}
+                        </td>
 
-                  {{-- <td class="text-right">
+                        {{-- <td class="text-right">
+>>>>>>> 57473fdf1243102cff75297438c6f288b7ce10ce
                                     @if($pe->status == 0)
                                     <!-- <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-delete-{{$pe->id}}"><i class="fas fa-trash"></i> Delete</button> -->
-                  @elseif(($pe->status == '1' || $pe->status == '2' || $pe->status == '101' || $pe->status == '202') && $pe->behavior > 0)
-                  <a href="{{ route('export.qpe', $pe->id) }}" target="_blank"> Preview PDF</a>
-                  @elseif(($pe->status == 0 || $pe->status == 101 || $pe->status == 202) && auth()->user()->hasRole('Leader'))
-                  <!-- <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-submit-{{$pe->id}}"><i class="fas fa-rocket"></i> Submit</button> -->
-                  @endif
-                  </td> --}}
-               </tr>
-               @endforeach
-               @else
-               <tr>
-                  <td colspan="5" class="text-center">Empty</td>
-               </tr>
-               @endif
+                        @elseif(($pe->status == '1' || $pe->status == '2' || $pe->status == '101' || $pe->status == '202') && $pe->behavior > 0)
+                        <a href="{{ route('export.qpe', $pe->id) }}" target="_blank"> Preview PDF</a>
+                        @elseif(($pe->status == 0 || $pe->status == 101 || $pe->status == 202) && auth()->user()->hasRole('Leader'))
+                        <!-- <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-submit-{{$pe->id}}"><i class="fas fa-rocket"></i> Submit</button> -->
+                        @endif
+                        </td> --}}
+                     </tr>
+                     @endforeach
+                     @else
+                     <tr>
+                        <td colspan="5" class="text-center">Empty</td>
+                     </tr>
+                     @endif
 
 
-            </tbody>
-         </table>
-      </div>
-      <div class="card-footer">
-         <small class="text-muted">*Ini adalah 8 data QPE terkini, klik <a href="{{route('qpe')}}">Disini</a> untuk melihat seluruh data QPE.</small>
+                  </tbody>
+               </table>
+            </div>
+            <div class="card-footer">
+               <small class="text-muted">*Ini adalah 8 data QPE terkini, klik <a href="{{route('qpe')}}">Disini</a> untuk melihat seluruh data QPE.</small>
+            </div>
+         </div>
+
+         <div class="card">
+            <div class="card-header d-flex justify-content-between p-2 bg-danger text-white">
+               <small>5 Latest SP</small>
+               <a href="{{route('sp')}}" class="text-white">More..</a>
+            </div>
+            <div class="card-body p-0">
+               <table class="display  table-sm table-bordered   ">
+                  <thead>
+
+                     <tr>
+                        {{-- <th scope="col">#</th> --}}
+                        <th scope="col">ID</th>
+                        <th>NIK</th>
+                        <th scope="col">Name</th>
+
+                        <th>Level</th>
+                        <th scope="col">Status</th>
+                        <th>Last Update</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     @if (count($recentSps) > 0)
+                     @foreach ($recentSps as $sp)
+                     <tr>
+                        <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->code}}</a></td>
+                        <td>{{$sp->employee->nik}}</td>
+                        <td>{{$sp->employee->biodata->first_name}} {{$sp->employee->biodata->last_name}}</td>
+
+                        <td>
+                           SP {{$sp->level}}
+                        </td>
+                        {{-- <td style="max-width: 190px" class="text-truncate">{{$sp->desc}}</td> --}}
+                        <td>
+                           <x-status.sp :sp="$sp" />
+                        </td>
+                        <td>{{formatDateTimeB($sp->updated_at)}}</td>
+                     </tr>
+                     @endforeach
+                     @else
+                     <tr>
+                        <td colspan="5" class="text-center">Empty</td>
+                     </tr>
+                     @endif
+
+
+                  </tbody>
+               </table>
+            </div>
+         </div>
+
+         <div class="card">
+            <div class="card-header p-2 bg-primary text-white">
+               <small>SPKL Request</small>
+            </div>
+            <div class="card-body p-0">
+               <table class="display  table-sm table-bordered  table-striped ">
+                  <thead>
+
+                     <tr>
+                        {{-- <th scope="col">#</th> --}}
+                        <th scope="col">ID</th>
+                        <th scope="col">Date</th>
+                        <th>Name</th>
+                        {{-- <th>Desc</th> --}}
+                        <th scope="col">Status</th>
+
+                     </tr>
+                  </thead>
+                  <tbody>
+                     @if (count($spkls) > 0)
+                     @foreach ($spkls as $spkl)
+                     <tr>
+                        <td><a href="{{route('spkl.detail', enkripRambo($spkl->id))}}">{{$spkl->code}}</a></td>
+                        <td>{{formatDate($spkl->date)}}</td>
+                        <td>{{$spkl->employee->biodata->first_name}} {{$spkl->employee->biodata->last_name}}</td>
+                        {{-- <td style="max-width: 190px" class="text-truncate">{{$spkl->desc}}</td> --}}
+                        <td>
+                           <x-status.spkl :spkl="$spkl" />
+                        </td>
+                     </tr>
+                     @endforeach
+                     @else
+                     <tr>
+                        <td colspan="5" class="text-center">Empty</td>
+                     </tr>
+                     @endif
+
+
+                  </tbody>
+               </table>
+            </div>
+         </div>
       </div>
    </div>
-
-   <div class="card">
-      <div class="card-header d-flex justify-content-between p-2 bg-danger text-white">
-         <small>5 Latest SP</small>
-         <a href="{{route('sp')}}" class="text-white">More..</a>
-      </div>
-      <div class="card-body p-0">
-         <table class="display  table-sm table-bordered   ">
-            <thead>
-
-               <tr>
-                  {{-- <th scope="col">#</th> --}}
-                  <th scope="col">ID</th>
-                  <th>NIK</th>
-                  <th scope="col">Name</th>
-
-                  <th>Level</th>
-                  <th scope="col">Status</th>
-                  <th>Last Update</th>
-               </tr>
-            </thead>
-            <tbody>
-               @if (count($recentSps) > 0)
-               @foreach ($recentSps as $sp)
-               <tr>
-                  <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->code}}</a></td>
-                  <td>{{$sp->employee->nik}}</td>
-                  <td>{{$sp->employee->biodata->first_name}} {{$sp->employee->biodata->last_name}}</td>
-
-                  <td>
-                     SP {{$sp->level}}
-                  </td>
-                  {{-- <td style="max-width: 190px" class="text-truncate">{{$sp->desc}}</td> --}}
-                  <td>
-                     <x-status.sp :sp="$sp" />
-                  </td>
-                  <td>{{formatDateTimeB($sp->updated_at)}}</td>
-               </tr>
-               @endforeach
-               @else
-               <tr>
-                  <td colspan="5" class="text-center">Empty</td>
-               </tr>
-               @endif
-
-
-            </tbody>
-         </table>
-      </div>
-   </div>
-
-   <div class="card">
-      <div class="card-header p-2 bg-primary text-white">
-         <small>SPKL Request</small>
-      </div>
-      <div class="card-body p-0">
-         <table class="display  table-sm table-bordered  table-striped ">
-            <thead>
-
-               <tr>
-                  {{-- <th scope="col">#</th> --}}
-                  <th scope="col">ID</th>
-                  <th scope="col">Date</th>
-                  <th>Name</th>
-                  {{-- <th>Desc</th> --}}
-                  <th scope="col">Status</th>
-
-               </tr>
-            </thead>
-            <tbody>
-               @if (count($spkls) > 0)
-               @foreach ($spkls as $spkl)
-               <tr>
-                  <td><a href="{{route('spkl.detail', enkripRambo($spkl->id))}}">{{$spkl->code}}</a></td>
-                  <td>{{formatDate($spkl->date)}}</td>
-                  <td>{{$spkl->employee->biodata->first_name}} {{$spkl->employee->biodata->last_name}}</td>
-                  {{-- <td style="max-width: 190px" class="text-truncate">{{$spkl->desc}}</td> --}}
-                  <td>
-                     <x-status.spkl :spkl="$spkl" />
-                  </td>
-               </tr>
-               @endforeach
-               @else
-               <tr>
-                  <td colspan="5" class="text-center">Empty</td>
-               </tr>
-               @endif
-
-
-            </tbody>
-         </table>
-      </div>
-   </div>
-</div>
-</div>
 
 </div>
 

@@ -124,6 +124,13 @@
                <span class="sub-item">Daftar PE</span>
             </a>
          </li>
+         @if (auth()->user()->hasRole('HRD-Spv|HRD|HRD-Recruitment|HRD-Manager'))
+         <li>
+            <a href="{{route('qpe.report')}}">
+               <span class="sub-item">Monitoring</span>
+            </a>
+         </li>
+         @endif
       </ul>
    </div>
 </li>

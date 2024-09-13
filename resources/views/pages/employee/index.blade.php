@@ -98,7 +98,7 @@ Employee
                        
                      </td>
                      
-                     <td>
+                     <td class="text-truncate">
                         @if ($employee->kpi_id != null)
                         {{-- <a href="{{route('kpi.edit', enkripRambo($employee->kpi_id))}}">{{$employee->getKpi()->title}}</a> --}}
                             {{-- <span class="text-success">OK</span> --}}

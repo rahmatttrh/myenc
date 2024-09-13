@@ -17,7 +17,7 @@
                <input type="text" value="{{$id}}" name="position" id="position" hidden >
                <div class="form-group form-group-default">
                   <label>Employee</label>
-                  <select class="form-control" id="employee"  name="employee">
+                  <select class="form-control js-example-basic-single" style="width: 100%" id="employee"  name="employee">
                      <option value="" disabled selected>Choose one</option>
                      @foreach ($deptemployees as $emp)
                      <option  value="{{$emp->id}}">{{$emp->biodata->fullName()}}</option>

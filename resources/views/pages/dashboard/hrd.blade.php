@@ -62,7 +62,7 @@
                               <tr>
                                  <td>Tetap</td>
                                  <td class="text-center">{{$tetap}}</td>
-                                 <td>Porgress</td>
+                                 <td>Progress</td>
                                  <td class="text-center">{{count($pes->where('status', 1))}}</td>
                               </tr>
                               <tr>
@@ -221,7 +221,7 @@
 
             <div class="card">
                <div class="card-header p-2 bg-danger text-white">
-                  <small>Recent SP</small>
+                  <small>5 Latest SP</small>
                </div>
                <div class="card-body p-0">
                   <table class="display  table-sm table-bordered  table-striped ">

@@ -37,23 +37,25 @@ class Department extends Model
       return $this->hasMany(PeKpi::class);
    }
 
+   
    public function positions()
    {
       return $this->hasMany(Position::class);
    }
 
-   public function getManagers()
-   {
-      $managers = Employee::where('designation_id', 5)->orWhere('designation_id', 6)->orWhere('designation_id', 7)->get();
+   public function getManagers(){
+      $managers = Employee::where('designation_id', 4)->orWhere('designation_id', 5)->orWhere('designation_id', 6)->orWhere('designation_id', 7)->get();
       // dd($managers);
       return $managers;
    }
 
+   
    public function sps()
    {
       return $this->hasMany(Sp::class);
    }
 
+   
    public function pes()
    {
       return $this->hasMany(Pe::class);
@@ -100,7 +102,7 @@ class Department extends Model
 
    public function getPendingQpe($semester, $year)
    {
-      $employees = $this->employees;
+      $employees = $this->employees->where('status', 1);
 
       $qpes = Pe::where('semester', $semester)->where('tahun', $year)->get();
       $pendings = [];
@@ -119,7 +121,7 @@ class Department extends Model
 
    public function getCompleteQpe($semester, $year)
    {
-      $employees = $this->employees;
+      $employees = $this->employees->where('status', 1);
 
       $qpes = Pe::where('semester', $semester)->where('tahun', $year)->get();
       $completes = [];

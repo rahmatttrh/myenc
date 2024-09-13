@@ -9,7 +9,7 @@ QPE Report
         <ol class="breadcrumb  ">
             <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
             <li class="breadcrumb-item " aria-current="page"><a href="{{route('qpe.report')}}">QPE Monitoring</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Unit</li>
+            <li class="breadcrumb-item active" aria-current="page">{{$unit->name}}</li>
         </ol>
     </nav>
     <div class="row">
@@ -43,8 +43,8 @@ QPE Report
                            </tr>
                            <tr>
                               
-                              <th class="text-center">Complete</th>
-                              <th class="text-center">Pending</th>
+                              <th class="text-center">Created</th>
+                              <th class="text-center">Empty</th>
                            </tr>
                         </thead>
                         <tbody>
