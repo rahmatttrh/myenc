@@ -169,6 +169,9 @@
                                  {{$pos->name ?? '-'}} <br>
                                  @endforeach
                                  @else
+                                 @if (auth()->user()->hasRole('Administrator'))
+                                 {{$employee->contract->designation->id}} <br>
+                                 @endif
                                  {{$employee->position->name ?? ''}} 
                               @endif
                               </small>

@@ -26,7 +26,7 @@
             </div>
             <div class="form-group form-group-default ">
                 <label>Bobot</label>
-                <label for="" class="float-right">15</label>
+                <label for="" class="float-right">{{ $pd ? $pd->weight : 0 }}</label>
             </div>
             <div class="form-group form-group-default bg-success">
                 <label> <b>Achievement</b></label>

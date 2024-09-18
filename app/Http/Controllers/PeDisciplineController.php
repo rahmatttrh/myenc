@@ -120,20 +120,34 @@ class PeDisciplineController extends Controller
     public function applyMany(Request $req)
     {
 
+        // dd('ok');
         // try {
         DB::beginTransaction();
 
         // Memeriksa apakah permintaan untuk menerapkan data (apply) adalah '1'
         if ($req->apply == '1') {
-
+            // dd('ok');
+            // dd($req->check);
             $apply = 0; // Inisialisasi penghitung untuk data yang berhasil diterapkan
             $duplikat = 0; // Inisialisasi penghitung untuk data yang sudah ada (duplikat)
+
+            // DEBUG ERROR
+            // foreach ($req->check as $key => $id) {
+            //     $temp = TempDiscipline::find($id);
+            //     if ($temp == null) {
+            //         dd($id);
+            //     }
+            // }
+            // dd('debug end');
 
             // Melakukan iterasi melalui setiap ID yang diperiksa dalam permintaan
             foreach ($req->check as $key => $id) {
 
                 // Mencari data sementara (TempDiscipline) berdasarkan ID
                 $temp = TempDiscipline::find($id);
+                // if (!$temp) {
+                //     dd($id);
+                // }
 
                 // Memeriksa apakah sudah ada data di PeDiscipline untuk karyawan dan tanggal yang sama
                 $cek  = PeDisciplineDetail::where('employe_id', $temp->employe_id)
@@ -237,7 +251,7 @@ class PeDisciplineController extends Controller
         }
         // Memeriksa apakah permintaan untuk menghapus data (delete) adalah '1'
         else if ($req->delete == '1') {
-
+            // dd('okkk');
             // Melakukan iterasi melalui setiap ID yang diperiksa dalam permintaan
             foreach ($req->check as $key => $id) {
                 // Menghapus data dari TempDiscipline berdasarkan ID
@@ -246,7 +260,7 @@ class PeDisciplineController extends Controller
 
             $message = 'Data successfully deleted'; // Pesan untuk data yang berhasil dihapus
         }
-
+        // dd('end');
         // Commit transaksi jika semua operasi berhasil
         DB::commit();
 

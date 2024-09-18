@@ -92,6 +92,25 @@
       </ul>
    </div>
 </li>
+
+@if (auth()->user()->hasRole('Supervisor|Leader'))
+
+<div class="collapse" id="qpe">
+   <ul class="nav nav-collapse">
+      <li>
+         <a href="{{route('qpe')}}">
+            <span class="sub-item">Daftar PE</span>
+         </a>
+      </li>
+      <li>
+         <a href="{{route('qpe.report')}}">
+            <span class="sub-item">Monitoring</span>
+         </a>
+      </li>
+   </ul>
+</div>
+    
+@endif
 <hr>
 
 

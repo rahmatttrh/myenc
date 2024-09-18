@@ -99,7 +99,7 @@ class QuickPEController extends Controller
          $myteams = [];
          $allpes = [];
       } else if (auth()->user()->hasRole('Leader|Supervisor')) {
-         
+        
          $employee = auth()->user()->getEmployee();
          $myteams = EmployeeLeader::join('employees', 'employee_leaders.employee_id', '=', 'employees.id')
                ->join('biodatas', 'employees.biodata_id', '=', 'biodatas.id')
@@ -109,11 +109,13 @@ class QuickPEController extends Controller
                 ->get();
             $allpes = Pe::orderBy('updated_at', 'desc')->get();
          
+            // dd($myteams);
             if (auth()->user()->hasRole('Supervisor')) {
                $pes = Pe::where('department_id', $employee->department_id)->orderBy('updated_at', 'desc')->get();
             } else {
                 // dd('ok');
                $pes = Pe::where('created_by', $employee->id)->orderBy('updated_at', 'desc')->get();
+                // dd($pes);
             }
             
             // dd(count($pes));
@@ -122,8 +124,7 @@ class QuickPEController extends Controller
 
          // 
          $outAssesments = $this->outstandingAssessment($employee->department_id);
-         $myteams = [];
-         $allpes = [];
+        
       } else if (auth()->user()->hasRole('Karyawan')) {
         $employee = auth()->user()->getEmployee();
 
@@ -444,6 +445,7 @@ class QuickPEController extends Controller
 
 
       $employe = Employee::where('id', $kpa->employe_id)->first();
+      
 
       if ($employe->designation_id == 1 || $employe->designation_id == 2 ) {
         $level = 's';
@@ -499,8 +501,10 @@ class QuickPEController extends Controller
          return back()->with('danger', 'Id KPA Anda Salah');
       }
 
+    //   dd($kpa->pe_id);
+
         $pba = PeBehaviorApprasial::where('pe_id', $kpa->pe_id)->first();
-        // dd($pba);
+        // dd($pba->id);
 
         if (isset($pba)) {
             $pbads = PeBehaviorApprasialDetail::where('pba_id', $pba->id)->get();
@@ -517,6 +521,15 @@ class QuickPEController extends Controller
         $joinMonth = $date1->diffInMonths($date2);
 
         $pd = PeDiscipline::where('pe_id', $kpa->pe_id)->first();
+
+
+        // Fixing bug leader bobot disiplin 15
+        // $pcc = new PeComponentController();
+      // $weight = $pcc->getWeightDiscipline($employe->contract->designation->id);
+      // dd($weight);
+      // $pd->update([
+      //    'weight' => $weight
+      // ]);
 
         // dd($pba->id);
         $pe = Pe::find($kpa->pe_id);

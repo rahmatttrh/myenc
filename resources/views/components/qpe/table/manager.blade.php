@@ -8,6 +8,9 @@
                @endif
                <th class="text-white">Employe</th>
                <th class="text-white">Semester / Tahun</th>
+               <th class="text-white text-center">KPI</th>
+               <th class="text-white text-center">Behavior</th>
+               <th class="text-white text-center">Discipline</th>
                <th class="text-white">Achievement</th>
                <th class="text-white">Status</th>
                <th class="text-right text-white">Action</th>
@@ -30,6 +33,15 @@
                         @endif
                      </td>
                      <td>{{$pe->semester}} / {{$pe->tahun}}</td>
+                     <td class="text-center">
+                        <span class="">{{$pe->kpi}}</span>
+                     </td>
+                     <td class="text-center">
+                        <span class="">{{$pe->behavior}}</span>
+                     </td>
+                     <td class="text-center">
+                        <span class="">{{$pe->discipline}}</span>
+                     </td>
                      <td><span class="badge badge-primary badge-lg"><b>{{$pe->achievement}}</b></span></td>
                      @if($pe->status == 0)
                      <td><span class="badge badge-dark badge-lg"><b>Draft</b></span></td>
@@ -79,6 +91,15 @@
                         @endif
                      </td>
                      <td>{{$pe->semester}} / {{$pe->tahun}} </td>
+                     <td class="text-center">
+                        <span class="">{{$pe->kpi}}</span>
+                     </td>
+                     <td class="text-center">
+                        <span class="">{{$pe->behavior}}</span>
+                     </td>
+                     <td class="text-center">
+                        <span class="">{{$pe->discipline}}</span>
+                     </td>
                      <td><span class="badge badge-primary badge-lg"><b>{{$pe->achievement}}</b></span></td>
                      @if($pe->status == 0)
                      <td><span class="badge badge-dark badge-lg"><b>Draft</b></span></td>

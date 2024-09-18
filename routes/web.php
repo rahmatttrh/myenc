@@ -75,6 +75,9 @@ Route::middleware(["auth"])->group(function () {
    Route::get('update/position', [FuncController::class, 'updatePosition']);
    Route::get('test/email', [FuncController::class, 'testEmail']);
 
+   // Fixing QPE leader bobot disiplin 15
+   Route::get('update/weight/discipline/{id}', [FuncController::class, 'updateWeightDiscipline']);
+
 
    Route::prefix('pass')->group(function () {
       Route::get('reset', [PasswordController::class, 'index'])->name('pass.reset');
@@ -90,6 +93,7 @@ Route::middleware(["auth"])->group(function () {
       Route::get('department/{id}', [FetchController::class, 'fetchDepartment']);
       Route::get('subdept/{id}', [FetchController::class, 'fetchSubdept']);
       Route::get('position/{id}', [FetchController::class, 'fetchPosition']);
+      Route::get('leader/{id}', [FetchController::class, 'fetchLeader']);
    });
    /**
     * Verification Routes
@@ -430,6 +434,7 @@ Route::middleware(["auth"])->group(function () {
 
       Route::prefix('hrd')->group(function () {
          Route::post('/store', [SpController::class, 'hrdStore'])->name('sp.hrd.store');
+         Route::get('create', [SpController::class, 'hrdCreate'])->name('sp.hrd.create');
          // Route::get('/approve/supervisor/{id}', [SpklController::class, 'approveSupervisor'])->name('spkl.approve.supervisor');
          // Route::get('/approve/manager/{id}', [SpklController::class, 'approveManager'])->name('spkl.approve.manager');
       });

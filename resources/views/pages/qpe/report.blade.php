@@ -57,12 +57,14 @@ QPE Report
                            <tr>
                               <th rowspan="2">BSU</th>
                               <th rowspan="2" class="text-center">Total Karyawan</th>
-                              <th colspan="2" class="text-center">QPE</th>
+                              <th colspan="4" class="text-center">QPE</th>
                               
                            </tr>
                            <tr>
                               
-                              <th class="text-center">Created</th>
+                              <th class="text-center">Draft</th>
+                              <th class="text-center">Verifikasi</th>
+                              <th class="text-center">Done</th>
                               <th class="text-center">Empty</th>
                            </tr>
                         </thead>
@@ -70,8 +72,10 @@ QPE Report
                            @foreach ($units as $unit)
                                <tr>
                                  <td><a href="{{route('qpe.report.unit', [enkripRambo($unit->id),enkripRambo($semester),enkripRambo($year)])}}">{{$unit->name}}</a></td>
-                                 <td class="text-center">{{count($unit->employees)}}</td>
-                                 <td class="text-center">{{$unit->getQpe($semester, $year)}}</td>
+                                 <td class="text-center">{{count($unit->employees->where('status', 1))}}</td>
+                                 <td class="text-center">{{$unit->getQpe($semester, $year, 0)}}</td>
+                                 <td class="text-center">{{$unit->getQpe($semester, $year, 1)}}</td>
+                                 <td class="text-center">{{$unit->getQpe($semester, $year, 2)}}</td>
                                  <td class="text-center"> {{$unit->getEmptyQpe($semester, $year)}}</td>
                                </tr>
                            @endforeach

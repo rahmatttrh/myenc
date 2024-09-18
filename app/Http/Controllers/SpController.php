@@ -149,6 +149,14 @@ class SpController extends Controller
       return redirect()->back()->with('success', 'SP Created');
    }
 
+   public function hrdCreate()
+   {
+      $employees = Employee::where('status', 1)->get();
+      return view('pages.sp.create', [
+         'allEmployees' => $employees
+      ]);
+   }
+
    public function hrdStore(Request $req)
    {
 
@@ -207,12 +215,22 @@ class SpController extends Controller
          $semester =  2; // Semester 2: Juli sampai Desember
       }
 
+      if ($req->type == 1) {
+         $status = 4;
+         $by = auth()->user()->getEmployee()->id;
+         $note = 'Existing';
+      } else {
+         $status = 2;
+         $by = $req->to;
+         $note = 'Recomendation';
+      }
+
       $to = $from->addMonths(6);
       $sp = Sp::create([
          'department_id' => $employee->department_id,
          'employee_id' => $req->employee,
-         'by_id' => auth()->user()->getEmployee()->id,
-         'status' => 4,
+         'by_id' => $by,
+         'status' => $status,
          'code' => $code,
          'level' => $req->level,
          'tahun' => $tahun,
@@ -222,7 +240,8 @@ class SpController extends Controller
          'date_to' => $to->addDays(-1),
          'reason' => $req->reason,
          'desc' => $req->desc,
-         'file' => $file
+         'file' => $file,
+         'note' => $note
       ]);
 
       // SpApproval::create([
@@ -245,13 +264,13 @@ class SpController extends Controller
       $empPos = EmployeePosition::where('position_id', $posMan->id)->first();
       $manager = Employee::find($empPos->employee_id);
       
-      SpApproval::create([
-         'status' => 1,
-         'sp_id' => $sp->id,
-         'type' => 'Approve',
-         'level' => 'manager',
-         'employee_id' => $manager->id,
-      ]);
+      // SpApproval::create([
+      //    'status' => 1,
+      //    'sp_id' => $sp->id,
+      //    'type' => 'Approve',
+      //    'level' => 'manager',
+      //    'employee_id' => $manager->id,
+      // ]);
 
 
       if (auth()->user()->id == 1) {
@@ -270,7 +289,7 @@ class SpController extends Controller
 
       
 
-      return redirect()->back()->with('success', 'SP Created');
+      return redirect()->route('sp')->with('success', 'SP Created');
    }
 
    public function detail($id)

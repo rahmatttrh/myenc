@@ -79,11 +79,11 @@ class Unit extends Model
       return $employeeEmptyQpe;
    }
 
-   public function getQpe($semester, $year)
+   public function getQpe($semester, $year, $status)
    {
       $employees = $this->employees->where('status', 1);
 
-      $qpes = Pe::where('semester', $semester)->where('tahun', $year)->get();
+      $qpes = Pe::where('semester', $semester)->where('tahun', $year)->where('status', $status)->get();
 
       $employeeQpe = 0;
       foreach ($employees as $employee) {

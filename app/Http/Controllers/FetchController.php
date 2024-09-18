@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Department;
 use App\Models\Employee;
+use App\Models\EmployeeLeader;
 use App\Models\Position;
 use App\Models\Sp;
 use App\Models\SubDept;
@@ -110,6 +111,27 @@ class FetchController extends Controller
       $result[] = '<option selected disabled value="">Select</option>';
       foreach ($positions as $row) {
          $result[] = '<option value="' . $row->id . '">' .  $row->name . '</option>';
+      }
+
+      // Kirim balik ke ajax
+      return response()->json([
+         'success' => true,
+         'result' => $result
+
+      ]);
+   }
+
+   public function fetchLeader($id)
+   {
+      $employee = Employee::find($id);
+      // dd($employee);
+      $leaders = EmployeeLeader::where('employee_id', $employee->id)->get();
+
+      // Masukin ke array
+      $result = array();
+      $result[] = '<option selected disabled value="">Select</option>';
+      foreach ($leaders as $row) {
+         $result[] = '<option value="' . $row->leader_id . '">' . $row->leader->nik . ' ' . $row->leader->biodata->fullName() . '</option>';
       }
 
       // Kirim balik ke ajax

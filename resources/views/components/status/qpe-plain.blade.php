@@ -5,7 +5,7 @@
       @if (auth()->user()->hasRole('Manager'))
       <span class="text-info">Perlu Diverifikasi</span>
       @else
-      <span class="text-primary">Verifikasi Manager</span>
+      <span class="text-primary">Verifikasi</span>
       @endif
    
    @elseif($pe->status == '2')

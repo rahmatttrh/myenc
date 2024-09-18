@@ -794,7 +794,8 @@ class EmployeeController extends Controller
          'no_npwp' => $req->no_npwp,
          'status_pajak' => $req->status_pajak,
          'no_jamsostek' => $req->no_jamsostek,
-         'no_bpjs_kesehatan' => $req->no_bpjs_kesehatan
+         'no_bpjs_kesehatan' => $req->no_bpjs_kesehatan,
+         'no_doc' => $req->no_doc
       ]);
 
       if (auth()->user()->hasRole('Administrator')) {

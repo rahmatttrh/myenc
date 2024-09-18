@@ -15,76 +15,7 @@ SP
    <div class="row">
       @if (auth()->user()->hasRole('Administrator'))
          @elseif(auth()->user()->hasRole('HRD|HRD-Manager'))
-         <div class="col-md-4">
-            <h4>Penerbitan SP dari HRD</h4>
-            <hr>
-            <form action="{{route('sp.hrd.store')}}" method="POST" enctype="multipart/form-data">
-               @csrf
-               <div class="row">
-                  <div class="col">
-                     <div class="form-group form-group-default">
-                        <label>Employee*</label>
-                        <select class="form-control employee js-example-basic-single" required id="employee" name="employee">
-                           <option value="" selected disabled>Select Employee</option>
-                           @foreach ($allEmployees as $emp)
-                                 <option value="{{$emp->id}}">{{$emp->nik}} {{$emp->biodata->fullName()}} </option>
-                           @endforeach
-                           
-                        </select>
-                        
          
-                     </div>
-                     
-                  </div>
-               </div>
-               
-               <div class="row">
-                  <div class="col-md-6">
-                     <div class="form-group form-group-default">
-                        <label>Date</label>
-                        <input type="date" required class="form-control" name="date_from" id="date_from">
-                     </div>
-                  </div>
-                  <div class="col-md-6">
-                     <div class="form-group form-group-default">
-                        <label>Level*</label>
-                        <select class="form-control" required id="level" name="level">
-                           {{-- <option value="" selected disabled>Select level</option> --}}
-                           <option value="I">SP I</option>
-                           <option value="II">SP II</option>
-                           <option value="III">SP III</option>
-                        </select>
-
-                     </div>
-                  </div>
-                  
-               </div>
-
-            
-               <div class="form-group form-group-default">
-                  <label>Alasan*</label>
-                  <input type="text" required class="form-control" name="reason" id="reason">
-               </div>
-               <div class="form-group form-group-default">
-                  <label>Peraturan yang dilanggar*</label>
-                  <input type="text" required class="form-control" name="rule" id="rule">
-               </div>
-
-               {{-- <div class="form-group form-group-default">
-                  <label>Kronologi</label>
-                  <textarea class="form-control"  name="desc" id="desc" rows="4"></textarea>
-               </div> --}}
-               
-               <div class="form-group form-group-default">
-                  <label>File attachment</label>
-                  <input type="file" class="form-control" name="file" id="file">
-               </div>
-               <hr>
-               <button type="submit" class="btn btn-block btn-primary">Submit</button>
-            </form>
-            <hr>
-            <small>* SP akan otomatis aktif ketika klik Submit</small>
-         </div>
 
          @else
          <div class="col-md-4">
@@ -159,35 +90,26 @@ SP
       @endif
 
       @if (auth()->user()->hasRole('Administrator'))
-      <div class="col-md-12">
+      <div class="col">
          {{-- <div class="card shadow-none border">
             <div class="card-body">
 
             </div>
          </div> --}}
          @else
-         <div class="col-md-8">
+         <div class="col">
       @endif
-         <div class=" sp px-3">
-            <table>
-               {{-- <thead>
-                  <tr>
-                     <th colspan="5">SP Aktif</th>
-                  </tr>
-               </thead> --}}
-               <tbody class="result">
-
-               </tbody>
-            </table>
-            <hr >
-         </div>
          
-
+         
+         @if (auth()->user()->hasRole('HRD|HRD-Manager'))
+             <a href="{{route('sp.hrd.create')}}" class="btn btn-primary btn-sm">Create SP</a>
+             <hr>
+         @endif
          <div class="table-responsive">
             <table id="" class="display basic-datatables table-sm table-bordered  table-striped ">
                <thead>
                   <tr>
-                     <th class="text-center" style="width: 10px">No</th>
+                     {{-- <th class="text-center" style="width: 10px">No</th> --}}
                      <th>ID</th>
                      <th>Name</th>
                      {{-- <th>NIK</th> --}}
@@ -197,9 +119,12 @@ SP
                   </tr>
                </thead>
                <tbody>
+                  @if (auth()->user()->hasRole('Administrator|HRD'))
+                      
+                  
                   @foreach ($sps as $sp)
                   <tr>
-                     <td class="text-center">{{++$i}}</td>
+                     {{-- <td class="text-center">{{++$i}}</td> --}}
                      <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->code}}</a> </td>
                      <td>{{$sp->employee->nik}} {{$sp->employee->biodata->fullName()}}</td>
                      {{-- <td>{{$sp->employee->nik}}</td> --}}
@@ -215,6 +140,26 @@ SP
 
 
                   @endforeach
+                  @else
+                  @foreach ($employee->positions as $pos)
+                     {{-- <tr>
+                        <td colspan="6">{{$pos->department->unit->name}} {{$pos->department->name}}</td>
+                        </tr> --}}
+                        @foreach ($pos->department->sps()->orderBy('updated_at', 'desc')->get() as $sp)
+                        <tr>
+                        {{-- <th></th> --}}
+                        <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->employee->nik}} {{$sp->employee->biodata->fullName()}}</a></td>
+                        <td>{{$sp->code}}</td>
+                        {{-- <td>{{$sp->employee->biodata->first_name}} {{$sp->employee->biodata->last_name}}</td> --}}
+                        
+                        <td>SP {{$sp->level}}</td>
+                        <td>
+                           <x-status.sp :sp="$sp" />
+                        </td>
+                     </tr>
+                        @endforeach
+                     @endforeach
+                  @endif
                </tbody>
             </table>
          </div>

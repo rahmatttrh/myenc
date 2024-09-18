@@ -10,6 +10,7 @@ use App\Models\Employee;
 use App\Models\EmployeeLeader; 
 use App\Models\Holiday; 
 use App\Models\Log;
+use App\Models\Overtime;
 use App\Models\Pe;
 use App\Models\Position; 
 use App\Models\Presence;
@@ -345,6 +346,54 @@ class HomeController extends Controller
             'month' => $now->format('F'),
             'holidays' => $holidays,
             'transactions' => $transactions
+         ])->with('i');
+      } elseif (auth()->user()->hasRole('HRD-KJ45')) {
+         $user = Employee::find(auth()->user()->getEmployeeId());
+         $units = Unit::get()->count();
+         $employees = Employee::where('kpi_id', null)->get();
+         $male = Biodata::where('gender', 'Male')->count();
+         $female = Biodata::where('gender', 'Female')->count();
+         $spkls = Spkl::orderBy('updated_at', 'desc')->paginate(5);
+         $sps = Sp::where('status', 1)->get();
+         $kontrak = Contract::where('status', 1)->where('type', 'Kontrak')->get()->count();
+         $tetap = Contract::where('status', 1)->where('type', 'Tetap')->get()->count();
+         $empty = Contract::where('type', null)->get()->count();
+
+         $now = Carbon::now();
+         $month = $now->format('m');
+         $holidays = Holiday::whereMonth('date', $month)->orderBy('date', 'asc')->get();
+         $transactions = Transaction::where('status', 0)->get();
+         $overtimes = Overtime::where('location_id', 14)->orWhere('location_id', 15)->orderBy('date', 'desc')->get();
+         $now = Carbon::now();
+
+         if (auth()->user()->hasRole('HRD-KJ12')) {
+            $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
+               ->where('contracts.loc', 'kj1-2')
+               ->select('employees.*')
+               ->get();
+         } elseif (auth()->user()->hasRole('HRD-KJ45')) {
+            $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
+               ->where('contracts.loc', 'kj4')->orWhere('contracts.loc', 'kj5')
+               ->select('employees.*')
+               ->get();
+         }
+
+         return view('pages.dashboard.hrd-site', [
+            'units' => $units,
+            'employee' => $user,
+            'employees' => $employees,
+            'male' => $male,
+            'female' => $female,
+            'spkls' => $spkls,
+            'sps' => $sps,
+            'kontrak' => $kontrak,
+            'tetap' => $tetap,
+            'empty' => $empty,
+            'month' => $now->format('F'),
+            'year' => $now->format('Y'),
+            'holidays' => $holidays,
+            'transactions' => $transactions,
+            'overtimes' => $overtimes
          ])->with('i');
       } elseif (auth()->user()->hasRole('Manager|Asst. Manager')) {
          // dd('ok');

@@ -214,8 +214,8 @@ SP Detail
          </div>
       </div>
       
-      @if (auth()->user()->hasRole('Karyawan'))
-          @else
+      @if (auth()->user()->hasRole('Leader|Supervisor|Asst. Manager|Manager'))
+          {{-- @else --}}
           <div class=" col-12 col-lg-10 col-xl-11 master">
             <div class="card card-invoice">
                <div class="card-header">

@@ -31,6 +31,7 @@ PE
 @endif --}}
     @if ($joinMonth < 6)
       {{-- {{$pd->pdds->count()}} --}}
+    
          @if($pd->pdds->count() == null || $pd->pdds->count() == 0) 
          <div class="row">
             <div class="col md-12">
@@ -99,7 +100,7 @@ PE
                  </div>
                  <div class="form-group form-group-default ">
                      <label>Bobot</label>
-                     <label for="" class="float-right">15</label>
+                     <label for="" class="float-right">{{ $pd ? $pd->weight : 0 }}</label>
                  </div>
                  <div class="form-group form-group-default bg-success">
                      <label> <b>Achievement</b></label>
@@ -123,50 +124,53 @@ PE
                 @else
                 
                 @if(($kpa->status == '0' || $kpa->status == '101' || $kpa->status == '202') && (auth()->user()->getEmployeeId() == $pe->created_by  || auth()->user()->hasRole('Supervisor|Manager|Asst. Manager|HRD')) )
+                
                 <div class="btn-group btn-group-page-header ml-auto">
-                    <div class="button-group">
-                        @if(isset($pd) && $pd->pdds->count() == 6)
-                        <button class="btn btn-xs btn-light" data-toggle="modal" data-target="#modal-submit-{{$kpa->id}}"><i class="fas fa-rocket"></i> Submit </button>
-                        <!-- <x-modal.submit :id="$pe->id" :body="'KPI ' . $kpa->employe->biodata->fullName() . ' semester '. $kpa->semester.' '. $pe->tahun " url="{{route('qpe.submit', enkripRambo($pe->id))}}" /> -->
+                        <div class="button-group">
+                            {{-- @if(isset($pd) && $pd->pdds->count() == 6) --}}
+                            @if(isset($pd))
+                            
+                            <button class="btn btn-xs btn-light" data-toggle="modal" data-target="#modal-submit-{{$kpa->id}}"><i class="fas fa-rocket"></i> Submit </button>
+                            <!-- <x-modal.submit :id="$pe->id" :body="'KPI ' . $kpa->employe->biodata->fullName() . ' semester '. $kpa->semester.' '. $pe->tahun " url="{{route('qpe.submit', enkripRambo($pe->id))}}" /> -->
 
-                        <div class="modal fade" id="modal-submit-{{$kpa->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <form method="POST" action="{{route('qpe.submit', enkripRambo($pe->id))}}" enctype="multipart/form-data">
-                                        @csrf
-                                        @method('PUT')
-                                        <input type="hidden" name="id" value="{{$pe->id}}">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            Submit KPI
+                            <div class="modal fade" id="modal-submit-{{$kpa->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <form method="POST" action="{{route('qpe.submit', enkripRambo($pe->id))}}" enctype="multipart/form-data">
+                                            @csrf
+                                            @method('PUT')
+                                            <input type="hidden" name="id" value="{{$pe->id}}">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Submit KPI
 
-                                            <?php echo $kpa->employe->biodata->fullName() . ' semester ' . $kpa->semester . ' ' . $pe->tahun; ?>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-primary ">
-                                                Submit
-                                            </button>
-                                        </div>
-                                    </form>
+                                                <?php echo $kpa->employe->biodata->fullName() . ' semester ' . $kpa->semester . ' ' . $pe->tahun; ?>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary ">
+                                                    Submit
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
+                            @endif
                         </div>
-                        @endif
+                        &nbsp;
+                        <button type="button" class="btn btn-light btn-xs btn-round btn-page-header-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-ellipsis-h"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            <btn data-target="#modalAddtional" data-toggle="modal" class="dropdown-item" style="text-decoration: none">Addtional Objective</btn>
+                        </div>
                     </div>
-                    &nbsp;
-                    <button type="button" class="btn btn-light btn-xs btn-round btn-page-header-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fa fa-ellipsis-h"></i>
-                    </button>
-                    <div class="dropdown-menu">
-                        <btn data-target="#modalAddtional" data-toggle="modal" class="dropdown-item" style="text-decoration: none">Addtional Objective</btn>
-                    </div>
-                </div>
                 @else
                 @endif
                 @endif
@@ -363,7 +367,7 @@ PE
                                                         </div>
                                                         <div class="card-body">
                                                             @if ($data->evidence)
-                                                            <iframe src="{{ Storage::url($data->evidence) }}" id="pdfPreview-{{$data->id}}" width=" 100%" height="575px"></iframe>
+                                                            <iframe src="{{ asset('storage/'. $data->evidence) }}" id="pdfPreview-{{$data->id}}" width=" 100%" height="575px"></iframe>
                                                             @else
                                                             <p>No attachment available.</p>
                                                             @endif
@@ -583,7 +587,7 @@ PE
              <small class=" text-white">Behavior</small>
          </div>
          @if($pba == null)
-
+         
          <form action="{{route('qpe.behavior.store')}}" name="formBehavior" method="POST" enctype="multipart/form-data" accept=".jpg, .jpeg, .png, .pdf">
 
              @endif
@@ -710,8 +714,12 @@ PE
                          </tfoot>
                      </table>
                  </div>
-
-                 <a href="#" data-target="#modalPanduan" data-toggle="modal" class="text-danger ml-2 "><span class="fa fa-info"></span> Panduan Pengisian Nilai Behavior</a>
+                 @if ($pe->employe->contract->designation_id == 1 || $pe->employe->contract->designation_id == 2)
+                    <a href="#" data-target="#modalPanduan" data-toggle="modal" class="text-danger ml-2 "><span class="fa fa-info"></span> Panduan Pengisian Nilai Behavior</a>
+                    @else
+                    <a href="#" data-target="#modalPanduanLeader" data-toggle="modal" class="text-danger ml-2 "><span class="fa fa-info"></span> Panduan Pengisian Nilai Behavior</a>
+                 @endif
+                 {{-- <a href="#" data-target="#modalPanduan" data-toggle="modal" class="text-danger ml-2 "><span class="fa fa-info"></span> Panduan Pengisian Nilai Behavior</a> --}}
 
                  <div class="modal fade" id="modalPanduan" data-bs-backdrop="static">
                      <div class="modal-dialog" style="max-width: 90%;">
@@ -814,6 +822,135 @@ PE
                          </div>
                      </div>
                  </div>
+
+                <div class="modal fade" id="modalPanduanLeader" data-bs-backdrop="static">
+                    <div class="modal-dialog" style="max-width: 90%;">
+                        <div class="modal-content">
+
+                            <!-- Bagian header modal -->
+                            <div class="modal-header">
+                                <h3 class="modal-title">Panduan Pengisian Nilai Behavior</h3>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+
+                            <!-- Konten modal -->
+                            <div class="modal-body">
+                                <!-- Isi konten modal disini -->
+                                <table style="font-size: 11px;">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">Obyektif</th>
+                                            <th class="text-center">Deskripsi</th>
+                                            <th class="text-center">Bobot</th>
+                                            <th class="text-center">Periode Target</th>
+                                            <th class="text-center">1</th>
+                                            <th class="text-center">2</th>
+                                            <th class="text-center">3</th>
+                                            <th class="text-center">4</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-center text-bold">Leadership</td>
+                                            <td class="text-center">Kemampuan untuk menetapkan dan mengkomunikasikan sasaran kerja tim, mengelola dan membagi sumber daya tim secara efektif; serta melakukan monitoring dan mengarahkan agar sasaran kinerja tim dapat tercapai secara optimal</td>
+                                            <td class="text-center">5</td>
+                                            <td class="text-center">Semester</td>
+                                            <td class="text-center">
+                                               <br>- Memiliki kemampuan yang sangat rendah untuk menetapkan dan mengkomunikasikan sasaran kerja tim, mengelola dan membagi sumber daya tim secara efektif
+                                                <br>-  Tidak mampu melakukan monitoring dan mengarahkan agar sasaran kinerja tim dapat tercapai secara optimal
+                                            </td>
+                                            <td class="text-center">
+                                              <br>-  Memiliki kemampuan yang terbatas untuk menetapkan dan mengkomunikasikan sasaran kerja tim, mengelola dan membagi sumber daya tim secara efektif; 
+                                                <br>- Kurang mampu melakukan monitoring dan mengarahkan agar sasaran kinerja tim dapat tercapai secara optimal
+                                            </td>
+                                            <td class="text-center">
+                                                <br>- Memiliki kemampuan yang memadai untuk menetapkan dan mengkomunikasikan sasaran kerja tim, mengelola dan membagi sumber daya tim secara efektif
+                                                <br>- Memiliki kemampuan yang baik dalam melakukan monitoring dan mengarahkan agar sasaran kinerja tim dapat tercapai secara optimal
+                                            </td>
+                                            <td class="text-center">
+                                                <br>- Memiliki kemampuan untuk merencanakan, mengawasi dan mengendalikan proses penetapan sasaran kerja tim dan pembagian sumber daya tim secara efektif
+                                                <br>- Memiliki kemampuan yang sangat baik dalam melakukan monitoring dan mengarahkan agar sasaran kinerja tim dapat tercapai secara optimal
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="">Perencanaan Kerja</td>
+                                            <td class="">Kemampuan untuk menyusun rencana kerja secara sistematis dan terjadwal dengan baik; melakukan alokasi sumber daya berdasarkan hasil perencanaan; serta melakukan monitoring untuk memastikan rencana kerja dapat berjalan dengan efektif</td>
+                                            <td class="">5</td>
+                                            <td class="">Semester</td>
+                                            <td class="">
+                                                <br>- Memiliki kemampuan yang sangat rendah untuk menyusun rencana kerja secara sistematis dan terjadwal dengan baik;
+                                                <br>- Tidak mampu dalam mengelola sumber daya; 
+                                                <br>- Tidak mampu melakukan monitoring untuk memastikan rencana kerja dapat berjalan dengan efektif..
+                                            </td>
+                                            <td class="">
+                                                <br>- Memiliki kemampuan yang terbatas untuk menyusun rencana kerja secara sistematis dan terjadwal dengan baik; 
+                                                <br>- Kurang mampu dalam mengelola sumber daya ; 
+                                                <br>- Kurang dapat melakukan monitoring untuk memastikan rencana kerja dapat berjalan dengan efektif.
+                                            </td>
+                                            <td class="">
+                                                <br>- Memiliki kemampuan yang memadai untuk menyusun rencana kerja secara sistematis dan terjadwal dengan baik; 
+                                                <br>- Mampu mengelola sumber daya 
+                                                <br>- Mampu melakukan monitoring untuk memastikan rencana kerja dapat berjalan dengan efektif
+                                            </td>
+                                            <td class="">
+                                                <br>- Memiliki kemampuan untuk merencanakan, mengawasi dan mengendalikan proses penyusunan rencana kerja secara sistematis dan terjadwal dengan baik; 
+                                                <br>- Mampu dalam melakukan proses monitoring untuk memastikan rencana kerja dapat berjalan dengan efektif
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="">Komunikasi</td>
+                                            <td class="">Memiliki kemampuan yang sangat rendah untuk mengutarakan pikirannya (baik secara lisan ataupun tertulis) dalam bahasa yang sistematis, jelas dan mudah dipahami oleh lawan bicara</td>
+                                            <td class="">5</td>
+                                            <td class="">Semester</td>
+                                            <td class="">
+                                                 Memiliki kemampuan yang sangat rendah untuk mengutarakan pikirannya (baik secara lisan ataupun tertulis) dalam bahasa yang sistematis, jelas dan mudah dipahami oleh lawan bicara
+                                            </td>
+                                            <td class="">
+                                                 Memiliki kemampuan yang terbatas untuk mengutarakan pikirannya (baik secara lisan ataupun tertulis) dalam bahasa yang sistematis, jelas dan mudah dipahami oleh lawan bicara
+                                            </td>
+                                            <td class="">
+                                                <br>- Memiliki kemampuan yang memadai untuk mengutarakan pikirannya (baik secara lisan ataupun tertulis) dalam bahasa yang sistematis, jelas dan mudah dipahami oleh lawan bicara. 
+                                                <br>- Mampu menerima dan merespon pembicaraan dari pihak lain dengan baik
+                                            </td>
+                                            <td class="">
+                                                <br>- Memiliki kemampuan yang sangat baik dalam mengutarakan pikirannya (baik secara lisan ataupu tertulis) dalam bahasa yang sistematis, jelas dan mudah dipahami oleh lawan bicara.
+                                                <br>- Memiliki kemampuan yang sangat bagus dalam merespon pembicaraan dari pihak lain
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="">Kemampuan memecahkan masalah</td>
+                                            <td class="">Kemampuan untuk menganalisa masalah, mengidentifikasi sumber penyebab masalah dan merumuskan alternatif solusi yang relevan dan aplicable</td>
+                                            <td class="">5</td>
+                                            <td class="">Semester</td>
+                                            <td class="">
+                                                 <br>- Memiliki kemampuan yang rendah untuk dapat menganalisa masalah dan mengidentifikasi sumber penyebab masalah ; 
+                                                 <br>- Tidak memiliki kemampuan untuk merumuskan solusi penyelesaian masalah.
+                                            </td>
+                                            <td class="">
+                                                 <br>- Memiliki kemampuan yang terbatas untuk menganalisa masalah dan mengidentifikasi sumber penyebab masalah;
+                                                <br>- Memiliki kemampuan yang kurang memadai dalam hal merumuskan alternatif solusi yang relevan dan aplicable. 
+                                            </td>
+                                            <td class="">
+                                                <br>-  Memiliki kemampuan yang memadai untuk menganalisa masalah dan  mengidentifikasi sumber penyebab masalah ;
+                                                <br>- Mampu merumuskan alternatif solusi yang relevan dan aplicable
+                                            </td>
+                                            <td class="">
+                                                <br>- Memiliki kemampuan untuk merencanakan, mengorganisir dan mengendalikan proses analisa masalah  dan mengidentifikasi sumber penyebab masalah ; 
+                                                <br>- Mampu dalam mengelola proses perumusan alternatif solusi yang relevan dan aplicable.
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Bagian footer modal -->
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
 
 
              </div>
@@ -967,7 +1104,7 @@ $pbaAchievement = 0;
                                 <td>1</td>
                                 <td class="">DISIPLIN</td>
                                 <td class="text-center">3</td>
-                                <td class="text-center">15</td>
+                                <td class="text-center">{{$pd->weight}}</td>
                                 <td class="text-center"><b>{{round(($pdAchievement/15)*100)}}</b></td>
                                 <!-- <td class="">{{round((4.00/4)* 4 , 2)}}</td> -->
                                 <td class="text-center text-bold"><b>{{ $pdAchievement }}</b></td>

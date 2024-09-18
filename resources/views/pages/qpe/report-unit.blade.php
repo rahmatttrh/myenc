@@ -24,10 +24,10 @@ QPE Report
                      <table>
                         <thead>
                            <tr>
-                              <th colspan="4" class="text-uppercase">{{$unit->name}}</th>
+                              <th colspan="6" class="text-uppercase">{{$unit->name}}</th>
                            </tr>
                            <tr>
-                              <th colspan="4" class="text-uppercase">Semester 
+                              <th colspan="6" class="text-uppercase">Semester 
                                  @if ($semester == 1)
                                      I
                                      @else
@@ -38,12 +38,14 @@ QPE Report
                            <tr>
                               <th rowspan="2">Department</th>
                               <th rowspan="2" class="text-center">Total Karyawan</th>
-                              <th colspan="2" class="text-center">QPE</th>
+                              <th colspan="4" class="text-center">QPE</th>
                               
                            </tr>
                            <tr>
                               
-                              <th class="text-center">Created</th>
+                              <th class="text-center">Draft</th>
+                              <th class="text-center">Verifikasi</th>
+                              <th class="text-center">Done</th>
                               <th class="text-center">Empty</th>
                            </tr>
                         </thead>
@@ -51,8 +53,10 @@ QPE Report
                            @foreach ($unit->departments as $depart)
                                <tr>
                                  <td><a href="{{route('qpe.report.department', [enkripRambo($depart->id),enkripRambo($semester),enkripRambo($year)])}}">{{$depart->name}}</a></td>
-                                 <td class="text-center">{{count($depart->employees)}}</td>
-                                 <td class="text-center">{{$depart->getQpe($semester, $year)}}</td>
+                                 <td class="text-center">{{count($depart->employees->where('status', 1))}}</td>
+                                 <td class="text-center">{{$depart->getQpe($semester, $year, 0)}}</td>
+                                 <td class="text-center">{{$depart->getQpe($semester, $year, 1)}}</td>
+                                 <td class="text-center">{{$depart->getQpe($semester, $year, 2)}}</td>
                                  <td class="text-center"> {{$depart->getEmptyQpe($semester, $year)}}</td>
                                </tr>
                            @endforeach

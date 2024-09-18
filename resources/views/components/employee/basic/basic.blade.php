@@ -256,6 +256,12 @@
                            <input type="text" class="form-control" value="{{$employee->biodata->no_bpjs_kesehatan}}" name="no_bpjs_kesehatan" id="no_bpjs_kesehatan">
                         </div>
                      </div>
+                     <div class="col-md-6">
+                        <div class="form-group form-group-default">
+                           <label>No. Document</label>
+                           <input type="text" class="form-control" value="{{$employee->biodata->no_doc}}" name="no_doc" id="no_doc">
+                        </div>
+                     </div>
                   </div>
 
                   @if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment'))

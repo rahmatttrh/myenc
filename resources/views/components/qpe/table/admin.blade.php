@@ -8,6 +8,9 @@
                <th>NIK</th>
                <th class="text-white">Employe</th>
                <th class="text-white">Semester</th>
+               <th class="text-white text-center">KPI</th>
+               <th class="text-white text-center">Behavior</th>
+               <th class="text-white text-center">Discipline</th>
                <th class="text-white text-center">Achievement</th>
                <th class="text-white">Status</th>
                <th class="text-right text-white">Action</th>
@@ -41,6 +44,16 @@
                   @endif
                </td>
                <td>{{$pe->semester}} / {{$pe->tahun}}</td>
+              
+               <td class="text-center">
+                  <span class="">{{$pe->kpi}}</span>
+               </td>
+               <td class="text-center">
+                  <span class="">{{$pe->behavior}}</span>
+               </td>
+               <td class="text-center">
+                  <span class="">{{$pe->discipline}}</span>
+               </td>
                <td class="text-center">
                   {{-- <span class="badge badge-primary badge-lg"><b>{{$pe->achievement}}</b></span> --}}
                   <span class="">{{$pe->achievement}}</span>
@@ -71,7 +84,7 @@
                   @if($pe->status == 0)
                   <!-- <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#modal-delete-{{$pe->id}}"><i class="fas fa-trash"></i> Delete</button> -->
                   @elseif(($pe->status == '1' || $pe->status == '2' || $pe->status == '101' || $pe->status == '202') && $pe->behavior > 0)
-                  <a href="{{ route('export.qpe', $pe->id) }}" target="_blank"> Preview PDF</a>
+                  <a href="{{ route('export.qpe', $pe->id) }}" target="_blank">PDF</a>
                   @elseif(($pe->status == 0 || $pe->status == 101 || $pe->status == 202) && auth()->user()->hasRole('Leader'))
                   <!-- <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-submit-{{$pe->id}}"><i class="fas fa-rocket"></i> Submit</button> -->
                   @endif
