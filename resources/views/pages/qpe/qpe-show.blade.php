@@ -15,7 +15,7 @@ PE
     </nav>
 
     <div class="row mr-6">
-        
+
     </div>
 
     <!-- Section for creating and detailing performance appraisal -->
@@ -32,134 +32,134 @@ PE
             <x-discipline :pd="$pd" />
         </div>
         <div class="col-md-9">
-         @if (auth()->user()->hasRole('Karyawan'))
-        <!-- Awal Action Karyawan -->
+            @if (auth()->user()->hasRole('Karyawan'))
+            <!-- Awal Action Karyawan -->
 
-        <!-- Hanya karyawan tersebut yang bisa komplen -->
-         <div class="text-right">
-            @if(auth()->user()->employee->id == $pe->employe_id && ($kpa->pe->status == '2'|| $kpa->pe->status == '101' || $kpa->pe->status == '202') && $pe->complained == '0' )
+            <!-- Hanya karyawan tersebut yang bisa komplen -->
+            <div class="text-right">
+                @if(auth()->user()->employee->id == $pe->employe_id && ($kpa->pe->status == '2'|| $kpa->pe->status == '101' || $kpa->pe->status == '202') && $pe->complained == '0' )
 
-            <div class="btn-group ml-auto">
-                  <button data-target="#modalKomplain" data-toggle="modal" class="btn btn-md btn-warning "><i class="fa fa-comments"></i> Komentar</button>
-            </div>
+                <div class="btn-group ml-auto">
+                    <button data-target="#modalKomplain" data-toggle="modal" class="btn btn-md btn-warning "><i class="fa fa-comments"></i> Komentar</button>
+                </div>
 
-            <!-- Modal Komplain  -->
-            <div class="modal fade" id="modalKomplain" data-bs-backdrop="static">
-                  <div class="modal-dialog modal-lg">
-                     <div class="modal-content">
+                <!-- Modal Komplain  -->
+                <div class="modal fade" id="modalKomplain" data-bs-backdrop="static">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
 
-                        <!-- Bagian header modal -->
-                        <div class="modal-header">
-                              <h3 class="modal-title"> </h3>
-                              <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        </div>
-                        <form method="POST" action="{{route('qpe.complain.patch', $pe->id) }}" enctype="multipart/form-data">
-                              @csrf
-                              @method('patch')
-                              <input type="hidden" name="id" value="{{$pe->id}}">
+                            <!-- Bagian header modal -->
+                            <div class="modal-header">
+                                <h3 class="modal-title"> </h3>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <form method="POST" action="{{route('qpe.complain.patch', $pe->id) }}" enctype="multipart/form-data">
+                                @csrf
+                                @method('patch')
+                                <input type="hidden" name="id" value="{{$pe->id}}">
 
-                              <!-- Bagian konten modal -->
-                              <div class="modal-body">
+                                <!-- Bagian konten modal -->
+                                <div class="modal-body">
 
-                                 <div class="row">
-                                    <div class="col-md-12">
-                                          <div class="card shadow-none border">
-                                             <div class="card-header d-flex">
-                                                <div class="d-flex  align-items-center">
-                                                      <div class="card-title">Konfirmasi </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="card shadow-none border">
+                                                <div class="card-header d-flex">
+                                                    <div class="d-flex  align-items-center">
+                                                        <div class="card-title">Konfirmasi </div>
+                                                    </div>
+
                                                 </div>
-
-                                             </div>
-                                             <div class="card-body">
-                                                <div class="form-group">
-                                                      <div class="row">
-                                                         <div class="col-md-12">
-                                                            <label for="" class="label-control">Komentar <span class="text-danger">*</span></label>
-                                                            <textarea name="complain_alasan" class="form-control" id="" rows="5" placeholder="isi komentar" required></textarea>
-                                                         </div>
-                                                      </div>
+                                                <div class="card-body">
+                                                    <div class="form-group">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <label for="" class="label-control">Komentar <span class="text-danger">*</span></label>
+                                                                <textarea name="complain_alasan" class="form-control" id="" rows="5" placeholder="isi komentar" required></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                             </div>
-                                          </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                 </div>
-                              </div>
+                                </div>
 
-                              <!-- Bagian footer modal -->
-                              <div class="modal-footer">
-                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                 <button type="submit" class="btn btn-success"><i class="fa fa-send"></i> Submit</button>
-                              </div>
-                        </form>
+                                <!-- Bagian footer modal -->
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-success"><i class="fa fa-send"></i> Submit</button>
+                                </div>
+                            </form>
 
-                     </div>
-                  </div>
-            </div>
-
-            <!-- End Modal Komplain  -->
-            @endif
-
-        <!-- Tombol Komplain karyawan  -->
-            @if(auth()->user()->employee->id == $pe->employe_id && $pe->complained == '1' )
-            <div class="btn-group ml-auto">
-                  <button data-target="#closeKomplain" data-toggle="modal" class="btn btn-xs btn-success "><i class="fa fa-flag"></i> Close Komplain</button>
-            </div>
-
-            <div class="modal fade" id="closeKomplain" data-bs-backdrop="static">
-                  <div class="modal-dialog modal-lg">
-                     <div class="modal-content">
-
-                        <!-- Bagian header modal -->
-                        <div class="modal-header">
-                              <h3 class="modal-title"> </h3>
-                              <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
-                        <form method="POST" action="{{route('qpe.closecomplain.patch', $pe->id) }}" enctype="multipart/form-data">
-                              @csrf
-                              @method('patch')
-                              <input type="hidden" name="id" value="{{$pe->id}}">
+                    </div>
+                </div>
 
-                              <!-- Bagian konten modal -->
-                              <div class="modal-body">
+                <!-- End Modal Komplain  -->
+                @endif
 
-                                 <div class="row">
-                                    <div class="col-md-12">
-                                          <div class="card shadow-none border">
-                                             <div class="card-header d-flex">
-                                                <div class="d-flex  align-items-center">
-                                                      <div class="card-title">Konfirmasi </div>
+                <!-- Tombol Komplain karyawan  -->
+                @if(auth()->user()->employee->id == $pe->employe_id && $pe->complained == '1' )
+                <div class="btn-group ml-auto">
+                    <button data-target="#closeKomplain" data-toggle="modal" class="btn btn-xs btn-success "><i class="fa fa-flag"></i> Close Komplain</button>
+                </div>
+
+                <div class="modal fade" id="closeKomplain" data-bs-backdrop="static">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+
+                            <!-- Bagian header modal -->
+                            <div class="modal-header">
+                                <h3 class="modal-title"> </h3>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <form method="POST" action="{{route('qpe.closecomplain.patch', $pe->id) }}" enctype="multipart/form-data">
+                                @csrf
+                                @method('patch')
+                                <input type="hidden" name="id" value="{{$pe->id}}">
+
+                                <!-- Bagian konten modal -->
+                                <div class="modal-body">
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="card shadow-none border">
+                                                <div class="card-header d-flex">
+                                                    <div class="d-flex  align-items-center">
+                                                        <div class="card-title">Konfirmasi </div>
+                                                    </div>
+
                                                 </div>
-
-                                             </div>
-                                             <div class="card-body">
-                                                <div class="form-group">
-                                                      <div class="row">
-                                                         <div class="col-md-12">
-                                                            <h3>Apakah Anda yakin ingin menutup komplain tersebut?</h3>
-                                                         </div>
-                                                      </div>
+                                                <div class="card-body">
+                                                    <div class="form-group">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <h3>Apakah Anda yakin ingin menutup komplain tersebut?</h3>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                             </div>
-                                          </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                 </div>
-                              </div>
+                                </div>
 
-                              <!-- Bagian footer modal -->
-                              <div class="modal-footer">
-                                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                 <button type="submit" class="btn btn-success"><i class="fa fa-send"></i> Ya, Saya Yakin</button>
-                              </div>
-                        </form>
+                                <!-- Bagian footer modal -->
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-success"><i class="fa fa-send"></i> Ya, Saya Yakin</button>
+                                </div>
+                            </form>
 
-                     </div>
-                  </div>
+                        </div>
+                    </div>
+                </div>
+
+                @endif
             </div>
-
+            <!-- Akhir Action Karyawan  -->
             @endif
-         </div>
-        <!-- Akhir Action Karyawan  -->
-        @endif
             <!-- KPI table component -->
             <x-qpe.kpi-table :kpa="$kpa" :valueAvg="$valueAvg" :datas="$datas" :addtional="$addtional" :i="$i" />
             <x-behavior-form :kpa="$kpa" :pba="$pba" :behaviors="$behaviors" :pbads="$pbads" />
