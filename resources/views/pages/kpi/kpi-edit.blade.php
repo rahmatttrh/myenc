@@ -115,7 +115,12 @@ KPI Detail
                             <tbody>
                                 @foreach ($datas as $data)
                                 <tr>
-                                    <td>{{++$i}}</td>
+                                    <td>{{++$i}} 
+                                        @if (auth()->user()->hasRole('Administrator'))
+                                        - ({{$data->id}})
+                                        @endif
+                                        
+                                    </td>
                                     <td><a href="" data-toggle="modal" data-target="#detail-{{$data->id}}"> {{$data->objective}}</a></td>
                                     <td>{{$data->kpi}}</td>
                                     <td><b> {{$data->weight}} % </b></td>

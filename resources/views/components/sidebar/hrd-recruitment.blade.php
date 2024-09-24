@@ -51,6 +51,13 @@
                <span class="sub-item">Discipline</span>
             </a>
          </li>
+         @if (auth()->user()->hasRole('Supervisor|Leader'))
+         <li>
+            <a href="{{route('kpi')}}">
+               <span class="sub-item">KPI</span>
+            </a>
+         </li>
+         @endif
       </ul>
    </div>
 </li>

@@ -894,6 +894,7 @@ class EmployeeController extends Controller
 
       if ($employee->department->slug == 'hrd') {
          $role2 = Role::find($req->role2);
+         // dd($role2);
          $employee->update([
             'role2' => $req->role2
          ]);

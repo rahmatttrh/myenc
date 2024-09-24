@@ -375,6 +375,11 @@ Route::middleware(["auth"])->group(function () {
       Route::prefix('qpe')->group(function () {
          Route::get('/', [QuickPEController::class, 'index'])->name('qpe');
 
+         Route::get('draft', [QuickPEController::class, 'draft'])->name('qpe.draft');
+         Route::get('verification', [QuickPEController::class, 'verification'])->name('qpe.verification');
+         Route::get('done', [QuickPEController::class, 'done'])->name('qpe.done');
+         Route::get('reject', [QuickPEController::class, 'reject'])->name('qpe.reject');
+
          Route::get('show/{id}', [QuickPEController::class, 'show'])->name('qpe.show');
          Route::get('report', [QuickPEController::class, 'report'])->name('qpe.report');
          Route::post('report/filter', [QuickPEController::class, 'reportFilter'])->name('qpe.report.filter');

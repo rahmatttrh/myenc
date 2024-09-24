@@ -13,7 +13,7 @@ QPE
     </nav>
     <div class="row">
         <div class="col-md-12">
-            <div class="card shadow-none border">
+            {{-- <div class="card shadow-none border">
                 <div class="card-header">
                     <ul class="nav nav-tabs card-header-tabs">
                         <li class="nav-item">
@@ -22,18 +22,12 @@ QPE
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('kpa.summary')}}">Summary</a>
                         </li>
-                        {{-- @if (auth()->user()->hasRole('Administrator'))
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{route('kpa.monitoring')}}">Monitoring</a>
-                        </li>
-                        @endif --}}
-
                     </ul>
                 </div>
                 
-                <div class="card-body p-0 py-2">
+                <div class="card-body p-0 py-2"> --}}
                   @if (auth()->user()->hasRole('Administrator|HRD|HRD-Manager'))
-                      <x-qpe.table.admin :pes="$pes" :i="$i" />
+                      <x-qpe.table.admin :pes="$pes" :i="$i" :title="$title" :total="$total" :draft="$draft" :verification="$verification" :done="$done" :reject="$reject" />
                       @elseif($employee->role == 5 || $employee->role == 8)
                       <x-qpe.table.manager :pes="$pes" :i="$i" :employee="$employee" />
                       @elseif($employee->role == 4 || $employee->role == 7 )
@@ -318,8 +312,8 @@ QPE
                             </tbody>
                         </table>
                     </div> --}}
-                </div>
-            </div>
+                {{-- </div>
+            </div> --}}
         </div>
     </div>
 </div>

@@ -235,6 +235,7 @@ class HomeController extends Controller
             'empty' => $empty,
          ]);
       } elseif (auth()->user()->hasRole('HRD-Manager|HRD')) {
+         
          $user = Employee::find(auth()->user()->getEmployeeId());
          $employees = Employee::get();
          $male = Biodata::where('gender', 'Male')->count();
@@ -249,6 +250,26 @@ class HomeController extends Controller
          // dd($teams);
          $pes = Pe::orderBy('updated_at', 'desc')->get();
          $recentPes = Pe::orderBy('updated_at', 'desc')->paginate(8);
+
+         // if (count($user->positions) > 0) {
+         //    $teams = null;
+         //    $pes = null;
+         //    $recentPes = null;
+         // } else {
+         //    if ($user->position->sub_dept_id != null) {
+         //       // dd('ada sub');
+         //       $teams = Employee::where('status', 1)->where('sub_dept_id', $user->position->sub_dept_id)->where('id', '!=', $user->id)->get();
+         //    } else {
+         //       $teams = Employee::where('status', 1)->where('department_id', $user->position->department_id)->get();
+         //    }
+
+         // }
+
+
+
+
+         // dd(count($final));
+         // $employeePositiddons = $user->positions;
          // dd($pes);
          return view('pages.dashboard.hrd', [
             'user' => $user,
@@ -264,7 +285,8 @@ class HomeController extends Controller
             'logs' => $logs,
             'teams' => $teams,
             'pes' => $pes,
-            'recentPes' => $recentPes
+            'recentPes' => $recentPes,
+            'positions' => []
          ]);
       } elseif (auth()->user()->hasRole('HRD-Spv')) {
          $user = Employee::find(auth()->user()->getEmployeeId());

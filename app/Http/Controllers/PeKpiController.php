@@ -41,7 +41,7 @@ class PeKpiController extends Controller
     //   }
 
         // Data KPI
-        if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv')) {
+        if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment')) {
             $kpis = PeKpi::get();
             $units = Unit::orderBy('name')->get();
             $departements = Department::orderBy('name')->get();
