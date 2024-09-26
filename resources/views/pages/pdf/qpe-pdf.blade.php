@@ -366,11 +366,11 @@ PDF Example
                   </tr>
                   <tr>
                      <td colspan="2">Nama &nbsp;&nbsp; : 
-                        {{-- {{$pe->getCreatedBy()->biodata->fullName()}} --}}
+                        {{$pe->getCreatedBy()->biodata->fullName()}}
                      </td>
                      <td>Nama &nbsp;&nbsp; : 
                         @if ($pe->verifikasi_by != null)
-                        {{-- {{$pe->getVerifikasiBy()->biodata->fullName()}} --}}
+                        {{$pe->getVerifikasiBy()->biodata->fullName()}}
                         @endif
                         
                      </td>

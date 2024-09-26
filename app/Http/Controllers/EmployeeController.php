@@ -107,6 +107,8 @@ class EmployeeController extends Controller
       ])->with('i');
    }
 
+
+
    public function indexSpv()
    {
       $department = Department::find(auth()->user()->getEmployee()->department_id);
@@ -921,6 +923,10 @@ class EmployeeController extends Controller
       return redirect()->route('employee.detail', [enkripRambo($employee->id), enkripRambo('account')])->with('success', 'Employee successfully updated');
    }
 
+   public function formExport(){
+      return view('pages.employee.export-form', [])->with('i');
+   }
+
    public function export()
    {
       return Excel::download(new EmployeeExport, 'employee.xlsx');
@@ -977,6 +983,10 @@ class EmployeeController extends Controller
 
       return redirect()->route('employee.draft')->with('success', 'Employee Data successfully imported');
    }
+
+   // public function export(){
+
+   // }
 
   
    public function delete($id)

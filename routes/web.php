@@ -127,6 +127,8 @@ Route::middleware(["auth"])->group(function () {
          Route::get('import', [EmployeeController::class, 'formImport'])->name('employee.import');
          Route::post('import', [EmployeeController::class, 'import'])->name('employee.import.data');
 
+         Route::get('export-form', [EmployeeController::class, 'formExport'])->name('employee.export.form');
+
          Route::get('import/edit', [EmployeeController::class, 'formImportEdit'])->name('employee.import.edit');
 
          Route::prefix('draft')->group(function () {

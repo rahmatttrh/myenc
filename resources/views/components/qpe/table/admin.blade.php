@@ -76,7 +76,13 @@
                    <tbody>
                      @foreach ($pes->sortByDesc('updated_at') as $pe)
                         <tr>
-                           <td class="text-center">{{++$i}} </td>
+                           <td class="text-center text-truncate">{{++$i}} - 
+                              @if (auth()->user()->hasRole('Administrator'))
+                           
+                                 {{$pe->id}} 
+                              
+                              @endif   
+                           </td>
                           
                               {{-- @if (auth()->user()->hasRole('Administrator'))
                               <td>
