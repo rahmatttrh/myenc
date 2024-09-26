@@ -17,13 +17,11 @@ use Illuminate\Support\Facades\Storage;
 
 class PayrollController extends Controller
 {
-   public function index()
-   {
+  
    public function index()
    {
       $employees = Employee::where('status', 1)->get();
       $units = Unit::get();
-      return view('pages.payroll.setup.gaji', [
       return view('pages.payroll.setup.gaji', [
          'employees' => $employees,
          'units' => $units
@@ -40,8 +38,7 @@ class PayrollController extends Controller
       ])->with('i');
    }
 
-   public function setup()
-   {
+   
    public function unit()
    {
       $units = Unit::get();
@@ -67,17 +64,13 @@ class PayrollController extends Controller
    public function detail($id)
    {
       $employee = Employee::find(dekripRambo($id));
-   public function detail($id)
-   {
-      $employee = Employee::find(dekripRambo($id));
 
       return view('pages.payroll.detail', [
          'employee' => $employee
       ]);
    }
 
-   public function update(Request $req)
-   {
+  
    public function update(Request $req)
    {
       $employee = Employee::find($req->employee);
@@ -192,11 +185,6 @@ class PayrollController extends Controller
    }
 
 
-
-
-
-   public function unitUpdatePph(Request $req)
-   {
    public function unitUpdatePph(Request $req)
    {
       $unit = Unit::find($req->unit);
