@@ -29,7 +29,7 @@ QPE
                   @if (auth()->user()->hasRole('Administrator|HRD|HRD-Manager'))
                       <x-qpe.table.admin :pes="$pes" :i="$i" :title="$title" :total="$total" :draft="$draft" :verification="$verification" :done="$done" :reject="$reject" />
                       @elseif($employee->role == 5 || $employee->role == 8)
-                      <x-qpe.table.manager :pes="$pes" :i="$i" :employee="$employee" />
+                      <x-qpe.table.manager :pes="$pes" :i="$i" :employee="$employee" :title="$title" :total="$total" :draft="$draft" :verification="$verification" :done="$done" :reject="$reject" />
                       @elseif($employee->role == 4 || $employee->role == 7 )
                       <x-qpe.table.spv :pes="$pes" :allpes="$allpes" :i="$i" :employee="$employee" :myteams="$myteams" :allpes="$allpes" />
                       @else

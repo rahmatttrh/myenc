@@ -1541,7 +1541,7 @@ class QuickPEController extends Controller
         return redirect('/')->with('success', 'Perfomance Evaluation berhasil di Sumbit');
     }
 
-   public function approved(Request $request, $id)
+   public function approved($id)
    {
 
       $pe = Pe::find($id);
@@ -2621,4 +2621,57 @@ class QuickPEController extends Controller
          'year' => $year
       ]);
    }
+
+   public function applyMany(Request $req)
+    {
+
+      //   dd('ok');
+        // try {
+        DB::beginTransaction();
+
+        // Memeriksa apakah permintaan untuk menerapkan data (apply) adalah '1'
+        if ($req->apply == '1') {
+            $apply = 0; // Inisialisasi penghitung untuk data yang berhasil diterapkan
+            $duplikat = 0; // Inisialisasi penghitung untuk data yang sudah ada (duplikat)
+
+            // Melakukan iterasi melalui setiap ID yang diperiksa dalam permintaan
+            foreach ($req->check as $key => $id) {
+
+                $this->approved($id);
+                $apply++;
+            }
+
+            $pesan1 = ''; // Pesan untuk data yang berhasil diterapkan
+            $pesan2 = ''; // Pesan untuk data yang duplikat
+
+            // Membuat pesan jika ada data yang berhasil diterapkan
+            if ($apply > 0) {
+                $pesan1 = $apply . ' QPE successfully approved ';
+            }
+
+            // Membuat pesan jika ada data yang duplikat
+            if ($duplikat > 0) {
+                $pesan2 = $duplikat . ' Data already available ';
+            }
+
+            // Membuat array pesan untuk dikembalikan sebagai tanggapan
+            $message = [
+                'success' => $pesan1,
+                'danger' => $pesan2,
+            ];
+        }
+       
+        // Commit transaksi jika semua operasi berhasil
+        DB::commit();
+
+        return back()->with($message);
+        // } catch (\Exception $e) {
+        //     // Rollback transaksi jika terjadi kesalahan
+        //     DB::rollBack();
+
+        //     // Handle kesalahan sesuai kebutuhan Anda
+        //     // Misalnya, log pesan kesalahan atau kembalikan respons kesalahan ke pengguna
+        //     return response()->json(['error' => $e->getMessage()], 500);
+        // }
+    }
 }

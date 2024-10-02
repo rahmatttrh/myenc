@@ -389,7 +389,7 @@ Route::middleware(["auth"])->group(function () {
          Route::get('report/department/{id}/{semester}/{year}', [QuickPEController::class, 'reportDepartment'])->name('qpe.report.department');
 
          Route::get('approval/{id}', [QuickPEController::class, 'approval'])->name('qpe.approval');
-
+         Route::put('apply-many', [QuickPEController::class, 'applyMany'])->name('qpe.apply');
          Route::get('report', [QuickPEController::class, 'report'])->name('qpe.report');
          Route::post('report/filter', [QuickPEController::class, 'reportFilter'])->name('qpe.report.filter');
          Route::get('report/unit/{id}/{semester}/{year}', [QuickPEController::class, 'reportUnit'])->name('qpe.report.unit');
