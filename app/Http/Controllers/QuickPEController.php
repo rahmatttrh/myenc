@@ -35,11 +35,11 @@ class QuickPEController extends Controller
    {
 
       $pes = Pe::orderBy('updated_at', 'asc')->get();
-
+        $title = 'ALL QPE';
       // Data KPI
     //   if (auth()->user()->hasRole('Administrator')) {
       // Data KPI
-      if (auth()->user()->hasRole('Administrator')) {
+      if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Manager')) {
          $employee = null;
          $kpas = PeKpa::where('status', '!=', '0')
             ->orderBy('employe_id')
@@ -47,6 +47,12 @@ class QuickPEController extends Controller
          $outAssesments = $this->outstandingAssessment();
          $myteams = [];
          $allpes = [];
+
+         $total = Pe::orderBy('updated_at', 'asc')->get();
+         $draft = Pe::where('status', 0)->orderBy('updated_at', 'asc')->get();
+         $verification = Pe::where('status', 1)->orderBy('updated_at', 'asc')->get();
+         $done = Pe::where('status', 2)->orderBy('updated_at', 'asc')->get();
+         $reject = Pe::where('status', 101)->orderBy('updated_at', 'asc')->get();
       } else if (auth()->user()->hasRole('HRD|HRD-Spv|HRD-Manager')) {
          // dd('ok');
          $employee = auth()->user()->getEmployee();
@@ -61,21 +67,12 @@ class QuickPEController extends Controller
 
             $myteams = [];
             $allpes = [];
-        } else if (auth()->user()->hasRole('Manager|Asst. Manager')) {
-            //  dd('ok');
-         $employee = auth()->user()->getEmployee();
-         // $kpas = PeKpa::where('status', '!=', '0')
-         //     ->orderBy('employe_id')
-         //     ->get();
-
-         $pes = Pe::orderBy('updated_at', 'desc')
-            ->get();
-
-         $outAssesments = $this->outstandingAssessment();
-
-         $myteams = [];
-         $allpes = [];
-      } else if (auth()->user()->hasRole('Manager|Asst. Manager')) {
+            $total = Pe::orderBy('updated_at', 'asc')->get();
+         $draft = Pe::where('status', 0)->orderBy('updated_at', 'asc')->get();
+         $verification = Pe::where('status', 1)->orderBy('updated_at', 'asc')->get();
+         $done = Pe::where('status', 2)->orderBy('updated_at', 'asc')->get();
+         $reject = Pe::where('status', 101)->orderBy('updated_at', 'asc')->get();
+        }  else if (auth()->user()->hasRole('Manager|Asst. Manager')) {
         //  dd('ok');
          $employee = auth()->user()->getEmployee();
          // $pes = Pe::join('employees', 'pes.employe_id', '=', 'employees.id')
@@ -98,6 +95,11 @@ class QuickPEController extends Controller
          $outAssesments = $this->outstandingAssessment($employee->department_id);
          $myteams = [];
          $allpes = [];
+         $total = [];
+         $draft = [];
+         $verification = [];
+         $done = [];
+         $reject = [];
       } else if (auth()->user()->hasRole('Leader|Supervisor')) {
         
          $employee = auth()->user()->getEmployee();
@@ -124,7 +126,11 @@ class QuickPEController extends Controller
 
          // 
          $outAssesments = $this->outstandingAssessment($employee->department_id);
-        
+         $total = [];
+         $draft = [];
+         $verification = [];
+         $done = [];
+         $reject = [];
       } else if (auth()->user()->hasRole('Karyawan')) {
         $employee = auth()->user()->getEmployee();
 
@@ -137,6 +143,11 @@ class QuickPEController extends Controller
          $outAssesments = $this->outstandingAssessment($employee->department_id);
          $myteams = [];
          $allpes = [];
+         $total = [];
+         $draft = [];
+         $verification = [];
+         $done = [];
+         $reject = [];
       } 
 
         // dd($pes);
@@ -144,11 +155,655 @@ class QuickPEController extends Controller
 
       return view('pages.qpe.qpe', [
          // 'kpas' => $kpas,
+         'title' => $title,
          'employee' => $employee,
          'pes' => $pes,
          'allpes' => $allpes,
          'myteams' => $myteams,
-         'outAssesments' =>  $outAssesments
+         'outAssesments' =>  $outAssesments,
+
+         'total' => $total,
+         'draft' => $draft,
+         'verification' => $verification,
+         'done' => $done,
+         'reject' => $reject
+      ])->with('i');
+   }
+
+   public function draft()
+   {
+
+      $pes = Pe::where('status', 0)->orderBy('updated_at', 'asc')->get();
+      $total = [];
+        $title = 'DRAFT QPE';
+      // Data KPI
+    //   if (auth()->user()->hasRole('Administrator')) {
+      // Data KPI
+      if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Manager')) {
+         $employee = null;
+         $kpas = PeKpa::where('status', '!=', '0')
+            ->orderBy('employe_id')
+            ->get();
+         $outAssesments = $this->outstandingAssessment();
+         $myteams = [];
+         $allpes = [];
+
+         $total = Pe::orderBy('updated_at', 'asc')->get();
+         $draft = Pe::where('status', 0)->orderBy('updated_at', 'asc')->get();
+         $verification = Pe::where('status', 1)->orderBy('updated_at', 'asc')->get();
+         $done = Pe::where('status', 2)->orderBy('updated_at', 'asc')->get();
+         $reject = Pe::where('status', 101)->orderBy('updated_at', 'asc')->get();
+      } else if (auth()->user()->hasRole('HRD|HRD-Spv|HRD-Manager')) {
+         // dd('ok');
+         $employee = auth()->user()->getEmployee();
+         // $kpas = PeKpa::where('status', '!=', '0')
+         //     ->orderBy('employe_id')
+         //     ->get();
+
+         $pes = Pe::where('status', 0)->orderBy('updated_at', 'desc')
+            ->get();
+
+         $outAssesments = $this->outstandingAssessment();
+
+            $myteams = [];
+            $allpes = [];
+            
+         $total = Pe::orderBy('updated_at', 'asc')->get();
+         $draft = Pe::where('status', 0)->orderBy('updated_at', 'asc')->get();
+         $verification = Pe::where('status', 1)->orderBy('updated_at', 'asc')->get();
+         $done = Pe::where('status', 2)->orderBy('updated_at', 'asc')->get();
+         $reject = Pe::where('status', 101)->orderBy('updated_at', 'asc')->get();
+        } else if (auth()->user()->hasRole('Manager|Asst. Manager')) {
+            //  dd('ok');
+         $employee = auth()->user()->getEmployee();
+         // $kpas = PeKpa::where('status', '!=', '0')
+         //     ->orderBy('employe_id')
+         //     ->get();
+
+         $pes = Pe::where('status', 0)->orderBy('updated_at', 'desc')
+            ->get();
+
+         $outAssesments = $this->outstandingAssessment();
+
+         $myteams = [];
+         $allpes = [];
+         $total = [];
+         $draft = [];
+         $verification = [];
+         $done = [];
+         $reject = [];
+      } else if (auth()->user()->hasRole('Manager|Asst. Manager')) {
+        //  dd('ok');
+         $employee = auth()->user()->getEmployee();
+         // $pes = Pe::join('employees', 'pes.employe_id', '=', 'employees.id')
+         //     ->where('employees.manager_id', $employee->id)
+         //     ->where('pes.status', '>', '0')
+         //     ->select('pes.*')
+         //     ->orderBy('pes.release_at', 'desc')
+         //     ->get(); 
+
+         $pes = Pe::where('status', 0)->where('department_id', $employee->department_id)->where('pes.status', '>=', '0')
+            ->orderBy('release_at', 'desc')
+            ->get();
+       
+
+         //  $pes = Pe::where('pes.status', '>', '0')
+         //  ->orderBy('updated_at', 'desc')
+         //  ->get();
+
+         // 
+         $outAssesments = $this->outstandingAssessment($employee->department_id);
+         $myteams = [];
+         $allpes = [];
+         $total = [];
+         $draft = [];
+         $verification = [];
+         $done = [];
+         $reject = [];
+      } else if (auth()->user()->hasRole('Leader|Supervisor')) {
+        
+         $employee = auth()->user()->getEmployee();
+         $myteams = EmployeeLeader::join('employees', 'employee_leaders.employee_id', '=', 'employees.id')
+               ->join('biodatas', 'employees.biodata_id', '=', 'biodatas.id')
+                ->where('leader_id', $employee->id)
+                ->select('employees.*')
+                ->orderBy('biodatas.first_name', 'asc')
+                ->get();
+            $allpes = Pe::orderBy('updated_at', 'desc')->get();
+         
+            // dd($myteams);
+            if (auth()->user()->hasRole('Supervisor')) {
+               $pes = Pe::where('status', 0)->where('department_id', $employee->department_id)->orderBy('updated_at', 'desc')->get();
+            } else {
+                // dd('ok');
+               $pes = Pe::where('status', 0)->where('created_by', $employee->id)->orderBy('updated_at', 'desc')->get();
+                // dd($pes);
+            }
+            
+            // dd(count($pes));
+
+
+
+         // 
+         $outAssesments = $this->outstandingAssessment($employee->department_id);
+         $total = [];
+         $draft = [];
+         $verification = [];
+         $done = [];
+         $reject = [];
+      } else if (auth()->user()->hasRole('Karyawan')) {
+        $employee = auth()->user()->getEmployee();
+
+        $pes = Pe::join('employees', 'pes.employe_id', '=', 'employees.id')
+           ->where('employees.id', $employee->id)
+           ->whereIn('pes.status', [2, 101, 202])
+           ->select('pes.*')
+           ->where('status', 0)->orderBy('pes.release_at', 'desc')
+           ->get();
+         $outAssesments = $this->outstandingAssessment($employee->department_id);
+         $myteams = [];
+         $allpes = [];
+         $total = [];
+         $draft = [];
+         $verification = [];
+         $done = [];
+         $reject = [];
+      } 
+
+        // dd($pes);
+
+
+      return view('pages.qpe.qpe', [
+         // 'kpas' => $kpas,
+         'title' => $title,
+         'employee' => $employee,
+         'pes' => $pes,
+         'allpes' => $allpes,
+         'myteams' => $myteams,
+         'outAssesments' =>  $outAssesments,
+
+         'total' => $total,
+         'draft' => $draft,
+         'verification' => $verification,
+         'done' => $done,
+         'reject' => $reject
+      ])->with('i');
+   }
+
+   public function verification()
+   {
+
+      $pes = Pe::where('status', 1)->orderBy('updated_at', 'asc')->get();
+        $title = 'VERIFICATION QPE';
+      // Data KPI
+    //   if (auth()->user()->hasRole('Administrator')) {
+      // Data KPI
+      if (auth()->user()->hasRole('Administrator')) {
+         $employee = null;
+         $kpas = PeKpa::where('status', '!=', '0')
+            ->orderBy('employe_id')
+            ->get();
+         $outAssesments = $this->outstandingAssessment();
+         $myteams = [];
+         $allpes = [];
+
+         $total = Pe::orderBy('updated_at', 'asc')->get();
+         $draft = Pe::where('status', 0)->orderBy('updated_at', 'asc')->get();
+         $verification = Pe::where('status', 1)->orderBy('updated_at', 'asc')->get();
+         $done = Pe::where('status', 2)->orderBy('updated_at', 'asc')->get();
+         $reject = Pe::where('status', 101)->orderBy('updated_at', 'asc')->get();
+      } else if (auth()->user()->hasRole('HRD|HRD-Spv|HRD-Manager')) {
+         // dd('ok');
+         $employee = auth()->user()->getEmployee();
+         // $kpas = PeKpa::where('status', '!=', '0')
+         //     ->orderBy('employe_id')
+         //     ->get();
+
+         $pes = Pe::where('status', 1)->orderBy('updated_at', 'desc')
+            ->get();
+
+         $outAssesments = $this->outstandingAssessment();
+
+            $myteams = [];
+            $allpes = [];
+            
+         $total = Pe::orderBy('updated_at', 'asc')->get();
+         $draft = Pe::where('status', 0)->orderBy('updated_at', 'asc')->get();
+         $verification = Pe::where('status', 1)->orderBy('updated_at', 'asc')->get();
+         $done = Pe::where('status', 2)->orderBy('updated_at', 'asc')->get();
+         $reject = Pe::where('status', 101)->orderBy('updated_at', 'asc')->get();
+        } else if (auth()->user()->hasRole('Manager|Asst. Manager')) {
+            //  dd('ok');
+         $employee = auth()->user()->getEmployee();
+         // $kpas = PeKpa::where('status', '!=', '0')
+         //     ->orderBy('employe_id')
+         //     ->get();
+
+         $pes = Pe::where('status', 1)->orderBy('updated_at', 'desc')
+            ->get();
+
+         $outAssesments = $this->outstandingAssessment();
+
+         $myteams = [];
+         $allpes = [];
+         $total = [];
+         $draft = [];
+         $verification = [];
+         $done = [];
+         $reject = [];
+      } else if (auth()->user()->hasRole('Manager|Asst. Manager')) {
+        //  dd('ok');
+         $employee = auth()->user()->getEmployee();
+         // $pes = Pe::join('employees', 'pes.employe_id', '=', 'employees.id')
+         //     ->where('employees.manager_id', $employee->id)
+         //     ->where('pes.status', '>', '0')
+         //     ->select('pes.*')
+         //     ->orderBy('pes.release_at', 'desc')
+         //     ->get(); 
+
+         $pes = Pe::where('status', 1)->where('department_id', $employee->department_id)->where('pes.status', '>=', '0')
+            ->orderBy('release_at', 'desc')
+            ->get();
+       
+
+         //  $pes = Pe::where('pes.status', '>', '0')
+         //  ->orderBy('updated_at', 'desc')
+         //  ->get();
+
+         // 
+         $outAssesments = $this->outstandingAssessment($employee->department_id);
+         $myteams = [];
+         $allpes = [];
+         $total = [];
+         $draft = [];
+         $verification = [];
+         $done = [];
+         $reject = [];
+      } else if (auth()->user()->hasRole('Leader|Supervisor')) {
+        
+         $employee = auth()->user()->getEmployee();
+         $myteams = EmployeeLeader::join('employees', 'employee_leaders.employee_id', '=', 'employees.id')
+               ->join('biodatas', 'employees.biodata_id', '=', 'biodatas.id')
+                ->where('leader_id', $employee->id)
+                ->select('employees.*')
+                ->orderBy('biodatas.first_name', 'asc')
+                ->get();
+            $allpes = Pe::orderBy('updated_at', 'desc')->get();
+         
+            // dd($myteams);
+            if (auth()->user()->hasRole('Supervisor')) {
+               $pes = Pe::where('status', 1)->where('department_id', $employee->department_id)->orderBy('updated_at', 'desc')->get();
+            } else {
+                // dd('ok');
+               $pes = Pe::where('status', 1)->where('created_by', $employee->id)->orderBy('updated_at', 'desc')->get();
+                // dd($pes);
+            }
+            
+            // dd(count($pes));
+
+
+
+         // 
+         $outAssesments = $this->outstandingAssessment($employee->department_id);
+         $total = [];
+         $draft = [];
+         $verification = [];
+         $done = [];
+         $reject = [];
+      } else if (auth()->user()->hasRole('Karyawan')) {
+        $employee = auth()->user()->getEmployee();
+
+        $pes = Pe::join('employees', 'pes.employe_id', '=', 'employees.id')
+           ->where('employees.id', $employee->id)
+           ->whereIn('pes.status', [2, 101, 202])
+           ->select('pes.*')
+           ->where('status', 1)->orderBy('pes.release_at', 'desc')
+           ->get();
+         $outAssesments = $this->outstandingAssessment($employee->department_id);
+         $myteams = [];
+         $allpes = [];
+         $total = [];
+         $draft = [];
+         $verification = [];
+         $done = [];
+         $reject = [];
+      } 
+
+        // dd($pes);
+
+
+      return view('pages.qpe.qpe', [
+         // 'kpas' => $kpas,
+         'title' => $title,
+         'employee' => $employee,
+         'pes' => $pes,
+         'allpes' => $allpes,
+         'myteams' => $myteams,
+         'outAssesments' =>  $outAssesments,
+
+         'total' => $total,
+         'draft' => $draft,
+         'verification' => $verification,
+         'done' => $done,
+         'reject' => $reject
+      ])->with('i');
+   }
+
+   public function done()
+   {
+
+      $pes = Pe::where('status', 2)->orderBy('updated_at', 'asc')->get();
+        $title = 'COMPLETE QPE';
+      // Data KPI
+    //   if (auth()->user()->hasRole('Administrator')) {
+      // Data KPI
+      if (auth()->user()->hasRole('Administrator')) {
+         $employee = null;
+         $kpas = PeKpa::where('status', '!=', '0')
+            ->orderBy('employe_id')
+            ->get();
+         $outAssesments = $this->outstandingAssessment();
+         $myteams = [];
+         $allpes = [];
+
+         $total = Pe::orderBy('updated_at', 'asc')->get();
+         $draft = Pe::where('status', 0)->orderBy('updated_at', 'asc')->get();
+         $verification = Pe::where('status', 1)->orderBy('updated_at', 'asc')->get();
+         $done = Pe::where('status', 2)->orderBy('updated_at', 'asc')->get();
+         $reject = Pe::where('status', 101)->orderBy('updated_at', 'asc')->get();
+      } else if (auth()->user()->hasRole('HRD|HRD-Spv|HRD-Manager')) {
+         // dd('ok');
+         $employee = auth()->user()->getEmployee();
+         // $kpas = PeKpa::where('status', '!=', '0')
+         //     ->orderBy('employe_id')
+         //     ->get();
+
+         $pes = Pe::where('status', 2)->orderBy('updated_at', 'desc')
+            ->get();
+
+         $outAssesments = $this->outstandingAssessment();
+
+            $myteams = [];
+            $allpes = [];
+            
+         $total = Pe::orderBy('updated_at', 'asc')->get();
+         $draft = Pe::where('status', 0)->orderBy('updated_at', 'asc')->get();
+         $verification = Pe::where('status', 1)->orderBy('updated_at', 'asc')->get();
+         $done = Pe::where('status', 2)->orderBy('updated_at', 'asc')->get();
+         $reject = Pe::where('status', 101)->orderBy('updated_at', 'asc')->get();
+        } else if (auth()->user()->hasRole('Manager|Asst. Manager')) {
+            //  dd('ok');
+         $employee = auth()->user()->getEmployee();
+         // $kpas = PeKpa::where('status', '!=', '0')
+         //     ->orderBy('employe_id')
+         //     ->get();
+
+         $pes = Pe::where('status', 2)->orderBy('updated_at', 'desc')
+            ->get();
+
+         $outAssesments = $this->outstandingAssessment();
+
+         $myteams = [];
+         $allpes = [];
+         $total = [];
+         $draft = [];
+         $verification = [];
+         $done = [];
+         $reject = [];
+      } else if (auth()->user()->hasRole('Manager|Asst. Manager')) {
+        //  dd('ok');
+         $employee = auth()->user()->getEmployee();
+         // $pes = Pe::join('employees', 'pes.employe_id', '=', 'employees.id')
+         //     ->where('employees.manager_id', $employee->id)
+         //     ->where('pes.status', '>', '0')
+         //     ->select('pes.*')
+         //     ->orderBy('pes.release_at', 'desc')
+         //     ->get(); 
+
+         $pes = Pe::where('status', 2)->where('department_id', $employee->department_id)->where('pes.status', '>=', '0')
+            ->orderBy('release_at', 'desc')
+            ->get();
+       
+
+         //  $pes = Pe::where('pes.status', '>', '0')
+         //  ->orderBy('updated_at', 'desc')
+         //  ->get();
+
+         // 
+         $outAssesments = $this->outstandingAssessment($employee->department_id);
+         $myteams = [];
+         $allpes = [];
+         $total = [];
+         $draft = [];
+         $verification = [];
+         $done = [];
+         $reject = [];
+      } else if (auth()->user()->hasRole('Leader|Supervisor')) {
+        
+         $employee = auth()->user()->getEmployee();
+         $myteams = EmployeeLeader::join('employees', 'employee_leaders.employee_id', '=', 'employees.id')
+               ->join('biodatas', 'employees.biodata_id', '=', 'biodatas.id')
+                ->where('leader_id', $employee->id)
+                ->select('employees.*')
+                ->orderBy('biodatas.first_name', 'asc')
+                ->get();
+            $allpes = Pe::orderBy('updated_at', 'desc')->get();
+         
+            // dd($myteams);
+            if (auth()->user()->hasRole('Supervisor')) {
+               $pes = Pe::where('status', 2)->where('department_id', $employee->department_id)->orderBy('updated_at', 'desc')->get();
+            } else {
+                // dd('ok');
+               $pes = Pe::where('status', 2)->where('created_by', $employee->id)->orderBy('updated_at', 'desc')->get();
+                // dd($pes);
+            }
+            
+            // dd(count($pes));
+
+
+
+         // 
+         $outAssesments = $this->outstandingAssessment($employee->department_id);
+         $total = [];
+         $draft = [];
+         $verification = [];
+         $done = [];
+         $reject = [];
+      } else if (auth()->user()->hasRole('Karyawan')) {
+        $employee = auth()->user()->getEmployee();
+
+        $pes = Pe::join('employees', 'pes.employe_id', '=', 'employees.id')
+           ->where('employees.id', $employee->id)
+           ->whereIn('pes.status', [2, 101, 202])
+           ->select('pes.*')
+           ->where('status', 2)->orderBy('pes.release_at', 'desc')
+           ->get();
+         $outAssesments = $this->outstandingAssessment($employee->department_id);
+         $myteams = [];
+         $allpes = [];
+         $total = [];
+         $draft = [];
+         $verification = [];
+         $done = [];
+         $reject = [];
+      } 
+
+        // dd($pes);
+
+
+      return view('pages.qpe.qpe', [
+         // 'kpas' => $kpas,
+         'title' => $title,
+         'employee' => $employee,
+         'pes' => $pes,
+         'allpes' => $allpes,
+         'myteams' => $myteams,
+         'outAssesments' =>  $outAssesments,
+
+         'total' => $total,
+         'draft' => $draft,
+         'verification' => $verification,
+         'done' => $done,
+         'reject' => $reject
+      ])->with('i');
+   }
+
+   public function reject()
+   {
+
+      $pes = Pe::where('status', 101)->orderBy('updated_at', 'asc')->get();
+        $title = 'REJECT QPE';
+      // Data KPI
+    //   if (auth()->user()->hasRole('Administrator')) {
+      // Data KPI
+      if (auth()->user()->hasRole('Administrator')) {
+         $employee = null;
+         $kpas = PeKpa::where('status', '!=', '0')
+            ->orderBy('employe_id')
+            ->get();
+         $outAssesments = $this->outstandingAssessment();
+         $myteams = [];
+         $allpes = [];
+
+         $total = Pe::orderBy('updated_at', 'asc')->get();
+         $draft = Pe::where('status', 0)->orderBy('updated_at', 'asc')->get();
+         $verification = Pe::where('status', 1)->orderBy('updated_at', 'asc')->get();
+         $done = Pe::where('status', 2)->orderBy('updated_at', 'asc')->get();
+         $reject = Pe::where('status', 101)->orderBy('updated_at', 'asc')->get();
+      } else if (auth()->user()->hasRole('HRD|HRD-Spv|HRD-Manager')) {
+         // dd('ok');
+         $employee = auth()->user()->getEmployee();
+         // $kpas = PeKpa::where('status', '!=', '0')
+         //     ->orderBy('employe_id')
+         //     ->get();
+
+         $pes = Pe::where('status', 101)->orderBy('updated_at', 'desc')
+            ->get();
+
+         $outAssesments = $this->outstandingAssessment();
+
+            $myteams = [];
+            $allpes = [];
+            
+         $total = Pe::orderBy('updated_at', 'asc')->get();
+         $draft = Pe::where('status', 0)->orderBy('updated_at', 'asc')->get();
+         $verification = Pe::where('status', 1)->orderBy('updated_at', 'asc')->get();
+         $done = Pe::where('status', 2)->orderBy('updated_at', 'asc')->get();
+         $reject = Pe::where('status', 101)->orderBy('updated_at', 'asc')->get();
+        } else if (auth()->user()->hasRole('Manager|Asst. Manager')) {
+            //  dd('ok');
+         $employee = auth()->user()->getEmployee();
+         // $kpas = PeKpa::where('status', '!=', '0')
+         //     ->orderBy('employe_id')
+         //     ->get();
+
+         $pes = Pe::where('status', 101)->orderBy('updated_at', 'desc')
+            ->get();
+
+         $outAssesments = $this->outstandingAssessment();
+
+         $myteams = [];
+         $allpes = [];
+         $total = [];
+         $draft = [];
+         $verification = [];
+         $done = [];
+         $reject = [];
+      } else if (auth()->user()->hasRole('Manager|Asst. Manager')) {
+        //  dd('ok');
+         $employee = auth()->user()->getEmployee();
+         // $pes = Pe::join('employees', 'pes.employe_id', '=', 'employees.id')
+         //     ->where('employees.manager_id', $employee->id)
+         //     ->where('pes.status', '>', '0')
+         //     ->select('pes.*')
+         //     ->orderBy('pes.release_at', 'desc')
+         //     ->get(); 
+
+         $pes = Pe::where('status', 101)->where('department_id', $employee->department_id)->where('pes.status', '>=', '0')
+            ->orderBy('release_at', 'desc')
+            ->get();
+       
+
+         //  $pes = Pe::where('pes.status', '>', '0')
+         //  ->orderBy('updated_at', 'desc')
+         //  ->get();
+
+         // 
+         $outAssesments = $this->outstandingAssessment($employee->department_id);
+         $myteams = [];
+         $allpes = [];
+         $total = [];
+         $draft = [];
+         $verification = [];
+         $done = [];
+         $reject = [];
+      } else if (auth()->user()->hasRole('Leader|Supervisor')) {
+        
+         $employee = auth()->user()->getEmployee();
+         $myteams = EmployeeLeader::join('employees', 'employee_leaders.employee_id', '=', 'employees.id')
+               ->join('biodatas', 'employees.biodata_id', '=', 'biodatas.id')
+                ->where('leader_id', $employee->id)
+                ->select('employees.*')
+                ->orderBy('biodatas.first_name', 'asc')
+                ->get();
+            $allpes = Pe::orderBy('updated_at', 'desc')->get();
+         
+            // dd($myteams);
+            if (auth()->user()->hasRole('Supervisor')) {
+               $pes = Pe::where('status', 101)->where('department_id', $employee->department_id)->orderBy('updated_at', 'desc')->get();
+            } else {
+                // dd('ok');
+               $pes = Pe::where('status', 101)->where('created_by', $employee->id)->orderBy('updated_at', 'desc')->get();
+                // dd($pes);
+            }
+            
+            // dd(count($pes));
+
+
+
+         // 
+         $outAssesments = $this->outstandingAssessment($employee->department_id);
+         $total = [];
+         $draft = [];
+         $verification = [];
+         $done = [];
+         $reject = [];
+      } else if (auth()->user()->hasRole('Karyawan')) {
+        $employee = auth()->user()->getEmployee();
+
+        $pes = Pe::join('employees', 'pes.employe_id', '=', 'employees.id')
+           ->where('employees.id', $employee->id)
+           ->whereIn('pes.status', [2, 101, 202])
+           ->select('pes.*')
+           ->where('status', 101)->orderBy('pes.release_at', 'desc')
+           ->get();
+         $outAssesments = $this->outstandingAssessment($employee->department_id);
+         $myteams = [];
+         $allpes = [];
+         $total = [];
+         $draft = [];
+         $verification = [];
+         $done = [];
+         $reject = [];
+      } 
+
+        // dd($pes);
+
+
+      return view('pages.qpe.qpe', [
+         // 'kpas' => $kpas,
+         'title' => $title,
+         'employee' => $employee,
+         'pes' => $pes,
+         'allpes' => $allpes,
+         'myteams' => $myteams,
+         'outAssesments' =>  $outAssesments,
+
+         'total' => $total,
+         'draft' => $draft,
+         'verification' => $verification,
+         'done' => $done,
+         'reject' => $reject
       ])->with('i');
    }
 
@@ -559,6 +1214,7 @@ class QuickPEController extends Controller
    public function approval($id)
    {
 
+    // dd('ok');
       $kpa = PeKpa::find(dekripRambo($id));
       $datas = PekpaDetail::where('kpa_id', $kpa->id)->where('addtional', '0')->get();
       $valueAvg = ROUND(PekpaDetail::where('kpa_id', $kpa->id)->where('addtional', '0')->avg('value'), 2);
@@ -618,6 +1274,8 @@ class QuickPEController extends Controller
         $pe = Pe::find($kpa->pe_id);
 
       $pd = PeDiscipline::where('pe_id', $kpa->pe_id)->first();
+    //   $this->calculatePe($pe->id);
+    //   $this->calculateAcvKpa($kpa->id);
 
       return view('pages.qpe.qpe-approval', [
          'kpa' => $kpa,
@@ -880,10 +1538,10 @@ class QuickPEController extends Controller
             'desc' => 'QPE ' . $pe->employe->nik . ' ' . $pe->employe->biodata->fullName() . ' Semester ' . $pe->semester . '/' . $pe->tahun 
          ]);
 
-        return redirect('qpe')->with('success', 'Perfomance Evaluation berhasil di Sumbit');
+        return redirect('/')->with('success', 'Perfomance Evaluation berhasil di Sumbit');
     }
 
-   public function approved(Request $request, $id)
+   public function approved($id)
    {
 
       $pe = Pe::find($id);
@@ -1963,4 +2621,57 @@ class QuickPEController extends Controller
          'year' => $year
       ]);
    }
+
+   public function applyMany(Request $req)
+    {
+
+      //   dd('ok');
+        // try {
+        DB::beginTransaction();
+
+        // Memeriksa apakah permintaan untuk menerapkan data (apply) adalah '1'
+        if ($req->apply == '1') {
+            $apply = 0; // Inisialisasi penghitung untuk data yang berhasil diterapkan
+            $duplikat = 0; // Inisialisasi penghitung untuk data yang sudah ada (duplikat)
+
+            // Melakukan iterasi melalui setiap ID yang diperiksa dalam permintaan
+            foreach ($req->check as $key => $id) {
+
+                $this->approved($id);
+                $apply++;
+            }
+
+            $pesan1 = ''; // Pesan untuk data yang berhasil diterapkan
+            $pesan2 = ''; // Pesan untuk data yang duplikat
+
+            // Membuat pesan jika ada data yang berhasil diterapkan
+            if ($apply > 0) {
+                $pesan1 = $apply . ' QPE successfully approved ';
+            }
+
+            // Membuat pesan jika ada data yang duplikat
+            if ($duplikat > 0) {
+                $pesan2 = $duplikat . ' Data already available ';
+            }
+
+            // Membuat array pesan untuk dikembalikan sebagai tanggapan
+            $message = [
+                'success' => $pesan1,
+                'danger' => $pesan2,
+            ];
+        }
+       
+        // Commit transaksi jika semua operasi berhasil
+        DB::commit();
+
+        return back()->with($message);
+        // } catch (\Exception $e) {
+        //     // Rollback transaksi jika terjadi kesalahan
+        //     DB::rollBack();
+
+        //     // Handle kesalahan sesuai kebutuhan Anda
+        //     // Misalnya, log pesan kesalahan atau kembalikan respons kesalahan ke pengguna
+        //     return response()->json(['error' => $e->getMessage()], 500);
+        // }
+    }
 }

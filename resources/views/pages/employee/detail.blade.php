@@ -66,6 +66,9 @@ Detail Employee
          
          <div class="card card-light shadow-none border">
             <div class="card-header">
+               NO DOC : {{$employee->biodata->no_doc ?? ' -'}}
+            </div>
+            <div class="card-header">
                @if ($employee->status == 1)
                   <small class="badge badge-info text-uppercase "><a href="#" class="text-white" data-toggle="modal" data-target="#modal-deactivate-employee">Aktif</a></small>
                    @elseif($employee->status == 0)

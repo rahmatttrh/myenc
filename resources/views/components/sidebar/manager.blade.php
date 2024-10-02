@@ -91,6 +91,11 @@
             </a>
          </li>
          <li>
+            <a href="{{route('employee.create')}}">
+               <span class="sub-item">Create</span>
+            </a>
+         </li>
+         <li>
             <a href="{{route('employee.import')}}">
                <span class="sub-item">Import by Excel</span>
             </a>

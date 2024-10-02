@@ -31,7 +31,7 @@
                         $urlPdf = Storage::url($data->evidence) ;
                         @endphp
                         <tr>
-                            <td>{{++$i}}</td>
+                            <td>{{++$i}} - {{$data->id}}</td>
                             <td><a href="#" data-target="#myModal-{{$data->id}}" data-toggle="modal"> {{$data->kpidetail->objective}} </a></td>
                             <td> {{$data->kpidetail->weight}}</td>
                             <td> {{$data->kpidetail->target}}</td>

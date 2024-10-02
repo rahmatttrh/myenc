@@ -127,6 +127,8 @@ Route::middleware(["auth"])->group(function () {
          Route::get('import', [EmployeeController::class, 'formImport'])->name('employee.import');
          Route::post('import', [EmployeeController::class, 'import'])->name('employee.import.data');
 
+         Route::get('export-form', [EmployeeController::class, 'formExport'])->name('employee.export.form');
+
          Route::get('import/edit', [EmployeeController::class, 'formImportEdit'])->name('employee.import.edit');
 
          Route::prefix('draft')->group(function () {
@@ -375,6 +377,11 @@ Route::middleware(["auth"])->group(function () {
       Route::prefix('qpe')->group(function () {
          Route::get('/', [QuickPEController::class, 'index'])->name('qpe');
 
+         Route::get('draft', [QuickPEController::class, 'draft'])->name('qpe.draft');
+         Route::get('verification', [QuickPEController::class, 'verification'])->name('qpe.verification');
+         Route::get('done', [QuickPEController::class, 'done'])->name('qpe.done');
+         Route::get('reject', [QuickPEController::class, 'reject'])->name('qpe.reject');
+
          Route::get('show/{id}', [QuickPEController::class, 'show'])->name('qpe.show');
          Route::get('report', [QuickPEController::class, 'report'])->name('qpe.report');
          Route::post('report/filter', [QuickPEController::class, 'reportFilter'])->name('qpe.report.filter');
@@ -382,7 +389,7 @@ Route::middleware(["auth"])->group(function () {
          Route::get('report/department/{id}/{semester}/{year}', [QuickPEController::class, 'reportDepartment'])->name('qpe.report.department');
 
          Route::get('approval/{id}', [QuickPEController::class, 'approval'])->name('qpe.approval');
-
+         Route::put('apply-many', [QuickPEController::class, 'applyMany'])->name('qpe.apply');
          Route::get('report', [QuickPEController::class, 'report'])->name('qpe.report');
          Route::post('report/filter', [QuickPEController::class, 'reportFilter'])->name('qpe.report.filter');
          Route::get('report/unit/{id}/{semester}/{year}', [QuickPEController::class, 'reportUnit'])->name('qpe.report.unit');

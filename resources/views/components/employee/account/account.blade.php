@@ -19,7 +19,11 @@
             <input type="number" name="employee" id="employee" value="{{$employee->id}}" hidden>
             <div class="row">
                <div class="col-md-10">
-                  <x-role-1 :employee="$employee" />
+                  @if (auth()->user()->hasRole('Administrator'))
+                  Role 1 :   <x-role-1 :employee="$employee" /> <br>
+                  Role 2 :  <x-role-2 :employee="$employee" />
+                  @endif
+                  
                   <div class="form-group form-group-default">
                      <label>Role</label>
                      <select class="form-control" id="role" name="role">

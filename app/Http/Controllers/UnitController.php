@@ -59,7 +59,7 @@ class UnitController extends Controller
         $data = Unit::where('id', $id)->first();
 
         // Data Department
-        if (auth()->user()->hasRole('Administrator|HRD')) {
+        if (auth()->user()->hasRole('Administrator|HRD|HRD-Recruitment|HRD-Payroll')) {
             $departments = Department::where('unit_id', $id)->get();
         } else if (auth()->user()->hasRole('Leader|Manager')) {
             // Hanya di kasih akses divisi nya saja 

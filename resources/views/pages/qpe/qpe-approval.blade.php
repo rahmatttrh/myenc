@@ -153,6 +153,7 @@ PE
 
     <div class="row" id="boxCreate">
         <div class="col-md-3">
+            {{-- {{$kpa->id}} --}}
             <x-qpe.performance-appraisal :kpa="$kpa" />
             <x-discipline :pd="$pd" />
         </div>
