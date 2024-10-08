@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AbsenceController;
+use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\AdditionalController;
 use App\Http\Controllers\AllowanceController;
 use App\Http\Controllers\BankAccountController;
@@ -113,6 +114,11 @@ Route::middleware(["auth"])->group(function () {
    // End Fetch
 
    Route::group(['middleware' => ['role:Administrator|HRD|HRD-Manager|HRD-Recruitment|HRD-Payroll|HRD-Spv']], function () {
+      Route::prefix('announcement')->group(function(){
+         Route::get('/', [AnnouncementController::class, 'index'])->name('announcement');
+         Route::post('store', [AnnouncementController::class, 'store'])->name('announcement.store');
+      });
+      
       Route::prefix('employee')->group(function () {
          Route::get('tab/{tab}', [EmployeeController::class, 'index'])->name('employee');
          Route::get('nonactive', [EmployeeController::class, 'nonactive'])->name('employee.nonactive');
@@ -128,6 +134,7 @@ Route::middleware(["auth"])->group(function () {
          Route::post('import', [EmployeeController::class, 'import'])->name('employee.import.data');
 
          Route::get('export-form', [EmployeeController::class, 'formExport'])->name('employee.export.form');
+         Route::post('filter', [EmployeeController::class, 'filter'])->name('employee.filter');
 
          Route::get('import/edit', [EmployeeController::class, 'formImportEdit'])->name('employee.import.edit');
 
@@ -595,6 +602,8 @@ Route::middleware(["auth"])->group(function () {
       Route::get('kpi/employee/', [ExportController::class, 'kpiExample'])->name('export.kpi');
 
       Route::get('qpe/{id}', [ExportController::class, 'qpe'])->name('export.qpe');
+      Route::get('employee/{unit}/{loc}/{gender}/{type}', [ExportController::class, 'employee'])->name('export.employee');
+      Route::get('employee/excel/{unit}/{loc}/{gender}/{type}', [ExportController::class, 'employeeExcel'])->name('export.employee.excel');
    });
 
 

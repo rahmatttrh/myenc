@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\EmployeeExport;
 use App\Models\Employee;
 use App\Models\Pe;
 use App\Models\PeBehaviorApprasial;
@@ -10,6 +11,7 @@ use App\Models\PeKpa;
 use App\Models\PekpaDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ExportController extends Controller
 {
@@ -141,5 +143,46 @@ class ExportController extends Controller
          'kds' => $kds,
          'kda' => $kda,
       ])->with('i');
+   }
+
+   public function employee($unit, $loc, $gender, $type)
+   {
+
+      if ($gender == 'All') {
+         // dd('all');
+         if ($type == 'All') {
+            // dd('ok');
+            $employees = Employee::join('biodatas', 'employees.biodata_id', '=', 'biodatas.id')        
+            ->join('contracts', 'employees.contract_id', '=', 'contracts.id')->where('contracts.loc', $loc)
+            ->select('employees.*')->where('employees.unit_id', $unit)->get();
+         } else {
+            // dd('okee');
+            $employees = Employee::join('biodatas', 'employees.biodata_id', '=', 'biodatas.id')        
+            ->join('contracts', 'employees.contract_id', '=', 'contracts.id')->where('contracts.loc', $loc)
+            ->where('contracts.type', $type)
+            ->select('employees.*')->where('employees.unit_id', $unit)->get();
+            // dd($employees);
+         }
+         
+      } else {
+         if ($type == 'All') {
+            $employees = Employee::join('biodatas', 'employees.biodata_id', '=', 'biodatas.id')->where('biodatas.gender', $gender)        
+            ->join('contracts', 'employees.contract_id', '=', 'contracts.id')->where('contracts.loc', $loc)
+            ->select('employees.*')->where('employees.unit_id', $unit)->get();
+         } else {
+            $employees = Employee::join('biodatas', 'employees.biodata_id', '=', 'biodatas.id')->where('biodatas.gender', $gender)  
+            ->join('contracts', 'employees.contract_id', '=', 'contracts.id')->where('contracts.loc', $loc)
+            ->where('contracts.type', $type)
+            ->select('employees.*')->where('employees.unit_id', $unit)->get();
+         }
+      }
+
+      return view('pages.pdf.employee', [
+         'employees' => $employees
+      ])->with('i');
+   }
+
+   public function employeeExcel($unit, $loc, $gender, $type){
+      return Excel::download(new EmployeeExport($unit, $loc, $gender, $type), 'employee.xlsx');
    }
 }

@@ -154,6 +154,28 @@ Dashboard
 
 
       <div class="col-md-8">
+         @if (count($broadcasts) > 0)
+            @foreach ($broadcasts as $broad)
+            <div class="d-none d-sm-block">
+               <div class="alert alert-info shadow-sm">
+   
+                  <div class="card-opening">
+                     <h4>
+                        <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1">
+                        <b>{{$broad->title}}</b>
+                     </h4>
+                  </div>
+                  {{-- <hr> --}}
+                  <div class="card-desc">
+                     
+                        {{$broad->body}} <a href="">Detail</a>
+                     
+                  </div>
+               </div>
+               <hr>
+            </div>
+            @endforeach
+         @endif
          @if (count($sps) > 0)
          <div class="d-none d-sm-block">
             <div class="alert alert-danger shadow-sm">

@@ -4,6 +4,7 @@ namespace App\Exports;
 
 use App\Models\Crew;
 use App\Models\Employee;
+use App\Models\Location;
 use App\Models\Vessel;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -21,11 +22,53 @@ class EmployeeExport implements FromQuery, WithMapping, ShouldAutoSize, WithHead
     */
     use Exportable;
 
+    public $unit; 
+    public $loc; 
+    public $gender; 
+    public $type; 
+
+    public function __construct($unit, $loc, $gender, $type)
+    {
+        $this->unit = $unit;
+        $this->loc = $loc;
+        $this->gender = $gender;
+        $this->type = $type;
+
+    }
+
     
     
     public function query()
     {
-        return Employee::query();
+        $loc = Location::where('code', $this->loc)->first();
+        if ($this->gender == 'All') {
+            // dd('gender all');
+            if ($this->type == 'All') {
+               // dd('ok');
+               return Employee::query()->join('biodatas', 'employees.biodata_id', '=', 'biodatas.id')        
+               ->join('contracts', 'employees.contract_id', '=', 'contracts.id')->where('contracts.loc', $this->loc)
+               ->select('employees.*')->where('employees.unit_id', $this->unit)->where('employees.status', 1);
+            } else {
+               // dd('okee');
+               return Employee::query()->join('biodatas', 'employees.biodata_id', '=', 'biodatas.id')        
+               ->join('contracts', 'employees.contract_id', '=', 'contracts.id')->where('contracts.loc', $this->loc)
+               ->where('contracts.type', $this->type)
+               ->select('employees.*')->where('employees.unit_id', $this->unit)->where('employees.status', 1);
+               // dd($employees);
+            }
+            
+         } else {
+            if ($this->type == 'All') {
+               return Employee::query()->join('biodatas', 'employees.biodata_id', '=', 'biodatas.id')->where('biodatas.gender', $this->gender)        
+               ->join('contracts', 'employees.contract_id', '=', 'contracts.id')->where('contracts.loc', $this->loc)
+               ->select('employees.*')->where('employees.unit_id', $this->unit)->where('employees.status', 1);
+            } else {
+               return Employee::query()->join('biodatas', 'employees.biodata_id', '=', 'biodatas.id')->where('biodatas.gender', $this->gender)  
+               ->join('contracts', 'employees.contract_id', '=', 'contracts.id')->where('contracts.loc', $this->loc)
+               ->where('contracts.type', $this->type)
+               ->select('employees.*')->where('employees.unit_id', $this->unit)->where('employees.status', 1);
+            }
+         }
     }
 
     public function headings(): array
@@ -35,6 +78,7 @@ class EmployeeExport implements FromQuery, WithMapping, ShouldAutoSize, WithHead
             [
                 'Name',
                 'ID',
+                'Loc',
                 'Bisnis Unit',
                 'Department',
                 'Level',
@@ -80,6 +124,7 @@ class EmployeeExport implements FromQuery, WithMapping, ShouldAutoSize, WithHead
         return [
             $employee->biodata->first_name . ' ' . $employee->biodata->last_name,
             $employee->nik,
+            $employee->location->name ?? '',
             $employee->contract->department->unit->name ?? '',
             $employee->contract->department->name ?? '',
             $employee->contract->designation->name,

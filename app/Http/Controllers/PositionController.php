@@ -57,6 +57,7 @@ class PositionController extends Controller
     }
 
     public function delete($id){
+      dd('deleting');
       $position = Position::find(dekripRambo($id));
       $employees = Employee::where('position_id', $position->id)->get();
       if (count($employees) > 0) {

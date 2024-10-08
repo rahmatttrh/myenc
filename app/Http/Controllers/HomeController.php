@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Announcement;
 use App\Models\Biodata;
 use App\Models\Contract;
 use App\Models\Department;
@@ -191,6 +192,15 @@ class HomeController extends Controller
 
       // dd($dates);
       // dd(auth()->user()->getEmployeeId());
+
+      $broadcasts = Announcement::where('status', 1)->get();
+      if (auth()->user()->hasRole('Administrator')){
+         $personals = [];
+      } else {
+         $employee = Employee::where('nik', auth()->user()->username)->first();
+         $personals = Announcement::where('status', 1)->where('employee_id', $employee->id)->get();
+      }
+
 
       if (auth()->user()->hasRole('Administrator')) {
          $employees = Employee::get();
@@ -548,7 +558,10 @@ class HomeController extends Controller
             'pending' => $pending,
             'spkls' => $spkls,
             'sps' => $sps,
-            'spHistories' => $spHistories
+            'spHistories' => $spHistories,
+
+            'broadcasts' => $broadcasts,
+            'personals' => $personals
          ])->with('i');
       }
    }

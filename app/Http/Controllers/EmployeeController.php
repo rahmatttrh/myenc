@@ -22,6 +22,7 @@ use App\Models\SocialAccount;
 use App\Models\SubDept;
 use App\Models\Unit;
 use App\Models\User;
+use App\Models\Location;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -35,7 +36,9 @@ class EmployeeController extends Controller
    {
       $tab = dekripRambo($enkripTab);
 
-      // $employees = Employee::get();
+      $employees = Employee::get();
+
+
       // foreach ($employees as $emp) {
       //    if($emp->kpi_id != null) {
       //       $kpi = PeKpi::find($emp->kpi_id);
@@ -56,9 +59,22 @@ class EmployeeController extends Controller
       //    ->orderBy('designation_id')
       //    ->orderBy('position_id')
       //    ->get();
+
+
       $employees = Employee::where('status', 1)
          ->orderBy('updated_at', 'desc')
          ->get();
+
+      // foreach($employees as $emp){
+      //    $contract = Contract::find($emp->contract_id);
+      //    $loc = Location::where('code', $contract->loc)->first();
+      //    if ($loc) {
+      //       $emp->update([
+      //          'location_id' => $loc->id
+      //       ]);
+      //    }
+         
+      // }
 
       // foreach ($employees as $emp) {
       //    $user = User::where('username', $emp->nik)->first();
@@ -924,7 +940,102 @@ class EmployeeController extends Controller
    }
 
    public function formExport(){
-      return view('pages.employee.export-form', [])->with('i');
+      $employees = Employee::where('status', 1)->get();
+      $units = Unit::get();
+      $locs = Location::get();
+
+      $unit = 'All';
+      $loc = 'All';
+      $gender = 'All';
+      $type = 'All';
+
+      $export = false;
+      
+      return view('pages.employee.export-form', [
+         'employees' => $employees,
+         'units' => $units,
+         'locs' => $locs,
+
+         'unit' => $unit,
+         'loc' => $loc,
+         'gender' => $gender,
+         'type' => $type,
+
+         'export' => $export
+      ])->with('i');
+   }
+
+   public function filter(Request $req){
+      if ($req->gender == 'All') {
+         // dd('all');
+         if ($req->type == 'All') {
+            // dd('ok');
+            $employees = Employee::join('biodatas', 'employees.biodata_id', '=', 'biodatas.id')        
+            ->join('contracts', 'employees.contract_id', '=', 'contracts.id')->where('contracts.loc', $req->loc)
+            ->select('employees.*')->where('employees.unit_id', $req->unit)->where('employees.status',1)->get();
+         } else {
+            // dd('okee');
+            $employees = Employee::join('biodatas', 'employees.biodata_id', '=', 'biodatas.id')        
+            ->join('contracts', 'employees.contract_id', '=', 'contracts.id')->where('contracts.loc', $req->loc)
+            ->where('contracts.type', $req->type)
+            ->select('employees.*')->where('employees.unit_id', $req->unit)->where('employees.status',1)->get();
+            // dd($employees);
+         }
+         
+      } else {
+         if ($req->type == 'All') {
+            $employees = Employee::join('biodatas', 'employees.biodata_id', '=', 'biodatas.id')->where('biodatas.gender', $req->gender)        
+            ->join('contracts', 'employees.contract_id', '=', 'contracts.id')->where('contracts.loc', $req->loc)
+            ->select('employees.*')->where('employees.unit_id', $req->unit)->where('employees.status',1)->get();
+         } else {
+            $employees = Employee::join('biodatas', 'employees.biodata_id', '=', 'biodatas.id')->where('biodatas.gender', $req->gender)  
+            ->join('contracts', 'employees.contract_id', '=', 'contracts.id')->where('contracts.loc', $req->loc)
+            ->where('contracts.type', $req->type)
+            ->select('employees.*')->where('employees.unit_id', $req->unit)->where('employees.status',1)->get();
+         }
+      }
+
+      // $pes = Pe::join('employees', 'pes.employe_id', '=', 'employees.id')
+            //     ->where('employees.manager_id', $employee->id)
+            //     ->where('pes.status', '>', '0')
+            //     ->select('pes.*')
+            //     ->orderBy('pes.release_at', 'desc')
+            //     ->get();
+
+         // dd($req->gender);
+      // $employees = Employee::join('biodatas', 'employees.biodata_id', '=', 'biodatas.id')
+      // ->where('biodatas.gender', $req->gender)         
+      // ->join('contracts', 'employees.contract_id', '=', 'contracts.id')
+      // ->where('contracts.loc', $req->loc)
+      // ->where('contracts.type', $req->type)
+      
+      // ->select('employees.*')
+      // ->where('employees.unit_id', $req->unit)
+      // ->get();
+      
+      // dd($employees);
+      $units = Unit::get();
+      $locs = Location::get();
+
+      $unit = $req->unit;
+      $loc = $req->loc;
+      $gender = $req->gender;
+      $type = $req->type;
+
+      $export = true;
+      
+      return view('pages.employee.export-form', [
+         'employees' => $employees,
+         'units' => $units,
+         'locs' => $locs,
+
+         'unit' => $unit,
+         'loc' => $loc,
+         'gender' => $gender,
+         'type' => $type,
+
+         'export' => $export
+      ])->with('i');
    }
 
    public function export()

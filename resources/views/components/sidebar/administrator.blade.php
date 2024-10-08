@@ -217,6 +217,13 @@
    </div>
 </li>
 
+<li class="nav-item {{ (request()->is('payroll/*')) ? 'active' : '' }}">
+   <a href="{{route('announcement')}}">
+      <i class="fas fa-money-bill"></i>
+      <p>Anouncement</p>
+   </a>
+</li>
+
 {{-- <li class="nav-item {{ (request()->is('payroll/*')) ? 'active' : '' }}">
    <a href="{{route('payroll')}}">
       <i class="fas fa-money-bill"></i>
