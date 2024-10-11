@@ -68,7 +68,7 @@ Payroll Overtime
                <div class="col">
                   <div class="form-group form-group-default">
                      <label>Hours</label>
-                     <input type="number" required class="form-control" id="hours" name="hours" >
+                     <input type="number" class="form-control" id="hours" name="hours" >
                   </div>
                </div>
 
@@ -85,6 +85,10 @@ Payroll Overtime
             
             <button class="btn btn-block btn-primary" type="submit">Add</button>
          </form>
+         <hr>
+         <small>
+            Tipe Piket, data HOURS tidak perlu diisi
+         </small>
          <hr>
          <small>
             Data pada form ini akan <b>Menambah</b> nilai Transaksi Gaji Karyawan

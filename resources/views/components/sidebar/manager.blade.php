@@ -66,6 +66,7 @@
       </ul>
    </div>
 </li>
+
 @if (auth()->user()->hasRole('HRD-Spv|HRD|HRD-Recruitment|HRD-Manager'))
 <li class="nav-item">
    <a data-toggle="collapse" href="#employee">
@@ -147,35 +148,92 @@
    </a>
 </li>
 
-{{-- <li class="nav-item {{ (request()->is('employee/detail/*')) ? 'active' : '' }}">
-   <a href="{{route('employee.detail', [enkripRambo(auth()->user()->employee->id), enkripRambo('contract')])}}">
-      <i class="fas fa-user"></i>
-      <p>My Profile</p>
-   </a>
-</li>
-<li class="nav-item {{ (request()->is('employee/spkl/*')) ? 'active' : '' }}">
-   <a href="{{route('manager.spkl')}}">
-      <i class="fas fa-clock"></i>
-      <p>SPKL</p>
-   </a>
-</li>
-
-<li class="nav-item {{ (request()->is('employee/spt/*')) ? 'active' : '' }}">
-   <a href="{{route('employee.spt')}}">
-      <i class="fas fa-briefcase"></i>
-      <p>SPT</p>
-   </a>
-</li>
+@if (auth()->user()->hasRole('HRD-Spv|HRD|HRD-Recruitment|HRD-Manager'))
+<hr>
 
 <li class="nav-item">
-   <a href="{{route('employee.detail', [enkripRambo(auth()->user()->employee->id), enkripRambo('contract')])}}">
-      <i class="fas fa-calendar"></i>
-      <p>Cuti</p>
+   <a data-toggle="collapse" href="#payroll">
+      <i class="fas fa-file"></i>
+      <p>Payroll</p>
+      <span class="caret"></span>
+   </a>
+   <div class="collapse" id="payroll">
+      <ul class="nav nav-collapse">
+         <li>
+            <a href="{{route('payroll.transaction')}}">
+               <span class="sub-item">Transaction</span>
+            </a>
+         </li>
+         <li>
+            <a href="{{route('payroll.overtime')}}">
+               <span class="sub-item">SPKL</span>
+            </a>
+         </li>
+
+         <li>
+            <a href="{{route('payroll.absence')}}">
+               <span class="sub-item">Absence</span>
+            </a>
+         </li>
+
+         <li>
+            <a href="{{route('payroll.additional')}}">
+               <span class="sub-item">Others</span>
+            </a>
+         </li>
+      </ul>
+   </div>
+</li>
+
+<li class="nav-item {{ (request()->is('payroll/setup/*')) ? 'active' : '' }}">
+   <a data-toggle="collapse" href="#setpayroll">
+      <i class="fas fa-cog"></i>
+      <p>Setup Payroll</p>
+      <span class="caret"></span>
+   </a>
+   <div class="collapse" id="setpayroll">
+      <ul class="nav nav-collapse">
+         {{-- <li>
+            <a href="{{route('payroll.transaction')}}">
+               <span class="sub-item">Transaction</span>
+            </a>
+         </li> --}}
+         {{-- <li>
+            <a href="{{route('payroll.overtime')}}">
+               <span class="sub-item">SPKL</span>
+            </a>
+         </li> --}}
+         {{-- <li>
+            <a href="{{route('holiday')}}">
+               <span class="sub-item">Libur Nasional</span>
+            </a>
+         </li> --}}
+         {{-- <li>
+            <a href="{{route('payroll.setup')}}">
+               <span class="sub-item">Setup</span>
+            </a>
+         </li> --}}
+         <li>
+            <a href="{{route('payroll')}}">
+               <span class="sub-item">Gaji Karyawan</span>
+            </a>
+         </li>
+         <li>
+            <a href="{{route('payroll.unit')}}">
+               <span class="sub-item">Potongan Unit</span>
+            </a>
+         </li>
+         
+         
+
+      </ul>
+   </div>
+</li>
+<hr>
+<li class="nav-item {{ (request()->is('announcement/*')) ? 'active' : '' }}">
+   <a href="{{route('announcement')}}">
+      <i class="fas fa-money-bill"></i>
+      <p>Anouncement</p>
    </a>
 </li>
-<li class="nav-item">
-   <a href="{{route('employee.detail', [enkripRambo(auth()->user()->employee->id), enkripRambo('contract')])}}">
-      <i class="fas fa-hospital"></i>
-      <p>Permit</p>
-   </a>
-</li> --}}
+@endif

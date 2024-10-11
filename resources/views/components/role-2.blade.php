@@ -13,15 +13,3 @@
 @if ($employee->user->hasRole('HRD-Payroll'))
     <span class="badge badge-light">HRD Payroll</span>
 @endif
-
-{{-- @if (auth()->user()->hasRole('Manager'))
-    <span class="badge badge-light">Manager</span>
-@endif
-
-@if (auth()->user()->hasRole('Leader'))
-    <span class="badge badge-light">Leader</span>
-@endif
-
-@if (auth()->user()->hasRole('Karyawan'))
-    <span class="badge badge-light">Staff</span>
-@endif --}}

@@ -18,6 +18,8 @@ class PeKpiController extends Controller
 {
     public function index()
     {
+
+        
       //   $employee = auth()->user()->getEmployee();
       $kpis = PeKpi::get();
     //   foreach($kpis as $kpi){

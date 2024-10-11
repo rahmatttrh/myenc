@@ -20,6 +20,11 @@ class ReductionController extends Controller
 
       $unit = Unit::find($req->unit);
 
+      $req->validate([
+         'company' => 'required',
+         'employee' => 'required'
+      ]);
+
       Reduction::create([
          'unit_id' => $req->unit,
          'name' => $req->desc,
@@ -48,7 +53,14 @@ class ReductionController extends Controller
    public function update(Request $req)
    {
       $unitReduction = Reduction::find($req->reduction);
-      dd($unitReduction->name);
+      $unitReduction->update([
+         'min_salary' => $req->min_salary,
+         'max_salary' => $req->max_salary,
+         'company' => $req->company,
+         'employee' => $req->employee
+      ]);
+
+      return redirect()->back()->with('success', 'Data successfully updated');
    }
 
    public function delete($id)

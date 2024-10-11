@@ -162,20 +162,48 @@ Dashboard
                   <div class="card-opening">
                      <h4>
                         <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1">
-                        <b>{{$broad->title}}</b>
+                        <b>Broadcast</b>
+                     </h4>
+                  </div>
+                  {{-- <hr> --}}
+                  <div class="card-desc">
+                     {{$broad->title}}.
+                     {{-- <div class="text-truncate" style="max-width: 200px">
+                        {{strip_tags($broad->body)}}
+                     </div> --}}
+                     <a href="{{route('announcement.detail', enkripRambo($broad->id))}}">Click here</a> to see more detail
+                     
+                  </div>
+               </div>
+            </div>
+            @endforeach
+         @endif
+
+         @if (count($personals) > 0)
+            @foreach ($personals as $pers)
+            <div class="d-none d-sm-block">
+               <div class="alert alert-danger shadow-sm">
+   
+                  <div class="card-opening">
+                     <h4>
+                        {{-- <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1"> --}}
+                        <b>Personal Message</b>
                      </h4>
                   </div>
                   {{-- <hr> --}}
                   <div class="card-desc">
                      
-                        {{$broad->body}} <a href="">Detail</a>
-                     
+                     {{$pers->title}}.
+                     <a href="{{route('announcement.detail', enkripRambo($pers->id))}}">Click here</a> to see more detail
+                        <hr>
+                        <small class="text-muted">* Ini adalah pesan personal yang hanya dikirim ke anda</small>
                   </div>
                </div>
-               <hr>
             </div>
             @endforeach
          @endif
+
+
          @if (count($sps) > 0)
          <div class="d-none d-sm-block">
             <div class="alert alert-danger shadow-sm">

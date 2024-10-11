@@ -91,7 +91,7 @@
                               <th colspan="2" class="text-center">Salary</th>
                               <th colspan="2" class="text-center">Potongan (%)</th>
                               <th rowspan="2">
-                                 <a href="" class="btn btn-sm btn-light btn-block" data-target="#modal-add-reduction" data-toggle="modal">Add Reduction</a>
+                                 <a href="" class="btn btn-sm btn-light btn-block" data-target="#modal-add-reduction-{{$unit->id}}" data-toggle="modal">Add Reduction</a>
                               </th>
                            </tr>
                            <tr>
@@ -167,11 +167,12 @@
 
 
 
-                  <div class="modal fade" id="modal-add-reduction" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal fade" id="modal-add-reduction-{{$unit->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                      <div class="modal-dialog modal-sm" role="document">
                         <div class="modal-content">
                            <div class="modal-header">
-                              <h5 class="modal-title" id="exampleModalLabel">Add Reduction</h5>
+                              <h5 class="modal-title" id="exampleModalLabel">Reduction {{$unit->name}}</h5>
+                              
                               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                               <span aria-hidden="true">&times;</span>
                               </button>
@@ -210,13 +211,13 @@
                                     <div class="col">
                                        <div class="form-group form-group-default">
                                           <label>Company (%)</label>
-                                          <input type="decimal" class="form-control" name="company" id="company">
+                                          <input type="decimal" class="form-control" required name="company" id="company">
                                       </div>
                                     </div>
                                     <div class="col">
                                        <div class="form-group form-group-default">
                                           <label>Employee (%)</label>
-                                          <input type="decimal" class="form-control" name="employee" id="employee">
+                                          <input type="decimal" class="form-control" required name="employee" id="employee">
                                       </div>
                                     </div>
                                  </div>

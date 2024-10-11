@@ -112,11 +112,15 @@ Route::middleware(["auth"])->group(function () {
    Route::get('department/fetch-data/{id}', [DepartmentController::class, 'fetchData'])->name('department.fetch-data');
    Route::get('sub-dept/fetch-data/{id}', [SubDeptController::class, 'fetchData'])->name('department.fetch-data');
    // End Fetch
-
+   Route::get('announcement/detail/{id}', [AnnouncementController::class, 'detail'])->name('announcement.detail');
    Route::group(['middleware' => ['role:Administrator|HRD|HRD-Manager|HRD-Recruitment|HRD-Payroll|HRD-Spv']], function () {
       Route::prefix('announcement')->group(function(){
          Route::get('/', [AnnouncementController::class, 'index'])->name('announcement');
+         Route::get('create', [AnnouncementController::class, 'create'])->name('announcement.create');
          Route::post('store', [AnnouncementController::class, 'store'])->name('announcement.store');
+
+         Route::get('activate/{id}', [AnnouncementController::class, 'activate'])->name('announcement.activate');
+         Route::get('deactivate/{id}', [AnnouncementController::class, 'deactivate'])->name('announcement.deactivate');
       });
       
       Route::prefix('employee')->group(function () {

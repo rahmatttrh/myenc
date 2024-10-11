@@ -483,7 +483,7 @@ class EmployeeController extends Controller
       }
 
       // dd($myManagers);
-      
+      // dd($employee->department_id);
       if ($subdept) {
          $subManPositions = Position::where('department_id', $department->id)->where('sub_dept_id', $subdept->id)->where('type', 'subdept')->where('designation_id', '>', 4)->get();
          // dd($subManPositions);
