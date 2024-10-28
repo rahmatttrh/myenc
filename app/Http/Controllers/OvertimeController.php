@@ -20,7 +20,7 @@ class OvertimeController extends Controller
    {
 
       $now = Carbon::now();
-      $overtimes = Overtime::where('month', $now->format('F'))->where('year', $now->format('Y'))->orderBy('date', 'desc')->get();
+      $overtimes = Overtime::orderBy('date', 'desc')->get();
 
       // $transactionReductions = TransactionReduction::get();
       // foreach ($transactionReductions as $tr) {
@@ -30,14 +30,27 @@ class OvertimeController extends Controller
       //       'year' => $transaction->year
       //    ]);
       // }
-
-      $employees = Employee::get();
+      if (auth()->user()->hasRole('HRD-KJ12')) {
+         $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
+            ->where('contracts.loc', 'kj1-2')
+            ->select('employees.*')
+            ->get();
+      } elseif (auth()->user()->hasRole('HRD-KJ45')) {
+         $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
+            ->where('contracts.loc', 'kj4')->orWhere('contracts.loc', 'kj5')
+            ->select('employees.*')
+            ->get();
+      } else {
+         $employees = Employee::get();
+      }
       // $holidays = Holiday::orderBy('date', 'asc')->get();
       return view('pages.payroll.overtime', [
          'overtimes' => $overtimes,
          'employees' => $employees,
          'month' => $now->format('F'),
-         'year' => $now->format('Y')
+         'year' => $now->format('Y'),
+         'from' => null,
+         'to' => null
          // 'holidays' => $holidays
       ])->with('i');
    }
@@ -48,33 +61,32 @@ class OvertimeController extends Controller
 
       $employees = Employee::get();
 
-      if ($req->month == 'all') {
-         if ($req->year == 'all') {
-            $overtimes = Overtime::orderBy('date', 'desc')->get();
-         } else {
-            // dd('ok');
-            $overtimes = Overtime::where('year', $req->year)->orderBy('date', 'desc')->get();
-         }
-      } elseif ($req->year == 'all') {
-         if ($req->month == 'all') {
-            $overtimes = Overtime::orderBy('date', 'desc')->get();
-         } else {
-            $overtimes = Overtime::where('month', $req->month)->orderBy('date', 'desc')->get();
-         }
-      } else {
-         $overtimes = Overtime::where('month', $req->month)->where('year', $req->year)->orderBy('date', 'desc')->get();
-      }
+      // if ($req->month == 'all') {
+      //    if ($req->year == 'all') {
+      //       $overtimes = Overtime::orderBy('date', 'desc')->get();
+      //    } else {
+      //       // dd('ok');
+      //       $overtimes = Overtime::where('year', $req->year)->orderBy('date', 'desc')->get();
+      //    }
+      // } elseif ($req->year == 'all') {
+      //    if ($req->month == 'all') {
+      //       $overtimes = Overtime::orderBy('date', 'desc')->get();
+      //    } else {
+      //       $overtimes = Overtime::where('month', $req->month)->orderBy('date', 'desc')->get();
+      //    }
+      // } else {
+      //    $overtimes = Overtime::where('month', $req->month)->where('year', $req->year)->orderBy('date', 'desc')->get();
+      // }
 
-
-
-
-
+      $overtimes = Overtime::whereBetween('date', [$req->from, $req->to])->get();
       $employees = Employee::get();
       return view('pages.payroll.overtime', [
          'overtimes' => $overtimes,
          'employees' => $employees,
          'month' => $req->month,
-         'year' => $req->year
+         'year' => $req->year,
+         'from' => $req->from,
+         'to' => $req->to
       ])->with('i');
    }
 

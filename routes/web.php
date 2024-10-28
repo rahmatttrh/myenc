@@ -49,6 +49,7 @@ use App\Http\Controllers\TransactionReductionController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\FuncController;
+use App\Http\Controllers\ReductionEmployeeController;
 use App\Models\Emergency;
 use App\Models\EmployeeLeader;
 use App\Models\Reduction;
@@ -318,6 +319,12 @@ Route::middleware(["auth"])->group(function () {
                // Route::post('store', [ReductionController::class, 'store'])->name('reduction.store');
                // Route::get('delete/{id}', [ReductionController::class, 'delete'])->name('reduction.delete');
             });
+
+            Route::prefix('reduction/employee')->group(function () {
+               Route::put('/update', [ReductionEmployeeController::class, 'update'])->name('reduction.employee.update');
+               // Route::post('store', [ReductionController::class, 'store'])->name('reduction.store');
+               // Route::get('delete/{id}', [ReductionController::class, 'delete'])->name('reduction.delete');
+            });
          });
          Route::prefix('overtime')->group(function () {
             Route::get('index', [OvertimeController::class, 'index'])->name('payroll.overtime');
@@ -329,6 +336,7 @@ Route::middleware(["auth"])->group(function () {
          });
          Route::prefix('absence')->group(function () {
             Route::get('/index', [AbsenceController::class, 'index'])->name('payroll.absence');
+            Route::post('filter', [AbsenceController::class, 'filter'])->name('payroll.absence.filter');
             Route::post('/store', [AbsenceController::class, 'store'])->name('payroll.absence.store');
             Route::get('/delete/{id}', [AbsenceController::class, 'delete'])->name('payroll.absence.delete');
             // Route::get('/detail/{id}' , [TransactionController::class, 'detail'])->name('payroll.transaction.detail');
@@ -336,6 +344,7 @@ Route::middleware(["auth"])->group(function () {
          });
          Route::prefix('unit')->group(function () {
             // Route::get('/index', [PayrollController::class, 'unit'])->name('payroll.unit');
+
             Route::post('/update/pph', [PayrollController::class, 'unitUpdatePph'])->name('payroll.unit.update');
             // Route::get('/detail/{id}' , [TransactionController::class, 'detail'])->name('payroll.transaction.detail');
             // Route::post('store', [TransactionController::class, 'store'])->name('payroll.transaction.store');
@@ -381,6 +390,7 @@ Route::middleware(["auth"])->group(function () {
          Route::put('update/doc', [EmployeeController::class, 'updateDoc'])->name('employee.update.doc');
          Route::put('update/bio', [EmployeeController::class, 'updateBio'])->name('employee.update.bio');
          Route::put('update/picture', [EmployeeController::class, 'updatePicture'])->name('employee.update.picture');
+         Route::get('remove/picture/{id}', [EmployeeController::class, 'removePicture'])->name('employee.remove.picture');
          Route::put('update/role', [EmployeeController::class, 'updateRole'])->name('employee.update.role');
       });
 

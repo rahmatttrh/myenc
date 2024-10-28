@@ -39,7 +39,7 @@ PE
             <div class="text-right">
                 @if(auth()->user()->employee->id == $pe->employe_id && ($kpa->pe->status == '2'|| $kpa->pe->status == '101' || $kpa->pe->status == '202') && $pe->complained == '0' )
 
-                <div class="btn-group ml-auto">
+                <div class="btn-group ml-auto mb-2">
                     <button data-target="#modalKomplain" data-toggle="modal" class="btn btn-md btn-warning "><i class="fa fa-comments"></i> Komentar</button>
                 </div>
 

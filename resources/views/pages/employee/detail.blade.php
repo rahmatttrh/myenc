@@ -69,6 +69,7 @@ Detail Employee
                NO DOC : {{$employee->biodata->no_doc ?? ' -'}}
             </div>
             <div class="card-header">
+               @if (auth()->user()->hasRole('Administrator|HRD|HRD-Recruitment|HRD-Spv'))
                @if ($employee->status == 1)
                   <small class="badge badge-info text-uppercase "><a href="#" class="text-white" data-toggle="modal" data-target="#modal-deactivate-employee">Aktif</a></small>
                    @elseif($employee->status == 0)
@@ -76,17 +77,18 @@ Detail Employee
                    @else
                    <small class="badge badge-muted "><a href="#"  data-toggle="modal" data-target="#modal-activate-employee">Non Aktif</a></small>
                @endif
+               @endif
                
                <div class="card-list">
                   <div class="item-list">
                      @if ($employee->biodata->status == 1)
                      <div class="avatar avatar-md avatar-online">
                         @else
-                        <div class="avatar avatar-md avatar-offline">
+                        <div class="avatar avatar-lg avatar-offline">
                            @endif
 
                            @if ($employee->picture)
-                           <img src="{{asset('storage/' . $employee->picture)}}" alt="..." class="avatar-img rounded-circle">
+                           <img src="{{asset('storage/' . $employee->picture)}}" alt="..." class="avatar-img rounded-circle border" style="object-fit: cover; object:position:100% 0" >
                            @else
                            <img src="{{asset('img/user.png')}}" alt="..." class="avatar-img rounded-circle">
                            @endif
@@ -124,10 +126,12 @@ Detail Employee
                   <i class="fas fa-user mr-1"></i>
                   Personal Data
                </a>
+               @if (auth()->user()->hasRole('Administartor|HRD|HRD-Recruitment|HRD-Spv'))
                <a class="nav-link {{$panel == 'account' ? 'active' : ''}} text-left pl-3" id="v-pills-account-tab"  data-toggle="pill" href="#v-pills-account" role="tab" aria-controls="v-pills-account" aria-selected="false">
                   <i class="fas fa-credit-card mr-1"></i>
                   System Account
                </a>
+               @endif
 
                <a class="nav-link {{$panel == 'document' ? 'active' : ''}} text-left pl-3" id="v-pills-document-tab" data-toggle="pill" href="#v-pills-document" role="tab" aria-controls="v-pills-document" aria-selected="false">
                   <i class="fas fa-file mr-1"></i>

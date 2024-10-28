@@ -37,5 +37,9 @@ class Transaction extends Model
       return $this->belongsTo(Location::class);
    }
 
+   public function unit_transaction(){
+      return $this->belongsTo(UnitTransaction::class);
+   }
+
    
 }

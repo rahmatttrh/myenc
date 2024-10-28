@@ -91,6 +91,8 @@
                         <div class="username">{{$contact->name}}  [{{$contact->hubungan}}]</div>
                         <div class="status">{{$contact->phone}}</div>
                      </div>
+
+                     @if (auth()->user()->hasRole('Administartor|HRD|HRD-Recruitment|HRD-Spv'))
                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-ellipsis-h"></i>
                      </a>
@@ -98,6 +100,7 @@
                         <a  class="dropdown-item" style="text-decoration: none" href="" data-toggle="modal" data-target="#modal-edit-emergency-{{$contact->id}}">Edit</a>
                         <a  class="dropdown-item" style="text-decoration: none" href="" data-toggle="modal" data-target="#modal-delete-emergency-{{$contact->id}}">Delete</a>
                      </div>
+                     @endif
                   </div>
 
                   <x-employee.personal.modal.edit-emergency :contact="$contact"  />
@@ -166,6 +169,7 @@
                               </div>
                               <div class="col text-right">
                                  <div class=" ml-auto">
+                                    @if (auth()->user()->hasRole('Administartor|HRD|HRD-Recruitment|HRD-Spv'))
                                     <a href="#" type="button" class="text-white dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                           <i class="fa fa-ellipsis-h"></i>
                                     </a>
@@ -173,6 +177,7 @@
                                        <a  class="dropdown-item" style="text-decoration: none" href="" data-toggle="modal" data-target="#modal-edit-bank-{{$acc->id}}">Edit</a>
                                        <a  class="dropdown-item" style="text-decoration: none" href="" data-toggle="modal" data-target="#modal-delete-bank-{{$acc->id}}">Delete</a>
                                     </div>
+                                    @endif
                                  </div>
                               </div>
                            </div>
@@ -215,6 +220,7 @@
                                  <option value="SD">SD</option>
                                  <option value="SMP">SMP</option>
                                  <option value="SMA/SMK">SMA/SMK</option>
+                                 <option value="D1">D1</option>
                                  <option value="D3">D3</option>
                                  <option value="D4">D4</option>
                                  <option value="S1">S1</option>
@@ -272,6 +278,7 @@
                         <div class="username">{{$edu->year}} - {{$edu->degree}}  {{$edu->major}}</div>
                         <div class="status">{{$edu->name}}</div>
                      </div>
+                     @if (auth()->user()->hasRole('Administartor|HRD|HRD-Recruitment|HRD-Spv'))
                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-ellipsis-h"></i>
                      </a>
@@ -279,6 +286,8 @@
                         <a  class="dropdown-item" style="text-decoration: none" href="" data-toggle="modal" data-target="#modal-edit-edu-{{$edu->id}}">Edit</a>
                         <a  class="dropdown-item" style="text-decoration: none" href="" data-toggle="modal" data-target="#modal-delete-edu-{{$edu->id}}">Delete</a>
                      </div>
+                     @endif
+                     
                   </div>
 
                   <x-employee.personal.modal.edit-edu :edu="$edu"  />
@@ -350,6 +359,7 @@
                         <div class="username"><a href="{{$acc->link}}" target="_blank">{{$acc->username}}</a></div>
                         <div class="status">{{$acc->social->name}}</div>
                      </div>
+                     @if (auth()->user()->hasRole('Administartor|HRD|HRD-Recruitment|HRD-Spv'))
                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-ellipsis-h"></i>
                      </a>
@@ -357,6 +367,7 @@
                         <a  class="dropdown-item" style="text-decoration: none" href="" data-toggle="modal" data-target="#modal-edit-social-{{$acc->id}}">Edit</a>
                         <a  class="dropdown-item" style="text-decoration: none" href="" data-toggle="modal" data-target="#modal-delete-social-{{$acc->id}}">Delete</a>
                      </div>
+                     @endif
                   </div>
 
                   <x-employee.personal.modal.edit-social :acc="$acc" :socials="$socials" />

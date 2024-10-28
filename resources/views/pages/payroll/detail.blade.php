@@ -143,6 +143,7 @@ Setup Payroll Employee
                            
                            {{-- <li class="nav-item"> <a class="nav-link " id="pills-document-tab-nobd" data-toggle="pill" href="#pills-document-nobd" role="tab" aria-controls="pills-document-nobd" aria-selected="true">Document</a> </li> --}}
                            <li class="nav-item"> <a class="nav-link " id="pills-doc-tab-nobd" data-toggle="pill" href="#pills-doc-nobd" role="tab" aria-controls="pills-doc-nobd" aria-selected="true"> Potongan</a> </li>
+                           <li class="nav-item"> <a class="nav-link " id="pills-bpjs-tab-nobd" data-toggle="pill" href="#pills-bpjs-nobd" role="tab" aria-controls="pills-bpjs-nobd" aria-selected="true"> BPJS Keluarga</a> </li>
                            {{-- <li class="nav-item"> <a class="nav-link" id="pills-profile-tab-nobd" data-toggle="pill" href="#pills-profile-nobd" role="tab" aria-controls="pills-profile-nobd" aria-selected="false">Profile Picture</a> </li>
                            <li class="nav-item"> <a class="nav-link  " id="pills-bio-tab-nobd" data-toggle="pill" href="#pills-bio-nobd" role="tab" aria-controls="pills-bio-nobd" aria-selected="true">Notes</a> </li> --}}
                            {{-- <li class="nav-item"> <a class="nav-link" id="pills-contact-tab-nobd" data-toggle="pill" href="#pills-contact-nobd" role="tab" aria-controls="pills-contact-nobd" aria-selected="false">Social Networking</a> </li> --}}
@@ -203,32 +204,93 @@ Setup Payroll Employee
                         </div>
             
                         <div class="tab-pane fade" id="pills-doc-nobd" role="tabpanel" aria-labelledby="pills-doc-tab-nobd">
-                           <form action="">
-                              {{-- <div class="form-group form-group-default">
-                                 <label>Potongan BPJS</label>
-                                 <input type="text" class="form-control" id="pokok" name="pokok" value="">
-                              </div> --}}
-                              
-                              <div class="form-check">
-                                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                 <label class="form-check-label" for="flexCheckDefault">
-                                   Default checkbox
-                                 </label>
-                               </div>
-                               <div class="form-check">
-                                 <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-                                 <label class="form-check-label" for="flexCheckChecked">
-                                   Checked checkbox
-                                 </label>
-                               </div>
-                           </form>
                            
+                              <div class="row">
+                                 <div class="col-md-8">
+                                 @foreach ($redEmployees as $red)
+                                 <form action="{{route('reduction.employee.update')}}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="row">
+                                       <div class="col-md-6">
+                                          
+                                             <input type="number" hidden name="redEmp" id="redEmp" value="{{$red->id}}">
+                                             <div class="form-group form-group-default">
+                                                <label>{{$red->reduction->name}}</label>
+                                                <select class="form-control" name="status" id="status">
+                                                   <option {{$red->status == 1 ? 'selected' : ''}} value="1">True</option>
+                                                   <option {{$red->status == 0 ? 'selected' : ''}} value="0">False</option>
+                                                </select>
+                                             </div>
+                                          
+                                       </div>
+                                       <div class="col">
+                                          <button type="submit" class="btn  btn-primary">Update</button>
+                                       </div>
+                                    </div>
+                                 </form>
+                                 @endforeach
+                                 </div>
+                              </div>
+                           
+                        </div>
+
+                        <div class="tab-pane fade " id="pills-bpjs-nobd" role="tabpanel" aria-labelledby="pills-bpjs-tab-nobd">
+                           <form action="{{route('payroll.update')}}" method="POST" enctype="multipart/form-data" >
+                              @csrf
+                              @method('PUT')
+                              <input type="number" name="employee" id="employee" value="{{$employee->id}}" hidden>
+                              
+                              <div class="row">
+                                 <div class="col">
+                                    <div class="form-group form-group-default">
+                                       <label>Desc</label>
+                                       <input type="text" class="form-control" id="desc" name="desc">
+                                    </div>
+                                    
+                                    
+                                 </div>
+                                 <div class="col">
+                                    <div class="form-group form-group-default">
+                                       <label>Perusahaan (%)</label>
+                                       <input type="text" class="form-control" id="company" name="company">
+                                    </div>
+                                 </div>
+                                 <div class="col">
+                                    <div class="form-group form-group-default">
+                                       <label>Karyawan (%)</label>
+                                       <input type="text" class="form-control" id="employee" name="employee">
+                                    </div>
+                                 </div>
+                                 <div class="col">
+                                    <button type="submit" class="btn btn-primary" >Add</button>
+                                 </div>
+                              </div>
+                              
+                              
+            
+                           </form>
+                           <hr>
+                           <table>
+                              <thead>
+                                 <tr>
+                                    <th>Desc</th>
+                                    <th>Perusahaan</th>
+                                    <th>Karyawan</th>
+                                    <th>Nominal</th>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                                 
+                              </tbody>
+                           </table>
                         </div>
             
                         <div class="tab-pane fade " id="pills-document-nobd" role="tabpanel" aria-labelledby="pills-document-tab-nobd">
                            @if ($employee->payroll_id != null)
                            <iframe style="width: 100%; height:400px" src="{{asset('storage/' . $employee->payroll->doc)}}" frameborder="0"></iframe>
                            @endif
+                           
                            
                         </div>
                         <div class="tab-pane fade" id="pills-bio-nobd" role="tabpanel" aria-labelledby="pills-bio-tab-nobd">

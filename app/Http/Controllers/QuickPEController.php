@@ -1411,6 +1411,7 @@ class QuickPEController extends Controller
       $pe = Pe::find($req->pe_id);
 
       if ($cek) {
+         // $this->updateBehavior($req, )
          return redirect()->back()->with('danger', 'Behavior Karyawan dengan PE tersebut sudah ada');
       }
 
@@ -1446,7 +1447,8 @@ class QuickPEController extends Controller
 
       $this->calculateAcvBehavior($pba->id);
       $this->calculatePe($pba->pe_id);
-      $this->updatePengurang($pba->pe_id);
+      $pe = Pe::find($pba->pe_id);
+      $this->updatePengurang($pe);
 
       
       if (auth()->user()->hasRole('Administrator')) {

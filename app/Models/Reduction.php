@@ -13,5 +13,9 @@ class Reduction extends Model
    public function unit(){
       return $this->belongsTo(Unit::class);
    }
+
+   public function location(){
+      return $this->belongsTo(Location::class);
+    }
    
 }

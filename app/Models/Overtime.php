@@ -13,4 +13,8 @@ class Overtime extends Model
     public function employee(){
       return $this->belongsTo(Employee::class);
     }
+
+    public function location(){
+      return $this->belongsTo(Location::class);
+    }
 }

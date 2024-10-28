@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Educational;
+use App\Models\Employee;
+use App\Models\Log;
 use Illuminate\Http\Request;
 
 class EducationalController extends Controller
@@ -11,12 +13,29 @@ class EducationalController extends Controller
    {
       $req->validate([]);
 
+      $employee = Employee::find($req->employee);
+
       Educational::create([
          'employee_id' => $req->employee,
          'degree' => $req->degree,
          'major' => $req->major,
          'name' => $req->name,
          'year' => $req->year
+      ]);
+
+      if (auth()->user()->hasRole('Administrator')) {
+         $departmentId = null;
+      } else {
+         $userNow = Employee::find(auth()->user()->getEmployeeId());
+         $departmentId = $userNow->department_id;
+      }
+
+
+      Log::create([
+         'department_id' => $departmentId,
+         'user_id' => auth()->user()->id,
+         'action' => 'Add',
+         'desc' => 'Educational ' . $employee->nik . ' ' . $employee->biodata->fullname()
       ]);
 
       return redirect()->route('employee.detail', [enkripRambo($req->employee), enkripRambo('personal')])->with('success', 'Educational background succesfully added');

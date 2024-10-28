@@ -136,44 +136,56 @@ Payroll Overtime
       <div class="col">
          <form action="{{route('payroll.overtime.filter')}}" method="POST">
             @csrf
-         <div class="row">
-            <div class="col-md-3 ">
-               <div class="form-group form-group-default">
-                  <label>Month</label>
-                  <select class="form-control " required name="month" id="month">
-                     <option value="" disabled selected>Select</option>
-                     <option {{$month == 'all' ? 'selected' : '' }} value="all">All</option>
-                     <option {{$month == 'January' ? 'selected' : '' }} value="January">January</option>
-                     <option {{$month == 'February' ? 'selected' : '' }} value="February">February</option>
-                     <option {{$month == 'March' ? 'selected' : '' }} value="March">March</option>
-                     <option {{$month == 'April' ? 'selected' : '' }} value="April">April</option>
-                     <option {{$month == 'May' ? 'selected' : '' }} value="May">May</option>
-                     <option {{$month == 'June' ? 'selected' : '' }} value="June">June</option>
-                     <option {{$month == 'July' ? 'selected' : '' }} value="July">July</option>
-                     <option {{$month == 'August' ? 'selected' : '' }} value="August">August</option>
-                     <option {{$month == 'September' ? 'selected' : '' }} value="September">September</option>
-                     <option {{$month == 'October' ? 'selected' : '' }} value="October">October</option>
-                     <option {{$month == 'November' ? 'selected' : '' }} value="November">November</option>
-                     <option {{$month == 'December' ? 'selected' : '' }} value="December">December</option>
-                  </select>
+            <div class="row">
+               {{-- <div class="col-md-3 ">
+                  <div class="form-group form-group-default">
+                     <label>Month</label>
+                     <select class="form-control " required name="month" id="month">
+                        <option value="" disabled selected>Select</option>
+                        <option {{$month == 'all' ? 'selected' : '' }} value="all">All</option>
+                        <option {{$month == 'January' ? 'selected' : '' }} value="January">January</option>
+                        <option {{$month == 'February' ? 'selected' : '' }} value="February">February</option>
+                        <option {{$month == 'March' ? 'selected' : '' }} value="March">March</option>
+                        <option {{$month == 'April' ? 'selected' : '' }} value="April">April</option>
+                        <option {{$month == 'May' ? 'selected' : '' }} value="May">May</option>
+                        <option {{$month == 'June' ? 'selected' : '' }} value="June">June</option>
+                        <option {{$month == 'July' ? 'selected' : '' }} value="July">July</option>
+                        <option {{$month == 'August' ? 'selected' : '' }} value="August">August</option>
+                        <option {{$month == 'September' ? 'selected' : '' }} value="September">September</option>
+                        <option {{$month == 'October' ? 'selected' : '' }} value="October">October</option>
+                        <option {{$month == 'November' ? 'selected' : '' }} value="November">November</option>
+                        <option {{$month == 'December' ? 'selected' : '' }} value="December">December</option>
+                     </select>
+                  </div>
+               </div>
+               <div class="col-md-3 ">
+                  <div class="form-group form-group-default">
+                     <label>Year</label>
+                     <select class="form-control " required name="year" id="year">
+                        <option value="" disabled selected>Select</option>
+                        <option {{$year == 'all' ? 'selected' : ''}} value="all">All</option>
+                        <option {{$year == '2024' ? 'selected' : ''}} value="2024">2024</option>
+                        <option {{$year == '2025' ? 'selected' : ''}} value="2025">2025</option>
+                     </select>
+                  </div>
+               </div> --}}
+               <div class="col-md-3">
+                  <div class="form-group form-group-default">
+                     <label>From</label>
+                     <input type="date" name="from" id="from" value="{{$from}}" class="form-control">
+                  </div>
+               </div>
+               <div class="col-md-3">
+                  <div class="form-group form-group-default">
+                     <label>To</label>
+                     <input type="date" name="to" id="to" value="{{$to}}" class="form-control">
+                  </div>
+               </div>
+               <div class="col">
+                  <button class="btn btn-primary" type="submit" >Show</button>
                </div>
             </div>
-            <div class="col-md-3 ">
-               <div class="form-group form-group-default">
-                  <label>Year</label>
-                  <select class="form-control " required name="year" id="year">
-                     <option value="" disabled selected>Select</option>
-                     <option {{$year == 'all' ? 'selected' : ''}} value="all">All</option>
-                     <option {{$year == '2024' ? 'selected' : ''}} value="2024">2024</option>
-                     <option {{$year == '2025' ? 'selected' : ''}} value="2025">2025</option>
-                  </select>
-               </div>
-            </div>
-            <div class="col">
-               <button class="btn btn-primary" type="submit" >Show</button>
-            </div>
-         </div>
-         </form>  
+         </form>   
          
          <div class="table-responsive">
             <table id="data" class="display basic-datatables table-sm">

@@ -67,7 +67,7 @@ SP Detail
             </div>
             <div class="col-auto">
 
-               @if (auth()->user()->hasRole('Supervisor|Manager|Asst. Manager'))
+               @if (auth()->user()->hasRole('Leader|Supervisor|Manager|Asst. Manager'))
                   @if($sp->status == '0')
                      <!-- Start -->
                      <button class="btn btn btn-dark" data-toggle="modal" data-target="#modal-submit-{{$sp->id}}"><i class="fas fa-rocket"></i> Submit </button>

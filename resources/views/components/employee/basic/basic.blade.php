@@ -297,6 +297,7 @@
                   <hr>
                   @if (auth()->user()->hasRole('Administrator|HRD|HRD-Manager|HRD-Spv|HRD-Recruitment'))
                   <button type="submit" class="btn btn-dark" >Update</button>
+                  <a href="{{route('employee.remove.picture', enkripRambo($employee->id))}}" class="btn btn-danger">Remove</a>
                   @endif
                </form>
             </div>

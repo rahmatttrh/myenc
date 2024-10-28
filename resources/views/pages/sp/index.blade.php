@@ -14,7 +14,7 @@ SP
 
    <div class="row">
       @if (auth()->user()->hasRole('Administrator'))
-         @elseif(auth()->user()->hasRole('HRD|HRD-Manager'))
+         @elseif(auth()->user()->hasRole('HRD|HRD-Manager|HRD-Recruitment'))
          
 
          @else
@@ -101,7 +101,7 @@ SP
       @endif
          
          
-         @if (auth()->user()->hasRole('HRD|HRD-Manager'))
+         @if (auth()->user()->hasRole('HRD|HRD-Manager|HRD-Recruitment'))
              <a href="{{route('sp.hrd.create')}}" class="btn btn-primary btn-sm">Create SP</a>
              <hr>
          @endif
@@ -119,9 +119,10 @@ SP
                   </tr>
                </thead>
                <tbody>
-                  @if (auth()->user()->hasRole('Administrator|HRD'))
-                      
-                  
+
+                  {{-- novi
+                  $2y$10$mpL93naoGVjJFMhL/RFR0upzQQRyQZMcnBrJVy6m80BeB1AFxl.M2 --}}
+                  @if (auth()->user()->hasRole('Administrator|HRD|HRD-Recruitment'))
                   @foreach ($sps as $sp)
                   <tr>
                      {{-- <td class="text-center">{{++$i}}</td> --}}
@@ -137,26 +138,24 @@ SP
                      {{-- <td class="text-truncate" style="max-width: 240px">{{$sp->desc}}</td> --}}
 
                   </tr>
-
-
                   @endforeach
                   @else
-                  @foreach ($employee->positions as $pos)
-                     {{-- <tr>
+                     @foreach ($employee->positions as $pos)
+                        {{-- <tr>
                         <td colspan="6">{{$pos->department->unit->name}} {{$pos->department->name}}</td>
                         </tr> --}}
                         @foreach ($pos->department->sps()->orderBy('updated_at', 'desc')->get() as $sp)
-                        <tr>
-                        {{-- <th></th> --}}
-                        <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->employee->nik}} {{$sp->employee->biodata->fullName()}}</a></td>
-                        <td>{{$sp->code}}</td>
-                        {{-- <td>{{$sp->employee->biodata->first_name}} {{$sp->employee->biodata->last_name}}</td> --}}
-                        
-                        <td>SP {{$sp->level}}</td>
-                        <td>
-                           <x-status.sp :sp="$sp" />
-                        </td>
-                     </tr>
+                           <tr>
+                              {{-- <th></th> --}}
+                              <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->employee->nik}} {{$sp->employee->biodata->fullName()}}</a></td>
+                              <td>{{$sp->code}}</td>
+                              {{-- <td>{{$sp->employee->biodata->first_name}} {{$sp->employee->biodata->last_name}}</td> --}}
+                              
+                              <td>SP {{$sp->level}}</td>
+                              <td>
+                                 <x-status.sp :sp="$sp" />
+                              </td>
+                           </tr>
                         @endforeach
                      @endforeach
                   @endif

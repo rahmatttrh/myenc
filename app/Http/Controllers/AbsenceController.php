@@ -14,11 +14,32 @@ class AbsenceController extends Controller
 {
    public function index()
    {
+      $now = Carbon::now();
       $employees = Employee::get();
       $absences = Absence::get();
       return view('pages.payroll.absence', [
          'employees' => $employees,
-         'absences' => $absences
+         'absences' => $absences,
+         'month' => $now->format('F'),
+         'year' => $now->format('Y'),
+         'from' => null,
+         'to' => null
+      ])->with('i');
+   }
+
+   public function filter(Request $req)
+   {
+      $req->validate([]);
+
+      
+      $absences = Absence::whereBetween('date', [$req->from, $req->to])->get();
+
+      $employees = Employee::get();
+      return view('pages.payroll.absence', [
+         'employees' => $employees,
+         'absences' => $absences,
+         'from' => $req->from,
+         'to' => $req->to
       ])->with('i');
    }
 

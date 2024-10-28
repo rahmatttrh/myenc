@@ -6,14 +6,14 @@
             <div class="avatar-sm border rounded float-left mr-2">
                @if (auth()->user()->hasRole('Administrator'))
                <img src="{{asset('img/businessman.png')}}" alt="..." class="avatar-img bg-muted  ">
-               @elseif(auth()->user()->hasRole('Karyawan'))
+               @else
                   @if (auth()->user()->getEmployee()->picture == null)
                   <img src="{{asset('img/businessman.png')}}" alt="..." class="avatar-img bg-muted  ">
                   @else
-                  <img src="{{asset('storage/' . auth()->user()->getEmployee()->picture)}}" alt="..." class="avatar-img bg-muted  ">
+                  <img src="{{asset('storage/' . auth()->user()->getEmployee()->picture)}}" alt="..." class="avatar-img bg-muted rounded ">
                   @endif
-               @else
-               <img src="{{asset('img/businessman.png')}}" alt="..." class="avatar-img bg-muted  ">
+               {{-- @else
+               <img src="{{asset('img/businessman.png')}}" alt="..." class="avatar-img bg-muted  "> --}}
                @endif
 
 

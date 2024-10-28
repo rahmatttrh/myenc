@@ -15,27 +15,26 @@
                 <table class="displays table-sm">
                     <thead>
                         <tr>
-                            <th>No</th>
                             <th>Objective</th>
                             <th>Description</th>
-                            <th>Bobot</th>
-                            <th>Value</th>
-                            <th>Achievement</th>
+                            <th class="text-center">Bobot</th>
+                            <th class="text-center">Value</th>
+                            <th class="text-center">Achievement</th>
                         </tr>
                     </thead>
                     <tbody>
                         @if($pba == null)
                         @foreach($behaviors as $key => $behavior)
                         <tr>
-                            <td>{{ ++$key }}</td>
+                            {{-- <td>{{ ++$key }}</td> --}}
                             <td>{{ $behavior->objective }}</td>
                             <td>{{ $behavior->description }}</td>
-                            <td>{{ $behavior->bobot }}</td>
-                            <td>
+                            <td class="text-center">{{ $behavior->bobot }}</td>
+                            <td class="text-center">
                                 <input type="text" name="valBehavior[{{ $behavior->id }}]" value="0" min="0.01" max="4" step="0.01">
                                 <br><span><small>*Max 4 point</small></span>
                             </td>
-                            <td>
+                            <td class="text-center">
                                 <input type="text" name="acvBehavior[{{ $behavior->id }}]" readonly>
                                 <br><span>-</span>
                             </td>
@@ -44,14 +43,14 @@
                         @else
                         @foreach($pbads as $key => $pbda)
                         <tr>
-                            <td>{{ ++$key }}</td>
+                            {{-- <td>{{ ++$key }}</td> --}}
                             <td>
                                 <a href="#" data-target="#modalBehavior-{{ $pbda->id }}" data-toggle="modal">{{ $pbda->behavior->objective }}</a>
                             </td>
                             <td>{{ $pbda->behavior->description }}</td>
-                            <td>{{ $pbda->behavior->bobot }}</td>
-                            <td>{{ $pbda->value }}</td>
-                            <td>{{ $pbda->achievement }}</td>
+                            <td class="text-center">{{ $pbda->behavior->bobot }}</td>
+                            <td class="text-center">{{ $pbda->value }}</td>
+                            <td class="text-center">{{ $pbda->achievement }}</td>
                         </tr>
                         <div class="modal fade" id="modalBehavior-{{ $pbda->id }}" data-bs-backdrop="static">
                             <div class="modal-dialog" style="max-width: 50%;">
@@ -107,11 +106,11 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th colspan="5" class="text-right">Achievement</th>
+                            <th colspan="4" class="text-right">Achievement</th>
                             @if(isset($pba))
-                            <th><span id="totalAcvBehavior" name="totalAcvBehavior">{{ $pba->achievement }}</span></th>
+                            <th class="text-center"><span id="totalAcvBehavior" name="totalAcvBehavior">{{ $pba->achievement }}</span></th>
                             @else
-                            <th><span id="totalAcvBehavior" name="totalAcvBehavior">-</span></th>
+                            <th class="text-center"><span id="totalAcvBehavior" name="totalAcvBehavior">-</span></th>
                             @endif
                         </tr>
                     </tfoot>

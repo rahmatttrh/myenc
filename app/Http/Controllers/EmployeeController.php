@@ -895,6 +895,21 @@ class EmployeeController extends Controller
       return redirect()->route('employee.detail', [enkripRambo($employee->id), enkripRambo('basic')])->with('success', 'Employee successfully updated');
    }
 
+   public function removePicture($id){
+      $employee = Employee::find(dekripRambo($id));
+
+      if ($employee->picture) {
+         Storage::delete($employee->picture);
+      }
+
+      $employee->update([
+         'picture' => null
+      ]);
+
+      return redirect()->route('employee.detail', [enkripRambo($employee->id), enkripRambo('basic')])->with('success', 'Employee successfully updated');
+
+   }
+
    
    public function updateRole(Request $req)
    {

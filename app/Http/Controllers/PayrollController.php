@@ -7,6 +7,8 @@ use App\Models\Employee;
 use App\Models\Location;
 use App\Models\Log;
 use App\Models\Payroll;
+use App\Models\Reduction;
+use App\Models\ReductionEmployee;
 use App\Models\Transaction;
 use App\Models\Unit;
 use Illuminate\Http\Request;
@@ -53,9 +55,26 @@ class PayrollController extends Controller
    public function detail($id)
    {
       $employee = Employee::find(dekripRambo($id));
+      // dd('ok');
+      $reductions = Reduction::where('unit_id', $employee->unit_id)->get();
+      $redEmployees = ReductionEmployee::where('employee_id', $employee->id)->get();
+
+      foreach($reductions as $red){
+         $currentRed = ReductionEmployee::where('reduction_id', $red->id)->where('employee_id', $employee->id)->first();
+         if (!$currentRed) {
+            ReductionEmployee::create([
+               'reduction_id' => $red->id,
+               'employee_id' => $employee->id,
+               'status' => 1
+            ]);
+         }
+         
+      }
 
       return view('pages.payroll.detail', [
-         'employee' => $employee
+         'employee' => $employee,
+         'reductions' => $reductions,
+         'redEmployees' => $redEmployees
       ]);
    }
 

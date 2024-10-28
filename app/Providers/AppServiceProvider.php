@@ -58,7 +58,7 @@ class AppServiceProvider extends ServiceProvider
                $id = auth()->user()->getEmployeeId();
                $employee = Employee::find($id);
                $spNotifNd = Sp::where('status', 101)->where('nd_for', 1)->orWhere('nd_for', 3)->where('by_id', $employee->id)->orderBy('updated_at', 'desc')->get();
-               $spNotif = Sp::where('status', 2)->orWhere('status', 202)->where('by_id', $employee->id)->orderBy('updated_at', 'desc')->get();
+               $spNotif = Sp::where('status', 2)->orWhere('status', 202)->where('by_id', $employee->id)->where('department_id', $employee->department_id)->orderBy('updated_at', 'desc')->get();
                $spNotifs = $spNotifNd->concat($spNotif);
 
                // $peNotif = null;

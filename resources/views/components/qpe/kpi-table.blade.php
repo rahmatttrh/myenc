@@ -13,11 +13,11 @@
                 <table id="tableCreate" class="displays table-sm ">
                     <thead>
                         <tr>
-                            <th>No</th>
+                            <th class="text-center">No</th>
                             <th>Objective</th>
-                            <th>Weight</th>
-                            <th>Target</th>
-                            <th>Value</th>
+                            <th class="text-center">Weight</th>
+                            <th class="text-center">Target</th>
+                            <th class="text-center">Value</th>
                             <th>Achievement</th>
                         </tr>
                     </thead>
@@ -31,11 +31,11 @@
                         $urlPdf = Storage::url($data->evidence) ;
                         @endphp
                         <tr>
-                            <td>{{++$i}} - {{$data->id}}</td>
+                            <td class="text-center">{{++$i}}</td>
                             <td><a href="#" data-target="#myModal-{{$data->id}}" data-toggle="modal"> {{$data->kpidetail->objective}} </a></td>
-                            <td> {{$data->kpidetail->weight}}</td>
-                            <td> {{$data->kpidetail->target}}</td>
-                            <td> {{$data->value}}</td>
+                            <td class="text-center"> {{$data->kpidetail->weight}}</td>
+                            <td class="text-center"> {{$data->kpidetail->target}}</td>
+                            <td class="text-center"> {{$data->value}}</td>
                             <td class="text-right"> <b>{{$data->achievement}}</b></td>
                         </tr>
 
@@ -305,7 +305,7 @@
                         @endif
                         <tr>
                             <th colspan="4" class="text-right">Achievement </th>
-                            <th>{{$valueAvg}}</th>
+                            <th class="text-center">{{$valueAvg}}</th>
                             <th class="text-right" id="totalAchievement">{{$kpa->achievement}}</th>
                         </tr>
                         <tr>
