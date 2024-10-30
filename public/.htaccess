@@ -5,6 +5,8 @@
 
     RewriteEngine On
 
+    
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
@@ -19,3 +21,6 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
+php_value memory_limit 30M
+php_value post_max_size 100M
+php_value upload_max_filesize 30M

@@ -126,7 +126,7 @@ Detail Employee
                   <i class="fas fa-user mr-1"></i>
                   Personal Data
                </a>
-               @if (auth()->user()->hasRole('Administartor|HRD|HRD-Recruitment|HRD-Spv'))
+               @if (auth()->user()->hasRole('Administrator|HRD|HRD-Recruitment|HRD-Spv'))
                <a class="nav-link {{$panel == 'account' ? 'active' : ''}} text-left pl-3" id="v-pills-account-tab"  data-toggle="pill" href="#v-pills-account" role="tab" aria-controls="v-pills-account" aria-selected="false">
                   <i class="fas fa-credit-card mr-1"></i>
                   System Account

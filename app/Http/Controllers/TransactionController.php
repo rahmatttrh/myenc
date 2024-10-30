@@ -9,6 +9,7 @@ use App\Models\Location;
 use App\Models\Overtime;
 use App\Models\Payroll;
 use App\Models\Reduction;
+use App\Models\ReductionAdditional;
 use App\Models\ReductionEmployee;
 use App\Models\Transaction;
 use App\Models\TransactionDetail;
@@ -40,6 +41,7 @@ class TransactionController extends Controller
    public function detail($id)
    {
 
+      // dd('ok');
       // dd($employee->id);
       // $payroll = Payroll::find($employee->payroll_id);
       $transaction = Transaction::find(dekripRambo($id));
@@ -50,6 +52,7 @@ class TransactionController extends Controller
 
 
 
+      // dd('ok');
       $overtimes = Overtime::where('month', $transaction->month)->where('employee_id', $employee->id)->get();
       $totalOvertime = $overtimes->sum('rate');
       $bruto = $payroll->total + $totalOvertime;
@@ -59,6 +62,7 @@ class TransactionController extends Controller
       $lates = $employee->absences->where('month', $transaction->month)->where('year', $transaction->year)->where('type', 2);
       $izins = $employee->absences->where('month', $transaction->month)->where('year', $transaction->year)->where('type', 3);
       // dd($alphas);
+      // dd('ok');
       $reductionAlpha = null;
       foreach ($alphas as $alpha) {
          $reductionAlpha = $reductionAlpha + $alpha->value;
@@ -79,32 +83,7 @@ class TransactionController extends Controller
 
       ]);
 
-      $bruto = $payroll->total + $totalOvertime;
-
-      $absences = $employee->absences->where('month', $transaction->month)->where('year', $transaction->year);
-      $alphas = $employee->absences->where('month', $transaction->month)->where('year', $transaction->year)->where('type', 1);
-      $lates = $employee->absences->where('month', $transaction->month)->where('year', $transaction->year)->where('type', 2);
-      $izins = $employee->absences->where('month', $transaction->month)->where('year', $transaction->year)->where('type', 3);
-      // dd($alphas);
-      $reductionAlpha = null;
-      foreach ($alphas as $alpha) {
-         $reductionAlpha = $reductionAlpha + $alpha->value;
-         // $alpha->update([
-         //    'value' => $reductionAlpha
-         // ]);
-      }
-      // dd($reductionAlpha);
-
-      $reduction = $transaction->reductions->where('type', 'employee')->sum('value') + $reductionAlpha;
-      $additionals = Additional::where('employee_id', $employee->id)->where('month', $transaction->month)->where('year', $transaction->year)->get();
-
-
-      $transaction->update([
-         'bruto' => $bruto,
-         'overtime' => $totalOvertime,
-         'reduction' => $reduction,
-
-      ]);
+      // dd('ok');
 
 
       $this->calculateTotalTransaction($transaction, $transaction->cut_from, $transaction->cut_to);
@@ -422,9 +401,11 @@ class TransactionController extends Controller
          $reductionAlpha = $reductionAlpha + 1 * 1 / 30 * $payroll->total;
       }
 
+      $redAdditionals = ReductionAdditional::where('employee_id', $employee->id)->get();
+
 
       $transaction->update([
-         'total' => $transactionDetails->sum('value') - $transaction->reductions->where('type', 'employee')->sum('value') + $totalOvertime - $reductionAlpha + $addPenambahan - $addPengurangan
+         'total' => $transactionDetails->sum('value') - $transaction->reductions->where('type', 'employee')->sum('value') + $totalOvertime - $reductionAlpha + $addPenambahan - $addPengurangan - $redAdditionals->sum('employee_value')
       ]);
    }
 }

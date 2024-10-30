@@ -29,21 +29,7 @@ Dashboard
             </div>
          </div> --}}
          {{-- ANNOUNCE --}}
-         <div class="d-block d-sm-none">
-            <div class="alert alert-info shadow-sm">
-               <div class="card-opening">
-                  <h4>
-                     <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1">
-                     <b>Announcement</b>
-                  </h4>
-               </div>
-               <hr>
-               <div class="card-desc">
-                  Tanggal 8 & 9 Februari Libur Nasional dan Cuti Bersama
-               </div>
-            </div>
-            <hr>
-         </div>
+         
 
          @if (count($sps) > 0)
          <div class="card ">
@@ -56,68 +42,71 @@ Dashboard
             </div>
          </div>
          @endif
-         @if ($pending != null)
+         {{-- @if ($pending != null)
          <a href="" class="btn btn-primary btn-block shadow-sm" data-toggle="modal" data-target="#modal-out">Out</a>
          @else
          <a href="" class="btn btn-danger btn-block shadow-sm" data-toggle="modal" data-target="#modal-in">In</a>
          @endif
-         <hr>
+         <hr> --}}
          <div class="card  bg-primary text-white ">
-            {{-- <div class="card-header" style="background-image: url({{asset('img/blogpost.jpg')}})">
-               <div class="profile-picture">
-                  <div class="avatar avatar-xl">
-                     @if ($employee->picture)
-                     <img src="{{asset('storage/' . $employee->picture)}}" alt="..." class="avatar-img rounded-circle">
-                     @else
-                     <img src="{{asset('img/user.png')}}" alt="..." class="avatar-img rounded-circle">
-                     @endif
-                  </div>
-               </div>
-            </div>
+           
             <div class="card-body">
-               <div class="user-profile text-center">
-                  <div class="name">{{$employee->biodata->first_name}} {{$employee->biodata->last_name}}</div>
-                  <div class="job">{{$employee->position->name}}</div>
-                  <div class="desc">15/08/2023 - 15/08/24</div>
-               </div>
-               @if ($pending != null)
-               <a href="" class="btn btn-primary btn-block" data-toggle="modal" data-target="#modal-out">Out</a>
-               @else
-               <a href="" class="btn btn-danger btn-block" data-toggle="modal" data-target="#modal-in">In</a>
-               @endif
-            </div>
-            <hr> --}}
-            <div class="card-footer d-flex justify-content-between">
 
-               <div>
-                  {{$employee->contract->shift->name ?? '-'}} <br>
-                  Sisa Cuti <br>
-               </div>
-               <div class="text-right">
-                  {{$employee->contract->shift ? formatTime($employee->contract->shift->in) : ''}} - {{$employee->contract->shift ? formatTime($employee->contract->shift->out) : ''}} <br>
-                  4 <br>
-               </div>
+               <h1>{{$employee->unit->name}}</h1>
                
             </div>
             <div class="card-footer d-flex justify-content-between">
 
                <div>
-                  Overtime <br>
-                  Absen <br>
+                  Department <br>
+                  Posisi <br>
                </div>
                <div class="text-right">
-                  4 Hours <br>
-                  2 <br>
+                  {{$employee->department->name}} <br>
+                  {{$employee->position->name}} <br>
                </div>
                
             </div>
          </div>
 
-         <small>Data diatas adalah data dummy, fitur absensi dan cuti masih dalam tahap pengembangan, harap bersabar :)</small>
-         <hr>
+         <div class="card">
+            <div class="card-header bg-primary text-white p-2">
+               <small class="text-uppercase">Recent PE</small>
+            </div>
+            <div class="card-body p-0">
+               <table class=" ">
+                  {{-- <thead >
+
+                     <tr class="bg-primary text-white">
+                        <th scope="col">ID</th>
+                        
+                     </tr>
+                  </thead> --}}
+                  <tbody>
+                     @if (count($peHistories) > 0)
+                     @foreach ($peHistories as $peHis)
+                     <tr>
+                        <td>
+                           <a href="/qpe/show/{{enkripRambo($peHis->kpa->id)}}">Semester {{$peHis->semester}} / {{$peHis->tahun}}</a>
+                        </td>
+                        
+                     </tr>
+                     @endforeach
+                     @else
+                     <tr>
+                        <td colspan="1" class="text-center">Empty</td>
+                     </tr>
+                     @endif
+
+
+                  </tbody>
+               </table>
+            </div>
+         </div>
+
          <div class="card">
             <div class="card-header bg-danger text-white p-2">
-               <small class="text-uppercase">SP History</small>
+               <small class="text-uppercase">Recent SP</small>
             </div>
             <div class="card-body p-0">
                <table class=" ">
@@ -324,6 +313,69 @@ Dashboard
                </table>
             </div>
          </div> --}}
+
+         <div class="card">
+            <div class="card-header bg-primary text-white p-2">
+               <small class="text-uppercase">Task List</small>
+            </div>
+            <div class="card-body p-0">
+               <table class=" ">
+                  <thead>
+      
+                     <tr>
+                        <th class="text-center">#</th>
+                        <th class="">Kategori</th>
+                        <th class="">Action Plan</th>
+                        <th class="text-center">Target</th>
+                        <th class="text-center">Closed</th>
+                        <th>Status</th>
+                        {{-- <th>Date</th> --}}
+                        {{-- <th colspan="3" class="text-center">Tap In</th>
+                        <th colspan="3" class="text-center">Tap Out</th>
+                        <th rowspan="3" class="text-center">Work Hours</th> --}}
+                     </tr>
+                     
+                  </thead>
+                  <tbody>
+                     @foreach ($tasks as $task)
+                        <tr>
+                           <td>{{++$i}}</td>
+                           <td>{{$task->category}}</td>
+                           <td><a href="{{route('task.detail', enkripRambo($task->id))}}">{{$task->plan}}</a></td>
+                           <td>{{formatDate($task->target)}}</td>
+                           <td>
+                              @if ($task->closed)
+                              {{formatDate($task->closed)}}
+                                 @else
+                                 -
+                              @endif
+                           </td>
+                           @if ($task->status == 0)
+                              <td class="bg-danger text-light">Open</td>
+                              @elseif($task->status == 1)
+                              <td class="bg-info text-light">Progress</td>
+                              @else
+                              <td class="bg-success text-light">Closed</td>
+                              
+                           @endif
+                           
+                        </tr>
+                     @endforeach
+                     {{-- <tr>
+                        <td>1</td>
+                        <td>MARS</td>
+                        <td>Fitur Drop Cargo by Material Man</td>
+                        <td>17/10/2024</td>
+                        <td>17/10/2024</td>
+                        <td>Done</td>
+                     </tr> --}}
+      
+                  </tbody>
+               </table>
+            </div>
+         </div>
+
+         <hr>
 
 
          <div class="card">

@@ -18,6 +18,7 @@ use App\Models\Presence;
 use App\Models\Sp;
 use App\Models\Spkl;
 use App\Models\SubDept;
+use App\Models\Task;
 use App\Models\Transaction;
 use App\Models\Unit;
 use App\Models\User;
@@ -597,6 +598,9 @@ class HomeController extends Controller
          $sps = Sp::where('employee_id', auth()->user()->getEmployeeId())->where('status', 2)->get();
          $spHistories = Sp::where('employee_id', auth()->user()->getEmployeeId())->where('status', '>', 3)->get();
          // dd(auth()->user()->getEmployeeId());
+
+         $peHistories = Pe::where('employe_id', $employee->id)->where('status', '>', 1)->paginate(3);
+         $tasks = Task::where('employee_id', $employee->id)->get();
          return view('pages.dashboard.employee', [
             'now' => $now,
             'employee' => $employee,
@@ -608,7 +612,9 @@ class HomeController extends Controller
             'spHistories' => $spHistories,
 
             'broadcasts' => $broadcasts,
-            'personals' => $personals
+            'personals' => $personals,
+            'peHistories' => $peHistories,
+            'tasks' => $tasks
          ])->with('i');
       }
    }

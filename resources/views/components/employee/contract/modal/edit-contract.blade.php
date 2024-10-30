@@ -119,7 +119,7 @@
                            <div class="col-md-6">
                               <div class="form-group form-group-default">
                                  <label>Department</label>
-                                 <select class="form-control department" id="department" name="department" <?= auth()->user()->hasRole('Administrator|HRD|HRD-Recruitment') ? '' : 'readonly' ?>>
+                                 <select class="form-control department" required id="department" name="department" <?= auth()->user()->hasRole('Administrator|HRD|HRD-Recruitment') ? '' : 'readonly' ?>>
                                     <option value="" disabled {{$employee->contract->department_id == null ? 'selected' : ''}}>Select</option>
                                     @foreach ($departments as $department)
                                     <option {{$employee->contract->department_id == $department->id ? 'selected' : ''}} value="{{$department->id}}">{{$department->name}}</option>
@@ -134,7 +134,7 @@
                            <div class="col-md-6">
                               <div class="form-group form-group-default">
                                  <label>Sub Department</label>
-                                 <select class="form-control subdept" id="subdept" name="subdept" <?= auth()->user()->hasRole('Administrator|HRD|HRD-Recruitment') ? '' : 'readonly' ?>>
+                                 <select class="form-control subdept" required id="subdept" name="subdept" <?= auth()->user()->hasRole('Administrator|HRD|HRD-Recruitment') ? '' : 'readonly' ?>>
                                     <option value="" disabled {{$employee->contract->sub_dept_id == null ? 'selected' : ''}}>Select</option>
                                     @foreach ($subdepts as $sub)
                                     <option {{$employee->sub_dept_id == $sub->id ? 'selected' : ''}} value="{{$sub->id}}">{{$sub->name}}</option>

@@ -5,6 +5,17 @@ Setup Payroll Employee
 @endsection
 
 @section('content')
+<style>
+   .pp {
+    position: absolute;
+    top: -20;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 55%;
+    transform: scale(2) translate(0, 5%);
+}
+</style>
 <div class="page-inner">
    
    <nav aria-label="breadcrumb ">
@@ -25,10 +36,10 @@ Setup Payroll Employee
                
                <div class="card-list">
                   <div class="item-list">
-                     <div class="avatar avatar-md avatar-online">
+                     <div class="avatar avatar-lg avatar-online " >
 
                         @if ($employee->picture)
-                        <img src="{{asset('storage/' . $employee->picture)}}" alt="..." class="avatar-img rounded-circle">
+                        <img src="{{asset('storage/' . $employee->picture)}}" alt="..." class="avatar-img rounded-circle border" >
                         @else
                         <img src="{{asset('img/user.png')}}" alt="..." class="avatar-img rounded-circle">
                         @endif
@@ -42,7 +53,7 @@ Setup Payroll Employee
                   </div>
                </div>
                {{-- <small class="badge badge-white text-uppercase">{{$employee->contract->type ?? 'Kontrak/Tetap'}}</small> --}}
-               <small class="badge badge-white text-uppercase">{{$employee->contract->unit->name ?? '-'}}</small>
+               {{-- <small class="badge badge-white text-uppercase">{{$employee->contract->unit->name ?? '-'}}</small> --}}
                {{-- <small class="badge badge-white text-uppercase">{{$employee->contract->loc ?? 'Lokasi'}}</small> --}}
             </div>
             {{-- <div class="card-body">
@@ -143,7 +154,7 @@ Setup Payroll Employee
                            
                            {{-- <li class="nav-item"> <a class="nav-link " id="pills-document-tab-nobd" data-toggle="pill" href="#pills-document-nobd" role="tab" aria-controls="pills-document-nobd" aria-selected="true">Document</a> </li> --}}
                            <li class="nav-item"> <a class="nav-link " id="pills-doc-tab-nobd" data-toggle="pill" href="#pills-doc-nobd" role="tab" aria-controls="pills-doc-nobd" aria-selected="true"> Potongan</a> </li>
-                           <li class="nav-item"> <a class="nav-link " id="pills-bpjs-tab-nobd" data-toggle="pill" href="#pills-bpjs-nobd" role="tab" aria-controls="pills-bpjs-nobd" aria-selected="true"> BPJS Keluarga</a> </li>
+                           <li class="nav-item"> <a class="nav-link " id="pills-bpjs-tab-nobd" data-toggle="pill" href="#pills-bpjs-nobd" role="tab" aria-controls="pills-bpjs-nobd" aria-selected="true"> Potongan Tambahan</a> </li>
                            {{-- <li class="nav-item"> <a class="nav-link" id="pills-profile-tab-nobd" data-toggle="pill" href="#pills-profile-nobd" role="tab" aria-controls="pills-profile-nobd" aria-selected="false">Profile Picture</a> </li>
                            <li class="nav-item"> <a class="nav-link  " id="pills-bio-tab-nobd" data-toggle="pill" href="#pills-bio-nobd" role="tab" aria-controls="pills-bio-nobd" aria-selected="true">Notes</a> </li> --}}
                            {{-- <li class="nav-item"> <a class="nav-link" id="pills-contact-tab-nobd" data-toggle="pill" href="#pills-contact-nobd" role="tab" aria-controls="pills-contact-nobd" aria-selected="false">Social Networking</a> </li> --}}
@@ -236,21 +247,20 @@ Setup Payroll Employee
                         </div>
 
                         <div class="tab-pane fade " id="pills-bpjs-nobd" role="tabpanel" aria-labelledby="pills-bpjs-tab-nobd">
-                           <form action="{{route('payroll.update')}}" method="POST" enctype="multipart/form-data" >
+                           <form action="{{route('reduction.additional.store')}}" method="POST" enctype="multipart/form-data" >
                               @csrf
-                              @method('PUT')
-                              <input type="number" name="employee" id="employee" value="{{$employee->id}}" hidden>
+                              <input type="number" name="employeeId" id="employeeId" value="{{$employee->id}}" hidden>
                               
                               <div class="row">
                                  <div class="col">
                                     <div class="form-group form-group-default">
                                        <label>Desc</label>
-                                       <input type="text" class="form-control" id="desc" name="desc">
+                                       <input type="text"  required class="form-control" id="desc" name="desc">
                                     </div>
                                     
                                     
                                  </div>
-                                 <div class="col">
+                                 {{-- <div class="col">
                                     <div class="form-group form-group-default">
                                        <label>Perusahaan (%)</label>
                                        <input type="text" class="form-control" id="company" name="company">
@@ -261,7 +271,7 @@ Setup Payroll Employee
                                        <label>Karyawan (%)</label>
                                        <input type="text" class="form-control" id="employee" name="employee">
                                     </div>
-                                 </div>
+                                 </div> --}}
                                  <div class="col">
                                     <button type="submit" class="btn btn-primary" >Add</button>
                                  </div>
@@ -275,13 +285,18 @@ Setup Payroll Employee
                               <thead>
                                  <tr>
                                     <th>Desc</th>
-                                    <th>Perusahaan</th>
-                                    <th>Karyawan</th>
-                                    <th>Nominal</th>
+                                    <th tyle="max-width: 40px" class="text-center">Persen (%)</th>
+                                    <th class="text-right">Nominal</th>
                                  </tr>
                               </thead>
                               <tbody>
-                                 
+                                 @foreach ($redAdditionals as $redAdd)
+                                     <tr>
+                                       <td>{{$redAdd->description}}</td>
+                                       <td class="text-center" style="max-width: 40px">1 %</td>
+                                       <td class="text-right">{{formatRupiah($redAdd->employee_value)}}</td>
+                                     </tr>
+                                 @endforeach
                               </tbody>
                            </table>
                         </div>

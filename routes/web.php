@@ -49,7 +49,9 @@ use App\Http\Controllers\TransactionReductionController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\FuncController;
+use App\Http\Controllers\ReductionAdditionalController;
 use App\Http\Controllers\ReductionEmployeeController;
+use App\Http\Controllers\TaskController;
 use App\Models\Emergency;
 use App\Models\EmployeeLeader;
 use App\Models\Reduction;
@@ -114,6 +116,20 @@ Route::middleware(["auth"])->group(function () {
    Route::get('sub-dept/fetch-data/{id}', [SubDeptController::class, 'fetchData'])->name('department.fetch-data');
    // End Fetch
    Route::get('announcement/detail/{id}', [AnnouncementController::class, 'detail'])->name('announcement.detail');
+   
+   
+   Route::prefix('task')->group(function () {
+      Route::get('list', [TaskController::class, 'index'])->name('task');
+      Route::get('create', [TaskController::class, 'create'])->name('task.create');
+      Route::post('store', [TaskController::class, 'store'])->name('task.store');
+      Route::get('detail/{id}', [TaskController::class, 'detail'])->name('task.detail');
+      Route::put('update', [TaskController::class, 'update'])->name('task.update');
+      Route::get('delete/{id}', [TaskController::class, 'delete'])->name('task.delete');
+   });
+   
+   
+   
+   
    Route::group(['middleware' => ['role:Administrator|HRD|HRD-Manager|HRD-Recruitment|HRD-Payroll|HRD-Spv']], function () {
       Route::prefix('announcement')->group(function(){
          Route::get('/', [AnnouncementController::class, 'index'])->name('announcement');
@@ -354,6 +370,14 @@ Route::middleware(["auth"])->group(function () {
             Route::get('index', [AdditionalController::class, 'index'])->name('payroll.additional');
             Route::post('store', [AdditionalController::class, 'store'])->name('payroll.additional.store');
             Route::get('delete/{id}', [AdditionalController::class, 'delete'])->name('payroll.additional.delete');
+            // Route::get('/detail/{id}' , [TransactionController::class, 'detail'])->name('payroll.transaction.detail');
+            // Route::post('store', [TransactionController::class, 'store'])->name('payroll.transaction.store');
+         });
+
+         Route::prefix('reduction/additional')->group(function () {
+            // Route::get('index', [AdditionalController::class, 'index'])->name('payroll.additional');
+            Route::post('store', [ReductionAdditionalController::class, 'store'])->name('reduction.additional.store');
+            // Route::get('delete/{id}', [AdditionalController::class, 'delete'])->name('payroll.additional.delete');
             // Route::get('/detail/{id}' , [TransactionController::class, 'detail'])->name('payroll.transaction.detail');
             // Route::post('store', [TransactionController::class, 'store'])->name('payroll.transaction.store');
          });

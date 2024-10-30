@@ -149,6 +149,13 @@
    </div>
 </li>
 
+<li class="nav-item {{ (request()->is('task/*')) ? 'active' : '' }}">
+   <a href="{{route('task')}}">
+      <i class="fas fa-file-code"></i>
+      <p>Task</p>
+   </a>
+</li>
+
 {{-- SP --}}
 <li class="nav-item {{ (request()->is('sp/*')) ? 'active' : '' }}">
    <a href="{{route('sp')}}">
@@ -156,3 +163,5 @@
       <p>SP</p>
    </a>
 </li>
+
+<hr>

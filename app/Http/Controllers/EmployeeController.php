@@ -860,9 +860,13 @@ class EmployeeController extends Controller
 
    public function updatePicture(Request $req)
    {
+      // dd(request('picture'));
       $req->validate([
-         'picture' => 'required|image|mimes:jpg,jpeg,png|max:5120',
+         'picture' => 'required|image|mimes:jpg,jpeg,png|max:10240'
       ]);
+      // dd('ok');
+
+      // 'picture' => 'required|image|mimes:jpg,jpeg,png'
 
       $employee = Employee::find($req->employee);
 

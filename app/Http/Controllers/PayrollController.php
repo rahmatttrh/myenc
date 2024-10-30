@@ -8,6 +8,7 @@ use App\Models\Location;
 use App\Models\Log;
 use App\Models\Payroll;
 use App\Models\Reduction;
+use App\Models\ReductionAdditional;
 use App\Models\ReductionEmployee;
 use App\Models\Transaction;
 use App\Models\Unit;
@@ -21,6 +22,9 @@ class PayrollController extends Controller
    {
       $employees = Employee::where('status', 1)->get();
       $units = Unit::get();
+
+     
+      
       return view('pages.payroll.setup.gaji', [
          'employees' => $employees,
          'units' => $units
@@ -57,10 +61,14 @@ class PayrollController extends Controller
       $employee = Employee::find(dekripRambo($id));
       // dd('ok');
       $reductions = Reduction::where('unit_id', $employee->unit_id)->get();
-      $redEmployees = ReductionEmployee::where('employee_id', $employee->id)->get();
+      // dd($reductions);
+      
+      $redAdditionals = ReductionAdditional::where('employee_id', $employee->id)->get();
+      // dd($redAdditionals->sum('employee_value'));
 
       foreach($reductions as $red){
          $currentRed = ReductionEmployee::where('reduction_id', $red->id)->where('employee_id', $employee->id)->first();
+         
          if (!$currentRed) {
             ReductionEmployee::create([
                'reduction_id' => $red->id,
@@ -71,10 +79,13 @@ class PayrollController extends Controller
          
       }
 
+      $redEmployees = ReductionEmployee::where('employee_id', $employee->id)->get();
+
       return view('pages.payroll.detail', [
          'employee' => $employee,
          'reductions' => $reductions,
-         'redEmployees' => $redEmployees
+         'redEmployees' => $redEmployees,
+         'redAdditionals' => $redAdditionals
       ]);
    }
 
