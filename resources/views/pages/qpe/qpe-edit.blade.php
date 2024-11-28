@@ -226,6 +226,7 @@ PE
                             $totalAcv = 0;
                             @endphp
                             @foreach ($datas as $data)
+                            
 
                             @php
                             $urlPdf = Storage::url($data->evidence) ;
@@ -366,8 +367,9 @@ PE
 
                                                         </div>
                                                         <div class="card-body">
+                                                            {{-- {{$data->evidence}} --}}
                                                             @if ($data->evidence)
-                                                            <iframe src="{{ asset('storage/'. $data->evidence) }}" id="pdfPreview-{{$data->id}}" width=" 100%" height="575px"></iframe>
+                                                            <iframe src="{{ asset('storage/'. $data->evidence) }}"  width=" 100%" height="575px"></iframe>
                                                             @else
                                                             <p>No attachment available.</p>
                                                             @endif
@@ -1022,6 +1024,7 @@ PE
                                                             </div>
                                                       </div>
                                                       <div class="card-body">
+                                                        
                                                             <div class="form-group">
                                                                @if ($pe->evidence)
                                                                <iframe src="{{ asset('storage/'. $pe->evidence) }}" id="pdfPreview-{{$pe->id}}" width=" 100%" height="575px"></iframe>

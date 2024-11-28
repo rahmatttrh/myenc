@@ -58,10 +58,11 @@ Payroll Transaction
                            <td>{{$trans->month}}</td>
                            <td>{{$trans->year}}</td>
                            <td class="text-center">{{$trans->total_employee}} / {{count($trans->unit->employees->where('status', 1))}}</td>
-                           <td class="text-right">{{formatRupiah($trans->total_salary)}}</td>
+                           <td class="text-right">{{formatRupiahB($trans->total_salary)}}</td>
                            <td>Draft</td>
                            <td>
-                              <a href="{{route('payroll.transaction.monthly.all', enkripRambo($trans->id))}}">Detail</a> | <a href="{{route('payroll.transaction.monthly', enkripRambo($trans->id))}}">Report</a> | <a href="#" data-target="#modal-delete-master-transaction-{{$trans->id}}" data-toggle="modal">Delete</a>
+                              <a href="{{route('payroll.transaction.monthly.all', enkripRambo($trans->id))}}">Detail</a> 
+                              | <a href="{{route('payroll.transaction.monthly', enkripRambo($trans->id))}}">Report</a> | <a href="#" data-target="#modal-delete-master-transaction-{{$trans->id}}" data-toggle="modal">Delete</a>
                            </td>
                         </tr>
 
@@ -122,7 +123,7 @@ Payroll Transaction
          <form action="{{route('payroll.add.master.transaction')}}" method="POST" >
             <div class="modal-body">
                @csrf
-               <h3>{{$unit->name}}</h3>
+               {{-- <h3>{{$unit->name}}</h3> --}}
                <input type="number" name="unit" id="unit" value="{{$unit->id}}" hidden>
                <div class="row">
                   <div class="col-md-12">
@@ -132,19 +133,26 @@ Payroll Transaction
                      </div>
                   </div>
                   
-                  <div class="col-12">
+                  <div class="col-6">
                      <div class="form-group form-group-default">
                         <label>Month</label>
                         <select name="month" id="month" required class="form-control">
+                           <option value="January">January</option>
+                           <option value="February">February</option>
+                           <option value="March">March</option>
+                           <option value="April">April</option>
+                           <option value="May">May</option>
                            <option value="June">June</option>
                            <option value="July">July</option>
                            <option value="August">August</option>
                            <option value="September">September</option>
+                           <option value="October">October</option>
                            <option value="November">November</option>
+                           <option value="December">December</option>
                         </select>
                      </div>
                   </div>
-                  <div class="col-12">
+                  <div class="col-6">
                      <div class="form-group form-group-default">
                         <label>Year</label>
                         <select name="year" id="year" required class="form-control">
@@ -161,16 +169,22 @@ Payroll Transaction
                   <div class="col-md-6">
                      <div class="form-group form-group-default">
                         <label>From</label>
-                        <input type="date" class="form-control" name="from" id="from">
+                        <input type="date" class="form-control" required name="from" id="from">
                      </div>
                   </div>
                   <div class="col-md-6">
                      <div class="form-group form-group-default">
                         <label>To</label>
-                        <input type="date" class="form-control" name="to" id="to">
+                        <input type="date" class="form-control" required name="to" id="to">
                      </div>
                   </div>
                </div>
+
+               <hr>
+               <small>
+                  Klik "Generate" button dan tunggu beberapa saat <br>
+                  Sistem akan secara otomatis menarik data Gaji, Lembur, Potongan dll sesuai "Cut Off Period" yang dipilih
+               </small>
                
                
                   
@@ -178,7 +192,7 @@ Payroll Transaction
             </div>
             <div class="modal-footer">
                <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
-               <button type="submit" class="btn btn-info">Add</button>
+               <button type="submit" class="btn btn-info">Generate</button>
             </div>
             
          </form>

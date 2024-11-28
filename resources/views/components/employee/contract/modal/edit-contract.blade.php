@@ -150,7 +150,7 @@
                            <div class="col-md-6">
                               <div class="form-group form-group-default">
                                  <label>Posisi</label>
-                                 <select class="form-control position" id="position" name="position" <?= auth()->user()->hasRole('Administrator|HRD|HRD-Recruitment') ? '' : 'readonly' ?>>
+                                 <select class="form-control position" id="position" required name="position" <?= auth()->user()->hasRole('Administrator|HRD|HRD-Recruitment') ? '' : 'readonly' ?>>
                                     <option value="" disabled {{$employee->contract->position_id == null ? 'selected' : ''}}>Select</option>
                                     @foreach ($allpositions as $position)
                                     {{--<option {{$employee->contract->designation_id == $designation->id ? 'selected' : ''}} value="{{$designation->id}}">{{$designation->name}}</option>--}}

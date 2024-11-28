@@ -65,6 +65,16 @@ class EmployeeController extends Controller
          ->orderBy('updated_at', 'desc')
          ->get();
 
+         // foreach($employees as $emp){
+         //    $contract = Contract::find($emp->contract_id);
+         //    if ($emp->unit_id != $contract->unit_id) {
+         //       // dd($emp->contract->unit->name);
+         //       $emp->update([
+         //          'unit_id' => $contract->unit_id
+         //       ]);
+         //    }
+         // }
+
       // foreach($employees as $emp){
       //    $contract = Contract::find($emp->contract_id);
       //    $loc = Location::where('code', $contract->loc)->first();
@@ -121,6 +131,19 @@ class EmployeeController extends Controller
          'tab' => $tab,
          'departments' => Department::get()
       ])->with('i');
+   }
+
+
+   public function resetPassword($id){
+      $employee = Employee::find(dekripRambo($id));
+      $user = User::where('username', $employee->nik)->first();
+
+      $user->update([
+         'password' => Hash::make('12345678')
+      ]);
+
+      return redirect()->back()->with('success', 'Password User successfully updated');
+
    }
 
 
@@ -331,6 +354,8 @@ class EmployeeController extends Controller
 
    public function detail($id, $enkripPanel)
    {
+
+      
       // $employee = auth()->user()->getEmployee();
       // // Data KPI
       // if (auth()->user()->hasRole('Administrator|HRD')) {
@@ -338,10 +363,20 @@ class EmployeeController extends Controller
       //    // 
       // } else if (auth()->user()->hasRole('Leader|Manager')) {
       // }
+      // dd('ok');
 
       $dekripId = dekripRambo($id);
       $employee = Employee::find($dekripId);
       $user = User::where('username', $employee->nik)->first();
+
+      // if ($employee->id == 19) {
+      //    // dd($employee->position->id);
+      //    $contract = Contract::find($employee->contract_id);
+      //    // dd($contract->position_id);
+      //    $employee->update([
+      //       'unit_id' => $contract->unit_id
+      //    ]);
+      // }
 
       // if ($user) {
       //    // dd('ok');
@@ -372,11 +407,11 @@ class EmployeeController extends Controller
       //    'department_id' => 5
       // ]);
       if ($employee->designation->name == 'Manager') {
-         if (count($employee->positions) > 0) {
-            $employee->contract->update([
-               'type' => 'Tetap'
-            ]);
-         }
+         // if (count($employee->positions) > 0) {
+         //    $employee->contract->update([
+         //       'type' => 'Tetap'
+         //    ]);
+         // }
       } else {
          // $department = Department::find($employee->department_id);
          // $subdept = SubDept::find($employee->sub_dept_id);
@@ -430,6 +465,12 @@ class EmployeeController extends Controller
 
       $contracts = Contract::where('id_no', $employee->nik)->where('status', 0)->get();
       // dd($contracts);
+      // $contract
+      // foreach($contracts as $con){
+      //    $con->update([
+      //       'employee_id' => $employee->id
+      //    ]);
+      // }
 
       $departments = Department::where('unit_id', $employee->unit_id)->get();
       // dd($employee->id);

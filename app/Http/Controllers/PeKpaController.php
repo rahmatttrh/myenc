@@ -204,13 +204,14 @@ class PeKpaController extends Controller
       $request->validate([
          'id' => 'required',
          'value' => 'required',
-         'achievement' => 'required'
+         'achievement' => 'required',
       ]);
 
       $kpad = PekpaDetail::find($request->id);
 
 
       if ($request->attachment) {
+         // dd('ok');
          # code...
          $pdfFile = $request->attachment;
 

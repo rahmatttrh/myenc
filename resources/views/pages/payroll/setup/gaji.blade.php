@@ -13,29 +13,46 @@ Payroll
       </ol>
    </nav>
    
-   <div class="card shadow-none border">
-      <div class="card-body">
+   <div class="row">
+      <div class="col-md-3">
+         <a href="{{route('payroll.import')}}" class="btn text-left btn-light btn-block border mb-2"><i class="fa fa-file" ></i> Import Excel Payroll</a>
+         <div class="nav flex-column justify-content-start nav-pills nav-primary"  aria-orientation="vertical">
+            @foreach ($units as $unit)
+               <a class="nav-link {{$activeUnit->id == $unit->id ? 'active' : ''}} text-left pl-3" href="{{route('payroll.unit.list', enkripRambo($unit->id))}}"  aria-selected="true">
+                  
+                   {{$unit->name}}
+               </a>
+            @endforeach
+         </div>
+      </div>
+      <div class="col-md-9">
+         {{-- <div class="px-3 mb-2 d-flex justify-content-between">
+            <h2></h2>
+            <a href="{{route('payroll.import')}}" class="btn btn-sm btn-primary">Import Excel</a>
+         </div> --}}
+         {{-- <hr> --}}
          <div class="table-responsive">
-            <table id="data" class="display basic-datatables table-sm">
+            <table id="" class="display basic-datatables table-sm">
                <thead>
                   <tr>
-                     <th class="text-center">No</th>
+                     {{-- <th class="text-center">No</th> --}}
                      {{-- @if (auth()->user()->hasRole('Administrator'))
                      <th>ID</th>
                      @endif --}}
                      
                      <th>NIK</th>
                      <th>Name</th>
-                     <th class="text-truncate">Bisnis Unit</th>
+                     <th>Department</th>
+                     {{-- <th class="text-truncate">Bisnis Unit</th> --}}
                      <th>Position</th>
-                     <th>Status</th>
+                     <th>Setup Gaji</th>
                   </tr>
                </thead>
                
                <tbody>
                   @foreach ($employees as $employee)
                   <tr>
-                     <td class="text-center">{{++$i}}</td>
+                     {{-- <td class="text-center">{{++$i}}</td> --}}
                      {{-- @if (auth()->user()->hasRole('Administrator'))
                      <td>{{$employee->id}}</td>
                      @endif --}}
@@ -52,19 +69,8 @@ Payroll
                      
                      {{-- <td>{{$employee->biodata->phone}}</td> --}}
                      
-                     <td class="text-truncate">
-                        @if (count($employee->positions) > 0)
-                              {{-- @foreach ($employee->positions as $pos)
-                                  {{$pos->department->unit->name}}
-                              @endforeach --}}
-                              Multiple
-                            @else
-                            @if (auth()->user()->hasRole('Administrator'))
-                            {{$employee->department->unit->id ?? ''}}
-                           @endif
-                            {{$employee->department->unit->name ?? ''}}
-                        @endif
-                        
+                     <td>
+                        {{$employee->department->name ?? ''}}
                      </td>
                      
                     
@@ -76,14 +82,18 @@ Payroll
                               @endforeach --}}
                               Multiple
                             @else
-                            @if (auth()->user()->hasRole('Administrator'))
+                            {{-- @if (auth()->user()->hasRole('Administrator'))
                             {{$employee->position->id ?? ''}}
-                           @endif
+                           @endif --}}
                             {{$employee->position->name ?? ''}}
                         @endif
                      </td>
                      <td>
-
+                        @if ($employee->payroll_id)
+                           Complete
+                            @else
+                            Empty
+                        @endif
                      </td>
                   </tr>
                   @endforeach
@@ -91,8 +101,13 @@ Payroll
                
             </table>
          </div>
+         
+         
       </div>
    </div>
+   
+
+   
    
 </div>
 

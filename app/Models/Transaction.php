@@ -41,5 +41,14 @@ class Transaction extends Model
       return $this->belongsTo(UnitTransaction::class);
    }
 
+   public function getBpjsKt(){
+      $jkkReductions = TransactionReduction::where('transaction_id', $this->id)->where('name', 'JKK')->get();
+      $jkmReductions = TransactionReduction::where('transaction_id', $this->id)->where('name', 'JKM')->get();
+      $value = $jkkReductions->sum('value_real') + $jkmReductions->sum('value_real');
+      // dd(count($transReductions));
+      return $value;
+      
+   }
+
    
 }

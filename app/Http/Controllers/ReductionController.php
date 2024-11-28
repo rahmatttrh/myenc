@@ -54,8 +54,8 @@ class ReductionController extends Controller
    {
       $unitReduction = Reduction::find($req->reduction);
       $unitReduction->update([
-         'min_salary' => $req->min_salary,
-         'max_salary' => $req->max_salary,
+         'min_salary' => preg_replace('/[Rp. ]/','',$req->min_salary) ,
+         'max_salary' => preg_replace('/[Rp. ]/','',$req->max_salary),
          'company' => $req->company,
          'employee' => $req->employee
       ]);

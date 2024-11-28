@@ -22,7 +22,7 @@ Setup Payroll Employee
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
          <li class="breadcrumb-item" aria-current="page">Payroll</li>
-         <li class="breadcrumb-item" aria-current="page"><a href="{{route('payroll.setup')}}">Setup</a></li>
+         <li class="breadcrumb-item" aria-current="page"><a href="{{route('payroll')}}">Setup</a></li>
          <li class="breadcrumb-item active" aria-current="page">Employee</li>
       </ol>
    </nav>
@@ -153,8 +153,8 @@ Setup Payroll Employee
                            <li class="nav-item"> <a class="nav-link show active" id="pills-basic-tab-nobd" data-toggle="pill" href="#pills-basic-nobd" role="tab" aria-controls="pills-basic-nobd" aria-selected="true">Upah</a> </li>
                            
                            {{-- <li class="nav-item"> <a class="nav-link " id="pills-document-tab-nobd" data-toggle="pill" href="#pills-document-nobd" role="tab" aria-controls="pills-document-nobd" aria-selected="true">Document</a> </li> --}}
-                           <li class="nav-item"> <a class="nav-link " id="pills-doc-tab-nobd" data-toggle="pill" href="#pills-doc-nobd" role="tab" aria-controls="pills-doc-nobd" aria-selected="true"> Potongan</a> </li>
-                           <li class="nav-item"> <a class="nav-link " id="pills-bpjs-tab-nobd" data-toggle="pill" href="#pills-bpjs-nobd" role="tab" aria-controls="pills-bpjs-nobd" aria-selected="true"> Potongan Tambahan</a> </li>
+                           <li class="nav-item"> <a class="nav-link " id="pills-doc-tab-nobd" data-toggle="pill" href="#pills-doc-nobd" role="tab" aria-controls="pills-doc-nobd" aria-selected="true"> Deduction</a> </li>
+                           <li class="nav-item"> <a class="nav-link " id="pills-bpjs-tab-nobd" data-toggle="pill" href="#pills-bpjs-nobd" role="tab" aria-controls="pills-bpjs-nobd" aria-selected="true"> Deduction Additional</a> </li>
                            {{-- <li class="nav-item"> <a class="nav-link" id="pills-profile-tab-nobd" data-toggle="pill" href="#pills-profile-nobd" role="tab" aria-controls="pills-profile-nobd" aria-selected="false">Profile Picture</a> </li>
                            <li class="nav-item"> <a class="nav-link  " id="pills-bio-tab-nobd" data-toggle="pill" href="#pills-bio-nobd" role="tab" aria-controls="pills-bio-nobd" aria-selected="true">Notes</a> </li> --}}
                            {{-- <li class="nav-item"> <a class="nav-link" id="pills-contact-tab-nobd" data-toggle="pill" href="#pills-contact-nobd" role="tab" aria-controls="pills-contact-nobd" aria-selected="false">Social Networking</a> </li> --}}
@@ -216,90 +216,101 @@ Setup Payroll Employee
             
                         <div class="tab-pane fade" id="pills-doc-nobd" role="tabpanel" aria-labelledby="pills-doc-tab-nobd">
                            
-                              <div class="row">
-                                 <div class="col-md-8">
-                                 @foreach ($redEmployees as $red)
-                                 <form action="{{route('reduction.employee.update')}}" method="POST">
-                                    @csrf
-                                    @method('PUT')
-                                    <div class="row">
-                                       <div class="col-md-6">
-                                          
-                                             <input type="number" hidden name="redEmp" id="redEmp" value="{{$red->id}}">
-                                             <div class="form-group form-group-default">
-                                                <label>{{$red->reduction->name}}</label>
-                                                <select class="form-control" name="status" id="status">
-                                                   <option {{$red->status == 1 ? 'selected' : ''}} value="1">True</option>
-                                                   <option {{$red->status == 0 ? 'selected' : ''}} value="0">False</option>
-                                                </select>
-                                             </div>
-                                          
-                                       </div>
-                                       <div class="col">
-                                          <button type="submit" class="btn  btn-primary">Update</button>
+                           <div class="row">
+                              <div class="col-md-8">
+                              @foreach ($redEmployees as $red)
+                              <form action="{{route('reduction.employee.update')}}" method="POST">
+                                 @csrf
+                                 @method('PUT')
+                                 <div class="row">
+                                    <div class="col">
+                                       <div class="form-group form-group-default">
+                                          <label>{{$red->reduction->name}}</label>
+                                          <input type="text" name="" id="" class="form-control" value="{{formatRupiah($red->employee_value)}}">
                                        </div>
                                     </div>
-                                 </form>
-                                 @endforeach
+                                    <div class="col">
+                                       
+                                          <input type="number" hidden name="redEmp" id="redEmp" value="{{$red->id}}">
+                                          <div class="form-group form-group-default">
+                                             <label>Status</label>
+                                             <select class="form-control" name="status" id="status">
+                                                <option {{$red->status == 1 ? 'selected' : ''}} value="1">Enable</option>
+                                                <option {{$red->status == 0 ? 'selected' : ''}} value="0">Disable</option>
+                                             </select>
+                                          </div>
+                                       
+                                    </div>
+                                    <div class="col">
+                                       <button type="submit" class="btn  btn-primary">Update</button>
+                                    </div>
                                  </div>
+                              </form>
+                              @endforeach
                               </div>
-                           
-                        </div>
+                           </div>
+                        <hr>
+                        - Deduction Gaji Karyawan berdasarkan bisnis unit <br>
+                        
+                     </div>
 
-                        <div class="tab-pane fade " id="pills-bpjs-nobd" role="tabpanel" aria-labelledby="pills-bpjs-tab-nobd">
-                           <form action="{{route('reduction.additional.store')}}" method="POST" enctype="multipart/form-data" >
-                              @csrf
-                              <input type="number" name="employeeId" id="employeeId" value="{{$employee->id}}" hidden>
-                              
-                              <div class="row">
-                                 <div class="col">
-                                    <div class="form-group form-group-default">
-                                       <label>Desc</label>
-                                       <input type="text"  required class="form-control" id="desc" name="desc">
-                                    </div>
-                                    
-                                    
+                     <div class="tab-pane fade " id="pills-bpjs-nobd" role="tabpanel" aria-labelledby="pills-bpjs-tab-nobd">
+                        <form action="{{route('reduction.additional.store')}}" method="POST" enctype="multipart/form-data" >
+                           @csrf
+                           <input type="number" name="employeeId" id="employeeId" value="{{$employee->id}}" hidden>
+                           
+                           <div class="row">
+                              <div class="col">
+                                 <div class="form-group form-group-default">
+                                    <label>Deduction</label>
+                                    <select name="reduction" id="reduction" class="form-control">
+                                       @foreach ($reductions as $red)
+                                           <option value="{{$red->id}}">{{$red->name}}</option>
+                                       @endforeach
+                                    </select>
                                  </div>
-                                 {{-- <div class="col">
-                                    <div class="form-group form-group-default">
-                                       <label>Perusahaan (%)</label>
-                                       <input type="text" class="form-control" id="company" name="company">
-                                    </div>
-                                 </div>
-                                 <div class="col">
-                                    <div class="form-group form-group-default">
-                                       <label>Karyawan (%)</label>
-                                       <input type="text" class="form-control" id="employee" name="employee">
-                                    </div>
-                                 </div> --}}
-                                 <div class="col">
-                                    <button type="submit" class="btn btn-primary" >Add</button>
+                                 
+                                 
+                              </div>
+                              <div class="col">
+                                 <div class="form-group form-group-default">
+                                    <label>Description</label>
+                                    <input type="text" class="form-control" id="desc" name="desc">
                                  </div>
                               </div>
                               
+                              <div class="col">
+                                 <button type="submit" class="btn btn-primary" >Add</button>
+                              </div>
+                           </div>
+                           
+                           
+         
+                        </form>
+                        <hr>
+                        <table>
+                           <thead>
+                              <tr>
+                                 <th>Deduction</th>
+                                 <th>Desc</th>
+                                 <th>Nominal</th>
+                              </tr>
+                           </thead>
+                           <tbody>
                               
-            
-                           </form>
-                           <hr>
-                           <table>
-                              <thead>
-                                 <tr>
-                                    <th>Desc</th>
-                                    <th tyle="max-width: 40px" class="text-center">Persen (%)</th>
-                                    <th class="text-right">Nominal</th>
-                                 </tr>
-                              </thead>
-                              <tbody>
-                                 @foreach ($redAdditionals as $redAdd)
-                                     <tr>
-                                       <td>{{$redAdd->description}}</td>
-                                       <td class="text-center" style="max-width: 40px">1 %</td>
-                                       <td class="text-right">{{formatRupiah($redAdd->employee_value)}}</td>
-                                     </tr>
-                                 @endforeach
-                              </tbody>
-                           </table>
-                        </div>
+                              @foreach ($redEmployees->where('type', 'Additional') as $red)
+                                  <tr>
+                                    <td>{{$red->reduction->name}}</td>
+                                    <td>{{$red->description}}</td>
+                                    <td>{{formatRupiah($red->employee_value)}}</td>
+                                  </tr>
+                              @endforeach
+                           </tbody>
+                        </table>
+                        <hr>
+                        <hr>
+                        - Deduction Tambahan Gaji Karyawan diluar potongan bisnis unit <br>
+                     </div>
             
                         <div class="tab-pane fade " id="pills-document-nobd" role="tabpanel" aria-labelledby="pills-document-tab-nobd">
                            @if ($employee->payroll_id != null)

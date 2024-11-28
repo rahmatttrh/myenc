@@ -44,7 +44,7 @@ Employee
       {{-- <div class="card-header">
          <a href=""></a>
       </div> --}}
-      <div class="card-body">
+      <div class="card-body p-0 pt-3">
          <div class="table-responsive">
             <table id="data" class="display basic-datatables table-sm">
                <thead>
@@ -52,7 +52,7 @@ Employee
                      <th class="text-center">No</th>
                      @if (auth()->user()->hasRole('Administrator'))
                      <th>ID</th>
-                     <th>User ID</th>
+                     <th class="text-truncate">User ID</th>
                      @endif
                      
                      <th>NIK</th>
@@ -106,6 +106,7 @@ Employee
                         {{-- <a href="{{route('kpi.edit', enkripRambo($employee->kpi_id))}}">{{$employee->getKpi()->title}}</a> --}}
                             {{-- <span class="text-success">OK</span> --}}
                             <i class="fa fa-check"></i>
+                            
                             @else
                             Empty
                         @endif
@@ -137,7 +138,7 @@ Employee
                         
                      </td>
                      
-                     <td>
+                     <td class="text-truncate">
                         @if (auth()->user()->hasRole('Administrator'))
                             {{$employee->department->id ?? ''}} -
                            @endif
@@ -149,7 +150,7 @@ Employee
                             
                         @endif --}}
                      </td>
-                     <td>
+                     <td class="text-truncate">
                         @if (auth()->user()->hasRole('Administrator'))
                             {{$employee->sub_dept->id ?? ''}} -
                            @endif
@@ -163,7 +164,7 @@ Employee
                         @endif --}}
                      </td>
                      {{-- <td>{{$employee->contract->designation->name ?? ''}}</td> --}}
-                     <td>
+                     <td class="text-truncate">
                         @if (auth()->user()->hasRole('Administrator'))
                             {{$employee->position->id ?? ''}} -
                            @endif

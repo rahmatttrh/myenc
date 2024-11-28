@@ -170,7 +170,8 @@
                                  @endforeach
                                  @else
                                  @if (auth()->user()->hasRole('Administrator'))
-                                 {{$employee->contract->designation->id}} <br>
+                                 Designation ID :{{$employee->contract->designation->id}} <br>
+                                 Position ID : {{$employee->position_id ?? ''}} <br>
                                  @endif
                                  {{$employee->position->name ?? ''}} 
                               @endif
@@ -335,7 +336,8 @@
                                  <div class="dropdown-menu">
                                     
                                     <a  class="dropdown-item" style="text-decoration: none" href="" data-toggle="modal" data-target="#modal-detail-contract-{{$contract->id}}">Detail</a>
-                                    {{-- <a  class="dropdown-item" style="text-decoration: none" href="" data-toggle="modal" data-target="#modal-delete-bank-{{$id}}">Delete</a> --}}
+                                    <hr>
+                                    <a  class="dropdown-item" style="text-decoration: none" href="" data-toggle="modal" data-target="#modal-delete-contract-{{$contract->id}}">Delete</a>
                                  </div>
                               </div>
                            </div>
@@ -346,6 +348,29 @@
                      </div>
                   </div>
                   <x-employee.contract.modal.detail-contract :contract="$contract"/>
+                  <div class="modal fade" id="modal-delete-contract-{{$contract->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                     <div class="modal-dialog modal-sm" role="document">
+                        <div class="modal-content">
+                           <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                 <span aria-hidden="true">&times;</span>
+                              </button>
+                           </div>
+                  
+                           <div class="modal-body">
+                  
+                              Delete this Contract ? <br>
+                              {{$contract->employee->nik}} <br>
+                              {{formatDate($contract->start)}} -  {{formatDate($contract->end)}}
+                  
+                  
+                           </div>
+                           <div class="modal-footer"><a href="{{route('contract.delete', enkripRambo($contract->id))}}" class="btn btn-danger">Delete</a>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
                   @else
                   @endif
                @endforeach

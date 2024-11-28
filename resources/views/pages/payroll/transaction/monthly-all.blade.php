@@ -37,17 +37,18 @@ Payroll Transaction
       </div>
       <div class="col">
          <div class="tab-content" id="v-pills-tabContent">
-            @foreach ($units as $u)
-            <div class="tab-pane fade {{$unit->id == $u->id ? 'show active' : ''}} " id="v-pills-{{$u->id}}" role="tabpanel" aria-labelledby="v-pills-{{$u->id}}-tab">
+            <div class="tab-pane fade show active "  role="tabpanel" >
                <div class="table-responsive">
                   <table id="data" class="display basic-datatables table-sm">
                      <thead>
-                        
                         <tr>
-                           <th>Employee</th>
-                           <th>Pendapatan</th>
-                           <th>Gaji Bersih</th>
-                           <th>Lembur</th>
+                           <th>NIK</th>
+                           <th>Name</th>
+                           <th>Loc</th>
+                           <th class="text-right">Pendapatan</th>
+                           <th class="text-right">Lembur</th>
+                           <th class="text-right">Gaji Bersih</th>
+                           
                            <th>Status</th>
                            {{-- <th>Action</th> --}}
                         </tr>
@@ -56,12 +57,15 @@ Payroll Transaction
                         @foreach ($transactions as $trans)
                         <tr>
                            <td>
-                              <a href="{{route('payroll.transaction.detail', enkripRambo($trans->id))}}">{{$trans->employee->nik}} {{$trans->employee->biodata->fullName()}}</a>
+                              <a href="{{route('payroll.transaction.detail', enkripRambo($trans->id))}}">{{$trans->employee->nik}} </a>
                               
                            </td>
-                           <td>{{formatRupiah($trans->employee->payroll->total)}}</td>
-                           <td>{{formatRupiah($trans->total)}}</td>
-                           <td>0</td>
+                           <td>{{$trans->employee->biodata->fullName()}}</td>
+                           <td>{{$trans->location->name}}</td>
+                           <td class="text-right" >{{formatRupiahB($trans->employee->payroll->total)}}</td>
+                           <td class="text-right" >{{formatRupiahB($trans->overtime)}}</td>
+                           <td class="text-right">{{formatRupiahB($trans->total)}}</td>
+                           {{-- <td>0</td> --}}
                            <td>Draft</td>
                            
                         </tr>
@@ -134,60 +138,6 @@ Payroll Transaction
                   </div>
                </div>
             </div>
-
-            <div class="modal fade" id="modal-add-master-transaction" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-               <div class="modal-dialog modal-sm" role="document">
-                  <div class="modal-content">
-                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Add Master Transaction</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                     </div>
-                     <form action="{{route('payroll.add.master.transaction')}}" method="POST" >
-                        <div class="modal-body">
-                           @csrf
-                           <input type="number" name="unit" id="unit" value="{{$unit->id}}" hidden>
-                           <div class="row">
-                              <div class="col-12">
-                                 <div class="form-group form-group-default">
-                                    <label>Month</label>
-                                    <select name="month" id="month" required class="form-control">
-                                       <option value="June">June</option>
-                                       <option value="July">July</option>
-                                       <option value="August">August</option>
-                                       <option value="September">September</option>
-                                       <option value="November">November</option>
-                                    </select>
-                                 </div>
-                              </div>
-                              <div class="col-12">
-                                 <div class="form-group form-group-default">
-                                    <label>Year</label>
-                                    <select name="year" id="year" required class="form-control">
-                                       <option value="2023">2023</option>
-                                       <option value="2024">2024</option>
-                                       <option value="2025">2025</option>
-                                    </select>
-                                 </div>
-                              </div>
-                           </div>
-                           
-                           
-                              
-                              
-                        </div>
-                        <div class="modal-footer">
-                           <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
-                           <button type="submit" class="btn btn-info ">Add</button>
-                        </div>
-                        
-                     </form>
-                  </div>
-               </div>
-            </div>
-              
-            @endforeach
          </div>
          <hr>
          

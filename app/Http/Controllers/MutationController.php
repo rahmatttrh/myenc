@@ -76,11 +76,11 @@ class MutationController extends Controller
       ]);
 
       $employee->update([
-         // 'unit_id' => $contract->unit_id,
+         'unit_id' => $req->unit_mutation,
          'contract_id' => $contract->id,
-         'department_id' => $contract->department_id,
-         'designation_id' => $contract->designation_id,
-         'position_id' => $contract->position_id,
+         'department_id' => $req->department_mutation,
+         'designation_id' => $req->designation,
+         'position_id' => $req->position_mutation,
          'manager_id' => $req->manager_mutation,
          'direct_leader_id' => $req->leader_mutation,
       ]);

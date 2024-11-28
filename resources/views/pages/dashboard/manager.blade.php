@@ -189,6 +189,58 @@ Dashboard
             @endforeach
          @endif
 
+         @if (count($spManNotifs) > 0)
+         <div class="d-none d-sm-block">
+            <div class="alert alert-danger shadow-sm">
+
+               <div class="card-opening">
+                  <h4>
+                     {{-- <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1"> --}}
+                     <b>SP Need Approval</b>
+                  </h4>
+               </div>
+               {{-- <hr> --}}
+               <div class="card-desc">
+                  @foreach ($spManNotifs as $spmn)
+                  SP {{$spmn->level}} {{$spmn->employee->nik}} {{$spmn->employee->biodata->fullName()}} .
+                  <a href="{{route('sp.detail', enkripRambo($spmn->id))}}">Click here</a> to confirm
+                  {{-- <hr> --}} <br>
+                  @endforeach
+                 
+                  <hr>
+                     <small class="text-muted">* Kami butuh konfirmasi anda mengenai SP diatas</small>
+               </div>
+            </div>
+         </div>
+         @endif
+
+         @if (count($spNotifs) > 0)
+         <div class="d-none d-sm-block">
+            <div class="alert alert-danger shadow-sm">
+
+               <div class="card-opening">
+                  <h4>
+                     {{-- <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1"> --}}
+                     <b>Notifikasi SP</b>
+                  </h4>
+               </div>
+               {{-- <hr> --}}
+               <div class="card-desc">
+                  @foreach ($spNotifs as $spn)
+                  SP {{$spn->level}} {{$spn->employee->nik}} {{$spn->employee->biodata->fullName()}} .
+                  <a href="{{route('sp.detail', enkripRambo($spn->id))}}">Click here</a> to see more detail
+                  {{-- <hr> --}} <br>
+                  @endforeach
+                 
+                  
+                     {{-- <small class="text-muted">* Ini adalah pesan personal yang hanya dikirim ke anda</small> --}}
+               </div>
+            </div>
+         </div>
+         @endif
+
+
+
          <div class="card">
             <div class="card-header d-flex justify-content-between p-2 bg-primary text-white">
                <small>8 Latest QPE</small>

@@ -114,10 +114,10 @@
                                     {{$red->name}}
                                  </td>
                                  <td >
-                                    <input style="max-width: 100px" name="min_salary" id="min_salary" type="text" value="{{$red->min_salary}}">
+                                    <input style="max-width: 100px" name="min_salary" id="min_salary" type="text" value="{{formatRupiahB($red->min_salary)}}">
                                  </td>
                                  <td>
-                                    <input style="max-width: 100px" name="max_salary" id="max_salary" type="text" value="{{$red->max_salary}}">
+                                    <input style="max-width: 100px" name="max_salary" id="max_salary" type="text" value="{{formatRupiahB($red->max_salary)}}">
                                  </td>
                                  <td >
                                     <input style="max-width: 40px" name="company" id="company" type="text" value="{{$red->company}}">

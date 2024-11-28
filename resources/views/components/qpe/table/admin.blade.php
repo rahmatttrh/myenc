@@ -71,6 +71,7 @@
                            <th class="text-white text-center">Achieve</th>
                            <th class="text-white">Status</th>
                            <th class="text-right text-white"></th>
+                           <th></th>
                        </tr>
                    </thead>
                    <tbody>
@@ -154,9 +155,12 @@
                               <!-- <button class="btn btn-sm btn-warning" data-toggle="modal" data-target="#modal-submit-{{$pe->id}}"><i class="fas fa-rocket"></i> Submit</button> -->
                               @endif
                            </td>
+                           <td>
+                              <a href="#"  data-toggle="modal" data-target="#modal-delete-{{$pe->id}}"> Delete</a>
+                           </td>
                         </tr>
                         <x-modal.submit :id="$pe->id" :body="'KPI ' . $pe->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($pe->date))   " url="" />
-                        <x-modal.delete :id="$pe->id" :body="'KPI ' . $pe->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($pe->date))   " url="qpe/delete/{{$pe->id}}" />
+                        <x-modal.delete :id="$pe->id" :body="'KPI ' . $pe->employe->nik . ' ' . $pe->employe->biodata->fullName() . ' bulan '. date('F Y', strtotime($pe->date))   " url="qpe/delete/{{enkripRambo($pe->id)}}" />
                      @endforeach
                    </tbody>
                </table>

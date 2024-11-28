@@ -10,6 +10,10 @@ class Employee extends Model
    use HasFactory;
    protected $guarded = [];
 
+   public function tasks(){
+      return $this->belongsToMany(Task::class);
+   }
+
    public function biodata()
    {
       return $this->belongsTo(Biodata::class);

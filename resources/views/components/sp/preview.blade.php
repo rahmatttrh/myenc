@@ -1,39 +1,46 @@
+<style>
+   .card-body *{
+      font-size: 16px
+   }
+</style>
 <div class="card card-invoice">
-                  
+   <div class="card-header text-center">
+      <br>
+      <h2><b>SURAT PERINGATAN {{$sp->level}}</b></h2>
+            <b>{{$sp->code}}</b>
+   </div>
    <div class="card-body pt-4 px-4">
-      <div class="d-flex justify-content-between">
+      {{-- <div class="d-flex justify-content-between">
          <div>
             <img src="{{asset('img/logo/enc2.jpg')}}" alt="company logo"><br>
-            {{-- <p>FM.PS.HRD.12</p> --}}
-
          </div>
-         <div class="text-right">
+         <div class="text-center">
             <h3><b>SURAT PERINGATAN {{$sp->level}}</b></h3>
             <b>{{$sp->code}}</b>
          </div>
-      </div>
+      </div> --}}
       
-      <hr>
+      {{-- <hr> --}}
       <br>
-      <p>Kepada Yth.</p>
+      <p >Kepada Yth.</p>
 
       <div class="row">
          <div class="col-12">
             <div class="row">
-               <div class="col-2">Nama</div>
-               <div class="col-10">: {{$sp->employee->biodata->fullName()}}</div>
+               <div class="col-3">Nama</div>
+               <div class="col">: {{$sp->employee->biodata->fullName()}}</div>
             </div>
             <div class="row">
-               <div class="col-2">NIK</div>
-               <div class="col-10">: {{$sp->employee->nik}}</div>
+               <div class="col-3">NIK</div>
+               <div class="col">: {{$sp->employee->nik}}</div>
             </div>
             <div class="row">
-               <div class="col-2">Jabatan</div>
-               <div class="col-10">: {{$sp->employee->position->name}}</div>
+               <div class="col-3">Jabatan</div>
+               <div class="col">: {{$sp->employee->position->name}}</div>
             </div>
             <div class="row">
-               <div class="col-2">Departemen/Divisi</div>
-               <div class="col-10">: {{$sp->employee->department->name}}</div>
+               <div class="col-3">Departemen/Divisi</div>
+               <div class="col">: {{$sp->employee->department->name}}</div>
             </div>
             <div class="row mt-4">
                <div class="col-12">Sehubungan dengan pelanggaran yang {{$gen}} lakukan, yaitu :</div>
@@ -69,75 +76,205 @@
                <th>Diketahui oleh</th>
                <th>Diterima</th>
             </tr>
-            <tr>
-               <td style="height: 80px" class="">
+            {{-- Test : {{$sp->by->biodata->fullName()}} --}}
+            @if ($sp->note)
+               <tr>
+                  <td style="height: 80px" class="">
+                     {{-- {{$sp->id}} --}}
+                     @if ($user)
+                     {{-- {{$user->id}} --}}
+                        {{$user->employee->biodata->fullName()}} <br>
+                        <small class="text-muted">{{$user->employee->position->name}}</small>
+                        @else
+                        -
+                        @endif
+                     
+                     
+                     
+
+                  </td>
+                  <td>
+                     @if ($manager)
+                     {{$manager->employee->biodata->fullName()}} <br>
+                     {{$manager->employee->position->name}}
+                     @else
+                     -
+                     @endif
+
+                  </td>
+                  <td>
+                     @if ($hrd)
+                        {{$hrd->employee->biodata->fullName()}} <br>
+                        {{$hrd->employee->position->name}}
+                        @else
+                        -
+                        @endif 
+                     {{-- @if ($sp->note)
+                     <br> {{$sp->note}} HRD
+                        @else
+                        
+                     @endif --}}
+                     
+
+                  </td>
+                  <td>
+                     {{-- {{$suspect->id}} --}}
+                     @if ($sp->status == 5)
+                     {{$sp->employee->biodata->fullName()}} <br>
+                     {{$sp->employee->position->name}}
+                     @endif
+                     {{-- @if ($suspect)
+                     {{$suspect->employee->biodata->fullName()}} <br>
+                     {{$suspect->employee->position->name}}
+                     @else
+                     -
+                     @endif --}}
+                  </td>
+               </tr>
+               <tr>
+                  <td>
+                     @if ($user)
+                     {{formatDateTime($user->created_at)}}
+                     @else
+                     -
+                     @endif
+                  </td>
+                  <td>
+                     @if ($manager)
+                     {{formatDateTime($manager->created_at)}}
+                     @else
+                     -
+                     @endif
+                  </td>
+                  <td>
+                     @if ($hrd)
+                     {{formatDateTime($hrd->created_at)}}
+                     @else
+                     -
+                     @endif
+                  </td>
+                  <td>
+                     @if ($suspect)
+                     {{formatDateTime($suspect->created_at)}}
+                     @else
+                     -
+                     @endif
+                  </td>
                   
-                  {{-- @if ($user)
-                  {{$user->employee->biodata->fullName()}} <br>
-                  {{$user->employee->position->name}}
-                  @else
-                  -
-                  @endif --}}
+               </tr>
+               @else
+               <tr>
+                  <td style="height: 80px" class="">
+                     {{-- @if ($sp->note)
+                        @if ($sp->note == 'Recommendation')
+                            
+                        @endif
+                        {{$sp->note}} HRD
+                         @else
+   
+                         @if ($user)
+                        {{$user->employee->biodata->fullName()}} <br>
+                        {{$user->employee->position->name}}
+                        @else
+                        -
+                        @endif
+                        
+                     @endif --}}
+                     @if ($user)
+                        {{$user->employee->biodata->fullName()}} <br>
+                        {{$user->employee->position->name}}
+                        @else
+                        -
+                        @endif
+                     
+                     
+                     
+   
+                  </td>
+                  <td>
+                     @if ($manager)
+                     {{$manager->employee->biodata->fullName()}} <br>
+                     {{$manager->employee->position->name}}
+                     @else
+                     -
+                     @endif
+   
+                  </td>
+                  <td>
+                     @if ($hrd)
+                        {{$hrd->employee->biodata->fullName()}} <br>
+                        {{$hrd->employee->position->name}}
+                        @else
+                        -
+                        @endif 
+                     @if ($sp->note)
+                       <br> {{$sp->note}} HRD
+                         @else
+                         
+                     @endif
+                     
+   
+                  </td>
+                  <td>
+                     {{-- {{$suspect->id}} --}}
+                     @if ($sp->status == 5)
+                     {{$sp->employee->biodata->fullName()}} <br>
+                     {{$sp->employee->position->name}}
+                     @endif
+                     {{-- @if ($suspect)
+                     {{$suspect->employee->biodata->fullName()}} <br>
+                     {{$suspect->employee->position->name}}
+                     @else
+                     -
+                     @endif --}}
+                  </td>
+               </tr>
+               <tr>
+                  <td>
+                     @if ($user)
+                     {{formatDateTime($user->created_at)}}
+                     @else
+                     -
+                     @endif
+                  </td>
+                  <td>
+                     @if ($manager)
+                     {{formatDateTime($manager->created_at)}}
+                     @else
+                     -
+                     @endif
+                  </td>
+                  <td>
+                     @if ($hrd)
+                     {{formatDateTime($hrd->created_at)}}
+                     @else
+                     -
+                     @endif
+                  </td>
+                  <td>
+                     @if ($suspect)
+                     {{formatDateTime($suspect->created_at)}}
+                     @else
+                     -
+                     @endif
+                  </td>
+                  
+               </tr>
+            @endif
 
-               </td>
-               <td>
-                  {{-- @if ($manager)
-                  {{$manager->employee->biodata->fullName()}} <br>
-                  {{$manager->employee->position->name}}
-                  @else
-                  -
-                  @endif --}}
-
-               </td>
-               <td>
-                  {{-- @if ($hrd)
-                  {{$hrd->employee->biodata->fullName()}} <br>
-                  {{$hrd->employee->position->name}}
-                  @else
-                  -
-                  @endif --}}
-
-               </td>
-               <td>
-                  {{-- @if ($suspect)
-                  {{$suspect->employee->biodata->fullName()}} <br>
-                  {{$suspect->employee->position->name}}
-                  @else
-                  -
-                  @endif --}}
-               </td>
-            </tr>
+            @if ($sp->note)
+            {{-- {{$sp->note}} --}}
             <tr>
-               <td>
-                  {{-- @if ($user)
-                  {{formatDateTime($user->created_at)}}
-                  @else
-                  -
-                  @endif --}}
+               <td colspan="4">
+                  @if ($sp->note == 'Recomendation')
+                      <small style="font-size: 12px">Rekomendasi HRD</small>
+                      @else
+                      <small style="font-size: 12px">Excisting SP</small>
+                  @endif
                </td>
-               <td>
-                  {{-- @if ($manager)
-                  {{formatDateTime($manager->created_at)}}
-                  @else
-                  -
-                  @endif --}}
-               </td>
-               <td>
-                  {{-- @if ($hrd)
-                  {{formatDateTime($hrd->created_at)}}
-                  @else
-                  -
-                  @endif --}}
-               </td>
-               <td>
-                  {{-- @if ($suspect)
-                  {{formatDateTime($suspect->created_at)}}
-                  @else
-                  -
-                  @endif --}}
-               </td>
-               
             </tr>
+            @endif
+
          </tbody>
       </table>
    </div>

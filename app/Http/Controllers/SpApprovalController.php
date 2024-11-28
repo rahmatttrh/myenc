@@ -161,6 +161,52 @@ class SpApprovalController extends Controller
       dd('reject');
    }
 
+   public function rejectUser(Request $req){
+      $sp = Sp::find($req->id);
+      // dd($sp->code);
+
+
+      $sp->update([
+         'status' => '404',
+         'alasan_reject' => $req->alasan_reject,
+         'reject_at' => NOW()
+      ]);
+
+      SpApproval::create([
+         'status' => 1,
+         'sp_id' => $sp->id,
+         'type' => 'Reject',
+         'level' => 'user',
+         'desc' => $req->alasan_reject,
+         'employee_id' => auth()->user()->getEmployeeId(),
+      ]);
+
+      return redirect()->back()->with('success', 'SP berhasil di reject');
+   }
+
+   public function rejectManager(Request $req){
+      $sp = Sp::find($req->id);
+      // dd($sp->code);
+
+      $sp->update([
+         'status' => '606',
+         'alasan_reject' => $req->alasan_reject,
+         'reject_by' => auth()->user()->getEmployeeId(),
+         'reject_at' => NOW()
+      ]);
+
+      SpApproval::create([
+         'status' => 1,
+         'sp_id' => $sp->id,
+         'type' => 'Reject',
+         'level' => 'manager',
+         'desc' => $req->alasan_reject,
+         'employee_id' => auth()->user()->getEmployeeId(),
+      ]);
+
+      return redirect()->back()->with('success', 'SP berhasil di reject');
+   }
+
    public function appManager(Request $req, $id)
    {
       // Validasi input

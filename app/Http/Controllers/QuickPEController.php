@@ -13,6 +13,7 @@ use App\Models\PeBehaviorApprasial;
 use App\Models\PeBehaviorApprasialDetail;
 use App\Models\PeComponent;
 use App\Models\PeDiscipline;
+use App\Models\PeDisciplineDetail;
 use App\Models\PeKpa;
 use App\Models\PekpaDetail;
 use App\Models\PeKpi;
@@ -328,6 +329,43 @@ class QuickPEController extends Controller
          'done' => $done,
          'reject' => $reject
       ])->with('i');
+   }
+
+   public function delete($id){
+      // dd('ok');
+
+      $pe = Pe::find(dekripRambo($id));
+      $peKpa = PeKpa::where('pe_id', $pe->id)->first();
+      if ($peKpa) {
+         $peKpaDetails = PekpaDetail::where('kpa_id', $peKpa->id)->get();
+         foreach($peKpaDetails as $pkd){
+            $pkd->delete();
+         }
+         $peKpa->delete();
+      }
+      
+
+      $peDiscipline = PeDiscipline::where('pe_id', $pe->id)->first();
+      if ($peDiscipline) {
+         $peDisciplineDetails = PeDisciplineDetail::where('pd_id', $peDiscipline->id)->get();
+         foreach($peDisciplineDetails as $pdd){
+            $pdd->delete();
+         }
+         $peDiscipline->delete();
+      }
+      
+
+      $peBehaviorApprasial = PeBehaviorApprasial::where('pe_id', $pe->id)->first();
+      if ($peBehaviorApprasial) {
+         $peBehaviorApprasialDetails = PeBehaviorApprasialDetail::where('pba_id', $peBehaviorApprasial->id)->get();
+         foreach($peBehaviorApprasialDetails as $pbad){
+            $pbad->delete();
+         }
+         $peBehaviorApprasial->delete();
+      }
+      
+      $pe->delete();
+      return redirect()->back()->with('success', 'QPE successfully deleted');
    }
 
    public function verification()

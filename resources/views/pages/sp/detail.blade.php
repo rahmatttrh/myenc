@@ -85,6 +85,7 @@ SP Detail
                      <!-- Start -->
                      <button class="btn btn btn-primary" data-toggle="modal" data-target="#modal-release-{{$sp->id}}"><i class="fas fa-rocket"></i> Send to Manager </button>
                      <x-sp.modal.release :sp="$sp" />
+                     <button data-target="#modalRejectUser" data-toggle="modal" class="btn btn-md btn-danger "><i class="fa fa-reply"></i> Reject</button>
                      {{-- <button class="btn btn-md btn-primary" data-toggle="modal" data-target="#modal-edit-{{$sp->id}}"><i class="fas fa-edit"></i> Edit </button>
                
                      <a href="#" class="btn btn-danger " data-toggle="modal" data-target="#modal-sp-delete">
@@ -117,7 +118,7 @@ SP Detail
                @if (auth()->user()->hasRole('Manager'))
                   @if($sp->status == '3' ||  $sp->status == '101')
                      <button class="btn btn-md btn-primary" data-toggle="modal" data-target="#modal-app-manager-{{$sp->id}}"><i class="fas fa-check"></i> Approve </button>
-                     {{-- <button data-target="#modalReject" data-toggle="modal" class="btn btn-md btn-danger "><i class="fa fa-reply"></i> Reject</button> --}}
+                     <button data-target="#modalRejectManager" data-toggle="modal" class="btn btn-md btn-danger "><i class="fa fa-reply"></i> Reject</button>
                      {{-- <button data-target="#modalManagerDiscuss" data-toggle="modal" class="btn btn-md btn-dark "> Need Discuss</button> --}}
                      {{-- <x-sp.modal.manager-discuss :sp="$sp" /> --}}
                      <x-sp.modal.manager-approve :sp="$sp" />
@@ -342,14 +343,17 @@ SP Detail
                      @foreach ($approvals as $approval)
                      
                      <div class="btn border  text-left">
-                        <span>{{$approval->type}}</span>
+                        {{-- <span>{{$approval->type}}</span> --}}
                         @if ($approval->level == 'user')
+                        <span>{{$approval->type}}</span>
                             User
                             @elseif($approval->level == 'hrd')
-                            HRD
+                            Validation HRD
                             @elseif($approval->level == 'manager')
+                            <span>{{$approval->type}}</span>
                             Manager
                             @elseif($approval->level == 'employee')
+                            <span>{{$approval->type}}</span>
                             Employee
                         @endif <br>
                         {{$approval->employee->biodata->fullname()}} <br>
@@ -392,7 +396,73 @@ SP Detail
 </div>
 
 
+<div class="modal fade" id="modalRejectUser" data-bs-backdrop="static">
+   <div class="modal-dialog">
+      <div class="modal-content">
 
+         <!-- Bagian header modal -->
+         <div class="modal-header">
+            <h3 class="modal-title">Konfirmasi Reject</h3>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+         </div>
+         <form method="POST" action="{{route('sp.reject.user') }}" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+            <input type="hidden" name="id" id="id" value="{{$sp->id}}">
+
+            <!-- Bagian konten modal -->
+            <div class="modal-body">
+               <div class="form-group form-group-default">
+                  <label>Alasan Penolakannn</label>
+                  <input type="text" class="form-control" name="alasan_reject" id="alasan_reject" value="{{old('alasan_reject')}}">
+               </div>
+              
+            </div>
+
+            <!-- Bagian footer modal -->
+            <div class="modal-footer">
+               <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+               <button type="submit" class="btn btn-danger">Reject</button>
+            </div>
+         </form>
+
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="modalRejectManager" data-bs-backdrop="static">
+   <div class="modal-dialog">
+      <div class="modal-content">
+
+         <!-- Bagian header modal -->
+         <div class="modal-header">
+            <h3 class="modal-title">Konfirmasi Reject</h3>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+         </div>
+         <form method="POST" action="{{route('sp.reject.manager') }}" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+            <input type="hidden" name="id" id="id" value="{{$sp->id}}">
+
+            <!-- Bagian konten modal -->
+            <div class="modal-body">
+               <div class="form-group form-group-default">
+                  <label>Alasan Penolakannn</label>
+                  <input type="text" class="form-control" name="alasan_reject" id="alasan_reject" value="{{old('alasan_reject')}}">
+               </div>
+              
+            </div>
+
+            <!-- Bagian footer modal -->
+            <div class="modal-footer">
+               <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+               <button type="submit" class="btn btn-danger">Reject</button>
+            </div>
+         </form>
+
+      </div>
+   </div>
+</div>
 
 
 <x-sp.modal.close :sp="$sp" />

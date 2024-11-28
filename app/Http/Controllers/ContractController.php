@@ -135,7 +135,6 @@ class ContractController extends Controller
          'unit_id' => $contract->unit_id,
          'department_id' => $contract->department_id,
          'sub_dept_id' => $contract->sub_dept_id,
-         'sub_dept_id' => $contract->sub_dept_id,
          'position_id' => $position->id,
 
 
@@ -183,5 +182,13 @@ class ContractController extends Controller
       //    // Jika ada kesalahan, transaksi akan di-rollback
       //    return redirect()->back()->with('error', 'Failed to update contract. Please try again.');
       // }
+   }
+
+   public function delete($id){
+      $contract = Contract::find(dekripRambo($id));
+
+      $contract->delete();
+
+      return redirect()->back()->with('success', 'History Contract successfully deleted');
    }
 }

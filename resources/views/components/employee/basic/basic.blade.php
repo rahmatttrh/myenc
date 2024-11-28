@@ -199,7 +199,7 @@
                   <hr>
 
                   
-                  @if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment'))
+                  @if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment|HRD-Payroll'))
                   <div class="text-right mt-3 mb-3">
                      {{-- <button type="submit" class="btn btn-dark" {{$employee->status == 0 ? 'disabled' : ''}}>Update</button> --}}
                      <button type="submit" class="btn btn-dark" >Update</button>
@@ -264,7 +264,7 @@
                      </div>
                   </div>
 
-                  @if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment'))
+                  @if (auth()->user()->hasRole('Administrator|HRD|HRD-Spv|HRD-Recruitment|HRD-Payroll'))
                   <div class="text-right mt-3 mb-3">
                      <button type="submit" class="btn btn-dark">Update</button>
                   </div>
@@ -295,7 +295,7 @@
                      </div>
                   </div>
                   <hr>
-                  @if (auth()->user()->hasRole('Administrator|HRD|HRD-Manager|HRD-Spv|HRD-Recruitment'))
+                  @if (auth()->user()->hasRole('Administrator|HRD|HRD-Manager|HRD-Spv|HRD-Recruitment|HRD-Payroll'))
                   <button type="submit" class="btn btn-dark" >Update</button>
                   <a href="{{route('employee.remove.picture', enkripRambo($employee->id))}}" class="btn btn-danger">Remove</a>
                   @endif

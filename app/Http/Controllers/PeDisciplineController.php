@@ -145,89 +145,94 @@ class PeDisciplineController extends Controller
 
                 // Mencari data sementara (TempDiscipline) berdasarkan ID
                 $temp = TempDiscipline::find($id);
-                // if (!$temp) {
-                //     dd($id);
-                // }
 
-                // Memeriksa apakah sudah ada data di PeDiscipline untuk karyawan dan tanggal yang sama
-                $cek  = PeDisciplineDetail::where('employe_id', $temp->employe_id)
-                    ->where('bulan', $temp->bulan)
-                    ->where('tahun', $temp->tahun)
-                    ->first();
+                // dd($temp);
+                if (!$temp) {
+                    dd($id);
+                }
 
-                // Jika tidak ada data yang ditemukan (tidak ada duplikat)
-                if (!$cek) {
-
-                    if ($temp->bulan >= 1 && $temp->bulan <= 6) {
-                        $semester =  1; // Semester 1: Januari sampai Juni
-                    } else {
-                        $semester =  2; // Semester 2: Juli sampai Desember
-                    }
-
-                    $pd = PeDiscipline::where('employe_id', $temp->employe_id)
+                if ($temp) {
+                    // Memeriksa apakah sudah ada data di PeDiscipline untuk karyawan dan tanggal yang sama
+                        $cek  = PeDisciplineDetail::where('employe_id', $temp->employe_id)
+                        ->where('bulan', $temp->bulan)
                         ->where('tahun', $temp->tahun)
-                        ->where('semester', $semester)
                         ->first();
 
+                    // Jika tidak ada data yang ditemukan (tidak ada duplikat)
+                    if (!$cek) {
 
-                    if (!isset($pd)) {
-                        # code...
-                        // echo 'ga ada';
-                        $employe = Employee::find($temp->employe_id);
+                        if ($temp->bulan >= 1 && $temp->bulan <= 6) {
+                            $semester =  1; // Semester 1: Januari sampai Juni
+                        } else {
+                            $semester =  2; // Semester 2: Juli sampai Desember
+                        }
 
-                        $pcc = new PeComponentController();
-                        $weight = $pcc->getWeightDiscipline($employe->contract->designation->id); // Memanggi
+                        $pd = PeDiscipline::where('employe_id', $temp->employe_id)
+                            ->where('tahun', $temp->tahun)
+                            ->where('semester', $semester)
+                            ->first();
 
-                        $pd = PeDiscipline::create([
+
+                        if (!isset($pd)) {
+                            # code...
+                            // echo 'ga ada';
+                            $employe = Employee::find($temp->employe_id);
+
+                            $pcc = new PeComponentController();
+                            $weight = $pcc->getWeightDiscipline($employe->contract->designation->id); // Memanggi
+
+                            $pd = PeDiscipline::create([
+                                'employe_id' => $temp->employe_id,
+                                'tahun' => $temp->tahun,
+                                'semester' => $semester,
+                                'weight' => $weight
+                            ]);
+                        }
+
+
+                        // Membuat entri baru di PeDiscipline dengan data dari TempDiscipline
+                        $pdd = PeDisciplineDetail::create([
+                            'pd_id' => $pd->id,
                             'employe_id' => $temp->employe_id,
-                            'tahun' => $temp->tahun,
+                            'bulan' =>  $temp->bulan,
+                            'tahun' =>  $temp->tahun,
+                            'alpa' => $temp->alpa,
+                            'ijin' => $temp->ijin,
+                            'terlambat' => $temp->terlambat,
+                            'achievement' => $temp->achievement,
+                            'created_at' => NOW(),
+                            'updated_at' => NOW()
+                        ]);
+
+                        $this->updateValueDiscipline($pd);
+
+                        $pe = Pe::where([
+                            'employe_id' => $pd->employe_id,
+                            'tahun' => $pd->tahun,
                             'semester' => $semester,
-                            'weight' => $weight
-                        ]);
+                        ])->first();
+
+                        if (isset($pe)) {
+                            $pd->update([
+                                'pe_id' => $pe->id
+                            ]);
+                            # code...
+                            $qpc = new QuickPEController();
+                            $qpc->calculatePe($pd->pe_id);
+                        }
+
+
+                        // echo mysqli_error()
+
+                        // Menghapus entri dari TempDiscipline setelah dipindahkan ke PeDiscipline
+                        $delete = $temp->delete();
+
+                        $apply++; // Menambahkan penghitung untuk data yang berhasil diterapkan
+                    } else {
+                        $duplikat++; // Menambahkan penghitung untuk data yang duplikat
                     }
-
-
-                    // Membuat entri baru di PeDiscipline dengan data dari TempDiscipline
-                    $pdd = PeDisciplineDetail::create([
-                        'pd_id' => $pd->id,
-                        'employe_id' => $temp->employe_id,
-                        'bulan' =>  $temp->bulan,
-                        'tahun' =>  $temp->tahun,
-                        'alpa' => $temp->alpa,
-                        'ijin' => $temp->ijin,
-                        'terlambat' => $temp->terlambat,
-                        'achievement' => $temp->achievement,
-                        'created_at' => NOW(),
-                        'updated_at' => NOW()
-                    ]);
-
-                    $this->updateValueDiscipline($pd);
-
-                    $pe = Pe::where([
-                        'employe_id' => $pd->employe_id,
-                        'tahun' => $pd->tahun,
-                        'semester' => $semester,
-                    ])->first();
-
-                    if (isset($pe)) {
-                        $pd->update([
-                            'pe_id' => $pe->id
-                        ]);
-                        # code...
-                        $qpc = new QuickPEController();
-                        $qpc->calculatePe($pd->pe_id);
-                    }
-
-
-                    // echo mysqli_error()
-
-                    // Menghapus entri dari TempDiscipline setelah dipindahkan ke PeDiscipline
-                    $delete = $temp->delete();
-
-                    $apply++; // Menambahkan penghitung untuk data yang berhasil diterapkan
-                } else {
-                    $duplikat++; // Menambahkan penghitung untuk data yang duplikat
                 }
+                
             }
 
             $pesan1 = ''; // Pesan untuk data yang berhasil diterapkan

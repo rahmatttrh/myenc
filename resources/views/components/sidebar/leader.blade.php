@@ -103,6 +103,15 @@
    </div>
 </li>
 
+@if (auth()->user()->hasRole('HRD-Spv|HRD|HRD-Recruitment'))
+<li class="nav-item {{ (request()->is('announcement/*')) ? 'active' : '' }}">
+   <a href="{{route('announcement')}}">
+      <i class="fas fa-money-bill"></i>
+      <p>Anouncement</p>
+   </a>
+</li>
+@endif
+
 <li class="nav-item {{ (request()->is('sp/*')) ? 'active' : '' }}">
    <a href="{{route('task')}}">
       <i class="fas fa-calendar"></i>

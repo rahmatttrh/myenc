@@ -5,6 +5,7 @@ use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\AdditionalController;
 use App\Http\Controllers\AllowanceController;
 use App\Http\Controllers\BankAccountController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CommissionController;
 use App\Http\Controllers\CompositionController;
 use App\Http\Controllers\ContractController;
@@ -108,6 +109,10 @@ Route::middleware(["auth"])->group(function () {
 
    Route::get('/', [HomeController::class, 'index']);
 
+   Route::get('/phpinfo', function () {
+      phpinfo();
+  });
+
    Route::get('employee/detail/{employee:id}/{tab}', [EmployeeController::class, 'detail'])->name('employee.detail');
 
    // Fetch 
@@ -125,6 +130,14 @@ Route::middleware(["auth"])->group(function () {
       Route::get('detail/{id}', [TaskController::class, 'detail'])->name('task.detail');
       Route::put('update', [TaskController::class, 'update'])->name('task.update');
       Route::get('delete/{id}', [TaskController::class, 'delete'])->name('task.delete');
+      Route::get('history', [TaskController::class, 'history'])->name('task.history');
+      Route::post('add/pic', [TaskController::class, 'addPic'])->name('task.add.pic');
+   });
+
+   Route::prefix('chat')->group(function () {
+      Route::post('store', [ChatController::class, 'store'])->name('chat.store');
+      
+     
    });
    
    
@@ -250,6 +263,7 @@ Route::middleware(["auth"])->group(function () {
 
       Route::prefix('contract')->group(function () {
          Route::post('store', [ContractController::class, 'store'])->name('contract.store');
+         Route::get('delete/{id}', [ContractController::class, 'delete'])->name('contract.delete');
          Route::put('update', [ContractController::class, 'update'])->name('contract.update');
       });
 
@@ -309,6 +323,9 @@ Route::middleware(["auth"])->group(function () {
       Route::prefix('payroll')->group(function () {
          Route::prefix('setup')->group(function () {
             Route::get('/index', [PayrollController::class, 'index'])->name('payroll');
+            Route::get('/index/unit/{id}', [PayrollController::class, 'indexUnit'])->name('payroll.unit.list');
+            Route::get('/import', [PayrollController::class, 'import'])->name('payroll.import');
+            Route::post('import/store', [PayrollController::class, 'importStore'])->name('payroll.import.store');
             Route::get('/unit/index', [PayrollController::class, 'unit'])->name('payroll.unit');
             Route::get('/holiday/index', [HolidayController::class, 'index'])->name('holiday');
 
@@ -324,6 +341,7 @@ Route::middleware(["auth"])->group(function () {
             Route::post('/add/master', [TransactionController::class, 'storeMaster'])->name('payroll.add.master.transaction');
             Route::get('/delete/master/{id}', [TransactionController::class, 'deleteMaster'])->name('payroll.delete.master.transaction');
             Route::get('/monthly/{id}', [TransactionController::class, 'monthly'])->name('payroll.transaction.monthly');
+            Route::get('/export/{id}', [TransactionController::class, 'export'])->name('payroll.transaction.export');
             Route::get('/monthly/all/{id}', [TransactionController::class, 'monthlyAll'])->name('payroll.transaction.monthly.all');
             Route::get('/index', [TransactionController::class, 'index'])->name('payroll.transaction');
             Route::get('/detail/{id}', [TransactionController::class, 'detail'])->name('payroll.transaction.detail');
@@ -345,6 +363,10 @@ Route::middleware(["auth"])->group(function () {
          Route::prefix('overtime')->group(function () {
             Route::get('index', [OvertimeController::class, 'index'])->name('payroll.overtime');
             Route::post('filter', [OvertimeController::class, 'filter'])->name('payroll.overtime.filter');
+
+            Route::get('import', [OvertimeController::class, 'import'])->name('overtime.import');
+            Route::post('import/store', [OvertimeController::class, 'importStore'])->name('overtime.import.store');
+
             Route::post('store', [OvertimeController::class, 'store'])->name('payroll.overtime.store');
             Route::get('delete/{id}', [OvertimeController::class, 'delete'])->name('payroll.overtime.delete');
             // Route::get('/detail/{id}' , [TransactionController::class, 'detail'])->name('payroll.transaction.detail');
@@ -352,6 +374,18 @@ Route::middleware(["auth"])->group(function () {
          });
          Route::prefix('absence')->group(function () {
             Route::get('/index', [AbsenceController::class, 'index'])->name('payroll.absence');
+
+            Route::get('/form', [AbsenceController::class, 'create'])->name('payroll.absence.create');
+
+            Route::post('/download-template', [AbsenceController::class, 'downloadTemplate'])->name('payroll.absence.template');
+            Route::get('/export', [AbsenceController::class, 'export'])->name('payroll.absence.export');
+
+            Route::get('/import', [AbsenceController::class, 'import'])->name('payroll.absence.import');
+            Route::post('/import/store', [AbsenceController::class, 'importStore'])->name('payroll.absence.import.store');
+
+            Route::get('/draft', [AbsenceController::class, 'draft'])->name('payroll.absence.draft');
+            Route::get('/monitoring', [AbsenceController::class, 'monitoring'])->name('payroll.absence.monitoring');
+
             Route::post('filter', [AbsenceController::class, 'filter'])->name('payroll.absence.filter');
             Route::post('/store', [AbsenceController::class, 'store'])->name('payroll.absence.store');
             Route::get('/delete/{id}', [AbsenceController::class, 'delete'])->name('payroll.absence.delete');
@@ -416,6 +450,7 @@ Route::middleware(["auth"])->group(function () {
          Route::put('update/picture', [EmployeeController::class, 'updatePicture'])->name('employee.update.picture');
          Route::get('remove/picture/{id}', [EmployeeController::class, 'removePicture'])->name('employee.remove.picture');
          Route::put('update/role', [EmployeeController::class, 'updateRole'])->name('employee.update.role');
+         Route::put('reset/password/{id}', [EmployeeController::class, 'resetPassword'])->name('employee.reset.password');
       });
 
       // Quick PE All
@@ -467,10 +502,13 @@ Route::middleware(["auth"])->group(function () {
       Route::put('update', [SpController::class, 'update'])->name('sp.update');
       Route::get('delete/{id}', [SpController::class, 'delete'])->name('sp.delete');
       Route::get('close/{id}', [SpController::class, 'close'])->name('sp.close');
+      Route::post('export', [SpController::class, 'export'])->name('sp.export');
 
       Route::put('/submit/{id}', [SpApprovalController::class, 'submit'])->name('sp.submit');
       Route::put('/app/hrd/{id}', [SpApprovalController::class, 'appHrd'])->name('sp.app.hrd');
       Route::put('/reject/hrd', [SpApprovalController::class, 'rejectHrd'])->name('sp.reject.hrd');
+      Route::put('/reject/user', [SpApprovalController::class, 'rejectUser'])->name('sp.reject.user');
+      Route::put('/reject/manager', [SpApprovalController::class, 'rejectManager'])->name('sp.reject.manager');
       Route::put('/app/manager/{id}', [SpApprovalController::class, 'appManager'])->name('sp.app.manager');
       Route::put('/release/{id}', [SpApprovalController::class, 'release'])->name('sp.release');
       Route::put('/discuss/manager', [SpApprovalController::class, 'discussManager'])->name('sp.discuss.manager');
@@ -575,7 +613,7 @@ Route::middleware(["auth"])->group(function () {
 
 
          // Delete
-         Route::get('delete/{id}', [QuickPEController::class, 'destroy'])->name('qpe.delete');
+         Route::get('delete/{id}', [QuickPEController::class, 'delete'])->name('qpe.delete');
 
          // Route::put('update/{id}', [QuickPEController::class, 'update'])->name('qpe.update');
          // // ADDTIONAL

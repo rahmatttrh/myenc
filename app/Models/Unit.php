@@ -96,4 +96,9 @@ class Unit extends Model
 
       return $employeeQpe;
    }
+
+   public function getUnitTransaction($unitTrans){
+      $transactions = Transaction::where('unit_id', $this->id)->where('month', $unitTrans->month)->where('year', $unitTrans->year)->get();
+      return $transactions;
+   }
 }

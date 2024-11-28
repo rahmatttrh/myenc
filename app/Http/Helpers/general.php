@@ -6,6 +6,12 @@ function formatRupiah($data)
    return $rupiah;
 }
 
+function formatRupiahB($data)
+{
+   $rupiah = " " . number_format($data, 0, ",", ".");
+   return $rupiah;
+}
+
 function host()
 {
    $host = '/var/www/html/dsp-phe/';

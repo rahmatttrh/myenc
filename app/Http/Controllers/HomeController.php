@@ -51,6 +51,14 @@ class HomeController extends Controller
          RoleEmptyUser;
          // dd('tidak ada role');
       }
+
+      $overtimes = Overtime::get();
+      foreach($overtimes as $over){
+         if($over->hours == 0){
+            $over->delete();
+         }
+      }
+      
       // }
       // if (auth()->user()->hasRole('Manager')) {
       //    dd('Manager');
@@ -508,6 +516,9 @@ class HomeController extends Controller
          // dd(count($final));
          $employeePositions = $employee->positions;
          // dd($employeePositions);
+
+         $spNotifs = Sp::where('status', 2)->orWhere('status', 202)->where('by_id', $employee->id)->where('department_id', $employee->department_id)->orderBy('updated_at', 'desc')->get();
+         $spManNotifs = Sp::where('status', 3)->where('department_id', $employee->department_id)->orderBy('updated_at', 'desc')->get();
          return view('pages.dashboard.manager', [
             'employee' => $biodata->employee,
             'dates' => $dates,
@@ -519,6 +530,8 @@ class HomeController extends Controller
             'positions' => $employeePositions,
             'pes' => $pes,
             'recentPes' => $recentPes,
+            'spNotifs' => $spNotifs,
+            'spManNotifs' => $spManNotifs,
 
             'broadcasts' => $broadcasts,
             'personals' => $personals
