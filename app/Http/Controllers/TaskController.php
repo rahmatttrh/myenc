@@ -179,10 +179,15 @@ class TaskController extends Controller
       $task = Task::find($req->task);
       $req->validate([
          'desc' => 'required',
-         'evidence' => 'required'
+         // 'evidence' => 'required'
       ]);
 
-      $evidence = request()->file('evidence')->store('images/task');
+      if ($req->evidence) {
+         $evidence = request()->file('evidence')->store('images/task');
+      } else {
+         $evidence = null;
+      }
+      // $evidence = request()->file('evidence')->store('images/task');
 
       if ($req->status == 2) {
          $task->update([

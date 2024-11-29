@@ -430,7 +430,7 @@ button, input, optgroup, select, textarea {
                <div class="col-md-5">
                   <div class="form-group form-group-default">
                      <label>Evidence</label>
-                     <input type="file"  class="form-control" required name="evidence" id="evidence">
+                     <input type="file"  class="form-control"  name="evidence" id="evidence">
                   </div>
                </div>
             </div>
