@@ -294,6 +294,7 @@ Setup Payroll Employee
                                  <th>Deduction</th>
                                  <th>Desc</th>
                                  <th>Nominal</th>
+                                 <th></th>
                               </tr>
                            </thead>
                            <tbody>
@@ -303,6 +304,15 @@ Setup Payroll Employee
                                     <td>{{$red->reduction->name}}</td>
                                     <td>{{$red->description}}</td>
                                     <td>{{formatRupiah($red->employee_value)}}</td>
+                                    <td>
+                                       <form action="{{route('reduction.employee.delete')}}" method="POST">
+                                          @csrf
+                                          <input type="number" name="redempId" id="redempId" value="{{$red->id}}" hidden>
+                                          <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                          {{-- <a type="submit" href="#">Delete</a> --}}
+                                       </form>
+                                       
+                                    </td>
                                   </tr>
                               @endforeach
                            </tbody>

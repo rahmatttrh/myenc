@@ -111,7 +111,7 @@ Route::middleware(["auth"])->group(function () {
 
    Route::get('/phpinfo', function () {
       phpinfo();
-  });
+   });
 
    Route::get('employee/detail/{employee:id}/{tab}', [EmployeeController::class, 'detail'])->name('employee.detail');
 
@@ -121,8 +121,8 @@ Route::middleware(["auth"])->group(function () {
    Route::get('sub-dept/fetch-data/{id}', [SubDeptController::class, 'fetchData'])->name('department.fetch-data');
    // End Fetch
    Route::get('announcement/detail/{id}', [AnnouncementController::class, 'detail'])->name('announcement.detail');
-   
-   
+
+
    Route::prefix('task')->group(function () {
       Route::get('list', [TaskController::class, 'index'])->name('task');
       Route::get('create', [TaskController::class, 'create'])->name('task.create');
@@ -136,15 +136,13 @@ Route::middleware(["auth"])->group(function () {
 
    Route::prefix('chat')->group(function () {
       Route::post('store', [ChatController::class, 'store'])->name('chat.store');
-      
-     
    });
-   
-   
-   
-   
+
+
+
+
    Route::group(['middleware' => ['role:Administrator|HRD|HRD-Manager|HRD-Recruitment|HRD-Payroll|HRD-Spv']], function () {
-      Route::prefix('announcement')->group(function(){
+      Route::prefix('announcement')->group(function () {
          Route::get('/', [AnnouncementController::class, 'index'])->name('announcement');
          Route::get('create', [AnnouncementController::class, 'create'])->name('announcement.create');
          Route::post('store', [AnnouncementController::class, 'store'])->name('announcement.store');
@@ -152,7 +150,7 @@ Route::middleware(["auth"])->group(function () {
          Route::get('activate/{id}', [AnnouncementController::class, 'activate'])->name('announcement.activate');
          Route::get('deactivate/{id}', [AnnouncementController::class, 'deactivate'])->name('announcement.deactivate');
       });
-      
+
       Route::prefix('employee')->group(function () {
          Route::get('tab/{tab}', [EmployeeController::class, 'index'])->name('employee');
          Route::get('nonactive', [EmployeeController::class, 'nonactive'])->name('employee.nonactive');
@@ -357,7 +355,7 @@ Route::middleware(["auth"])->group(function () {
             Route::prefix('reduction/employee')->group(function () {
                Route::put('/update', [ReductionEmployeeController::class, 'update'])->name('reduction.employee.update');
                // Route::post('store', [ReductionController::class, 'store'])->name('reduction.store');
-               // Route::get('delete/{id}', [ReductionController::class, 'delete'])->name('reduction.delete');
+               Route::post('delete', [ReductionEmployeeController::class, 'delete'])->name('reduction.employee.delete');
             });
          });
          Route::prefix('overtime')->group(function () {

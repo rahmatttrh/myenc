@@ -4,6 +4,64 @@ Payroll Transaction
 @endsection
 @section('content')
 
+<style>
+   .hori-timeline .events {
+    border-top: 3px solid #e9ecef;
+}
+.hori-timeline .events .event-list {
+    display: block;
+    position: relative;
+    text-align: center;
+    padding-top: 70px;
+    margin-right: 0;
+}
+.hori-timeline .events .event-list:before {
+    content: "";
+    position: absolute;
+    height: 36px;
+    border-right: 2px dashed #dee2e6;
+    top: 0;
+}
+.hori-timeline .events .event-list .event-date {
+    position: absolute;
+    top: 38px;
+    left: 0;
+    right: 0;
+    width: 75px;
+    margin: 0 auto;
+    border-radius: 4px;
+    padding: 2px 4px;
+}
+@media (min-width: 1140px) {
+    .hori-timeline .events .event-list {
+        display: inline-block;
+        width: 24%;
+        padding-top: 45px;
+    }
+    .hori-timeline .events .event-list .event-date {
+        top: -12px;
+    }
+}
+.bg-soft-primary {
+    background-color: rgba(64,144,203,.3)!important;
+}
+.bg-soft-success {
+    background-color: rgba(71,189,154,.3)!important;
+}
+.bg-soft-danger {
+    background-color: rgba(231,76,94,.3)!important;
+}
+.bg-soft-warning {
+    background-color: rgba(249,213,112,.3)!important;
+}
+.card {
+    border: none;
+    margin-bottom: 24px;
+    -webkit-box-shadow: 0 0 13px 0 rgba(236,236,241,.44);
+    box-shadow: 0 0 13px 0 rgba(236,236,241,.44);
+}
+</style>
+
 <div class="page-inner">
    <nav aria-label="breadcrumb ">
       <ol class="breadcrumb  ">
@@ -12,6 +70,8 @@ Payroll Transaction
          <li class="breadcrumb-item active" aria-current="page">Monthly Location </li>
       </ol>
    </nav>
+   
+   
 
 
    <div class="card">
@@ -23,7 +83,7 @@ Payroll Transaction
             
          </div>
          <div>
-            <a href="{{route('payroll.transaction.export', enkripRambo($unitTransaction->id))}}" class="btn btn-primary"> Submit</a>
+            <a href="#" class="btn btn-primary" data-target="#modal-submit-tu" data-toggle="modal"> Submit</a>
             <a href="{{route('payroll.transaction.export', enkripRambo($unitTransaction->id))}}" class="btn btn-light border"><i class="fa fa-file"></i> Export Excel</a>
          </div>
          
@@ -166,6 +226,59 @@ Payroll Transaction
 
 
    <hr>
+
+   <div class="card">
+      <div class="card-body">
+          {{-- <h4 class="card-title mb-5">Horizontal Timeline</h4> --}}
+
+          <div class="hori-timeline" dir="ltr">
+              <ul class="list-inline events">
+                  
+                  <li class="list-inline-item event-list">
+                      <div class="px-4">
+                          <div class="event-date bg-secondary text-white">HRD MANAGER</div>
+                          <h5 class="font-size-16">Event Two</h5>
+                          {{-- <p class="text-muted">Everyone realizes why a new common language one could refuse translators.</p> --}}
+                          {{-- <div>
+                              <a href="#" class="btn btn-primary btn-sm">Read more</a>
+                          </div> --}}
+                      </div>
+                  </li>
+                  <li class="list-inline-item event-list">
+                      <div class="px-4">
+                          <div class="event-date bg-danger text-white">FINANCE MANAGER</div>
+                          <h5 class="font-size-16">Event Three</h5>
+                          {{-- <p class="text-muted">If several languages coalesce the grammar of the resulting simple and regular</p>
+                          <div>
+                              <a href="#" class="btn btn-primary btn-sm">Read more</a>
+                          </div> --}}
+                      </div>
+                  </li>
+                  <li class="list-inline-item event-list">
+                      <div class="px-4">
+                          <div class="event-date bg-info text-white">GENERAL MANAGER</div>
+                          <h5 class="font-size-16">Event Four</h5>
+                          {{-- <p class="text-muted">Languages only differ in their pronunciation and their most common words.</p>
+                          <div>
+                              <a href="#" class="btn btn-primary btn-sm">Read more</a>
+                          </div> --}}
+                      </div>
+                  </li>
+                  <li class="list-inline-item event-list">
+                     <div class="px-4">
+                         <div class="event-date bg-primary text-white">DIREKSI</div>
+                         <h5 class="font-size-16">Event One</h5>
+                         {{-- <p class="text-muted">It will be as simple as occidental in fact it will be Occidental Cambridge friend</p> --}}
+                         {{-- <div>
+                             <a href="#" class="btn btn-primary btn-sm">Read more</a>
+                         </div> --}}
+                     </div>
+                 </li>
+                  
+              </ul>
+          </div>
+      </div>
+   </div>
    
    
 </div>
@@ -191,6 +304,33 @@ Payroll Transaction
             <a  href="{{route('employee.export.simple')}}" class="btn btn-info">SIMPLE DATA</a>
             <a  href="{{route('employee.export')}}" class="btn btn-primary">FULL DATA</a>
          </div>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="modal-submit-tu" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Confirm<br>
+               
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <form action="{{route('position.store')}}" method="POST" >
+            <div class="modal-body">
+               @csrf
+               <input type="text" value="{{$unitTransaction->id}}" name="subdept" id="subdept" hidden>
+               <span>Submit this Report and send to HRD Manager?</span>
+                  
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+               <button type="submit" class="btn btn-primary ">Submit</button>
+            </div>
+         </form>
       </div>
    </div>
 </div>
