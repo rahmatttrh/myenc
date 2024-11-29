@@ -185,9 +185,6 @@ class TaskController extends Controller
       $evidence = request()->file('evidence')->store('images/task');
 
       if ($req->status == 2) {
-
-
-
          $task->update([
             'status' => 2,
             'closed' => $req->date,

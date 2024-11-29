@@ -365,6 +365,10 @@ button, input, optgroup, select, textarea {
                            </td>
                      </tr>
                      <tr>
+                        <td>Keterangan</td>
+                        <td>{{$task->desc}}</td>
+                     </tr>
+                     <tr>
                         <td class="d-flex justify-content-between">
                            <span>PIC</span>
                            
@@ -374,6 +378,7 @@ button, input, optgroup, select, textarea {
                            
                         </td>
                      </tr>
+                     
                      {{-- <tr>
                         <td class="pl-4"><a href="" data-toggle="modal" data-target="#modal-task-pic">Add New PIC</a></td>
                         <td>-</td>
@@ -386,13 +391,10 @@ button, input, optgroup, select, textarea {
                            <td>{{$emp->nik}} {{$emp->biodata->fullName()}}</td>
                          </tr>
                      @endforeach
-                     @if ($task->status > 0)
-                     <tr>
-                        <td>Keterangan</td>
-                        <td>{{$task->desc}}</td>
-                     </tr>
-                     @endif
-                     
+                     {{-- @if ($task->status > 0) --}}
+                    
+                     {{-- @endif --}}
+                     {{--  --}}
                   </tbody>
                </table>
             </div>
@@ -434,7 +436,7 @@ button, input, optgroup, select, textarea {
                <div class="col">
                   <div class="form-group form-group-default">
                      <label>Evidence</label>
-                     <input type="file"  class="form-control" name="evidence" id="evidence">
+                     <input type="file"  class="form-control" required name="evidence" id="evidence">
                   </div>
                </div>
                <div class="col-md-3">
@@ -448,7 +450,7 @@ button, input, optgroup, select, textarea {
          <hr>
          @endif
 
-         @if ($task->status > 0)
+         @if ($task->evidence)
          <img src="{{asset('storage/'. $task->evidence)}}" class="img-fluid" alt="Responsive image">
          @endif
             
