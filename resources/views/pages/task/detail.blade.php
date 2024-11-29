@@ -403,13 +403,14 @@ button, input, optgroup, select, textarea {
          @if ($task->status != 2)
              
          
+         <span class="badge badge-info mb-2">Form Update Status</span>
          <form action="{{route('task.update')}}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
             <input type="number" name="task" id="task" value="{{$task->id}}" hidden>
             <div class="row">
-               <div class="col-md-7">
+               <div class="col-md-3">
                   <div class="form-group form-group-default">
                      <label>Status</label>
                      <select name="status" id="status" class="form-control" required>
@@ -420,25 +421,29 @@ button, input, optgroup, select, textarea {
                      {{-- <input type="date"  class="form-control" name="target" id="target"> --}}
                   </div>
                </div>
-               <div class="col">
+               <div class="col-md-4">
                   <div class="form-group form-group-default">
                      <label>Date</label>
                      <input type="date"  class="form-control" required name="date" id="date">
                   </div>
                </div>
-            </div>
-
-            <div class="form-group form-group-default">
-               <label>Keterangan</label>
-               <input type="text"  class="form-control" required name="desc" id="desc">
-            </div>
-            <div class="row">
-               <div class="col">
+               <div class="col-md-5">
                   <div class="form-group form-group-default">
                      <label>Evidence</label>
                      <input type="file"  class="form-control" required name="evidence" id="evidence">
                   </div>
                </div>
+            </div>
+
+           
+            <div class="row">
+               <div class="col">
+                  <div class="form-group form-group-default">
+                     <label>Keterangan</label>
+                     <input type="text"  class="form-control" required name="desc" id="desc">
+                  </div>
+               </div>
+               
                <div class="col-md-3">
                   <button type="submit" class="btn btn-block  btn-primary">Update</button>
                </div>
