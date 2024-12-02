@@ -48,6 +48,34 @@ class AbsenceController extends Controller
       ])->with('i');
    }
 
+   public function edit($id)
+   {
+      // dd('ok');
+      $absence = Absence::find(dekripRambo($id));
+      $absences = Absence::get();
+
+      return view('pages.payroll.absence.edit', [
+         'absences' => $absences,
+         'absence' => $absence
+      ]);
+   }
+
+   public function update(Request $req)
+   {
+      $absence = Absence::find($req->absenceId);
+      if ($req->evidence) {
+         $evidence = request()->file('evidence')->store('absence/evidence');
+      } else {
+         $evidence = null;
+      }
+      $absence->update([
+         'type' => $req->type,
+         'doc' => $evidence
+      ]);
+
+      return redirect()->back()->with('success', 'Absence successfully updated');
+   }
+
    public function downloadTemplate(Request $req)
    {
       $req->validate([]);
@@ -113,7 +141,7 @@ class AbsenceController extends Controller
       }
 
 
-   
+
       return redirect()->route('payroll.absence')->with('success', 'Absence Data successfully imported');
    }
 
@@ -122,7 +150,7 @@ class AbsenceController extends Controller
    {
       $req->validate([]);
 
-      
+
       $absences = Absence::whereBetween('date', [$req->from, $req->to])->get();
 
       $employees = Employee::get();
@@ -194,11 +222,11 @@ class AbsenceController extends Controller
       $transactionCon = new TransactionController;
       $transactions = Transaction::where('employee_id', $employee->id)->get();
 
-      foreach($transactions as $tran){
+      foreach ($transactions as $tran) {
          $transactionCon->calculateTotalTransaction($tran, $tran->cut_from, $tran->cut_to);
       }
 
-      
+
 
       return redirect()->back()->with('success', 'Data Absence successfully added');
    }
@@ -213,7 +241,7 @@ class AbsenceController extends Controller
       $transactionCon = new TransactionController;
       $transactions = Transaction::where('employee_id', $employee->id)->get();
 
-      foreach($transactions as $tran){
+      foreach ($transactions as $tran) {
          $transactionCon->calculateTotalTransaction($tran, $tran->cut_from, $tran->cut_to);
       }
 

@@ -380,55 +380,40 @@ Dashboard
 
          <div class="card">
             <div class="card-header bg-primary text-white p-2">
-               <small class="text-uppercase">{{$now->format('F')}} 2024</small>
+               <small class="text-uppercase">Recent Absences {{$now->format('Y')}}</small>
             </div>
             <div class="card-body p-0">
-               <table class=" ">
+               <table class=" table-sm p-0">
                   <thead>
-      
                      <tr>
-                        <th  rowspan="3" class="text-center">#</th>
-                        {{-- <th>Date</th> --}}
-                        <th colspan="3" class="text-center">Tap In</th>
-                        <th colspan="3" class="text-center">Tap Out</th>
-                        <th rowspan="3" class="text-center">Work Hours</th>
-                     </tr>
-                     <tr>
-                        <tr>
-                           {{-- <td></td> --}}
-                           <th>Date</th>
-                           <th>Time</th>
-                           <th>Loc</th>
-                           <th>Date</th>
-                           <th>Time</th>
-                           <th>Loc</th>
-                           {{-- <td></td> --}}
-                        </tr>
+                        <th>Employee</th>
+                        <th>Type</th>
+                        <th>Date</th>
+                        
                      </tr>
                   </thead>
+
                   <tbody>
-                     @if (count($presences) > 0)
-                     @foreach ($presences as $pre)
-                        <tr>
-                           <td class="text-center">{{++$i}}</td>
-                           {{-- <td>{{formatDate($pre->in_date)}}</td> --}}
-                           <td>{{formatDate($pre->in_date)}}</td>
-                           <td>{{ $pre->in_time ? formatTime($pre->in_time) : '-'}}</td>
-                           <td>{{$pre->in_loc}}</td>
-                           <td>{{formatDate($pre->out_date)}}</td>
-                           <td>{{$pre->out_time ? formatTime($pre->out_time) : '-'}}</td>
-                           <td>{{$pre->out_loc}}</td>
-                           <td class="text-center">{{$pre->total ? formatTime($pre->total) : '-'}}</td>
-                        </tr>
-                     @endforeach
-                     @else
+                     @foreach ($absences as $absence)
                      <tr>
-                        <td colspan="3" class="text-center">Empty</td>
+                           <td>{{$absence->employee->nik}} {{$absence->employee->biodata->fullName()}}</td>
+                        <td>
+                           @if ($absence->type == 1)
+                           Alpha
+                           @elseif($absence->type == 2)
+                           Terlambat ({{$absence->minute}} Menit)
+                           @elseif($absence->type == 3)
+                           ATL
+                           @endif
+                        </td>
+                        <td>{{formatDate($absence->date)}}</td>
+                        
+                        
                      </tr>
-                     @endif
-      
-      
+
+                     @endforeach
                   </tbody>
+
                </table>
             </div>
          </div>

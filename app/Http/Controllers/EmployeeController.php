@@ -49,7 +49,7 @@ class EmployeeController extends Controller
       //          // dd($emp->kpi_id);
       //       }
       //    }
-        
+
       //    # code...
       // }
       // dd($tab);
@@ -65,26 +65,25 @@ class EmployeeController extends Controller
          ->orderBy('updated_at', 'desc')
          ->get();
 
-         // foreach($employees as $emp){
-         //    $contract = Contract::find($emp->contract_id);
-         //    if ($emp->unit_id != $contract->unit_id) {
-         //       // dd($emp->contract->unit->name);
-         //       $emp->update([
-         //          'unit_id' => $contract->unit_id
-         //       ]);
-         //    }
-         // }
-
       // foreach($employees as $emp){
       //    $contract = Contract::find($emp->contract_id);
-      //    $loc = Location::where('code', $contract->loc)->first();
-      //    if ($loc) {
+      //    if ($emp->unit_id != $contract->unit_id) {
+      //       // dd($emp->contract->unit->name);
       //       $emp->update([
-      //          'location_id' => $loc->id
+      //          'unit_id' => $contract->unit_id
       //       ]);
       //    }
-         
       // }
+
+      foreach ($employees as $emp) {
+         $contract = Contract::find($emp->contract_id);
+         $loc = Location::where('code', $contract->loc)->first();
+         if ($loc) {
+            $emp->update([
+               'location_id' => $loc->id
+            ]);
+         }
+      }
 
       // foreach ($employees as $emp) {
       //    $user = User::where('username', $emp->nik)->first();
@@ -112,18 +111,18 @@ class EmployeeController extends Controller
       //       }
       //    }
       // }
-      
 
-         // foreach ($employees as $emp) {
-         //    $user = User::where('username', $emp->nik)->first();
-         //    if ($user) {
-         //       $emp->update([
-         //          'role' => 3,
-         //          'user_id' => $user->id
-         //       ]);
-         //       $user->assignRole('Karyawan');
-         //    }
-         // }
+
+      // foreach ($employees as $emp) {
+      //    $user = User::where('username', $emp->nik)->first();
+      //    if ($user) {
+      //       $emp->update([
+      //          'role' => 3,
+      //          'user_id' => $user->id
+      //       ]);
+      //       $user->assignRole('Karyawan');
+      //    }
+      // }
       $draftEmployees = Employee::where('status', 0)->get();
       return view('pages.employee.index', [
          'employees' => $employees,
@@ -134,7 +133,8 @@ class EmployeeController extends Controller
    }
 
 
-   public function resetPassword($id){
+   public function resetPassword($id)
+   {
       $employee = Employee::find(dekripRambo($id));
       $user = User::where('username', $employee->nik)->first();
 
@@ -143,7 +143,6 @@ class EmployeeController extends Controller
       ]);
 
       return redirect()->back()->with('success', 'Password User successfully updated');
-
    }
 
 
@@ -200,7 +199,7 @@ class EmployeeController extends Controller
       ])->with('i');
    }
 
-   
+
    public function publishSingle($id)
    {
       $employee = Employee::find(dekripRambo($id));
@@ -226,13 +225,13 @@ class EmployeeController extends Controller
       //    return redirect()->back()->with('danger', 'Can not activate employee  ' . $employee->biodata->first_name . ' ' . $employee->biodata->last_name . ', Error log : ' . $e->getMessage());
       // }
 
-      
+
       $employee->update([
          'status' => 1,
          // 'user_id' => $user->id
       ]);
 
-      
+
       $employee->biodata->update([
          'status' => 1,
       ]);
@@ -274,7 +273,6 @@ class EmployeeController extends Controller
          'desc' => 'Employee ' . $employee->nik . ' ' . $employee->biodata->fullname()
       ]);
       return redirect()->back()->with('success', 'Employee successfully activated');
-      
    }
 
    public function publish(Request $req)
@@ -355,7 +353,7 @@ class EmployeeController extends Controller
    public function detail($id, $enkripPanel)
    {
 
-      
+
       // $employee = auth()->user()->getEmployee();
       // // Data KPI
       // if (auth()->user()->hasRole('Administrator|HRD')) {
@@ -430,7 +428,7 @@ class EmployeeController extends Controller
          //    // dd($manager->biodata->fullName());
          //    // dd('kosong');
       }
-      
+
 
       // $pos = Position::where('designation_id', 6)->orWhere('designation_id', 7)->get();
       // $position = $pos->where('department_id', $department->id)->first();
@@ -546,14 +544,14 @@ class EmployeeController extends Controller
                // }
             }
             // dd($myManagers);
-         
+
          }
       } else {
          $subManPositions = null;
       }
 
       // dd($myManagers);
-      
+
       // foreach($managerPositions as $manpos){
       //    foreach($manpos->employees as $man){
       //       $myManagers[] = $man;
@@ -582,10 +580,10 @@ class EmployeeController extends Controller
       // dd($managerPositions);
       //  dd($myManagers);
 
-      if (count($managerPositions) > 0){
-         foreach($managerPositions as $manpos){
-            
-            foreach($manpos->employees as $man){
+      if (count($managerPositions) > 0) {
+         foreach ($managerPositions as $manpos) {
+
+            foreach ($manpos->employees as $man) {
                // dd($manpos->employees);
                $myManagers[] = $man;
             }
@@ -940,7 +938,8 @@ class EmployeeController extends Controller
       return redirect()->route('employee.detail', [enkripRambo($employee->id), enkripRambo('basic')])->with('success', 'Employee successfully updated');
    }
 
-   public function removePicture($id){
+   public function removePicture($id)
+   {
       $employee = Employee::find(dekripRambo($id));
 
       if ($employee->picture) {
@@ -952,10 +951,9 @@ class EmployeeController extends Controller
       ]);
 
       return redirect()->route('employee.detail', [enkripRambo($employee->id), enkripRambo('basic')])->with('success', 'Employee successfully updated');
-
    }
 
-   
+
    public function updateRole(Request $req)
    {
       $employee = Employee::find($req->employee);
@@ -999,7 +997,8 @@ class EmployeeController extends Controller
       return redirect()->route('employee.detail', [enkripRambo($employee->id), enkripRambo('account')])->with('success', 'Employee successfully updated');
    }
 
-   public function formExport(){
+   public function formExport()
+   {
       $employees = Employee::where('status', 1)->get();
       $units = Unit::get();
       $locs = Location::get();
@@ -1010,7 +1009,7 @@ class EmployeeController extends Controller
       $type = 'All';
 
       $export = false;
-      
+
       return view('pages.employee.export-form', [
          'employees' => $employees,
          'units' => $units,
@@ -1025,54 +1024,54 @@ class EmployeeController extends Controller
       ])->with('i');
    }
 
-   public function filter(Request $req){
+   public function filter(Request $req)
+   {
       if ($req->gender == 'All') {
          // dd('all');
          if ($req->type == 'All') {
             // dd('ok');
-            $employees = Employee::join('biodatas', 'employees.biodata_id', '=', 'biodatas.id')        
-            ->join('contracts', 'employees.contract_id', '=', 'contracts.id')->where('contracts.loc', $req->loc)
-            ->select('employees.*')->where('employees.unit_id', $req->unit)->where('employees.status',1)->get();
+            $employees = Employee::join('biodatas', 'employees.biodata_id', '=', 'biodatas.id')
+               ->join('contracts', 'employees.contract_id', '=', 'contracts.id')->where('contracts.loc', $req->loc)
+               ->select('employees.*')->where('employees.unit_id', $req->unit)->where('employees.status', 1)->get();
          } else {
             // dd('okee');
-            $employees = Employee::join('biodatas', 'employees.biodata_id', '=', 'biodatas.id')        
-            ->join('contracts', 'employees.contract_id', '=', 'contracts.id')->where('contracts.loc', $req->loc)
-            ->where('contracts.type', $req->type)
-            ->select('employees.*')->where('employees.unit_id', $req->unit)->where('employees.status',1)->get();
+            $employees = Employee::join('biodatas', 'employees.biodata_id', '=', 'biodatas.id')
+               ->join('contracts', 'employees.contract_id', '=', 'contracts.id')->where('contracts.loc', $req->loc)
+               ->where('contracts.type', $req->type)
+               ->select('employees.*')->where('employees.unit_id', $req->unit)->where('employees.status', 1)->get();
             // dd($employees);
          }
-         
       } else {
          if ($req->type == 'All') {
-            $employees = Employee::join('biodatas', 'employees.biodata_id', '=', 'biodatas.id')->where('biodatas.gender', $req->gender)        
-            ->join('contracts', 'employees.contract_id', '=', 'contracts.id')->where('contracts.loc', $req->loc)
-            ->select('employees.*')->where('employees.unit_id', $req->unit)->where('employees.status',1)->get();
+            $employees = Employee::join('biodatas', 'employees.biodata_id', '=', 'biodatas.id')->where('biodatas.gender', $req->gender)
+               ->join('contracts', 'employees.contract_id', '=', 'contracts.id')->where('contracts.loc', $req->loc)
+               ->select('employees.*')->where('employees.unit_id', $req->unit)->where('employees.status', 1)->get();
          } else {
-            $employees = Employee::join('biodatas', 'employees.biodata_id', '=', 'biodatas.id')->where('biodatas.gender', $req->gender)  
-            ->join('contracts', 'employees.contract_id', '=', 'contracts.id')->where('contracts.loc', $req->loc)
-            ->where('contracts.type', $req->type)
-            ->select('employees.*')->where('employees.unit_id', $req->unit)->where('employees.status',1)->get();
+            $employees = Employee::join('biodatas', 'employees.biodata_id', '=', 'biodatas.id')->where('biodatas.gender', $req->gender)
+               ->join('contracts', 'employees.contract_id', '=', 'contracts.id')->where('contracts.loc', $req->loc)
+               ->where('contracts.type', $req->type)
+               ->select('employees.*')->where('employees.unit_id', $req->unit)->where('employees.status', 1)->get();
          }
       }
 
       // $pes = Pe::join('employees', 'pes.employe_id', '=', 'employees.id')
-            //     ->where('employees.manager_id', $employee->id)
-            //     ->where('pes.status', '>', '0')
-            //     ->select('pes.*')
-            //     ->orderBy('pes.release_at', 'desc')
-            //     ->get();
+      //     ->where('employees.manager_id', $employee->id)
+      //     ->where('pes.status', '>', '0')
+      //     ->select('pes.*')
+      //     ->orderBy('pes.release_at', 'desc')
+      //     ->get();
 
-         // dd($req->gender);
+      // dd($req->gender);
       // $employees = Employee::join('biodatas', 'employees.biodata_id', '=', 'biodatas.id')
       // ->where('biodatas.gender', $req->gender)         
       // ->join('contracts', 'employees.contract_id', '=', 'contracts.id')
       // ->where('contracts.loc', $req->loc)
       // ->where('contracts.type', $req->type)
-      
+
       // ->select('employees.*')
       // ->where('employees.unit_id', $req->unit)
       // ->get();
-      
+
       // dd($employees);
       $units = Unit::get();
       $locs = Location::get();
@@ -1083,7 +1082,7 @@ class EmployeeController extends Controller
       $type = $req->type;
 
       $export = true;
-      
+
       return view('pages.employee.export-form', [
          'employees' => $employees,
          'units' => $units,
@@ -1159,7 +1158,7 @@ class EmployeeController extends Controller
 
    // }
 
-  
+
    public function delete($id)
    {
       $dekripId = dekripRambo($id);

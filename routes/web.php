@@ -374,6 +374,8 @@ Route::middleware(["auth"])->group(function () {
             Route::get('/index', [AbsenceController::class, 'index'])->name('payroll.absence');
 
             Route::get('/form', [AbsenceController::class, 'create'])->name('payroll.absence.create');
+            Route::get('/edit/{id}', [AbsenceController::class, 'edit'])->name('payroll.absence.edit');
+            Route::put('/update', [AbsenceController::class, 'update'])->name('payroll.absence.update');
 
             Route::post('/download-template', [AbsenceController::class, 'downloadTemplate'])->name('payroll.absence.template');
             Route::get('/export', [AbsenceController::class, 'export'])->name('payroll.absence.export');
@@ -505,6 +507,7 @@ Route::middleware(["auth"])->group(function () {
       Route::put('/submit/{id}', [SpApprovalController::class, 'submit'])->name('sp.submit');
       Route::put('/app/hrd/{id}', [SpApprovalController::class, 'appHrd'])->name('sp.app.hrd');
       Route::put('/reject/hrd', [SpApprovalController::class, 'rejectHrd'])->name('sp.reject.hrd');
+      Route::put('/complete/hrd', [SpApprovalController::class, 'completeHrd'])->name('sp.complete.hrd');
       Route::put('/reject/user', [SpApprovalController::class, 'rejectUser'])->name('sp.reject.user');
       Route::put('/reject/manager', [SpApprovalController::class, 'rejectManager'])->name('sp.reject.manager');
       Route::put('/app/manager/{id}', [SpApprovalController::class, 'appManager'])->name('sp.app.manager');

@@ -108,9 +108,13 @@ SP Detail
                @endif
 
                @if(auth()->user()->hasRole('HRD|HRD-Manager|HRD-Spv'))
+               <a href="#" class="btn btn-primary " data-toggle="modal" data-target="#modal-complete-hrd">
+                   Complete
+               </a>
                <a href="#" class="btn btn-danger " data-toggle="modal" data-target="#modal-sp-delete">
                   <i class="fa fa-trash"></i> Delete
                </a>
+               
 
                <x-sp.modal.delete :sp="$sp" />
                @endif
@@ -338,12 +342,11 @@ SP Detail
                   
                   
                </div>
-               <div class="card-footer">
+               {{-- <div class="card-footer">
                   
                      @foreach ($approvals as $approval)
                      
                      <div class="btn border  text-left">
-                        {{-- <span>{{$approval->type}}</span> --}}
                         @if ($approval->level == 'user')
                         <span>{{$approval->type}}</span>
                             User
@@ -366,7 +369,7 @@ SP Detail
                
                   
                   
-               </div>
+               </div> --}}
                <div class="card-footer">
                   <b class="mb-3">Attachment</b>
                   @if ($sp->file)
@@ -457,6 +460,47 @@ SP Detail
             <div class="modal-footer">
                <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
                <button type="submit" class="btn btn-danger">Reject</button>
+            </div>
+         </form>
+
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="modal-complete-hrd" data-bs-backdrop="static">
+   <div class="modal-dialog modal-md">
+      <div class="modal-content">
+
+         <!-- Bagian header modal -->
+         <div class="modal-header">
+            <h3 class="modal-title">Confirmation</h3>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+         </div>
+         <form method="POST" action="{{route('sp.complete.hrd') }}" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+            <input type="hidden" name="spId" id="spId"  value="{{$sp->id}}">
+
+            <!-- Bagian konten modal -->
+            <div class="modal-body">
+               <div class="form-group form-group-default">
+                  <label>Description (Optional)</label>
+                  <input type="text" class="form-control" name="description" id="description" value="{{old('description')}}">
+               </div>
+               <div class="form-group form-group-default">
+                  <label>Evidence</label>
+                  <input type="file" class="form-control" name="evidence" required id="evidence" value="{{old('evidence')}}">
+               </div>
+               <hr>
+
+               Klik 'Complete' untuk menyelesaikan alur proses SP pada sistem
+               
+            </div>
+
+            <!-- Bagian footer modal -->
+            <div class="modal-footer">
+               <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+               <button type="submit" class="btn btn-primary">Complete</button>
             </div>
          </form>
 

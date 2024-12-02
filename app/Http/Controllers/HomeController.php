@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Absence;
 use App\Models\Announcement;
 use App\Models\Biodata;
 use App\Models\Contract;
 use App\Models\Department;
-use App\Models\Designation; 
+use App\Models\Designation;
 use App\Models\Employee;
-use App\Models\EmployeeLeader; 
-use App\Models\Holiday; 
+use App\Models\EmployeeLeader;
+use App\Models\Holiday;
 use App\Models\Log;
 use App\Models\Overtime;
 use App\Models\Pe;
-use App\Models\Position; 
+use App\Models\Position;
 use App\Models\Presence;
 use App\Models\Sp;
 use App\Models\Spkl;
@@ -24,6 +25,7 @@ use App\Models\Unit;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class HomeController extends Controller
@@ -46,6 +48,14 @@ class HomeController extends Controller
    public function index()
    {
 
+      // $allUsers = User::get();
+
+      // foreach ($allUsers as $user) {
+      //    $user->update([
+      //       'password' => Hash::make('12345678')
+      //    ]);
+      // }
+
       if (!auth()->user()->hasRole('Administrator|HRD-Manager|HRD|HRD-Spv|HRD-Recruitment|Manager|Asst. Manager|Supervisor|Leader|Karyawan')) {
          // $id = auth()->user()->id;
          RoleEmptyUser;
@@ -53,12 +63,12 @@ class HomeController extends Controller
       }
 
       $overtimes = Overtime::get();
-      foreach($overtimes as $over){
-         if($over->hours == 0){
+      foreach ($overtimes as $over) {
+         if ($over->hours == 0) {
             $over->delete();
          }
       }
-      
+
       // }
       // if (auth()->user()->hasRole('Manager')) {
       //    dd('Manager');
@@ -203,7 +213,7 @@ class HomeController extends Controller
       // dd(auth()->user()->getEmployeeId());
 
       $broadcasts = Announcement::where('type', 1)->where('status', 1)->get();
-      if (auth()->user()->hasRole('Administrator')){
+      if (auth()->user()->hasRole('Administrator')) {
          $personals = [];
       } else {
          $employee = Employee::where('nik', auth()->user()->username)->first();
@@ -238,9 +248,9 @@ class HomeController extends Controller
          $now = Carbon::now();
          $alertContracts = [];
          $alertBirtdays = [];
-      
-         foreach($contracts as $con){
-            
+
+         foreach ($contracts as $con) {
+
             if ($con->end) {
                $employee = Employee::where('contract_id', $con->id)->first();
                $date1 = Carbon::createFromDate($con->end);
@@ -252,23 +262,19 @@ class HomeController extends Controller
                   if ($employee) {
                      $alertContracts[] = $employee;
                   }
-                  
                }
                // dd($diffMonth);
             }
-            
          }
 
          $bios = Biodata::whereMonth('birth_date', $now)->get();
-         
-         foreach($bios as $bio){
+
+         foreach ($bios as $bio) {
             // dd($bio->employee->nik);
             $employee = Employee::where('biodata_id', $bio->id)->first();
             if ($employee->status == 1) {
                $alertBirtdays[] = $employee;
             }
-         
-            
          }
 
 
@@ -293,7 +299,7 @@ class HomeController extends Controller
             'alertBirthdays' => $alertBirtdays
          ]);
       } elseif (auth()->user()->hasRole('HRD-Manager|HRD')) {
-         
+
          $user = Employee::find(auth()->user()->getEmployeeId());
          $employees = Employee::get();
          $male = Biodata::where('gender', 'Male')->count();
@@ -502,12 +508,12 @@ class HomeController extends Controller
             }
 
             $pes = Pe::where('department_id', $employee->department_id)->where('status', '>=', '0')
-            ->orderBy('release_at', 'desc')
-            ->get();
+               ->orderBy('release_at', 'desc')
+               ->get();
 
             $recentPes = Pe::where('department_id', $employee->department_id)->where('status', '>=', '0')
-            ->orderBy('release_at', 'desc')
-            ->paginate(8);
+               ->orderBy('release_at', 'desc')
+               ->paginate(8);
          }
 
 
@@ -556,11 +562,11 @@ class HomeController extends Controller
             ->orderBy('biodatas.first_name', 'asc')
             ->get();
          //  dd($myteams);
-            // ->join('biodatas', 'employees.biodata_id', '=', 'biodatas.id')
-            // ->where('leader_id', $employee->id)
-            // ->select('employees.*')
-            // ->orderBy('biodatas.first_name', 'asc')
-            // ->get();
+         // ->join('biodatas', 'employees.biodata_id', '=', 'biodatas.id')
+         // ->where('leader_id', $employee->id)
+         // ->select('employees.*')
+         // ->orderBy('biodatas.first_name', 'asc')
+         // ->get();
          //  dd($myteams);
 
          // $pes = Pe::join('employees', 'pes.employe_id', '=', 'employees.id')
@@ -604,6 +610,7 @@ class HomeController extends Controller
          $employee = Employee::where('nik', auth()->user()->username)->first();
          $biodata = Biodata::where('email', auth()->user()->email)->first();
          $presences = Presence::where('employee_id', auth()->user()->getEmployeeId())->orderBy('created_at', 'desc')->get();
+         $absences = Absence::where('employee_id', $employee->id)->paginate(10);
          $pending = Presence::where('employee_id', auth()->user()->getEmployeeId())->where('out_time', null)->first();
          // dd($biodata->employee->id);
 
@@ -627,7 +634,8 @@ class HomeController extends Controller
             'broadcasts' => $broadcasts,
             'personals' => $personals,
             'peHistories' => $peHistories,
-            'tasks' => $tasks
+            'tasks' => $tasks,
+            'absences' => $absences
          ])->with('i');
       }
    }

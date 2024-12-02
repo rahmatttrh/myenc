@@ -73,6 +73,7 @@ Payroll Transaction
    
    
 
+   
 
    <div class="card">
       <div class="card-header p-3  d-flex justify-content-between">
@@ -82,9 +83,24 @@ Payroll Transaction
             <small>STATUS : DRAFT</small> <br>
             
          </div>
-         <div>
-            <a href="#" class="btn btn-primary" data-target="#modal-submit-tu" data-toggle="modal"> Submit</a>
-            <a href="{{route('payroll.transaction.export', enkripRambo($unitTransaction->id))}}" class="btn btn-light border"><i class="fa fa-file"></i> Export Excel</a>
+         <div class="d-flex">
+            
+            {{-- <a href="{{route('payroll.transaction.export', enkripRambo($unitTransaction->id))}}" class="btn btn-light border"><i class="fa fa-file"></i> Export Report BPJS KT</a>
+            <a href="{{route('payroll.transaction.export', enkripRambo($unitTransaction->id))}}" class="btn btn-light border"><i class="fa fa-file"></i> Export Report BPJS KS</a>
+            <a href="{{route('payroll.transaction.export', enkripRambo($unitTransaction->id))}}" class="btn btn-light border"><i class="fa fa-file"></i> Export Excel</a> <br> --}}
+            {{-- <a href="#" class="btn btn-primary" data-target="#modal-submit-tu" data-toggle="modal"> Submit</a> --}}
+            <div class="dropdown">
+               <button class="btn btn-light border dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                 Option
+               </button>
+               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                 <a class="dropdown-item" href="#" data-target="#modal-submit-tu" data-toggle="modal">Submit</a>
+                 <hr>
+                 <a class="dropdown-item" href="#">Export Report BPJS KS</a>
+                 <a class="dropdown-item" href="#">Export Report BPJS KT</a>
+                 <a class="dropdown-item" href="{{route('payroll.transaction.export', enkripRambo($unitTransaction->id))}}">Export </a>
+               </div>
+            </div>
          </div>
          
           

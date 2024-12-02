@@ -104,13 +104,13 @@ class SpApprovalController extends Controller
 
       $sp = Sp::find($req->id);
       if (request('file')) {
-         
+
          $file = request()->file('file')->store('sp/file');
-      }  else {
+      } else {
          $file = $sp->file;
       }
 
-      
+
       $sp->update([
          'tahun' => $tahun,
          'semester' => $semester,
@@ -157,11 +157,28 @@ class SpApprovalController extends Controller
       return  back()->with('success', 'SP successfully verified');
    }
 
-   public function rejectHrd(Request $req){
+   public function completeHrd(Request $req)
+   {
+      $req->validate([
+         'evidence' => 'required'
+      ]);
+
+      $file = request()->file('evidence')->store('sp/file');
+      $sp = Sp::find($req->spId);
+      $sp->update([
+         'status' => 4,
+         'desc' => $req->description,
+         'file' => $file
+      ]);
+   }
+
+   public function rejectHrd(Request $req)
+   {
       dd('reject');
    }
 
-   public function rejectUser(Request $req){
+   public function rejectUser(Request $req)
+   {
       $sp = Sp::find($req->id);
       // dd($sp->code);
 
@@ -184,7 +201,8 @@ class SpApprovalController extends Controller
       return redirect()->back()->with('success', 'SP berhasil di reject');
    }
 
-   public function rejectManager(Request $req){
+   public function rejectManager(Request $req)
+   {
       $sp = Sp::find($req->id);
       // dd($sp->code);
 
@@ -263,7 +281,8 @@ class SpApprovalController extends Controller
       return  back()->with('success', 'SP successfully approved and sent to Employee');
    }
 
-   public function discussManager(Request $req){
+   public function discussManager(Request $req)
+   {
       $sp = Sp::find($req->sp);
       $sp->update([
          'status' => 101,
@@ -282,15 +301,13 @@ class SpApprovalController extends Controller
 
       if ($req->nd_for == 1) {
          $for = 'Atasan Langsung';
-      } elseif($req->nd_for == 2){
+      } elseif ($req->nd_for == 2) {
          $for = 'Karyawan';
-      } elseif($req->nd_for == 3){
+      } elseif ($req->nd_for == 3) {
          $for = 'Atasan Langsung & Karyawan';
       }
 
       return  back()->with('success', 'SP Need Discussion sent to ' . $for);
-
-
    }
 
    public function appEmployee(Request $req, $id)

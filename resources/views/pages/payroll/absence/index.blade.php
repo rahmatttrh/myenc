@@ -73,13 +73,15 @@ Payroll Absence
                               @elseif($absence->type == 2)
                               Terlambat ({{$absence->minute}} Menit)
                               @elseif($absence->type == 3)
-                              Cuti/Izin
+                              ATL
+                              @elseif($absence->type == 4)
+                              Izin
                               @endif
                            </td>
                            <td>{{formatDate($absence->date)}}</td>
                            
                            <td>
-                            <a href="" class="">Update</a> |
+                            <a href="{{route('payroll.absence.edit', enkripRambo($absence->id))}}" class="">Update</a> |
                               <a href="#" data-target="#modal-delete-absence-{{$absence->id}}" data-toggle="modal">Delete</a>
                            </td>
                         </tr>
@@ -100,7 +102,7 @@ Payroll Absence
                                     @elseif($absence->type == 2)
                                     Terlambat ({{$absence->minute}})
                                     @elseif($absence->type == 3)
-                                    Cuti/Izin
+                                    ATL
                                     @endif
                                     {{$absence->employee->nik}} {{$absence->employee->biodata->fullName()}}
                                     tanggal {{formatDate($absence->date)}}
