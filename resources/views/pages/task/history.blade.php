@@ -24,7 +24,7 @@ Task List History
             
         </div>
         <div class="card-body p-0 pt-3">
-            @if(auth()->user()->hasRole('Administrator'))
+            @if(auth()->user()->hasRole('Administrator|Manager|Asst. Manager'))
                 <div class="table-responsive">
                     <table id="" class="display basic-datatables   table-striped ">
                         <thead>
@@ -162,7 +162,7 @@ Task List History
                         <tbody>
                            
 
-                            @foreach ($myHistoryTasks as $mTask)
+                            @foreach ($historyTasks as $mTask)
                             <tr>
                                 <td>{{$mTask->category}}</td>
                                 <td>
@@ -204,7 +204,7 @@ Task List History
                             @endforeach
 
 
-                            @foreach ($myteams as $team)
+                            {{-- @foreach ($myteams as $team)
                                 @foreach ($historyTasks as $task)
                                 
                                     @if ($task->employee_id == $team->id )
@@ -248,7 +248,7 @@ Task List History
                                     @endif
                                     
                                 @endforeach
-                            @endforeach
+                            @endforeach --}}
                             
                         </tbody>
                         </table>

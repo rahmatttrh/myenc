@@ -110,15 +110,50 @@ class TaskController extends Controller
 
       if (auth()->user()->hasRole('Administrator')) {
          $employee = null;
-         $tasks = Task::get();
+         $historyTasks = Task::where('status', 2)->get();
          $myteams = [];
          $myTasks = [];
       } elseif (auth()->user()->hasRole('Karyawan')) {
          $employee = Employee::where('nik', auth()->user()->username)->first();
-         $tasks = Task::where('employee_id', $employee->id)->get();
+         $historyTasks = Task::where('status', 2)->where('employee_id', $employee->id)->get();
 
          $myteams = [];
          $myTasks = [];
+      } elseif (auth()->user()->hasRole('Manager|Asst. Manager')) {
+         $employee = Employee::where('nik', auth()->user()->username)->first();
+         $myteams = [];
+         // $tasks = [];
+         // $historyTasks = [];
+         // $tasks = Task::orderBy('status', 'asc')->where('employee_id', $employee->id)->get();
+         $historyTasks = Task::where('status', 2)->orderBy('status', 'asc')->where('employee_id', $employee->id)->get();
+         // dd('manager');
+         if (count($employee->positions) > 0) {
+
+            foreach ($employee->positions as $emPos) {
+               // dd($emPos->department_id);
+               // $tasks[] = Task::where('status', '!=', 2)->where('department_id', $emPos->department_id)->orderBy('status', 'asc')->get();
+               $historyTasks[] = Task::where('status', 2)->where('department_id', $emPos->department_id)->orderBy('status', 'asc')->get();
+
+               $getTasks = Task::where('status', 2)->where('department_id', $emPos->department_id)->orderBy('status', 'asc')->get();
+               foreach ($getTasks as $gt) {
+                  $historyTasks->push($gt);
+               }
+            }
+         } else {
+            // $tasks = Task::where('status', '!=', 2)->where('department_id', $employee->department_id)->orderBy('status', 'asc')->get();
+            $getTasks = Task::where('status', 2)->where('department_id', $employee->department_id)->orderBy('status', 'asc')->get();
+            foreach ($getTasks as $gt) {
+               $historyTasks->push($gt);
+            }
+
+            $getHistoryTasks = Task::where('status', 2)->where('department_id', $employee->department_id)->orderBy('status', 'asc')->get();
+            foreach ($getHistoryTasks as $ght) {
+               $historyTasks->push($ght);
+            }
+            // $historyTasks = Task::where('status', 2)->where('department_id', $employee->department_id)->orderBy('status', 'asc')->get();
+         }
+
+         // dd($myTasks);
       } else {
          $employee = Employee::where('nik', auth()->user()->username)->first();
          $myteams = EmployeeLeader::join('employees', 'employee_leaders.employee_id', '=', 'employees.id')
@@ -128,7 +163,12 @@ class TaskController extends Controller
             ->orderBy('biodatas.first_name', 'asc')
             ->get();
          $tasks = Task::get();
-         $myTasks = Task::where('employee_id', $employee->id)->get();
+
+         $historyTasks = Task::where('status', 2)->where('employee_id', $employee->id)->get();
+         $getHistoryTasks = Task::where('status', 2)->orderBy('status', 'asc')->get();
+         foreach ($getHistoryTasks as $ght) {
+            $historyTasks->push($ght);
+         }
       }
 
 
@@ -136,7 +176,8 @@ class TaskController extends Controller
          'employee' => $employee,
          'tasks' => $tasks,
          'myteams' => $myteams,
-         'myTasks' => $myTasks
+         'myTasks' => $myTasks,
+         'historyTask' => $historyTasks
       ])->with('i');
    }
 
