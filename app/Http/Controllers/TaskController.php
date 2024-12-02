@@ -174,7 +174,7 @@ class TaskController extends Controller
 
       return view('pages.task.history', [
          'employee' => $employee,
-         'tasks' => $tasks,
+         // 'tasks' => $tasks,
          'myteams' => $myteams,
          'myTasks' => $myTasks,
          'historyTask' => $historyTasks
