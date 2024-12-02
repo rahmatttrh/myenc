@@ -176,7 +176,7 @@ class TaskController extends Controller
          'employee' => $employee,
          // 'tasks' => $tasks,
          'myteams' => $myteams,
-         'myTasks' => $myTasks,
+         // 'myTasks' => $myTasks,
          'historyTasks' => $historyTasks
       ])->with('i');
    }
