@@ -30,7 +30,7 @@ class TaskController extends Controller
          $tasks = Task::orderBy('status', 'asc')->where('employee_id', $employee->id)->get();
          $myteams = [];
          $myTasks = [];
-      } elseif (auth()->user()->hasRole('Manager')) {
+      } elseif (auth()->user()->hasRole('Manager|Asst. Manager')) {
          $employee = Employee::where('nik', auth()->user()->username)->first();
          $myteams = [];
          $tasks = Task::where('department_id', $employee->department_id)->orderBy('status', 'asc')->get();

@@ -96,8 +96,8 @@ Payroll Transaction
                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                  <a class="dropdown-item" href="#" data-target="#modal-submit-tu" data-toggle="modal">Submit</a>
                  <hr>
-                 <a class="dropdown-item" href="#">Export Report BPJS KS</a>
-                 <a class="dropdown-item" href="#">Export Report BPJS KT</a>
+                 <a class="dropdown-item" href="#">Report BPJS KS</a>
+                 <a class="dropdown-item" href="#">Report BPJS KT</a>
                  <a class="dropdown-item" href="{{route('payroll.transaction.export', enkripRambo($unitTransaction->id))}}">Export </a>
                </div>
             </div>
