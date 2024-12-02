@@ -39,7 +39,7 @@ Task List
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($tasks->where('status', '!=', 2) as $task)
+                            @foreach ($tasks as $task)
                             <tr>
                                 <td class="text-truncate">
                                     {{$task->category}}
@@ -95,7 +95,7 @@ Task List
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($employee->tasks()->get()->where('status', '!=', 2) as $task)
+                                @foreach ($employee->tasks()->get() as $task)
                                     <tr>
                                         <td>{{$task->category}}
 
@@ -156,38 +156,38 @@ Task List
                         </thead>
                         <tbody>
                             
-                            @foreach ($myTasks->where('status', '!=', 2) as $mTask)
+                            @foreach ($tasks as $task)
                             <tr>
-                                <td>{{$mTask->category}}
-                                    @if ($mTask->newMessage() == 1)
+                                <td>{{$task->category}}
+                                    @if ($task->newMessage() == 1)
                                         <i class="fa fa-bell text-info"></i>
                                     @endif
                                 </td>
                                 <td>
-                                    <a href="{{route('task.detail', enkripRambo($mTask->id))}}">{{$mTask->plan}}</a>
-                                    {{-- @if ($mTask->status == 2)
-                                        [<small>{{$mTask->desc}}</small>]
+                                    <a href="{{route('task.detail', enkripRambo($task->id))}}">{{$task->plan}}</a>
+                                    {{-- @if ($task->status == 2)
+                                        [<small>{{$task->desc}}</small>]
                                     @endif --}}
                                 </td>
                                 
-                                <td>{{formatDate($mTask->target)}}</td>
+                                <td>{{formatDate($task->target)}}</td>
                                 <td>
-                                    @if ($mTask->closed)
-                                    {{formatDate($mTask->closed)}}
+                                    @if ($task->closed)
+                                    {{formatDate($task->closed)}}
                                     @else
                                     -
                                     @endif
                                 </td>
                                 <td>
-                                    @foreach ($mTask->employees()->get() as $emp)
+                                    @foreach ($task->employees()->get() as $emp)
                                     {{$emp->nik}}
                                     @endforeach
                                     
                                 </td>
                                 
-                                @if ($mTask->status == 0)
+                                @if ($task->status == 0)
                                     <td class="bg-danger text-light">Open</td>
-                                    @elseif($mTask->status == 1)
+                                    @elseif($task->status == 1)
                                     <td class="bg-info text-light">Progress</td>
                                     @else
                                     <td class="bg-success text-light">Closed</td>
@@ -198,7 +198,7 @@ Task List
 
 
                             @foreach ($myteams as $team)
-                                @foreach ($tasks->where('status', '!=', 2) as $task)
+                                @foreach ($tasks as $task)
                                 
                                     @if ($task->employee_id == $team->id )
                                     <tr>

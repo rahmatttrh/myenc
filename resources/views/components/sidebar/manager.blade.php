@@ -241,10 +241,11 @@
       <p>Anouncement</p>
    </a>
 </li>
+
+@endif
 <li class="nav-item {{ (request()->is('task/*')) ? 'active' : '' }}">
    <a href="{{route('task')}}">
       <i class="fas fa-calendar"></i>
       <p>Task</p>
    </a>
 </li>
-@endif

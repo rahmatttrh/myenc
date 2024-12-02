@@ -38,7 +38,7 @@ Task List History
                         </tr>
                         </thead>
                     <tbody>
-                        @foreach ($tasks->where('status', 2) as $task)
+                        @foreach ($historyTasks as $task)
                         <tr>
                         <td class="text-truncate">{{$task->category}}</td>
                         <td>
@@ -162,7 +162,7 @@ Task List History
                         <tbody>
                            
 
-                            @foreach ($myTasks->where('status', 2) as $mTask)
+                            @foreach ($myHistoryTasks as $mTask)
                             <tr>
                                 <td>{{$mTask->category}}</td>
                                 <td>
@@ -205,7 +205,7 @@ Task List History
 
 
                             @foreach ($myteams as $team)
-                                @foreach ($tasks->where('status', 2) as $task)
+                                @foreach ($historyTasks as $task)
                                 
                                     @if ($task->employee_id == $team->id )
                                     <tr>
