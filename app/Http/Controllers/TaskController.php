@@ -109,10 +109,12 @@ class TaskController extends Controller
    {
 
       if (auth()->user()->hasRole('Administrator')) {
+         // dd('ok');
          $employee = null;
          $historyTasks = Task::where('status', 2)->get();
          $myteams = [];
          $myTasks = [];
+         // dd($historyTasks);
       } elseif (auth()->user()->hasRole('Karyawan')) {
          $employee = Employee::where('nik', auth()->user()->username)->first();
          $historyTasks = Task::where('status', 2)->where('employee_id', $employee->id)->get();
@@ -152,8 +154,6 @@ class TaskController extends Controller
             }
             // $historyTasks = Task::where('status', 2)->where('department_id', $employee->department_id)->orderBy('status', 'asc')->get();
          }
-
-         // dd($myTasks);
       } else {
          $employee = Employee::where('nik', auth()->user()->username)->first();
          $myteams = EmployeeLeader::join('employees', 'employee_leaders.employee_id', '=', 'employees.id')
@@ -177,7 +177,7 @@ class TaskController extends Controller
          // 'tasks' => $tasks,
          'myteams' => $myteams,
          'myTasks' => $myTasks,
-         'historyTask' => $historyTasks
+         'historyTasks' => $historyTasks
       ])->with('i');
    }
 
