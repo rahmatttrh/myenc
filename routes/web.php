@@ -50,9 +50,11 @@ use App\Http\Controllers\TransactionReductionController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\FuncController;
+use App\Http\Controllers\PayrollApprovalController;
 use App\Http\Controllers\ReductionAdditionalController;
 use App\Http\Controllers\ReductionEmployeeController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\UnitTransactionController;
 use App\Models\Emergency;
 use App\Models\EmployeeLeader;
 use App\Models\Reduction;
@@ -138,10 +140,14 @@ Route::middleware(["auth"])->group(function () {
       Route::post('store', [ChatController::class, 'store'])->name('chat.store');
    });
 
+   Route::get('payroll/transaction/detail/{id}', [TransactionController::class, 'detail'])->name('payroll.transaction.detail');
+
+   Route::get('payroll/transaction/employee', [TransactionController::class, 'employee'])->name('payroll.transaction.employee');
 
 
 
-   Route::group(['middleware' => ['role:Administrator|HRD|HRD-Manager|HRD-Recruitment|HRD-Payroll|HRD-Spv']], function () {
+
+   Route::group(['middleware' => ['role:Administrator|BOD|HRD|HRD-Manager|HRD-Recruitment|HRD-Payroll|HRD-Spv']], function () {
       Route::prefix('announcement')->group(function () {
          Route::get('/', [AnnouncementController::class, 'index'])->name('announcement');
          Route::get('create', [AnnouncementController::class, 'create'])->name('announcement.create');
@@ -331,6 +337,8 @@ Route::middleware(["auth"])->group(function () {
             Route::get('/setup', [PayrollController::class, 'setup'])->name('payroll.setup');
          });
 
+
+
          Route::get('/report/index', [PayrollController::class, 'report'])->name('payroll.report');
          Route::post('/report/get', [PayrollController::class, 'getReport'])->name('payroll.report.get');
          Route::get('/detail/{id}', [PayrollController::class, 'detail'])->name('payroll.detail');
@@ -338,11 +346,17 @@ Route::middleware(["auth"])->group(function () {
          Route::prefix('transaction')->group(function () {
             Route::post('/add/master', [TransactionController::class, 'storeMaster'])->name('payroll.add.master.transaction');
             Route::get('/delete/master/{id}', [TransactionController::class, 'deleteMaster'])->name('payroll.delete.master.transaction');
-            Route::get('/monthly/{id}', [TransactionController::class, 'monthly'])->name('payroll.transaction.monthly');
+
+
+
+
             Route::get('/export/{id}', [TransactionController::class, 'export'])->name('payroll.transaction.export');
+            // Route::get('/export/bpjs/{id}', [TransactionController::class, 'export'])->name('payroll.transaction.export');
+
+
             Route::get('/monthly/all/{id}', [TransactionController::class, 'monthlyAll'])->name('payroll.transaction.monthly.all');
             Route::get('/index', [TransactionController::class, 'index'])->name('payroll.transaction');
-            Route::get('/detail/{id}', [TransactionController::class, 'detail'])->name('payroll.transaction.detail');
+            // Route::get('/detail/{id}', [TransactionController::class, 'detail'])->name('payroll.transaction.detail');
             Route::post('store', [TransactionController::class, 'store'])->name('payroll.transaction.store');
             Route::get('location/{unit}/{loc}', [TransactionController::class, 'location'])->name('transaction.location');
 
@@ -441,7 +455,26 @@ Route::middleware(["auth"])->group(function () {
 
    // Semua Role 
 
-   Route::group(['middleware' => ['role:Administrator|HRD|HRD-Manager|HRD-Recruitment|HRD-Spv|Karyawan|Manager|Asst. Manager|Supervisor|Leader']], function () {
+   Route::group(['middleware' => ['role:Administrator|BOD|HRD|HRD-Manager|HRD-Recruitment|HRD-Spv|Karyawan|Manager|Asst. Manager|Supervisor|Leader']], function () {
+
+      Route::prefix('payroll/approval')->group(function () {
+         Route::post('submit/master', [UnitTransactionController::class, 'submit'])->name('payroll.submit.master.transaction');
+
+
+         Route::get('hrd', [PayrollApprovalController::class, 'hrd'])->name('payroll.approval.hrd');
+         Route::post('approve/hrd', [PayrollApprovalController::class, 'approveHrd'])->name('payroll.approve.hrd');
+
+         Route::get('manfin', [PayrollApprovalController::class, 'manfin'])->name('payroll.approval.manfin');
+         Route::post('approve/manfin', [PayrollApprovalController::class, 'approveManfin'])->name('payroll.approve.manfin');
+
+         Route::get('gm', [PayrollApprovalController::class, 'gm'])->name('payroll.approval.gm');
+         Route::post('approve/gm', [PayrollApprovalController::class, 'approveGm'])->name('payroll.approve.gm');
+
+         Route::get('bod', [PayrollApprovalController::class, 'bod'])->name('payroll.approval.bod');
+         Route::post('approve/bod', [PayrollApprovalController::class, 'approveBod'])->name('payroll.approve.bod');
+      });
+
+      Route::get('payroll/transaction/monthly/{id}', [TransactionController::class, 'monthly'])->name('payroll.transaction.monthly');
 
       Route::prefix('employee')->group(function () {
          Route::put('update', [EmployeeController::class, 'update'])->name('employee.update');

@@ -22,6 +22,7 @@ use App\Models\SubDept;
 use App\Models\Task;
 use App\Models\Transaction;
 use App\Models\Unit;
+use App\Models\UnitTransaction;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -56,7 +57,7 @@ class HomeController extends Controller
       //    ]);
       // }
 
-      if (!auth()->user()->hasRole('Administrator|HRD-Manager|HRD|HRD-Spv|HRD-Recruitment|Manager|Asst. Manager|Supervisor|Leader|Karyawan')) {
+      if (!auth()->user()->hasRole('BOD|Administrator|HRD-Manager|HRD|HRD-Spv|HRD-Recruitment|Manager|Asst. Manager|Supervisor|Leader|Karyawan')) {
          // $id = auth()->user()->id;
          RoleEmptyUser;
          // dd('tidak ada role');
@@ -298,6 +299,43 @@ class HomeController extends Controller
             'alertContracts' => $alertContracts,
             'alertBirthdays' => $alertBirtdays
          ]);
+      } elseif (auth()->user()->hasRole('BOD')) {
+
+         $user = Employee::find(auth()->user()->getEmployeeId());
+         $employees = Employee::get();
+         $male = Biodata::where('gender', 'Male')->count();
+         $female = Biodata::where('gender', 'Female')->count();
+         $spkls = Spkl::orderBy('updated_at', 'desc')->paginate(5);
+         $sps = Sp::orderBy('updated_at', 'desc')->paginate(5);
+         $kontrak = Contract::where('status', 1)->where('type', 'Kontrak')->get()->count();
+         $tetap = Contract::where('status', 1)->where('type', 'Tetap')->get()->count();
+         $empty = Contract::where('type', null)->get()->count();
+         $logs = Log::where('department_id', $user->department_id)->orderBy('created_at', 'desc')->paginate(5);
+         $teams = EmployeeLeader::where('leader_id', $user->id)->get();
+         // dd($teams);
+         $pes = Pe::orderBy('updated_at', 'desc')->get();
+         $recentPes = Pe::orderBy('updated_at', 'desc')->paginate(8);
+
+         $payrollApprovals = UnitTransaction::where('status', 4)->get();
+
+         return view('pages.dashboard.bod', [
+            'user' => $user,
+            'employee' => $user,
+            'employees' => $employees,
+            'male' => $male,
+            'female' => $female,
+            'spkls' => $spkls,
+            'sps' => $sps,
+            'kontrak' => $kontrak,
+            'tetap' => $tetap,
+            'empty' => $empty,
+            'logs' => $logs,
+            'teams' => $teams,
+            'pes' => $pes,
+            'recentPes' => $recentPes,
+            'positions' => [],
+            'payrollApprovals' => $payrollApprovals
+         ]);
       } elseif (auth()->user()->hasRole('HRD-Manager|HRD')) {
 
          $user = Employee::find(auth()->user()->getEmployeeId());
@@ -329,6 +367,12 @@ class HomeController extends Controller
 
          // }
 
+         if ($employee->position_id = 57) {
+            $unitTransactionApproval = UnitTransaction::where('status', 1)->get();
+         } else {
+            $unitTransactionApproval = [];
+         }
+
 
 
 
@@ -350,7 +394,8 @@ class HomeController extends Controller
             'teams' => $teams,
             'pes' => $pes,
             'recentPes' => $recentPes,
-            'positions' => []
+            'positions' => [],
+            'payrollApprovals' => $unitTransactionApproval
          ]);
       } elseif (auth()->user()->hasRole('HRD-Spv')) {
          $user = Employee::find(auth()->user()->getEmployeeId());
@@ -517,6 +562,13 @@ class HomeController extends Controller
          }
 
 
+         if ($employee->nik == 11304) {
+            $payrollApprovals = UnitTransaction::where('status', 2)->get();
+         } elseif ($employee->nik == 'EN-2-006') {
+            $payrollApprovals = UnitTransaction::where('status', 3)->get();
+         } else {
+            $payrollApprovals = [];
+         }
 
 
          // dd(count($final));
@@ -538,6 +590,7 @@ class HomeController extends Controller
             'recentPes' => $recentPes,
             'spNotifs' => $spNotifs,
             'spManNotifs' => $spManNotifs,
+            'payrollApprovals' => $payrollApprovals,
 
             'broadcasts' => $broadcasts,
             'personals' => $personals
@@ -621,6 +674,10 @@ class HomeController extends Controller
 
          $peHistories = Pe::where('employe_id', $employee->id)->where('status', '>', 1)->paginate(3);
          $tasks = Task::where('employee_id', $employee->id)->get();
+
+         $now = Carbon::now();
+         $currentTransaction = Transaction::where('employee_id', $employee->id)->where('status', '>=', 5)->orderBy('cut_to', 'asc')->first();
+         // dd($currentTransaction);
          return view('pages.dashboard.employee', [
             'now' => $now,
             'employee' => $employee,
@@ -635,7 +692,8 @@ class HomeController extends Controller
             'personals' => $personals,
             'peHistories' => $peHistories,
             'tasks' => $tasks,
-            'absences' => $absences
+            'absences' => $absences,
+            'currentTransaction' => $currentTransaction
          ])->with('i');
       }
    }

@@ -66,7 +66,7 @@ Payroll Transaction
                            <td class="text-right" >{{formatRupiahB($trans->overtime)}}</td>
                            <td class="text-right">{{formatRupiahB($trans->total)}}</td>
                            {{-- <td>0</td> --}}
-                           <td>Draft</td>
+                           <td><x-status.transaction :trans="$trans" /> </td>
                            
                         </tr>
                         @endforeach

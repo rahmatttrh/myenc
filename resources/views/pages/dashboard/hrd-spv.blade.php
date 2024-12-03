@@ -7,8 +7,8 @@
    <div class="page-inner mt--5">
       <div class="page-header">
          <h5 class="page-title text-info">
-            <i class="fa fa-home"></i>
-            Dashboard
+            {{-- <i class="fa fa-home"></i> --}}
+            Welcome back, {{auth()->user()->getGender()}} {{auth()->user()->name}}
             
             
          </h5>

@@ -90,4 +90,18 @@ class User extends Authenticatable implements MustVerifyEmail
       // dd($biodata->email);
       return $employee->id;
    }
+
+   public function getGender()
+   {
+      $employee = Employee::where('nik', $this->username)->first();
+      if ($employee->biodata->gender == 'Male') {
+         $value = 'Mr. ';
+      } elseif ($employee->biodata->gender == 'Female') {
+         $value = 'Ms. ';
+      } else {
+         $value = ' ';
+      }
+
+      return $value;
+   }
 }

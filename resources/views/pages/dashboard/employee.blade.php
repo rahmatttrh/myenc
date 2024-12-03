@@ -14,8 +14,9 @@ Dashboard
 <div class="page-inner mt--5">
    <div class="page-header">
       <h5 class="page-title text-info">
-         <i class="fa fa-home"></i>
-         Dashboard
+         {{-- <i class="fa fa-home"></i> --}}
+         Welcome back, {{auth()->user()->getGender()}} {{auth()->user()->name}}
+         
          
       </h5>
    </div>
@@ -151,7 +152,7 @@ Dashboard
                   <div class="card-opening">
                      <h4>
                         <img src="{{asset('img/flaticon/promote.png')}}" height="28" alt="" class="mr-1">
-                        <b>Broadcast</b>
+                        <b>Broadcast dari HRD</b>
                      </h4>
                   </div>
                   {{-- <hr> --}}
@@ -160,7 +161,7 @@ Dashboard
                      {{-- <div class="text-truncate" style="max-width: 200px">
                         {{strip_tags($broad->body)}}
                      </div> --}}
-                     <a href="{{route('announcement.detail', enkripRambo($broad->id))}}">Click here</a> to see more detail
+                     <a href="{{route('announcement.detail', enkripRambo($broad->id))}}">Klik Disini</a> untuk melihat lebih detail
                      
                   </div>
                </div>
@@ -183,7 +184,7 @@ Dashboard
                   <div class="card-desc">
                      
                      {{$pers->title}}.
-                     <a href="{{route('announcement.detail', enkripRambo($pers->id))}}">Click here</a> to see more detail
+                     <a href="{{route('announcement.detail', enkripRambo($pers->id))}}">Klik Disini</a> untuk melihat lebih detail
                         <hr>
                         <small class="text-muted">* Ini adalah pesan personal yang hanya dikirim ke anda</small>
                   </div>
@@ -215,6 +216,26 @@ Dashboard
             </div>
             <hr>
          </div>
+         @endif
+
+         @if ($currentTransaction)
+           
+            <div class="d-none d-sm-block">
+               <div class="alert alert-info shadow-sm">
+   
+                  <div class="card-opening">
+                     <h4>
+                        <img src="{{asset('img/flaticon/budget.png')}}" height="28" alt="" class="mr-1">
+                        <b>Slip Gaji {{$currentTransaction->month}}</b> sudah terbit ! 
+                     </h4>
+                  </div>
+                  {{-- <hr> --}}
+                  <div class="card-desc">
+                     <a href="{{route('payroll.transaction.detail', enkripRambo($currentTransaction->id))}}">Klik Disini</a> untuk melihat lebih detail
+                     
+                  </div>
+               </div>
+            </div>
          @endif
 
          {{-- <span class="badge badge-info mb-2">{{$now->format('F')}} 2024</span> <br> --}}

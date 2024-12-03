@@ -8,7 +8,7 @@
       <div class="page-header">
          <h5 class="page-title text-info">
             {{-- <i class="fa fa-home"></i> --}}
-            Welcome back, {{auth()->user()->getGender()}} {{auth()->user()->name}}
+            Welcome back, Mr. {{auth()->user()->name}}
             
             
          </h5>
@@ -16,28 +16,26 @@
       <div class="row">
         
          <div class="col-md-4">
-            <div class="card card-primary">
-               {{-- <div class="card-header">
-                  Dashboard SPV
-               </div> --}}
-               <div class="card-body">
-                  {{-- <span class="badge badge-dark">Level :</span> --}}
-                  <x-role />
-                  <hr>
-                  
-                  {{-- Dashboard HRD <hr class="bg-white"> --}}
-                  <b>{{$employee->unit->name}}</b> - {{$employee->department->name}}<br>
-                   
-                  {{$employee->position->name}}
-                  
-                  {{-- @if (auth()->user()->hasRole('HRD'))
-                     HRD
-                  @endif
-                  @if (auth()->user()->hasRole('Supervisor'))
-                     SPV
-                  @endif --}}
+            
+            <a href="{{route('payroll.approval.hrd')}}">
+               <div class="card card-stats card-primary card-round">
+                  <div class="card-body">
+                     <div class="row">
+                        <div class="col-3">
+                           <div class="icon-big text-center">
+                              <i class="flaticon-interface-6"></i>
+                           </div>
+                        </div>
+                        <div class="col col-stats">
+                           <div class="numbers">
+                              <p class="card-category">Payroll Approval</p>
+                              <h4 class="card-title">{{count($payrollApprovals)}}</h4>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
                </div>
-            </div>
+            </a>
             <div class="row">
                <div class="col">
                   <div class="card">
@@ -171,7 +169,7 @@
          </div>
          <div class="col-md-8">
 
-            <div class="row">
+            {{-- <div class="row">
                <div class="col-md-4">
                   <div class="card card-stats card-primary card-round">
                      <div class="card-body">
@@ -184,7 +182,7 @@
                            <div class="col col-stats">
                               <div class="numbers">
                                  <p class="card-category">QPE Approval</p>
-                                 <h4 class="card-title">0 (Disabled)</h4>
+                                 <h4 class="card-title">3</h4>
                               </div>
                            </div>
                         </div>
@@ -226,14 +224,14 @@
                            <div class="col col-stats">
                               <div class="numbers">
                                  <p class="card-category">SP Approval</p>
-                                 <h4 class="card-title">0 (Disabled)</h4>
+                                 <h4 class="card-title">3</h4>
                               </div>
                            </div>
                         </div>
                      </div>
                   </div>
                </div>
-            </div>
+            </div> --}}
             
             <div class="card">
                <div class="card-header d-flex justify-content-between p-2 bg-primary text-white">

@@ -8,6 +8,8 @@
    Manager
    @elseif ($employee->user->hasRole('Asst. Manager'))
     Asst. Manager
+    @elseif ($employee->user->hasRole('BOD'))
+    BOD
     @else
     Empty
 @endif

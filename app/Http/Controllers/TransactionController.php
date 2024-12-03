@@ -9,6 +9,7 @@ use App\Models\Employee;
 use App\Models\Location;
 use App\Models\Overtime;
 use App\Models\Payroll;
+use App\Models\PayrollApproval;
 use App\Models\Reduction;
 use App\Models\ReductionAdditional;
 use App\Models\ReductionEmployee;
@@ -25,7 +26,7 @@ use Maatwebsite\Excel\Facades\Excel;
 class TransactionController extends Controller
 {
 
-  
+
    public function index()
    {
       $employees = Employee::get();
@@ -33,12 +34,12 @@ class TransactionController extends Controller
       $units = Unit::get();
       $firstUnit = Unit::get()->first();
 
-      foreach($transactions as $tran){
+      foreach ($transactions as $tran) {
          $this->calculateTotalTransaction($tran, $tran->cut_from, $tran->cut_to);
       }
 
       $unitTransactions = UnitTransaction::get();
-      foreach($unitTransactions as $unitTrans){
+      foreach ($unitTransactions as $unitTrans) {
          $transactionUnits = Transaction::where('unit_transaction_id', $unitTrans->id)->get();
 
          $unitTrans->update([
@@ -54,7 +55,18 @@ class TransactionController extends Controller
       ])->with('i');
    }
 
-  
+
+   public function employee()
+   {
+      $employee = Employee::where('nik', auth()->user()->username)->first();
+
+      $transactions = Transaction::where('employee_id', $employee->id)->where('status', '>=', 5)->get();
+      return view('pages.payroll.employee', [
+         'transactions' => $transactions
+      ]);
+   }
+
+
    public function detail($id)
    {
 
@@ -85,7 +97,7 @@ class TransactionController extends Controller
       $izins = $employee->absences->where('month', $transaction->month)->where('year', $transaction->year)->where('type', 3);
       // dd($alphas);
       // dd('ok');
-      
+
 
       // $reduction = $transaction->reductions->where('type', 'employee')->sum('value') + $reductionAlpha;
       $additionals = Additional::where('employee_id', $employee->id)->where('month', $transaction->month)->where('year', $transaction->year)->get();
@@ -93,11 +105,11 @@ class TransactionController extends Controller
       $alphas = $employee->absences->where('date', '>=', $from)->where('date', '<=', $to)->where('year', $transaction->year)->where('type', 1);
       $lates = $employee->absences->where('date', '>=', $from)->where('date', '<=', $to)->where('year', $transaction->year)->where('type', 2);
       $totalMinuteLate = $lates->sum('minute');
-      
+
       // dd(1 * 1/30 * $payroll->total);
-      foreach($alphas as $alpha){
+      foreach ($alphas as $alpha) {
          $alpha->update([
-            'value' => 1 * 1/30 * $payroll->total
+            'value' => 1 * 1 / 30 * $payroll->total
          ]);
       }
       // dd($alphas);
@@ -132,27 +144,27 @@ class TransactionController extends Controller
       ]);
    }
 
-   
+
    public function storeMaster(Request $req)
-   { 
+   {
       $unit = Unit::find($req->unit);
       $employees = Employee::where('unit_id', $unit->id)->where('status', 1)->get();
       $current = UnitTransaction::where('unit_id', $unit->id)->where('month', $req->month)->where('year', $req->year)->first();
       if ($current) {
          return redirect()->back()->with('danger', 'Slip Gaji ' . $unit->name . ' Bulan ' . $req->month . ' ' . $req->year . ' sudah ada');
-      } 
+      }
       $totalSalary = 0;
       $totalEmployee = 0;
 
-      foreach($employees as $employee){
+      foreach ($employees as $employee) {
          if ($employee->payroll_id != null) {
             if ($employee->contract->loc == null) {
-               return redirect()->back()->with('danger', 'Data Lokasi Kerja Kosong '. $employee->nik . ' ' . $employee->biodata->fullName());
+               return redirect()->back()->with('danger', 'Data Lokasi Kerja Kosong ' . $employee->nik . ' ' . $employee->biodata->fullName());
             }
          }
       }
 
-      
+
 
       $unitTransaction = UnitTransaction::create([
          'status' => 0,
@@ -165,16 +177,15 @@ class TransactionController extends Controller
          'total_salary' => $totalSalary
       ]);
 
-      foreach($employees as $emp){
+      foreach ($employees as $emp) {
          if ($emp->payroll_id != null) {
             $totalSalary = $totalSalary + $emp->payroll->total;
             $totalEmployee = $totalEmployee + 1;
-            
+
             $empTransaction = Transaction::where('employee_id', $emp->id)->where('month', $req->month)->first();
             if (!$empTransaction) {
                $this->store($emp, $req, $unitTransaction);
             }
-            
          }
       }
 
@@ -191,23 +202,24 @@ class TransactionController extends Controller
       // dd($totalSalary);
    }
 
-   public function deleteMaster($id){
+   public function deleteMaster($id)
+   {
       // dd('delete');
       $unitTransaction = UnitTransaction::find(dekripRambo($id));
       $transactions = Transaction::where('unit_transaction_id', $unitTransaction->id)->get();
 
-      foreach($transactions as $tran){
+      foreach ($transactions as $tran) {
          $details = TransactionDetail::where('transaction_id', $tran->id)->get();
          $overtimes = TransactionOvertime::where('transaction_id', $tran->id)->get();
          $reductions = TransactionReduction::where('transaction_id', $tran->id)->get();
 
-         foreach($details as $detail){
+         foreach ($details as $detail) {
             $detail->delete();
          }
-         foreach($overtimes as $overtime){
+         foreach ($overtimes as $overtime) {
             $overtime->delete();
          }
-         foreach($reductions as $reduction){
+         foreach ($reductions as $reduction) {
             $reduction->delete();
          }
 
@@ -221,7 +233,9 @@ class TransactionController extends Controller
       return redirect()->back()->with('success', 'Data Transaction successfully deleted');
    }
 
-   public function monthly($id){
+   public function monthly($id)
+   {
+
       $unitTransaction = UnitTransaction::find(dekripRambo($id));
       $unit = Unit::find($unitTransaction->unit_id);
       $units = Unit::get();
@@ -229,13 +243,26 @@ class TransactionController extends Controller
       $firstLoc = Location::orderBy('id', 'asc')->first();
       $transactions = Transaction::where('unit_id', $unit->id)->where('month', $unitTransaction->month)->where('year', $unitTransaction->year)->get();
 
+      $manhrd = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'man-hrd')->where('type', 'approve')->first();
+      $manfin = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'man-fin')->where('type', 'approve')->first();
+      $gm = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'gm')->where('type', 'approve')->first();
+      $bod = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'bod')->where('type', 'approve')->first();
+
+
+      // dd($manhrd);
+
       return view('pages.payroll.transaction.monthly-loc', [
          'unit' => $unit,
          'units' => $units,
          'locations' => $locations,
          'firstLoc' => $firstLoc,
          'unitTransaction' => $unitTransaction,
-         'transactions' => $transactions
+         'transactions' => $transactions,
+
+         'manhrd' => $manhrd,
+         'manfin' => $manfin,
+         'gm' => $gm,
+         'bod' => $bod,
       ])->with('i');
    }
 
@@ -264,7 +291,7 @@ class TransactionController extends Controller
       $firstLoc = Location::orderBy('id', 'asc')->first();
       $transactions = Transaction::where('unit_id', $unit->id)->where('month', $unitTransaction->month)->where('year', $unitTransaction->year)->get();
 
-      
+
       return view('pages.payroll.transaction.monthly-all', [
          'unit' => $unit,
          'units' => $units,
@@ -277,19 +304,20 @@ class TransactionController extends Controller
       ])->with('i');
    }
 
-   public function export($id){
+   public function export($id)
+   {
       $unitTransaction = UnitTransaction::find(dekripRambo($id));
-      return Excel::download(new TransactionExport($unitTransaction), 'Transaction ' . $unitTransaction->unit->name . ' ' . $unitTransaction->month . ' ' . $unitTransaction->year .'.xlsx');
+      return Excel::download(new TransactionExport($unitTransaction), 'Transaction ' . $unitTransaction->unit->name . ' ' . $unitTransaction->month . ' ' . $unitTransaction->year . '.xlsx');
    }
 
-   
+
    public function store($emp, $req, $unitTransaction)
    {
       $employee = Employee::find($emp->id);
       $payroll = Payroll::find($employee->payroll_id);
       $locations = Location::get();
 
-      foreach($locations as $loc){
+      foreach ($locations as $loc) {
          if ($loc->code == $employee->contract->loc) {
             $location = $loc->id;
          }
@@ -310,7 +338,7 @@ class TransactionController extends Controller
       $transaction = Transaction::create([
          'status' => 0,
          'unit_transaction_id' => $unitTransaction->id,
-         'unit_id' => $emp->unit_id, 
+         'unit_id' => $emp->unit_id,
          'location_id' => $location,
          'employee_id' => $employee->id,
          'payroll_id' => $payroll->id,
@@ -394,7 +422,7 @@ class TransactionController extends Controller
 
          // $reductionEmployee = ReductionEmployee::where('reduction_id', $red->id)->where('employee_id', $employee->id)->first();
          // if ($reductionEmployee->status == 1) {
-            
+
          // }
 
          if ($red->status == 1) {
@@ -457,12 +485,12 @@ class TransactionController extends Controller
 
       $overtimes = Overtime::where('date', '>=', $from)->where('date', '<=', $to)->where('employee_id', $employee->id)->get();
       // dd($from);
-      
+
       $alphas = $employee->absences->where('date', '>=', $from)->where('date', '<=', $to)->where('year', $transaction->year)->where('type', 1);
-      foreach($alphas as $alpha){
-         
+      foreach ($alphas as $alpha) {
+
          $alpha->update([
-            'value' => 1 * 1/30 * $payroll->total
+            'value' => 1 * 1 / 30 * $payroll->total
          ]);
       }
       $totalAlpha = $alphas->sum('value');
@@ -481,9 +509,9 @@ class TransactionController extends Controller
       // dd($totalKeterlambatan);
 
       if ($totalKeterlambatan == 6) {
-         $potongan = 1 * 1/30 * $payroll->total;
-      } elseif($totalKeterlambatan > 6){
-         $potongan = $totalKeterlambatan - 1 * 1/5 * $payroll->total;
+         $potongan = 1 * 1 / 30 * $payroll->total;
+      } elseif ($totalKeterlambatan > 6) {
+         $potongan = $totalKeterlambatan - 1 * 1 / 5 * $payroll->total;
       } else {
          $potongan = 0;
       }
@@ -506,7 +534,7 @@ class TransactionController extends Controller
       $redAdditionals = ReductionAdditional::where('employee_id', $employee->id)->get();
 
 
-      $totalReduction = $transaction->reductions->where('type', 'employee')->sum('value');  
+      $totalReduction = $transaction->reductions->where('type', 'employee')->sum('value');
       // dd($totalReduction);
       $totalOvertime = $overtimes->sum('rate');
       $totalReductionAbsence = $totalAlpha + $potongan;

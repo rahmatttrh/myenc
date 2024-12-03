@@ -11,9 +11,14 @@ Dashboard
    }
 </style>
 <div class="page-inner mt--5">
-   {{-- <div class="page-header">
-      <h4 class="page-title">Dashboard</h4>
-   </div> --}}
+   <div class="page-header">
+      <h5 class="page-title text-info">
+         {{-- <i class="fa fa-home"></i> --}}
+         Welcome back, {{auth()->user()->getGender()}} {{auth()->user()->name}}
+         
+         
+      </h5>
+   </div>
    <div class="row">
       <div class="col-md-4">
          {{-- <div class="btn btn-primary btn-block">Manager</div>
@@ -235,6 +240,59 @@ Dashboard
                   
                      {{-- <small class="text-muted">* Ini adalah pesan personal yang hanya dikirim ke anda</small> --}}
                </div>
+            </div>
+         </div>
+         @endif
+
+         @if (auth()->user()->username == 11304 )
+         <div class="row">
+            <div class="col-md-4">
+               <a href="{{route('payroll.approval.manfin')}}">
+                  <div class="card card-stats card-primary card-round">
+                     <div class="card-body">
+                        <div class="row">
+                           <div class="col-3">
+                              <div class="icon-big text-center">
+                                 <i class="flaticon-interface-6"></i>
+                              </div>
+                           </div>
+                           <div class="col col-stats">
+                              <div class="numbers">
+                                 <p class="card-category">Payroll Approval</p>
+                                 <h4 class="card-title">{{count($payrollApprovals)}}</h4>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </a>
+            </div>
+         </div>
+         
+         @endif
+
+         @if ( auth()->user()->username == 'EN-2-006')
+         <div class="row">
+            <div class="col-md-4">
+               <a href="{{route('payroll.approval.gm')}}">
+                  <div class="card card-stats card-primary card-round">
+                     <div class="card-body">
+                        <div class="row">
+                           <div class="col-3">
+                              <div class="icon-big text-center">
+                                 <i class="flaticon-interface-6"></i>
+                              </div>
+                           </div>
+                           <div class="col col-stats">
+                              <div class="numbers">
+                                 <p class="card-category">Payroll Approval</p>
+                                 <h4 class="card-title">{{count($payrollApprovals)}}</h4>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </a>
             </div>
          </div>
          @endif

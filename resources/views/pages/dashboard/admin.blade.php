@@ -5,11 +5,11 @@ Dashboard
 @section('content')
 <div class="page-inner mt--5">
    <div class="page-header">
-      <h5 class="page-title">
-         <i class="fa fa-home"></i>
-         Dashboard Administrator
-
-
+      <h5 class="page-title text-info">
+         {{-- <i class="fa fa-home"></i> --}}
+         Welcome back, Mr. {{auth()->user()->name}}
+         
+         
       </h5>
    </div>
    {{-- <div class="row">

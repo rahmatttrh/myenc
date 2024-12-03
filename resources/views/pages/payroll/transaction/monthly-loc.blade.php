@@ -80,10 +80,31 @@ Payroll Transaction
          <div>
             <h4 class="text-uppercase"><b>{{$unit->name}}</b> {{$unitTransaction->month}} {{$unitTransaction->year}}</h4>
             <h1><b> {{formatRupiahB($unit->getUnitTransaction($unitTransaction)->sum('total'))}}</b></h1>
-            <small>STATUS : DRAFT</small> <br>
+            <small>STATUS : <span class="text-uppercase"> <x-status.unit-transaction :unittrans="$unitTransaction"/> </span></small> <br>
             
          </div>
          <div class="d-flex">
+            <div class="mr-2">
+            @if (auth()->user()->hasRole("HRD") && $unitTransaction->status == 1)
+                <a href="#" class="btn btn-primary" data-target="#modal-approve-hrd-tu" data-toggle="modal">Approve</a>
+                <a href="" class="btn btn-danger">Reject</a>
+            @endif
+
+            @if (auth()->user()->username == '11304' && $unitTransaction->status == 2)
+               <a href="#" class="btn btn-primary" data-target="#modal-approve-fin-tu" data-toggle="modal">Approve</a>
+               <a href="" class="btn btn-danger">Reject</a>
+            @endif
+
+            @if (auth()->user()->username == 'EN-2-006' && $unitTransaction->status == 3)
+               <a href="#" class="btn btn-primary" data-target="#modal-approve-gm-tu" data-toggle="modal">Approve</a>
+               <a href="" class="btn btn-danger">Reject</a>
+            @endif
+
+            @if (auth()->user()->username == 'BOD-002' && $unitTransaction->status == 4)
+               <a href="#" class="btn btn-primary" data-target="#modal-approve-bod-tu" data-toggle="modal">Approve</a>
+               <a href="" class="btn btn-danger">Reject</a>
+            @endif
+            </div>
             
             {{-- <a href="{{route('payroll.transaction.export', enkripRambo($unitTransaction->id))}}" class="btn btn-light border"><i class="fa fa-file"></i> Export Report BPJS KT</a>
             <a href="{{route('payroll.transaction.export', enkripRambo($unitTransaction->id))}}" class="btn btn-light border"><i class="fa fa-file"></i> Export Report BPJS KS</a>
@@ -94,8 +115,11 @@ Payroll Transaction
                  Option
                </button>
                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                 <a class="dropdown-item" href="#" data-target="#modal-submit-tu" data-toggle="modal">Submit</a>
-                 <hr>
+                  @if ($unitTransaction->status == 0)
+                  <a class="dropdown-item" href="#" data-target="#modal-submit-tu" data-toggle="modal">Submit</a>
+                  <hr>
+                  @endif
+                 
                  <a class="dropdown-item" href="#">Report BPJS KS</a>
                  <a class="dropdown-item" href="#">Report BPJS KT</a>
                  <a class="dropdown-item" href="{{route('payroll.transaction.export', enkripRambo($unitTransaction->id))}}">Export </a>
@@ -105,6 +129,76 @@ Payroll Transaction
          
           
              
+      </div>
+      <div class="card-header">
+         <div class="hori-timeline" dir="ltr">
+            <ul class="list-inline events">
+                
+                <li class="list-inline-item event-list">
+                    <div class="px-4">
+                     
+                     @if ($manhrd)
+                        <div class="event-date bg-primary text-white">MANAGER HRD</div>
+                        <h5 class="font-size-16">{{formatDateTime($manhrd->created_at)}}</h5>
+                        
+                        @else  
+                        <div class="event-date bg-light border">HRD MANAGER</div>
+                        <h5 class="font-size-16">Timestamp</h5>
+                        
+                     @endif
+                        
+                        {{-- <p class="text-muted">Everyone realizes why a new common language one could refuse translators.</p> --}}
+                        {{-- <div>
+                            <a href="#" class="btn btn-primary btn-sm">Read more</a>
+                        </div> --}}
+                    </div>
+                </li>
+                <li class="list-inline-item event-list">
+                    <div class="px-4">
+                     @if ($manfin)
+                        <div class="event-date bg-primary text-white">MANAGER FINANCE</div>
+                        <h5 class="font-size-16">{{formatDateTime($manfin->created_at)}}</h5>
+                        
+                        @else  
+                        <div class="event-date bg-light border">MANAGER FINANCE</div>
+                        <h5 class="font-size-16">Waiting</h5>
+                        
+                     @endif
+                        {{-- <p class="text-muted">If several languages coalesce the grammar of the resulting simple and regular</p>
+                        <div>
+                            <a href="#" class="btn btn-primary btn-sm">Read more</a>
+                        </div> --}}
+                    </div>
+                </li>
+                <li class="list-inline-item event-list">
+                    <div class="px-4">
+                     @if ($gm)
+                        <div class="event-date bg-primary text-white">GENERAL MANAGER</div>
+                        <h5 class="font-size-16">{{formatDateTime($gm->created_at)}}</h5>
+                        
+                        @else  
+                        <div class="event-date bg-light border">GENERAL MANAGER</div>
+                        <h5 class="font-size-16">Waiting</h5>
+                        
+                     @endif
+                    </div>
+                </li>
+                <li class="list-inline-item event-list">
+                   <div class="px-4">
+                     @if ($bod)
+                        <div class="event-date bg-primary text-white">DIREKSI / BOD</div>
+                        <h5 class="font-size-16">{{formatDateTime($bod->created_at)}}</h5>
+                        
+                        @else  
+                        <div class="event-date bg-light border">DIREKSI <br><br> </div>
+                        <h5 class="font-size-16">Waiting</h5>
+                        
+                     @endif
+                   </div>
+               </li>
+                
+            </ul>
+        </div>
       </div>
       <div class="card-body p-0">
          <div class="table-responsive" style="overflow-x: auto;">
@@ -135,6 +229,7 @@ Payroll Transaction
                      
                   </tr>
                </thead>
+
                <tbody>
                   @foreach ($locations as $loc)
                      @if ($loc->totalEmployee($unit->id) > 0)
@@ -247,52 +342,7 @@ Payroll Transaction
       <div class="card-body">
           {{-- <h4 class="card-title mb-5">Horizontal Timeline</h4> --}}
 
-          <div class="hori-timeline" dir="ltr">
-              <ul class="list-inline events">
-                  
-                  <li class="list-inline-item event-list">
-                      <div class="px-4">
-                          <div class="event-date bg-secondary text-white">HRD MANAGER</div>
-                          <h5 class="font-size-16">Event Two</h5>
-                          {{-- <p class="text-muted">Everyone realizes why a new common language one could refuse translators.</p> --}}
-                          {{-- <div>
-                              <a href="#" class="btn btn-primary btn-sm">Read more</a>
-                          </div> --}}
-                      </div>
-                  </li>
-                  <li class="list-inline-item event-list">
-                      <div class="px-4">
-                          <div class="event-date bg-danger text-white">FINANCE MANAGER</div>
-                          <h5 class="font-size-16">Event Three</h5>
-                          {{-- <p class="text-muted">If several languages coalesce the grammar of the resulting simple and regular</p>
-                          <div>
-                              <a href="#" class="btn btn-primary btn-sm">Read more</a>
-                          </div> --}}
-                      </div>
-                  </li>
-                  <li class="list-inline-item event-list">
-                      <div class="px-4">
-                          <div class="event-date bg-info text-white">GENERAL MANAGER</div>
-                          <h5 class="font-size-16">Event Four</h5>
-                          {{-- <p class="text-muted">Languages only differ in their pronunciation and their most common words.</p>
-                          <div>
-                              <a href="#" class="btn btn-primary btn-sm">Read more</a>
-                          </div> --}}
-                      </div>
-                  </li>
-                  <li class="list-inline-item event-list">
-                     <div class="px-4">
-                         <div class="event-date bg-primary text-white">DIREKSI</div>
-                         <h5 class="font-size-16">Event One</h5>
-                         {{-- <p class="text-muted">It will be as simple as occidental in fact it will be Occidental Cambridge friend</p> --}}
-                         {{-- <div>
-                             <a href="#" class="btn btn-primary btn-sm">Read more</a>
-                         </div> --}}
-                     </div>
-                 </li>
-                  
-              </ul>
-          </div>
+          
       </div>
    </div>
    
@@ -335,16 +385,124 @@ Payroll Transaction
             <span aria-hidden="true">&times;</span>
             </button>
          </div>
-         <form action="{{route('position.store')}}" method="POST" >
+         <form action="{{route('payroll.submit.master.transaction')}}" method="POST" >
             <div class="modal-body">
                @csrf
-               <input type="text" value="{{$unitTransaction->id}}" name="subdept" id="subdept" hidden>
+               <input type="text" value="{{$unitTransaction->id}}" name="unitTransactionId" id="unitTransactionId" hidden>
                <span>Submit this Report and send to HRD Manager?</span>
                   
             </div>
             <div class="modal-footer">
                <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
                <button type="submit" class="btn btn-primary ">Submit</button>
+            </div>
+         </form>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="modal-approve-hrd-tu" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Confirm<br>
+               
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <form action="{{route('payroll.approve.hrd')}}" method="POST" >
+            <div class="modal-body">
+               @csrf
+               <input type="text" value="{{$unitTransaction->id}}" name="unitTransactionId" id="unitTransactionId" hidden>
+               <span>Approve this Report and send to Manager Finance?</span>
+                  
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+               <button type="submit" class="btn btn-primary ">Approve</button>
+            </div>
+         </form>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="modal-approve-fin-tu" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Confirm<br>
+               
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <form action="{{route('payroll.approve.manfin')}}" method="POST" >
+            <div class="modal-body">
+               @csrf
+               <input type="text" value="{{$unitTransaction->id}}" name="unitTransactionId" id="unitTransactionId" hidden>
+               <span>Approve this Report and send to General Manager?</span>
+                  
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+               <button type="submit" class="btn btn-primary ">Approve</button>
+            </div>
+         </form>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="modal-approve-gm-tu" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Confirm<br>
+               
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <form action="{{route('payroll.approve.gm')}}" method="POST" >
+            <div class="modal-body">
+               @csrf
+               <input type="text" value="{{$unitTransaction->id}}" name="unitTransactionId" id="unitTransactionId" hidden>
+               <span>Approve this Report and send to Direksi/BOD?</span>
+                  
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+               <button type="submit" class="btn btn-primary ">Approve</button>
+            </div>
+         </form>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="modal-approve-bod-tu" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Confirm<br>
+               
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <form action="{{route('payroll.approve.bod')}}" method="POST" >
+            <div class="modal-body">
+               @csrf
+               <input type="text" value="{{$unitTransaction->id}}" name="unitTransactionId" id="unitTransactionId" hidden>
+               <span>Approve this Payroll Report ?</span>
+                  
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+               <button type="submit" class="btn btn-primary ">Approve</button>
             </div>
          </form>
       </div>

@@ -958,6 +958,7 @@ class EmployeeController extends Controller
    {
       $employee = Employee::find($req->employee);
       $role = Role::find($req->role);
+      // dd($role);
       $user = User::where('username', $employee->nik)->first();
 
 

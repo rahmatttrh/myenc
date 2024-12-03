@@ -59,7 +59,7 @@ Payroll Transaction
                            <td>{{$trans->year}}</td>
                            <td class="text-center">{{$trans->total_employee}} / {{count($trans->unit->employees->where('status', 1))}}</td>
                            <td class="text-right">{{formatRupiahB($trans->total_salary)}}</td>
-                           <td>Draft</td>
+                           <td><x-status.unit-transaction :unittrans="$trans" /> </td>
                            <td>
                               <a href="{{route('payroll.transaction.monthly.all', enkripRambo($trans->id))}}">Detail</a> 
                               | <a href="{{route('payroll.transaction.monthly', enkripRambo($trans->id))}}">Report</a> | <a href="#" data-target="#modal-delete-master-transaction-{{$trans->id}}" data-toggle="modal">Delete</a>

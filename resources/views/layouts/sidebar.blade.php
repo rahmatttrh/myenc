@@ -56,6 +56,10 @@
                <x-sidebar.administrator />
             @endif
 
+            @if (auth()->user()->hasRole('BOD'))
+               <x-sidebar.bod />
+            @endif
+
             @if (auth()->user()->hasRole('HRD&Supervisor'))
                <x-sidebar.hrd-spv />
                

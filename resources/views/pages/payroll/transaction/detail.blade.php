@@ -62,7 +62,10 @@ Detail Transaction Payroll Employee
             </div>
           
             <div class="card-body">
-               <h2>{{formatRupiah($transaction->total ?? 0)}}</h2>
+               <h2><b>{{formatRupiah($transaction->total ?? 0)}}</b></h2>
+            </div>
+            <div class="card-footer">
+               Status : <x-status.transaction :trans="$transaction" />
             </div>
             {{-- <div class="card-footer d-flex justify-content-between">
                <div>
@@ -296,34 +299,38 @@ Detail Transaction Payroll Employee
                                     </tbody>
                                  </table>
                               </div>
-                              <div class="col-xl-6">
-                                 <table class="">
-                                    <thead>
-                                       <tr>
-                                          <th colspan="3">Real</th>
-                                       </tr>
-                                    </thead>
-                                    <tbody>
-                                       @foreach ($transaction->reductions->where('class', 'Default')->where('type', 'employee') as $red)
-                                           
-                                           @if ($red->value_real != 0)
-                                           <tr>
-                                             <td class="text-right ">{{$red->name}}</td>
-                                             <td class="text-right  text-danger">{{formatRupiah($red->value_real)}}</td>
-                                           </tr>
-                                           @endif
-                                           
-                                       @endforeach
-                                       <tr>
-                                          <td class="text-right"><b>Total</b></td>
-                                          <td class="text-right"><b>{{formatRupiah($transaction->reductions->where('type', 'employee')->where('class', 'Default')->sum('value_real'))}}</b></td>
-                                       </tr>
-                                       
-                                       
-                                       
-                                    </tbody>
-                                 </table>
-                              </div>
+                              @if (auth()->user()->hasRole('Karyawan'))
+                                  @else
+                                  <div class="col-xl-6">
+                                    <table class="">
+                                       <thead>
+                                          <tr>
+                                             <th colspan="3">Real</th>
+                                          </tr>
+                                       </thead>
+                                       <tbody>
+                                          @foreach ($transaction->reductions->where('class', 'Default')->where('type', 'employee') as $red)
+                                              
+                                              @if ($red->value_real != 0)
+                                              <tr>
+                                                <td class="text-right ">{{$red->name}}</td>
+                                                <td class="text-right  text-danger">{{formatRupiah($red->value_real)}}</td>
+                                              </tr>
+                                              @endif
+                                              
+                                          @endforeach
+                                          <tr>
+                                             <td class="text-right"><b>Total</b></td>
+                                             <td class="text-right"><b>{{formatRupiah($transaction->reductions->where('type', 'employee')->where('class', 'Default')->sum('value_real'))}}</b></td>
+                                          </tr>
+                                          
+                                          
+                                          
+                                       </tbody>
+                                    </table>
+                                 </div>
+                              @endif
+                              
 
 
 
@@ -381,10 +388,10 @@ Detail Transaction Payroll Employee
                            
                            <hr>
                            <p>
-                              <a class="btn btn-light btn-sm border" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                              {{-- <a class="btn btn-light btn-sm border" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
                                 #Info
                               </a>
-                              
+                               --}}
                             </p>
                             <div class="collapse" id="collapseExample">
                               <table>
