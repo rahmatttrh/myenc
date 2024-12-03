@@ -458,7 +458,7 @@ Route::middleware(["auth"])->group(function () {
    Route::group(['middleware' => ['role:Administrator|BOD|HRD|HRD-Manager|HRD-Recruitment|HRD-Spv|Karyawan|Manager|Asst. Manager|Supervisor|Leader']], function () {
 
       Route::prefix('payroll/approval')->group(function () {
-         Route::post('submit/master', [UnitTransactionController::class, 'submit'])->name('payroll.submit.master.transaction');
+         Route::post('submit/master', [PayrollApprovalController::class, 'submit'])->name('payroll.submit.master.transaction');
 
 
          Route::get('hrd', [PayrollApprovalController::class, 'hrd'])->name('payroll.approval.hrd');

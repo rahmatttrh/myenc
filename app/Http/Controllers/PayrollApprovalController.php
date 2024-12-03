@@ -10,6 +10,33 @@ use Illuminate\Http\Request;
 
 class PayrollApprovalController extends Controller
 {
+
+   public function submit(Request $req)
+   {
+      $employee = Employee::where('nik', auth()->user()->username)->first();
+      $unitTransaction = UnitTransaction::find($req->unitTransactionId);
+      $transactions = Transaction::where('unit_transaction_id', $unitTransaction->id)->get();
+      // dd($unitTransaction->id);
+      $unitTransaction->update([
+         'status' => 1
+      ]);
+
+      foreach ($transactions as $tran) {
+         $tran->update([
+            'status' => 1
+         ]);
+      }
+
+      PayrollApproval::create([
+         'unit_transaction_id' => $unitTransaction->id,
+         'employee_id' => $employee->id,
+         'level' => 'hrd',
+         'type' => 'submit',
+      ]);
+
+      return redirect()->back()->with('success', "Transaction Data successfully sent");
+   }
+
    public function hrd()
    {
 

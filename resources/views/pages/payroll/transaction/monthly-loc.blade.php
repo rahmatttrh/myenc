@@ -143,7 +143,7 @@ Payroll Transaction
                         
                         @else  
                         <div class="event-date bg-light border">HRD MANAGER</div>
-                        <h5 class="font-size-16">Timestamp</h5>
+                        <h5 class="font-size-16">Waiting</h5>
                         
                      @endif
                         
