@@ -21,46 +21,54 @@ class OvertimeController extends Controller
 {
    public function index()
    {
-      
+
       $now = Carbon::now();
       $overtimes = Overtime::get();
+
+
+      // $debugOver = Overtime::find(713);
+      // $employee = Employee::find($debugOver->employee_id);
+      // $payroll = Payroll::find($employee->payroll_id);
+      // $spkl_type = $employee->unit->spkl_type;
+      // $newRate = $this->calculateRate($payroll, $debugOver->type, $spkl_type, $debugOver->hour_type, $debugOver->hours, $debugOver->holiday_type);
+      // dd($newRate);
 
       // foreach($overtimes as $over){
       //    $employee = Employee::find($over->employee_id);
       //    $payroll = Payroll::find($employee->payroll_id);
       //    $spkl_type = $employee->unit->spkl_type;
       //    $newRate = $this->calculateRate($payroll, $over->type, $spkl_type, $over->hour_type, $over->hours, $over->holiday_type);
-         
+
       //    $over->update([
       //       'rate' => $newRate
       //    ]);
       // }
       // $testOver = Overtime::find(1);
-      
+
       // dd('ok');
 
-      // foreach($overtimes as $over){
-      //    $employee = Employee::find($over->employee_id);
-      //    // $spkl_type = $employee->unit->spkl_type;
-      //    // $hour_type = $employee->unit->hour_type;
-      //    // $payroll = Payroll::find($employee->payroll_id);
-      //    // $rate = $this->calculateRate($payroll, $over->type, $spkl_type, $hour_type, $over->hours, $over->holiday_type);
+      foreach ($overtimes as $over) {
+         $employee = Employee::find($over->employee_id);
+         $spkl_type = $employee->unit->spkl_type;
+         $hour_type = $employee->unit->hour_type;
+         $payroll = Payroll::find($employee->payroll_id);
+         $rate = $this->calculateRate($payroll, $over->type, $spkl_type, $hour_type, $over->hours, $over->holiday_type);
 
-      //    // $over->update([
-      //    //    'rate' => $rate
-      //    // ]);
+         $over->update([
+            'rate' => $rate
+         ]);
 
-      //    // $transactionCon = new TransactionController;
-      //    // $transactions = Transaction::where('status', '!=', 3)->where('employee_id', $employee->id)->get();
+         $transactionCon = new TransactionController;
+         $transactions = Transaction::where('status', '!=', 3)->where('employee_id', $employee->id)->get();
 
-      //    // foreach($transactions as $tran){
-      //    //    $transactionCon->calculateTotalTransaction($tran, $tran->cut_from, $tran->cut_to);
-      //    // }
+         foreach ($transactions as $tran) {
+            $transactionCon->calculateTotalTransaction($tran, $tran->cut_from, $tran->cut_to);
+         }
 
-      //    if($over->hours == 0){
-      //       $over->delete();
-      //    }
-      // }
+         if ($over->hours == 0) {
+            $over->delete();
+         }
+      }
 
       // $transactionReductions = TransactionReduction::get();
       // foreach ($transactionReductions as $tr) {
@@ -103,7 +111,7 @@ class OvertimeController extends Controller
       $now = Carbon::now();
       $overtimes = Overtime::where('month', $now->format('F'))->where('year', $now->format('Y'))->orderBy('date', 'desc')->get();
 
-     
+
       $employees = Employee::get();
       // $holidays = Holiday::orderBy('date', 'asc')->get();
       return view('pages.payroll.overtime-import', [
@@ -117,7 +125,7 @@ class OvertimeController extends Controller
 
    public function importStore(Request $req)
    {
-      
+
       $req->validate([
          'excel' => 'required'
       ]);
@@ -132,7 +140,7 @@ class OvertimeController extends Controller
          return redirect()->back()->with('danger', 'Import Failed ' . $e->getMessage());
       }
 
-   
+
       return redirect()->route('payroll')->with('success', 'Overtime Data successfully imported');
    }
 
@@ -231,21 +239,21 @@ class OvertimeController extends Controller
       $transactionCon = new TransactionController;
       $transactions = Transaction::where('status', '!=', 3)->where('employee_id', $employee->id)->get();
 
-      foreach($transactions as $tran){
+      foreach ($transactions as $tran) {
          $transactionCon->calculateTotalTransaction($tran, $tran->cut_from, $tran->cut_to);
       }
 
-     
+
 
       return redirect()->route('payroll.overtime')->with('success', 'Overtime Data successfully added');
    }
 
 
-   
 
 
 
-   public function calculateRate( $payroll, $type, $spkl_type, $hour_type,  $hours, $holiday_type)
+
+   public function calculateRate($payroll, $type, $spkl_type, $hour_type,  $hours, $holiday_type)
    {
       if ($type == 1) {
          // jika lembur
@@ -257,7 +265,7 @@ class OvertimeController extends Controller
          }
 
          // dd($rateOvertime);
-   
+
          if ($hour_type == 1) {
             $rate = $hours * round($rateOvertime);
          } else {
@@ -266,20 +274,22 @@ class OvertimeController extends Controller
             $rate = $totalHours * round($rateOvertime);
          }
       } else {
+         // dd('ok');
+         $rateOvertime = round(1 / 30 * $payroll->total);
          if ($holiday_type == 1) {
-            $rate = 1 * 1/30 * $payroll->total ;
+            $rate = 1 * $rateOvertime;
          } elseif ($holiday_type == 2) {
-            $rate = 1 * 1/30 * $payroll->total ;
+            $rate = 1 * $rateOvertime;
             // dd($rate);
-            $rate = 1 * 1 / 30 * $payroll->total;
+            $rate = 1 * $rateOvertime;
          } elseif ($holiday_type == 3) {
-            $rate = 2 * 1 / 30 * $payroll->total;
+            $rate = 2 * $rateOvertime;
          } elseif ($holiday_type == 4) {
-            $rate = 3 * 1 / 30 * $payroll->total;
+            $rate = 3 * $rateOvertime;
          }
       }
 
-      
+
 
       return $rate;
    }
@@ -287,8 +297,8 @@ class OvertimeController extends Controller
    public function calculateRateB($type, $spkl_type, $hour_type, $payroll, $hours, $holiday_type)
    {
 
-      
-      
+
+
       if ($spkl_type == 1) {
          $rateOvertime = $payroll->pokok / 173;
       } else if ($spkl_type == 2) {
@@ -308,7 +318,7 @@ class OvertimeController extends Controller
 
    public function delete($id)
    {
-      
+
       $overtime = Overtime::find(dekripRambo($id));
       $employee = Employee::find($overtime->employee_id);
       Storage::delete($overtime->doc);
@@ -317,11 +327,11 @@ class OvertimeController extends Controller
       $transactionCon = new TransactionController;
       $transactions = Transaction::where('status', '!=', 3)->where('employee_id', $employee->id)->get();
 
-      foreach($transactions as $tran){
+      foreach ($transactions as $tran) {
          $transactionCon->calculateTotalTransaction($tran, $tran->cut_from, $tran->cut_to);
       }
 
-      
+
 
       return redirect()->route('payroll.overtime')->with('success', 'Overtime Data successfully deleted');
    }

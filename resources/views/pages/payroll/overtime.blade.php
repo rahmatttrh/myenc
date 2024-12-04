@@ -131,7 +131,10 @@ SPKL
                                         <tr>
                                           {{-- <td>{{++$i}}</td> --}}
                                           <td>
-                                             {{-- {{$over->id}} --}}
+                                             @if (auth()->user()->hasRole('Administrator'))
+                                                 {{$over->id}}
+                                             @endif
+                                             
                                              @if ($over->type == 1)
                                                  Lembur
                                                  @else
