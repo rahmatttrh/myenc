@@ -676,7 +676,7 @@ class HomeController extends Controller
          $tasks = Task::where('employee_id', $employee->id)->get();
 
          $now = Carbon::now();
-         $currentTransaction = Transaction::where('employee_id', $employee->id)->where('status', '>=', 5)->orderBy('cut_to', 'asc')->first();
+         $currentTransaction = Transaction::where('employee_id', $employee->id)->where('status', '>=', 6)->orderBy('cut_to', 'asc')->first();
          // dd($currentTransaction);
          return view('pages.dashboard.employee', [
             'now' => $now,

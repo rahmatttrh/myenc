@@ -292,6 +292,11 @@ class TransactionController extends Controller
       $transactions = Transaction::where('unit_id', $unit->id)->where('month', $unitTransaction->month)->where('year', $unitTransaction->year)->get();
 
 
+      $manhrd = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'man-hrd')->where('type', 'approve')->first();
+      $manfin = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'man-fin')->where('type', 'approve')->first();
+      $gm = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'gm')->where('type', 'approve')->first();
+      $bod = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'bod')->where('type', 'approve')->first();
+
       return view('pages.payroll.transaction.monthly-all', [
          'unit' => $unit,
          'units' => $units,
@@ -300,7 +305,12 @@ class TransactionController extends Controller
          'locations' => $locations,
          'firstLoc' => $firstLoc,
          'unitTransaction' => $unitTransaction,
-         'transactions' => $transactions
+         'transactions' => $transactions,
+
+         'manhrd' => $manhrd,
+         'manfin' => $manfin,
+         'gm' => $gm,
+         'bod' => $bod,
       ])->with('i');
    }
 

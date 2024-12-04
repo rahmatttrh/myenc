@@ -461,6 +461,7 @@ Route::middleware(["auth"])->group(function () {
 
       Route::prefix('payroll/approval')->group(function () {
          Route::post('submit/master', [PayrollApprovalController::class, 'submit'])->name('payroll.submit.master.transaction');
+         Route::post('publish/master', [PayrollApprovalController::class, 'publish'])->name('payroll.publish');
 
 
          Route::get('hrd', [PayrollApprovalController::class, 'hrd'])->name('payroll.approval.hrd');

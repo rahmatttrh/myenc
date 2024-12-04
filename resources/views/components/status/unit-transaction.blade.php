@@ -11,4 +11,6 @@
 
     @elseif($unittrans->status == 5)
     <span class="">Complete</span>
+    @elseif($unittrans->status == 6)
+    <span class="">Published</span>
 @endif

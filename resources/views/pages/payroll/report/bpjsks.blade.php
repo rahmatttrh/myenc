@@ -114,8 +114,8 @@ Payroll Report BPJS KS
 
    <div class="row hide mb-2">
       <div class="col">
-         <a href="{{route('payroll.transaction.monthly.all', enkripRambo($unitTransaction->id))}}" class="btn btn-success" >Back</a>
-         <button type="button" class="btn btn-light border" onclick="javascript:window.print();">
+         <a href="{{route('payroll.transaction.monthly.all', enkripRambo($unitTransaction->id))}}" class="btn btn-dark btn-sm" >Back</a>
+         <button type="button" class="btn btn-light border btn-sm" onclick="javascript:window.print();">
             <!-- Download SVG icon from http://tabler-icons.io/i/printer -->
             <i class="fa fa-print"></i>
             Print PDF

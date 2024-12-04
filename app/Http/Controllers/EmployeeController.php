@@ -38,6 +38,21 @@ class EmployeeController extends Controller
 
       $employees = Employee::get();
 
+      // foreach ($employees as $emp) {
+      //    $position = Position::find($emp->position_id);
+      //    // dd($position->designation_id);
+      //    $contract = Contract::find($emp->contract_id);
+
+      //    if ($position) {
+      //       $emp->update([
+      //          'designation_id' => $position->designation_id
+      //       ]);
+      //       $contract->update([
+      //          'designation_id' => $position->designation_id
+      //       ]);
+      //    }
+      // }
+
 
       // foreach ($employees as $emp) {
       //    if($emp->kpi_id != null) {
