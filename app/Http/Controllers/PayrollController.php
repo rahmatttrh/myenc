@@ -13,6 +13,7 @@ use App\Models\ReductionAdditional;
 use App\Models\ReductionEmployee;
 use App\Models\Transaction;
 use App\Models\Unit;
+use App\Models\UnitTransaction;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -489,6 +490,15 @@ class PayrollController extends Controller
          'location' => $req->location,
          'month' => $req->month,
          'year' => $req->year
+      ]);
+   }
+
+   public function reportBpjsKs($id)
+   {
+      $unitTransaction = UnitTransaction::find(dekripRambo($id));
+
+      return view('pages.payroll.report.bpjsks', [
+         'unitTransaction' => $unitTransaction
       ]);
    }
 }

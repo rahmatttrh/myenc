@@ -30,6 +30,8 @@ Payroll Transaction
             
          </div>
          {{-- <a href="" class="btn btn-block btn-info">Submit</a> --}}
+         <a href="{{route('payroll.transaction.monthly', enkripRambo($unitTransaction->id))}}" class="btn btn-light border btn-block">Report Transaction</a>
+         <a href="{{route('payroll.report.bpjsks', enkripRambo($unitTransaction->id))}}" class="btn btn-light border btn-block">Report BPJS KS</a>
 
          
 

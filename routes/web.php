@@ -335,6 +335,8 @@ Route::middleware(["auth"])->group(function () {
 
 
             Route::get('/setup', [PayrollController::class, 'setup'])->name('payroll.setup');
+
+            Route::get('report/bpjsks/{id}', [PayrollController::class, 'reportBpjsKs'])->name('payroll.report.bpjsks');
          });
 
 
