@@ -106,7 +106,8 @@ Dashboard
                          @endphp
                          <tr>
                            {{-- <td>{{$team->department->name}} </td> --}}
-                           <td><a href="{{route('employee.detail', [enkripRambo($team->id), enkripRambo('basic')])}}">{{$team->nik}}</a> </td>
+                           {{-- <td><a href="{{route('employee.detail', [enkripRambo($team->id), enkripRambo('basic')])}}">{{$team->nik}}</a> </td> --}}
+                           <td>{{$team->nik}}</td>
                            <td> {{$bio->first_name}} {{$bio->last_name}}</td>
                          </tr>
                      @endforeach

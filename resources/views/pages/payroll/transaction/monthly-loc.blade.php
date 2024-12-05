@@ -75,20 +75,49 @@ Payroll Transaction
    </nav>
    
    <div class="d-flex">
-      @if (auth()->user()->username == 'EN-2-001' || auth()->user()->username == '11304' || auth()->user()->username == 'EN-2-006' || auth()->user()->username == 'BOD-002' )
+      @if (auth()->user()->username == 'EN-2-001'  )
+      <a href="{{route('payroll.approval.hrd', enkripRambo($unitTransaction->id))}}" class="btn btn-light border mb-2  mr-2 "><< Back</a>
+      @elseif (auth()->user()->username == '11304' )
+      <a href="{{route('payroll.approval.manfin', enkripRambo($unitTransaction->id))}}" class="btn btn-light border mb-2  mr-2 "><< Back</a>
+      @elseif (auth()->user()->username == 'EN-2-006' )
+      <a href="{{route('payroll.approval.gm', enkripRambo($unitTransaction->id))}}" class="btn btn-light border mb-2  mr-2 "><i class="fa fa-backward"></i> Back</a>
+      @elseif ( auth()->user()->username == 'BOD-002' )
+      <a href="{{route('payroll.approval.bod', enkripRambo($unitTransaction->id))}}" class="btn btn-light border mb-2  mr-2 "><< Back</a>
+      
       @else
-      <a href="{{route('payroll.transaction.monthly.all', enkripRambo($unitTransaction->id))}}" class="btn btn-dark mb-2  mr-2 "><< Back</a>
+      <a href="{{route('payroll.transaction.monthly.all', enkripRambo($unitTransaction->id))}}" class="btn btn-light border mb-2  mr-2 "><< Back</a>
       @endif
+
+      
       <a class="btn  btn-light border mb-2" href="{{route('payroll.transaction.export', enkripRambo($unitTransaction->id))}}"><i class="fa fa-file"></i> Export to Excel</a>
+      
+      {{-- Action Approval --}}
       @if (auth()->user()->username == 'EN-2-001' && $unitTransaction->status == 1)
       <div class="btn-group ml-2">
          <a href="#" class="btn btn-primary  mb-2 " data-target="#modal-approve-hrd-tu" data-toggle="modal">Approve</a>
          <a href="" class="btn btn-danger  mb-2">Reject</a>
       </div>
+      @endif
+      @if (auth()->user()->username == '11304' && $unitTransaction->status == 2)
+      <div class="btn-group ml-2 mb-2">
+         <a href="#" class="btn btn-primary" data-target="#modal-approve-fin-tu" data-toggle="modal">Approve</a>
+         <a href="" class="btn btn-danger">Reject</a>
+      </div>
+      @endif
 
-      
-                
-            @endif
+      @if (auth()->user()->username == 'EN-2-006' && $unitTransaction->status == 3)
+      <div class="btn-group ml-2 mb-2">
+         <a href="#" class="btn btn-primary" data-target="#modal-approve-gm-tu" data-toggle="modal">Approve</a>
+         <a href="" class="btn btn-danger">Reject</a>
+      </div>
+      @endif
+
+      @if (auth()->user()->username == 'BOD-002' && $unitTransaction->status == 4)
+      <div class="btn-group ml-2 mb-2">
+         <a href="#" class="btn btn-primary" data-target="#modal-approve-bod-tu" data-toggle="modal">Approve</a>
+         <a href="" class="btn btn-danger">Reject</a>
+      </div>
+      @endif
    </div>
    
    
@@ -97,7 +126,7 @@ Payroll Transaction
       <div class="card-header p-3  d-flex justify-content-between">
          <div>
             <h4 class="text-uppercase"><b>PAYSLIP {{$unit->name}}</b> {{$unitTransaction->month}} {{$unitTransaction->year}}</h4>
-            <small>STATUS APPROVAL : <span class="text-uppercase"> <x-status.unit-transaction :unittrans="$unitTransaction"/> </span></small> <br>
+            <small>Status : <span class="text-uppercase"> <x-status.unit-transaction :unittrans="$unitTransaction"/> </span></small> <br>
             
          </div>
          <div class="d-flex">
@@ -113,20 +142,12 @@ Payroll Transaction
                 <a href="#" class="btn btn-success btn-block" data-target="#modal-publish-tu" data-toggle="modal">Publish</a>
             @endif --}}
 
-            @if (auth()->user()->username == '11304' && $unitTransaction->status == 2)
+            {{-- @if (auth()->user()->username == '11304' && $unitTransaction->status == 2)
                <a href="#" class="btn btn-primary" data-target="#modal-approve-fin-tu" data-toggle="modal">Approve</a>
                <a href="" class="btn btn-danger">Reject</a>
-            @endif
+            @endif --}}
 
-            @if (auth()->user()->username == 'EN-2-006' && $unitTransaction->status == 3)
-               <a href="#" class="btn btn-primary" data-target="#modal-approve-gm-tu" data-toggle="modal">Approve</a>
-               <a href="" class="btn btn-danger">Reject</a>
-            @endif
-
-            @if (auth()->user()->username == 'BOD-002' && $unitTransaction->status == 4)
-               <a href="#" class="btn btn-primary" data-target="#modal-approve-bod-tu" data-toggle="modal">Approve</a>
-               <a href="" class="btn btn-danger">Reject</a>
-            @endif
+            
             </div>
             
             {{-- <a href="{{route('payroll.transaction.export', enkripRambo($unitTransaction->id))}}" class="btn btn-light border"><i class="fa fa-file"></i> Export Report BPJS KT</a>
@@ -738,7 +759,7 @@ Payroll Transaction
             <div class="modal-body">
                @csrf
                <input type="text" value="{{$unitTransaction->id}}" name="unitTransactionId" id="unitTransactionId" hidden>
-               <span>Approve this Report and send to General Manager?</span>
+               <span>Approve this Payslip Report and send to General Manager?</span>
                   
             </div>
             <div class="modal-footer">

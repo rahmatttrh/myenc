@@ -467,14 +467,19 @@ Route::middleware(["auth"])->group(function () {
          Route::get('hrd', [PayrollApprovalController::class, 'hrd'])->name('payroll.approval.hrd');
          Route::post('approve/hrd', [PayrollApprovalController::class, 'approveHrd'])->name('payroll.approve.hrd');
 
-         Route::get('manfin', [PayrollApprovalController::class, 'manfin'])->name('payroll.approval.manfin');
+         Route::get('manager-finance', [PayrollApprovalController::class, 'manfin'])->name('payroll.approval.manfin');
          Route::post('approve/manfin', [PayrollApprovalController::class, 'approveManfin'])->name('payroll.approve.manfin');
 
-         Route::get('gm', [PayrollApprovalController::class, 'gm'])->name('payroll.approval.gm');
+         Route::get('general-manager', [PayrollApprovalController::class, 'gm'])->name('payroll.approval.gm');
          Route::post('approve/gm', [PayrollApprovalController::class, 'approveGm'])->name('payroll.approve.gm');
 
          Route::get('bod', [PayrollApprovalController::class, 'bod'])->name('payroll.approval.bod');
          Route::post('approve/bod', [PayrollApprovalController::class, 'approveBod'])->name('payroll.approve.bod');
+
+         Route::get('manhrd/history', [PayrollApprovalController::class, 'manhrdHistory'])->name('payroll.approval.manhrd.history');
+         Route::get('manfin/history', [PayrollApprovalController::class, 'manfinHistory'])->name('payroll.approval.manfin.history');
+         Route::get('gm/history', [PayrollApprovalController::class, 'gmHistory'])->name('payroll.approval.gm.history');
+         Route::get('bod/history', [PayrollApprovalController::class, 'bodHistory'])->name('payroll.approval.bod.history');
       });
 
       Route::get('payroll/transaction/monthly/{id}', [TransactionController::class, 'monthly'])->name('payroll.transaction.monthly');

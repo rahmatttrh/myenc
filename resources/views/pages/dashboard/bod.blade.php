@@ -28,7 +28,7 @@
                         </div>
                         <div class="col col-stats">
                            <div class="numbers">
-                              <p class="card-category">Payroll Approval</p>
+                              <p class="card-category">Payslip Approval</p>
                               <h4 class="card-title">{{count($payrollApprovals)}}</h4>
                            </div>
                         </div>

@@ -66,7 +66,7 @@ class PayrollApprovalController extends Controller
    public function hrd()
    {
 
-      $unitTransactions = UnitTransaction::where('status', '>=', 1)->get();
+      $unitTransactions = UnitTransaction::where('status', '=', 1)->get();
 
       return view('pages.payroll.approval.hrd', [
          'unitTransactions' => $unitTransactions
@@ -103,12 +103,14 @@ class PayrollApprovalController extends Controller
    public function manfin()
    {
 
-      $unitTransactions = UnitTransaction::where('status', '>=', 2)->get();
+      $unitTransactions = UnitTransaction::where('status', '=', 2)->get();
 
       return view('pages.payroll.approval.hrd', [
          'unitTransactions' => $unitTransactions
       ])->with('i');
    }
+
+
 
    public function approveManfin(Request $req)
    {
@@ -140,7 +142,7 @@ class PayrollApprovalController extends Controller
    public function gm()
    {
 
-      $unitTransactions = UnitTransaction::where('status', '>=', 3)->get();
+      $unitTransactions = UnitTransaction::where('status', '=', 3)->get();
 
       return view('pages.payroll.approval.hrd', [
          'unitTransactions' => $unitTransactions
@@ -177,7 +179,7 @@ class PayrollApprovalController extends Controller
    public function bod()
    {
 
-      $unitTransactions = UnitTransaction::where('status', '>=', 4)->get();
+      $unitTransactions = UnitTransaction::where('status', '=', 4)->get();
 
       return view('pages.payroll.approval.hrd', [
          'unitTransactions' => $unitTransactions
@@ -209,5 +211,45 @@ class PayrollApprovalController extends Controller
       ]);
 
       return redirect()->back()->with('success', 'Payroll approved');
+   }
+
+   public function manhrdHistory()
+   {
+
+      $unitTransactions = UnitTransaction::where('status', '>', 1)->get();
+
+      return view('pages.payroll.approval.history', [
+         'unitTransactions' => $unitTransactions
+      ])->with('i');
+   }
+
+   public function manfinHistory()
+   {
+
+      $unitTransactions = UnitTransaction::where('status', '>', 2)->get();
+
+      return view('pages.payroll.approval.history', [
+         'unitTransactions' => $unitTransactions
+      ])->with('i');
+   }
+
+   public function gmHistory()
+   {
+
+      $unitTransactions = UnitTransaction::where('status', '>', 3)->get();
+
+      return view('pages.payroll.approval.history', [
+         'unitTransactions' => $unitTransactions
+      ])->with('i');
+   }
+
+   public function bodHistory()
+   {
+
+      $unitTransactions = UnitTransaction::where('status', '>', 4)->get();
+
+      return view('pages.payroll.approval.history', [
+         'unitTransactions' => $unitTransactions
+      ])->with('i');
    }
 }
