@@ -76,16 +76,16 @@ Payroll Transaction
    
    <div class="d-flex">
       @if (auth()->user()->username == 'EN-2-001'  )
-      <a href="{{route('payroll.approval.hrd', enkripRambo($unitTransaction->id))}}" class="btn btn-light border mb-2  mr-2 "><< Back</a>
+      <a href="{{route('payroll.approval.hrd', enkripRambo($unitTransaction->id))}}" class="btn btn-light border mb-2  mr-2 "><i class="fa fa-backward"></i> Back</a>
       @elseif (auth()->user()->username == '11304' )
-      <a href="{{route('payroll.approval.manfin', enkripRambo($unitTransaction->id))}}" class="btn btn-light border mb-2  mr-2 "><< Back</a>
+      <a href="{{route('payroll.approval.manfin', enkripRambo($unitTransaction->id))}}" class="btn btn-light border mb-2  mr-2 "><i class="fa fa-backward"></i> Back</a>
       @elseif (auth()->user()->username == 'EN-2-006' )
       <a href="{{route('payroll.approval.gm', enkripRambo($unitTransaction->id))}}" class="btn btn-light border mb-2  mr-2 "><i class="fa fa-backward"></i> Back</a>
       @elseif ( auth()->user()->username == 'BOD-002' )
-      <a href="{{route('payroll.approval.bod', enkripRambo($unitTransaction->id))}}" class="btn btn-light border mb-2  mr-2 "><< Back</a>
+      <a href="{{route('payroll.approval.bod', enkripRambo($unitTransaction->id))}}" class="btn btn-light border mb-2  mr-2 "><i class="fa fa-backward"></i> Back</a>
       
       @else
-      <a href="{{route('payroll.transaction.monthly.all', enkripRambo($unitTransaction->id))}}" class="btn btn-light border mb-2  mr-2 "><< Back</a>
+      <a href="{{route('payroll.transaction.monthly.all', enkripRambo($unitTransaction->id))}}" class="btn btn-light border mb-2  mr-2 "><i class="fa fa-backward"></i> Back</a>
       @endif
 
       

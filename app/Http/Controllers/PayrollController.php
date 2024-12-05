@@ -482,4 +482,49 @@ class PayrollController extends Controller
          'unitTransaction' => $unitTransaction
       ]);
    }
+
+   public function payslipUpdate(Request $req)
+   {
+      $employee = Employee::find($req->employeeId);
+      $payroll = Payroll::find($employee->payroll_id);
+
+
+
+      $payroll->update([
+         'payslip_status' => $req->status
+      ]);
+      // dd($employee->nik);  
+      return redirect()->back()->with('success', "Payslip Status updated");
+   }
+
+   public function payslipShow(Request $req)
+   {
+      $transaction = Transaction::find($req->transactionId);
+
+      $transaction->update([
+         'payslip_status' => 'show'
+      ]);
+      // dd($employee->nik);  
+      return redirect()->back()->with('success', "Payslip Status updated");
+   }
+
+   public function payslipHide(Request $req)
+   {
+      $transaction = Transaction::find($req->transactionId);
+
+      $transaction->update([
+         'payslip_status' => 'hide'
+      ]);
+      // dd($employee->nik);  
+      return redirect()->back()->with('success', "Payslip Status updated");
+   }
+
+   public function exportPdf($id)
+   {
+      $transaction = Transaction::find(dekripRambo($id));
+
+      return view('pages.payroll.transaction.pdf', [
+         'transaction' => $transaction
+      ]);
+   }
 }

@@ -62,7 +62,8 @@ Payroll Transaction
                            <td><x-status.unit-transaction :unittrans="$trans" /> </td>
                            <td>
                               <a href="{{route('payroll.transaction.monthly.all', enkripRambo($trans->id))}}">Detail</a> 
-                              | <a href="{{route('payroll.transaction.monthly', enkripRambo($trans->id))}}">Report</a> | <a href="#" data-target="#modal-delete-master-transaction-{{$trans->id}}" data-toggle="modal">Delete</a>
+                              {{-- | <a href="{{route('payroll.transaction.monthly', enkripRambo($trans->id))}}">Report</a>  --}}
+                              | <a href="#" data-target="#modal-delete-master-transaction-{{$trans->id}}" data-toggle="modal">Delete</a>
                            </td>
                         </tr>
 

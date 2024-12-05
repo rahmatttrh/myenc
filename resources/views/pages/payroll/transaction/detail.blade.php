@@ -20,40 +20,34 @@ Detail Transaction Payroll Employee
    
    <div class="row">
       <div class="col-md-4">
+         <a href="{{route('payroll.transaction.monthly.all', enkripRambo($transaction->unit_transaction_id))}}" class="btn btn-light border mb-2"> <i class="fa fa-backward"></i>Back</a>
+         <a href="{{route('payslip.pdf', enkripRambo($transaction->id))}}" class="btn btn-light border mb-2"><i class="fa fa-print"></i> Export to PDF</a>
          {{-- <a href=""  class="btn btn-primary btn-block">Submit</a> --}}
          {{-- <h1>Slip Gaji</h1>
          <hr> --}}
          <div class="card card-light shadow-none border">
             <div class="card-header">
-               <h4>Slip Gaji {{$transaction->month}}</h4>
+               <h4>Payslip {{$transaction->month}}</h4>
                {{formatDate($transaction->cut_from)}} - {{formatDate($transaction->cut_to)}}
             </div>
             <div class="card-header">
                
                
-               <div class="card-list">
-                  <div class="item-list">
-                     
-                     <div class="info-user">
-                        <div class="username">
-                           <h3>{{$transaction->employee->biodata->first_name}} {{$transaction->employee->biodata->last_name}}</h3>
-                        </div>
-                        
-                     </div>
-                  </div>
-               </div>
+               <h3><b>{{$transaction->employee->biodata->first_name}} {{$transaction->employee->biodata->last_name}}</b></h3>
               
                <div class="d-flex justify-content-between">
                   <div>
-                     Unit <br>
                      NIK <br>
+                     Unit <br>
+                     
                      Dept <br>
                      Position 
 
                   </div>
                   <div class="text-right">
-                     {{$transaction->employee->contract->unit->name ?? '-'}} <br>
                      {{$transaction->employee->nik ?? '-'}} <br>
+                     {{$transaction->employee->contract->unit->name ?? '-'}} <br>
+                     
                      {{$transaction->employee->department->name ?? '-'}} <br>
                      {{$transaction->employee->position->name ?? '-'}}
 
@@ -64,9 +58,25 @@ Detail Transaction Payroll Employee
             <div class="card-body">
                <h2><b>{{formatRupiah($transaction->total ?? 0)}}</b></h2>
             </div>
-            <div class="card-footer">
-               Status : <x-status.transaction :trans="$transaction" />
+
+            @if (auth()->user()->hasRole('Administrator|HRD|HRD-Payroll'))
+            <div class="card-footer d-flex justify-content-between">
+               <div>
+                  Status <br>
+                  Visibility
+               </div>
+               <div class="text-right">
+                  <x-status.transaction :trans="$transaction" /> <br>
+                  @if ($transaction->payslip_status == 'show')
+                  <i data-target="#modal-payslip-hide-{{$transaction->id}}" data-toggle="modal" class="fa fa-eye"></i>
+                  @else
+                  <i data-target="#modal-payslip-show-{{$transaction->id}}" data-toggle="modal" class="fa fa-eye-slash"></i>
+                  @endif
+               </div>
+                
             </div>
+            @endif
+            
             {{-- <div class="card-footer d-flex justify-content-between">
                <div>
                   @foreach ($transaction->details->where('type', 'basic') as $trans)
@@ -109,10 +119,14 @@ Detail Transaction Payroll Employee
                      <div class="row row-nav-line">
                         <ul class="nav nav-tabs nav-line nav-color-secondary" role="tablist">
                            <li class="nav-item"> <a class="nav-link show active" id="pills-basic-tab-nobd" data-toggle="pill" href="#pills-basic-nobd" role="tab" aria-controls="pills-basic-nobd" aria-selected="true">Detail</a> </li>
-                           <li class="nav-item"> <a class="nav-link " id="pills-deduction-tab-nobd" data-toggle="pill" href="#pills-deduction-nobd" role="tab" aria-controls="pills-deduction-nobd" aria-selected="true">Deduction</a> </li>
-                           <li class="nav-item"> <a class="nav-link " id="pills-spkl-tab-nobd" data-toggle="pill" href="#pills-spkl-nobd" role="tab" aria-controls="pills-spkl-nobd" aria-selected="true">SPKL</a> </li>
-                           <li class="nav-item"> <a class="nav-link " id="pills-absence-tab-nobd" data-toggle="pill" href="#pills-absence-nobd" role="tab" aria-controls="pills-absence-nobd" aria-selected="true">Absence</a> </li>
-                           <li class="nav-item"> <a class="nav-link " id="pills-additional-tab-nobd" data-toggle="pill" href="#pills-additional-nobd" role="tab" aria-controls="pills-additional-nobd" aria-selected="true">Additional</a> </li>
+                           @if (auth()->user()->hasRole('Karyawan'))
+                               @else
+                               <li class="nav-item"> <a class="nav-link " id="pills-deduction-tab-nobd" data-toggle="pill" href="#pills-deduction-nobd" role="tab" aria-controls="pills-deduction-nobd" aria-selected="true">Deduction</a> </li>
+                               <li class="nav-item"> <a class="nav-link " id="pills-spkl-tab-nobd" data-toggle="pill" href="#pills-spkl-nobd" role="tab" aria-controls="pills-spkl-nobd" aria-selected="true">SPKL</a> </li>
+                               <li class="nav-item"> <a class="nav-link " id="pills-absence-tab-nobd" data-toggle="pill" href="#pills-absence-nobd" role="tab" aria-controls="pills-absence-nobd" aria-selected="true">Absence</a> </li>
+                               <li class="nav-item"> <a class="nav-link " id="pills-additional-tab-nobd" data-toggle="pill" href="#pills-additional-nobd" role="tab" aria-controls="pills-additional-nobd" aria-selected="true">Additional</a> </li>
+                           @endif
+                           
                         </ul>
                      </div>
                   </div>
@@ -518,6 +532,66 @@ Detail Transaction Payroll Employee
             </div>
          </div>
 
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="modal-payslip-hide-{{$transaction->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Confirm<br>
+               
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <form action="{{route('payslip.hide')}}" method="POST" >
+            @csrf
+            @method('PUT')
+            <div class="modal-body">
+               @csrf
+               <input type="text" value="{{$transaction->id}}" name="transactionId" id="transactionId" hidden>
+               {{-- <span>Hide this Payslip.</span> <br> --}}
+               <span>Sembunyikan Payslip di dashboard karyawan?</span>
+                  
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+               <button type="submit" class="btn btn-primary ">Hide</button>
+            </div>
+         </form>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="modal-payslip-show-{{$transaction->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Confirm<br>
+               
+            </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <form action="{{route('payslip.show')}}" method="POST" >
+            @csrf
+            @method('PUT')
+            <div class="modal-body">
+               @csrf
+               <input type="text" value="{{$transaction->id}}" name="transactionId" id="transactionId" hidden>
+                 {{-- <span>Show this Payslip.</span> <br>  --}}
+               <span>Tampilkan Payslip di dashboard karyaan?</span>
+                  
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+               <button type="submit" class="btn btn-primary ">Show</button>
+            </div>
+         </form>
       </div>
    </div>
 </div>

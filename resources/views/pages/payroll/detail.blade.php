@@ -157,7 +157,7 @@ Setup Payroll Employee
                            <li class="nav-item"> <a class="nav-link " id="pills-bpjs-tab-nobd" data-toggle="pill" href="#pills-bpjs-nobd" role="tab" aria-controls="pills-bpjs-nobd" aria-selected="true"> Deduction Additional</a> </li>
                            {{-- <li class="nav-item"> <a class="nav-link" id="pills-profile-tab-nobd" data-toggle="pill" href="#pills-profile-nobd" role="tab" aria-controls="pills-profile-nobd" aria-selected="false">Profile Picture</a> </li>
                            <li class="nav-item"> <a class="nav-link  " id="pills-bio-tab-nobd" data-toggle="pill" href="#pills-bio-nobd" role="tab" aria-controls="pills-bio-nobd" aria-selected="true">Notes</a> </li> --}}
-                           {{-- <li class="nav-item"> <a class="nav-link" id="pills-contact-tab-nobd" data-toggle="pill" href="#pills-contact-nobd" role="tab" aria-controls="pills-contact-nobd" aria-selected="false">Social Networking</a> </li> --}}
+                           <li class="nav-item"> <a class="nav-link" id="pills-payslip-tab-nobd" data-toggle="pill" href="#pills-payslip-nobd" role="tab" aria-controls="pills-payslip-nobd" aria-selected="false">Payslip</a> </li>
                         </ul>
                      </div>
                   </div>
@@ -320,6 +320,38 @@ Setup Payroll Employee
                         <hr>
                         <hr>
                         - Deduction Tambahan Gaji Karyawan diluar potongan bisnis unit <br>
+                     </div>
+
+                     <div class="tab-pane fade " id="pills-payslip-nobd" role="tabpanel" aria-labelledby="pills-payslip-tab-nobd">
+                        <form action="{{route('payroll.payslip.update')}}" method="POST" enctype="multipart/form-data" >
+                           @csrf
+                           @method('PUT')
+                           <input type="number" name="employeeId" id="employeeId" value="{{$employee->id}}" hidden>
+                           
+                           <div class="row">
+                              <div class="col">
+                                 <div class="form-group form-group-default">
+                                    <label>Show/Hide Payslip</label>
+                                    <select name="status" id="status" class="form-control">
+                                       <option value="" disabled>Choose</option>
+                                       <option {{$employee->payroll->payslip_status == 'show' ? 'selected' : '' }} value="show">Show</option>
+                                       <option {{$employee->payroll->payslip_status == 'hide' ? 'selected' : '' }} value="hide">Hide</option>
+                                    </select>
+                                 </div>
+                                 
+                                 
+                              </div>
+                              
+                              
+                              <div class="col">
+                                 <button type="submit" class="btn btn-primary" >Update</button>
+                              </div>
+                           </div>
+                           
+                           
+         
+                        </form>
+                        
                      </div>
             
                         <div class="tab-pane fade " id="pills-document-nobd" role="tabpanel" aria-labelledby="pills-document-tab-nobd">

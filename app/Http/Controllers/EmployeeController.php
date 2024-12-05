@@ -37,6 +37,17 @@ class EmployeeController extends Controller
       $tab = dekripRambo($enkripTab);
 
       $employees = Employee::get();
+      $employees = Employee::where('role', 5)->get();
+      // dd(count($employees));
+
+      // $qty = 0;
+      // foreach ($employees as $emp) {
+      //    $user = User::where('username', $emp->nik)->first();
+      //    $user->assignRole('Manager');
+      //    // ++$qty;
+      // }
+
+      // dd($qty);
 
       // foreach ($employees as $emp) {
       //    $position = Position::find($emp->position_id);
@@ -381,6 +392,8 @@ class EmployeeController extends Controller
       $dekripId = dekripRambo($id);
       $employee = Employee::find($dekripId);
       $user = User::where('username', $employee->nik)->first();
+
+      // dd($employee->role);
 
       // if ($employee->id == 19) {
       //    // dd($employee->position->id);

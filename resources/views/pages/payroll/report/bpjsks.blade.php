@@ -108,14 +108,14 @@ Payroll Report BPJS KS
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
          <li class="breadcrumb-item" aria-current="page"><a href="{{route('payroll.transaction')}}">Transaction</a></li>
-         <li class="breadcrumb-item active" aria-current="page">Monthly Location </li>
+         <li class="breadcrumb-item active" aria-current="page">Report BPJS Kesehatan </li>
       </ol>
    </nav>
 
    <div class="row hide mb-2">
       <div class="col">
-         <a href="{{route('payroll.transaction.monthly.all', enkripRambo($unitTransaction->id))}}" class="btn btn-dark btn-sm" >Back</a>
-         <button type="button" class="btn btn-light border btn-sm" onclick="javascript:window.print();">
+         <a href="{{route('payroll.transaction.monthly.all', enkripRambo($unitTransaction->id))}}" class="btn btn-light border" ><i class="fa fa-backward"></i> Back</a>
+         <button type="button" class="btn btn-light bolight border" onclick="javascript:window.print();">
             <!-- Download SVG icon from http://tabler-icons.io/i/printer -->
             <i class="fa fa-print"></i>
             Print PDF

@@ -570,7 +570,6 @@ class HomeController extends Controller
             $payrollApprovals = [];
          }
 
-
          // dd(count($final));
          $employeePositions = $employee->positions;
          // dd($employeePositions);
@@ -676,7 +675,7 @@ class HomeController extends Controller
          $tasks = Task::where('employee_id', $employee->id)->get();
 
          $now = Carbon::now();
-         $currentTransaction = Transaction::where('employee_id', $employee->id)->where('status', '>=', 6)->orderBy('cut_to', 'asc')->first();
+         $currentTransaction = Transaction::where('employee_id', $employee->id)->where('status', '>=', 6)->where('payslip_status', 'show')->orderBy('cut_to', 'desc')->first();
          // dd($currentTransaction);
          return view('pages.dashboard.employee', [
             'now' => $now,

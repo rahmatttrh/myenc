@@ -337,6 +337,12 @@ Route::middleware(["auth"])->group(function () {
             Route::get('/setup', [PayrollController::class, 'setup'])->name('payroll.setup');
 
             Route::get('report/bpjsks/{id}', [PayrollController::class, 'reportBpjsKs'])->name('payroll.report.bpjsks');
+
+            Route::put('payslip/update', [PayrollController::class, 'payslipUpdate'])->name('payroll.payslip.update');
+            Route::put('payslip/show', [PayrollController::class, 'payslipShow'])->name('payslip.show');
+            Route::put('payslip/hide', [PayrollController::class, 'payslipHide'])->name('payslip.hide');
+
+            Route::get('payslip/export/pdf/{id}', [PayrollController::class, 'exportPdf'])->name('payslip.pdf');
          });
 
 

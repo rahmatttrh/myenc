@@ -325,50 +325,53 @@ Dashboard
                            <td colspan="6">{{$pos->department->unit->name}} {{$pos->department->name}}</td>
                          </tr>
                          @foreach ($pos->department->pes()->get() as $pe)
+                           @if ($pe->status != 2)
                            <tr>
-                           <th></th>
-                           <td>
-                              {{-- <a href="{{route('sp.detail', enkripRambo($pe->id))}}">{{$pe->code}}</a> --}}
-                              @if($pe->status == '0' || $pe->status == '101')
-                              <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
-                              @elseif($pe->status == '1' || $pe->status == '202' )
-                              <a href="/qpe/approval/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
-                              @else
-                              <a href="/qpe/show/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
-                              @endif
-                           </td>
-                           <td>{{$pe->semester}} / {{$pe->tahun}}</td>
-                           <td>{{$pe->achievement}}</td>
-                           <td>
-                              <x-status.pe :pe="$pe" />
-                           </td>
+                              <t></td>
+                              <td>
+                                 {{-- <a href="{{route('sp.detail', enkripRambo($pe->id))}}">{{$pe->code}}</a> --}}
+                                 @if($pe->status == '0' || $pe->status == '101')
+                                 <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
+                                 @elseif($pe->status == '1' || $pe->status == '202' )
+                                 <a href="/qpe/approval/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
+                                 @else
+                                 <a href="/qpe/show/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
+                                 @endif
+                              </td>
+                              <td>{{$pe->semester}} / {{$pe->tahun}}</td>
+                              <td>{{$pe->achievement}}</td>
+                              <td>
+                                 <x-status.pe :pe="$pe" />
+                              </td>
                            </tr>
+                           @endif
+                           
                          @endforeach
                      @endforeach
                      <tr>
                         <td colspan="6"></td>
                      </tr>
                      @if ($recentPes)
-                     @foreach ($recentPes as $pe)
-                     <tr>
-                     <th></th>
-                     <td>
-                        {{-- <a href="{{route('sp.detail', enkripRambo($pe->id))}}">{{$pe->code}}</a> --}}
-                        @if($pe->status == '0' || $pe->status == '101')
-                        <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
-                        @elseif($pe->status == '1' || $pe->status == '202' )
-                        <a href="/qpe/approval/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
-                        @else
-                        <a href="/qpe/show/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
-                        @endif
-                     </td>
-                     <td>{{$pe->semester}} / {{$pe->tahun}}</td>
-                     <td>{{$pe->achievement}}</td>
-                     <td>
-                        <x-status.pe :pe="$pe" />
-                     </td>
-                     </tr>
-            @endforeach
+                        @foreach ($recentPes as $pe)
+                           <tr>
+                              <td></td>
+                              <td>
+                                 {{-- <a href="{{route('sp.detail', enkripRambo($pe->id))}}">{{$pe->code}}</a> --}}
+                                 @if($pe->status == '0' || $pe->status == '101')
+                                 <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
+                                 @elseif($pe->status == '1' || $pe->status == '202' )
+                                 <a href="/qpe/approval/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
+                                 @else
+                                 <a href="/qpe/show/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
+                                 @endif
+                              </td>
+                              <td>{{$pe->semester}} / {{$pe->tahun}}</td>
+                              <td>{{$pe->achievement}}</td>
+                              <td>
+                                 <x-status.pe :pe="$pe" />
+                              </td>
+                           </tr>
+                        @endforeach
                      @endif
                      
                   </tbody>

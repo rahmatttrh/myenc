@@ -356,7 +356,8 @@ class TransactionController extends Controller
          'cut_to' => $req->to,
          'month' => $req->month,
          'year' => $req->year,
-         'total' => 0
+         'total' => 0,
+         'payslip_status' => $payroll->payslip_status
       ]);
 
       TransactionDetail::create([

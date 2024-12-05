@@ -25,14 +25,8 @@ class TaskController extends Controller
          $historyTasks = Task::where('status', 2)->orderBy('status', 'desc')->get();
          $myteams = [];
          $myTasks = [];
-      } elseif (auth()->user()->hasRole('Karyawan')) {
-         $employee = Employee::where('nik', auth()->user()->username)->first();
-         // dd('karyawan');
-         $tasks = Task::where('status', '!=', 2)->orderBy('status', 'asc')->where('employee_id', $employee->id)->get();
-         $historyTasks = Task::where('status', 2)->where('employee_id', $employee->id)->orderBy('status', 'desc')->get();
-         $myteams = [];
-         $myTasks = [];
       } elseif (auth()->user()->hasRole('Manager|Asst. Manager')) {
+         // dd('manager');
          $employee = Employee::where('nik', auth()->user()->username)->first();
          $myteams = [];
          // $tasks = [];
@@ -67,6 +61,14 @@ class TaskController extends Controller
          }
 
          // dd($myTasks);
+      } elseif (auth()->user()->hasRole('Karyawan')) {
+
+         $employee = Employee::where('nik', auth()->user()->username)->first();
+         // dd('karyawan');
+         $tasks = Task::where('status', '!=', 2)->orderBy('status', 'asc')->where('employee_id', $employee->id)->get();
+         $historyTasks = Task::where('status', 2)->where('employee_id', $employee->id)->orderBy('status', 'desc')->get();
+         $myteams = [];
+         $myTasks = [];
       } else {
          // dd('ok');
          $employee = Employee::where('nik', auth()->user()->username)->first();

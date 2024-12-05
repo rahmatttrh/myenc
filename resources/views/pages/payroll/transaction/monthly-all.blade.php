@@ -97,9 +97,9 @@ Payroll Transaction
             
          </div>
          {{-- <a href="" class="btn btn-block btn-info">Submit</a> --}}
-         <a href="{{route('payroll.transaction.monthly', enkripRambo($unitTransaction->id))}}" class="btn btn-light border btn-block">Report Transaction</a>
-         <a href="{{route('payroll.report.bpjsks', enkripRambo($unitTransaction->id))}}" class="btn btn-light border btn-block">Report BPJS KS</a>
-         <a href="{{route('payroll.report.bpjsks', enkripRambo($unitTransaction->id))}}" class="btn btn-light border btn-block">Report BPJS KT</a>
+         <a href="{{route('payroll.transaction.monthly', enkripRambo($unitTransaction->id))}}" class="btn btn-light border btn-block">Report Payslip</a>
+         <a href="{{route('payroll.report.bpjsks', enkripRambo($unitTransaction->id))}}" class="btn btn-light border btn-block">BPJS Kesehatan</a>
+         <a href="{{route('payroll.report.bpjsks', enkripRambo($unitTransaction->id))}}" class="btn btn-light border btn-block">BPJS Ketenagakerjaan</a>
 
          
 
@@ -188,6 +188,7 @@ Payroll Transaction
                            <th class="text-right">Lembur</th>
                            <th class="text-right">Deduction</th>
                            <th class="text-right">Gaji Bersih</th>
+                           <th></th>
                            
                            {{-- <th>Status</th> --}}
                            {{-- <th>Action</th> --}}
@@ -204,12 +205,79 @@ Payroll Transaction
                            <td>{{$trans->location->name}}</td>
                            <td class="text-right" >{{formatRupiahB($trans->employee->payroll->total)}}</td>
                            <td class="text-right" >{{formatRupiahB($trans->overtime)}}</td>
-                           <td class="text-right" >{{formatRupiahB($trans->redution+$trans->reduction_absence+$trans->reduction_late)}}</td>
+                           <td class="text-right" >{{formatRupiahB($trans->reduction+$trans->reduction_absence+$trans->reduction_late)}}</td>
                            <td class="text-right">{{formatRupiahB($trans->total)}}</td>
+                           <td>
+                              @if ($trans->payslip_status == 'show')
+                                  <i data-target="#modal-payslip-hide-{{$trans->id}}" data-toggle="modal" class="fa fa-eye"></i>
+                                  @else
+                                  <i data-target="#modal-payslip-show-{{$trans->id}}" data-toggle="modal" class="fa fa-eye-slash"></i>
+                              @endif
+                           </td>
                            {{-- <td>0</td> --}}
                            {{-- <td><x-status.transaction :trans="$trans" /> </td> --}}
                            
                         </tr>
+
+                        <div class="modal fade" id="modal-payslip-hide-{{$trans->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                           <div class="modal-dialog modal-sm" role="document">
+                              <div class="modal-content">
+                                 <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Confirm<br>
+                                       
+                                    </h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                 </div>
+                                 <form action="{{route('payslip.hide')}}" method="POST" >
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="modal-body">
+                                       @csrf
+                                       <input type="text" value="{{$trans->id}}" name="transactionId" id="transactionId" hidden>
+                                       {{-- <span>Hide this Payslip.</span> <br> --}}
+                                       <span>Sembunyikan Payslip di dashboard karyawan?</span>
+                                          
+                                    </div>
+                                    <div class="modal-footer">
+                                       <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+                                       <button type="submit" class="btn btn-primary ">Hide</button>
+                                    </div>
+                                 </form>
+                              </div>
+                           </div>
+                        </div>
+
+                        <div class="modal fade" id="modal-payslip-show-{{$trans->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                           <div class="modal-dialog modal-sm" role="document">
+                              <div class="modal-content">
+                                 <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Confirm<br>
+                                       
+                                    </h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                 </div>
+                                 <form action="{{route('payslip.show')}}" method="POST" >
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="modal-body">
+                                       @csrf
+                                       <input type="text" value="{{$trans->id}}" name="transactionId" id="transactionId" hidden>
+                                         {{-- <span>Show this Payslip.</span> <br>  --}}
+                                       <span>Tampilkan Payslip di dashboard karyaan?</span>
+                                          
+                                    </div>
+                                    <div class="modal-footer">
+                                       <button type="button" class="btn btn-light border" data-dismiss="modal">Close</button>
+                                       <button type="submit" class="btn btn-primary ">Show</button>
+                                    </div>
+                                 </form>
+                              </div>
+                           </div>
+                        </div>
                         @endforeach
                         
                         
