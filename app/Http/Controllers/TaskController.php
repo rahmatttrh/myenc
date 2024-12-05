@@ -76,19 +76,22 @@ class TaskController extends Controller
             ->select('employees.*')
             ->orderBy('biodatas.first_name', 'asc')
             ->get();
+         // dd($myteams);
          // $tasks = Task::where('status', '!=', 2)->orderBy('status', 'asc')->get();
          // $historyTasks = Task::where('status', 2)->orderBy('status', 'asc')->get();
          $tasks = Task::where('status', '!=', 2)->orderBy('status', 'asc')->where('employee_id', $employee->id)->get();
          $historyTasks = Task::where('status', 2)->orderBy('status', 'asc')->where('employee_id', $employee->id)->get();
 
-         $getTasks = Task::where('status', '!=', 2)->orderBy('status', 'asc')->get();
-         foreach ($getTasks as $ght) {
-            $tasks->push($ght);
-         }
+         foreach ($myteams as $team) {
+            $getTasks = Task::where('status', '!=', 2)->where('employee_id', $team->id)->orderBy('status', 'asc')->get();
+            foreach ($getTasks as $ght) {
+               $tasks->push($ght);
+            }
 
-         $getHistoryTasks = Task::where('status', 2)->orderBy('status', 'asc')->get();
-         foreach ($getHistoryTasks as $ght) {
-            $historyTasks->push($ght);
+            $getHistoryTasks = Task::where('status', 2)->where('employee_id', $team->id)->orderBy('status', 'asc')->get();
+            foreach ($getHistoryTasks as $ght) {
+               $historyTasks->push($ght);
+            }
          }
       }
 

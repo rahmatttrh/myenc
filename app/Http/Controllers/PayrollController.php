@@ -226,78 +226,59 @@ class PayrollController extends Controller
                // $bebanKaryawanReal = ($red->reduction->employee * $salary) / 100;
                // $selisih = $bebanKaryawanReal - $bebanKaryawan;
                // $bebanPerusahaanReal = $bebanPerusahaan + $selisih;
-               if (!$currentRed) {
-                  ReductionEmployee::create([
-                     'reduction_id' => $red->id,
-                     'type' => 'Default',
-                     'location_id' => $location,
-                     'employee_id' => $employee->id,
-                     'status' => 1,
-                     'employee_value' => $bebanKaryawan,
-                     'employee_value_real' => $bebanKaryawanReal,
-                     'company_value' => $bebanPerusahaan,
-                     'company_value_real' => $bebanPerusahaanReal,
 
-                  ]);
-               } else {
-                  $currentRed->update([
-                     'reduction_id' => $red->id,
-                     'type' => 'Default',
-                     'location_id' => $location,
-                     'employee_id' => $employee->id,
-                     'status' => 1,
-                     'employee_value' => $bebanKaryawan,
-                     'employee_value_real' => $bebanKaryawanReal,
-                     'company_value' => $bebanPerusahaan,
-                     'company_value_real' => $bebanPerusahaanReal,
-                  ]);
-               }
             } else if ($payroll->total >= $red->min_salary) {
-               $salary = $payroll->total;
-               $bebanPerusahaan = ($red->company * $salary) / 100;
-               $bebanKaryawan = ($red->employee * $salary) / 100;
-               $bebanKaryawanReal = 0;
-               $bebanPerusahaanReal = $bebanPerusahaan;
-               if (!$currentRed) {
-                  ReductionEmployee::create([
-                     'reduction_id' => $red->id,
-                     'type' => 'Default',
-                     'location_id' => $location,
-                     'employee_id' => $employee->id,
-                     'status' => 1,
-                     'employee_value' => $bebanKaryawan,
-                     'employee_value_real' => $bebanKaryawanReal,
-                     'company_value' => $bebanPerusahaan,
-                     'company_value_real' => $bebanPerusahaanReal,
-
-                  ]);
+               if ($payroll->total > $red->max_salary) {
+                  // dd('ok');
+                  if ($red->max_salary != 0) {
+                     $salary = $payroll->total;
+                     $bebanPerusahaan = ($red->company * $red->max_salary) / 100;
+                     $bebanKaryawan = ($red->employee * $red->max_salary) / 100;
+                     $bebanKaryawanReal = 0;
+                     $bebanPerusahaanReal = $bebanPerusahaan;
+                  } else {
+                     $salary = $payroll->total;
+                     $bebanPerusahaan = ($red->company * $salary) / 100;
+                     $bebanKaryawan = ($red->employee * $salary) / 100;
+                     $bebanKaryawanReal = 0;
+                     $bebanPerusahaanReal = $bebanPerusahaan;
+                  }
                } else {
-                  $currentRed->update([
-                     'reduction_id' => $red->id,
-                     'type' => 'Default',
-                     'location_id' => $location,
-                     'employee_id' => $employee->id,
-                     'status' => 1,
-                     'employee_value' => $bebanKaryawan,
-                     'employee_value_real' => $bebanKaryawanReal,
-                     'company_value' => $bebanPerusahaan,
-                     'company_value_real' => $bebanPerusahaanReal,
-                  ]);
+                  $salary = $payroll->total;
+                  $bebanPerusahaan = ($red->company * $salary) / 100;
+                  $bebanKaryawan = ($red->employee * $salary) / 100;
+                  $bebanKaryawanReal = 0;
+                  $bebanPerusahaanReal = $bebanPerusahaan;
                }
             }
 
-            if ($payroll->total > $red->max_salary) {
-               // dd('ok');
-               if ($red->max_salary != 0) {
-                  if ($currentRed) {
-                     $currentRed->update([
-                        'employee_value' => 0,
-                        'employee_value_real' => 0,
-                        'company_value' => 0,
-                        'company_value_real' => 0,
-                     ]);
-                  }
-               }
+
+
+            if (!$currentRed) {
+               ReductionEmployee::create([
+                  'reduction_id' => $red->id,
+                  'type' => 'Default',
+                  'location_id' => $location,
+                  'employee_id' => $employee->id,
+                  'status' => 1,
+                  'employee_value' => $bebanKaryawan,
+                  'employee_value_real' => $bebanKaryawanReal,
+                  'company_value' => $bebanPerusahaan,
+                  'company_value_real' => $bebanPerusahaanReal,
+
+               ]);
+            } else {
+               $currentRed->update([
+                  'reduction_id' => $red->id,
+                  'type' => 'Default',
+                  'location_id' => $location,
+                  'employee_id' => $employee->id,
+                  'status' => 1,
+                  'employee_value' => $bebanKaryawan,
+                  'employee_value_real' => $bebanKaryawanReal,
+                  'company_value' => $bebanPerusahaan,
+                  'company_value_real' => $bebanPerusahaanReal,
+               ]);
             }
          }
       }

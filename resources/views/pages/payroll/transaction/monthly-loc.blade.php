@@ -66,14 +66,29 @@ Payroll Transaction
    <nav aria-label="breadcrumb ">
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
-         <li class="breadcrumb-item" aria-current="page"><a href="{{route('payroll.transaction')}}">Transaction</a></li>
-         <li class="breadcrumb-item active" aria-current="page">Monthly Location </li>
+         @if (auth()->user()->username == 'EN-2-001' || auth()->user()->username == '11304' || auth()->user()->username == 'EN-2-006' || auth()->user()->username == 'BOD-002' )
+         @else
+         <li class="breadcrumb-item" aria-current="page"><a href="{{route('payroll.transaction.monthly.all', enkripRambo($unitTransaction->id))}}">Transaction</a></li>
+         @endif
+         <li class="breadcrumb-item active" aria-current="page">Payslip Report </li>
       </ol>
    </nav>
    
    <div class="d-flex">
-      <a href="{{route('payroll.transaction.monthly.all', enkripRambo($unitTransaction->id))}}" class="btn btn-dark mb-2 btn-sm mr-2 "><< Back</a>
-      <h1 class="text-uppercase"><b>PAYSLIP {{$unit->name}}</b> {{$unitTransaction->month}} {{$unitTransaction->year}}</h1>
+      @if (auth()->user()->username == 'EN-2-001' || auth()->user()->username == '11304' || auth()->user()->username == 'EN-2-006' || auth()->user()->username == 'BOD-002' )
+      @else
+      <a href="{{route('payroll.transaction.monthly.all', enkripRambo($unitTransaction->id))}}" class="btn btn-dark mb-2  mr-2 "><< Back</a>
+      @endif
+      <a class="btn  btn-light border mb-2" href="{{route('payroll.transaction.export', enkripRambo($unitTransaction->id))}}"><i class="fa fa-file"></i> Export to Excel</a>
+      @if (auth()->user()->username == 'EN-2-001' && $unitTransaction->status == 1)
+      <div class="btn-group ml-2">
+         <a href="#" class="btn btn-primary  mb-2 " data-target="#modal-approve-hrd-tu" data-toggle="modal">Approve</a>
+         <a href="" class="btn btn-danger  mb-2">Reject</a>
+      </div>
+
+      
+                
+            @endif
    </div>
    
    
@@ -81,22 +96,18 @@ Payroll Transaction
    <div class="card">
       <div class="card-header p-3  d-flex justify-content-between">
          <div>
-            
-            <h1> {{formatRupiahB($unit->getUnitTransaction($unitTransaction)->sum('total'))}}</h1>
+            <h4 class="text-uppercase"><b>PAYSLIP {{$unit->name}}</b> {{$unitTransaction->month}} {{$unitTransaction->year}}</h4>
             <small>STATUS APPROVAL : <span class="text-uppercase"> <x-status.unit-transaction :unittrans="$unitTransaction"/> </span></small> <br>
             
          </div>
          <div class="d-flex">
-            <div class="mr-2">
-
+            <div class="mr-2">   
+               <h1> <b>{{formatRupiahB($unit->getUnitTransaction($unitTransaction)->sum('total'))}}</b></h1>
                {{-- @if (auth()->user()->hasRole("HRD|HRD-Payroll") && $unitTransaction->status == 0)
                   <a class="btn btn-primary" href="#" data-target="#modal-submit-tu" data-toggle="modal">Submit</a>
                   <hr>
                @endif --}}
-            @if (auth()->user()->hasRole("HRD") && $unitTransaction->status == 1)
-                <a href="#" class="btn btn-primary" data-target="#modal-approve-hrd-tu" data-toggle="modal">Approve</a>
-                <a href="" class="btn btn-danger">Reject</a>
-            @endif
+            
 
             {{-- @if (auth()->user()->hasRole("HRD|HRD-Payroll") && $unitTransaction->status == 5)
                 <a href="#" class="btn btn-success btn-block" data-target="#modal-publish-tu" data-toggle="modal">Publish</a>
@@ -336,6 +347,8 @@ Payroll Transaction
       </div>
    </div>
 
+
+   @if (auth()->user()->username == 'EN-2-001' || auth()->user()->username == '11304' || auth()->user()->username == 'EN-2-006' || auth()->user()->username == 'BOD-002' )
    <div class="card">
       {{-- <div class="card-header p-3  d-flex justify-content-between">
          <div>
@@ -586,7 +599,9 @@ Payroll Transaction
             </table>
          {{-- </div> --}}
       </div>
-   </div>
+   </div> 
+   @endif
+   
 
 
    <hr>

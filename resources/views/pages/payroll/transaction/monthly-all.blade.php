@@ -76,15 +76,21 @@ Payroll Transaction
          @if (auth()->user()->hasRole("HRD|HRD-Payroll") && $unitTransaction->status == 5)
          <a href="#" class="btn btn-success btn-block mb-2" data-target="#modal-publish-tu" data-toggle="modal">Publish</a>
          @endif
+         @if (auth()->user()->hasRole("HRD|HRD-Payroll") && $unitTransaction->status == 0)
+                  <a class="btn btn-primary  mb-2 btn-block" href="#" data-target="#modal-submit-tu" data-toggle="modal">Submit</a>
+                  
+               @endif
          <div class="card shadow-none border ">
-            
+            <div class="card-header">
+               Status : <x-status.unit-transaction :unittrans="$unitTransaction" />
+            </div>
             <div class="card-body">
-                  <h2 class="text-uppercase">{{$unit->name}}</h2>
+                  <h4 class="text-uppercase">{{$unit->name}}</h4>
                   {{$unitTransaction->month}} {{$unitTransaction->year}} 
                   <hr class="bg-white">
-                  Total Karyawan <br>
-                  {{$unitTransaction->total_employee}} / {{count($unitTransaction->unit->employees->where('status', 1))}} <br><br>
-                  Total Salary <br>
+                    
+                  {{$unitTransaction->total_employee}} / {{count($unitTransaction->unit->employees->where('status', 1))}} Karyawan <br>
+                  {{-- Total Salary <br> --}}
                    {{formatRupiah($unitTransaction->total_salary)}}
             </div>
             
@@ -180,9 +186,10 @@ Payroll Transaction
                            <th>Loc</th>
                            <th class="text-right">Pendapatan</th>
                            <th class="text-right">Lembur</th>
+                           <th class="text-right">Deduction</th>
                            <th class="text-right">Gaji Bersih</th>
                            
-                           <th>Status</th>
+                           {{-- <th>Status</th> --}}
                            {{-- <th>Action</th> --}}
                         </tr>
                      </thead>
@@ -197,9 +204,10 @@ Payroll Transaction
                            <td>{{$trans->location->name}}</td>
                            <td class="text-right" >{{formatRupiahB($trans->employee->payroll->total)}}</td>
                            <td class="text-right" >{{formatRupiahB($trans->overtime)}}</td>
+                           <td class="text-right" >{{formatRupiahB($trans->redution+$trans->reduction_absence+$trans->reduction_late)}}</td>
                            <td class="text-right">{{formatRupiahB($trans->total)}}</td>
                            {{-- <td>0</td> --}}
-                           <td><x-status.transaction :trans="$trans" /> </td>
+                           {{-- <td><x-status.transaction :trans="$trans" /> </td> --}}
                            
                         </tr>
                         @endforeach
