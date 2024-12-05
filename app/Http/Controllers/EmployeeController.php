@@ -37,14 +37,15 @@ class EmployeeController extends Controller
       $tab = dekripRambo($enkripTab);
 
       $employees = Employee::get();
-      $employees = Employee::where('role', 5)->get();
-      // dd(count($employees));
+      // $employees = Employee::where('role', 4)->orWhere('role', 5)->orWhere('role', 6)->orWhere('role', 7)->orWhere('role', 8)->get();
 
       // $qty = 0;
       // foreach ($employees as $emp) {
       //    $user = User::where('username', $emp->nik)->first();
-      //    $user->assignRole('Manager');
-      //    // ++$qty;
+      //    if ($user) {
+      //       $user->removeRole('Karyawan');
+      //       ++$qty;
+      //    }
       // }
 
       // dd($qty);
