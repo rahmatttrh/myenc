@@ -258,38 +258,41 @@ Payroll Report BPJS KS
                      <td style="padding: 0px !important;" colspan="9">BAGIAN III : Rincian Iuran bulan ini</td>
                   </tr>
                   <tr>
-                     <td style="padding: 0px !important;" colspan="5">Program</td>
+                     {{-- <td style="padding: 0px !important;" colspan="5"></td>
                      <td style="padding: 0px !important;"></td>
                      <td style="padding: 0px !important;">Perusahaan</td>
                      <td style="padding: 0px !important;">Karyawan</td>
                      <td style="padding: 0px !important;">Jumlah Iuran</td>
-                  </tr>
+                  </tr> --}}
                   <tr>
-                     <td style="padding: 0px !important;" colspan="2">(1)</td>
-                     <td style="padding: 0px !important;"></td>
-                     <td style="padding: 0px !important;">% Iuran</td>
-                     <td style="padding: 0px !important;">Jmlh Peg</td>
-                     <td style="padding: 0px !important;">Total Upah</td>
-                     <td style="padding: 0px !important;"></td>
-                     <td style="padding: 0px !important;"></td>
-                     <td style="padding: 0px !important;"></td>
+                     {{-- <td style="padding: 0px !important;" colspan="2">(1)</td> --}}
+                     <td style="padding: 0px !important;" colspan="3" class="text-center">Program</td>
+                     <td style="padding: 0px !important;" class="text-center">Tarif</td>
+                     <td style="padding: 0px !important;" class="text-center">Tenaga <br> Kerja</td>
+                     <td style="padding: 0px !important;" class="text-center" >Upah</td>
+                     <td style="padding: 0px !important;" class="text-center" >Perusahaan</td>
+                     <td style="padding: 0px !important;" class="text-center" >Karyawan</td>
+                     <td style="padding: 0px !important;" class="text-center" >Jumlah Iuran</td>
                   </tr>
-
+                  @php
+                      
+                      $total = 0;
+                  @endphp
                   @foreach ($locations as $loc)
                      @if ($loc->totalEmployee($unitTransaction->unit->id) > 0)
                      <tr>
-                        <td></td>
+                        <td rowspan="2"></td>
                         <td rowspan="2">{{$loc->name}}</td>
                         <td>Jaminan Kesehatan</td>
                         <td>5,00%</td>
                         <td>{{count($loc->getUnitTransaction($unitTransaction->unit_id, $unitTransaction))}}</td>
-                        <td>{{formatRupiahB($loc->getUnitTransaction($unitTransaction->unit_id, $unitTransaction)->sum('total'))}}</td>
-                        <td>{{formatRupiahB($loc->getDeduction($unitTransaction, 'BPJS KS', 'company'))}}</td>
-                        <td>{{formatRupiahB($loc->getDeduction($unitTransaction, 'BPJS KS', 'employee'))}}</td>
-                        <td>{{formatRupiahB($loc->getDeduction($unitTransaction, 'BPJS KS', 'company')+$loc->getDeduction($unitTransaction, 'BPJS KS', 'employee'))}}</td>
+                        <td class="text-right" >{{formatRupiahB($loc->getUnitTransaction($unitTransaction->unit_id, $unitTransaction)->sum('total'))}}</td>
+                        <td class="text-right">{{formatRupiahB($loc->getDeduction($unitTransaction, 'BPJS KS', 'company'))}}</td>
+                        <td class="text-right">{{formatRupiahB($loc->getDeduction($unitTransaction, 'BPJS KS', 'employee'))}}</td>
+                        <td class="text-right">{{formatRupiahB($loc->getDeduction($unitTransaction, 'BPJS KS', 'company')+$loc->getDeduction($unitTransaction, 'BPJS KS', 'employee'))}}</td>
                      </tr>
                      <tr>
-                        <td></td>
+                        {{-- <td></td> --}}
                         <td>Iuran Tambahan</td>
                         <td>1%</td>
                         <td>-</td>
@@ -298,6 +301,10 @@ Payroll Report BPJS KS
                         <td></td>
                         <td></td>
                      </tr>
+                     @php
+                         
+                         $total += $loc->getDeduction($unitTransaction, 'BPJS KS', 'company')+$loc->getDeduction($unitTransaction, 'BPJS KS', 'employee')
+                     @endphp
                      @endif
                   @endforeach
                   
@@ -390,6 +397,7 @@ Payroll Report BPJS KS
                      <td></td>
                      <td></td>
                      <td></td>
+                     <td class="text-right">{{formatRupiahB($total)}}</td>
                   </tr>
                </tbody>
                
