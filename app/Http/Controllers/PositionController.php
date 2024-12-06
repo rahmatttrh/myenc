@@ -12,17 +12,18 @@ use Illuminate\Support\Str;
 
 class PositionController extends Controller
 {
-    public function index()
-    {
-        $positions = Position::orderBy('sub_dept_id')
-            ->orderBy('name')
-            ->get();
-        return view('pages.position.position', [
-            'positions' => $positions
-        ])->with('i');
-    }
+   public function index()
+   {
+      $positions = Position::orderBy('sub_dept_id')
+         ->orderBy('name')
+         ->get();
+      return view('pages.position.position', [
+         'positions' => $positions
+      ])->with('i');
+   }
 
-    public function store(Request $req){
+   public function store(Request $req)
+   {
       $req->validate([]);
       $subdept = SubDept::find($req->subdept);
       // $depart
@@ -37,9 +38,10 @@ class PositionController extends Controller
       ]);
 
       return redirect()->back()->with('success', 'Position of Sub Department successfully added');
-    }
+   }
 
-    public function departmentStore(Request $req){
+   public function departmentStore(Request $req)
+   {
       $req->validate([]);
       $department = Department::find($req->department);
       // dd($department->name);
@@ -54,10 +56,11 @@ class PositionController extends Controller
       ]);
 
       return redirect()->back()->with('success', 'Position of Department successfully added');
-    }
+   }
 
-    public function delete($id){
-      dd('deleting');
+   public function delete($id)
+   {
+      // dd('deleting');
       $position = Position::find(dekripRambo($id));
       $employees = Employee::where('position_id', $position->id)->get();
       if (count($employees) > 0) {
@@ -66,9 +69,10 @@ class PositionController extends Controller
          $position->delete();
          return redirect()->back()->with('success', 'Position successfully deleted');
       }
-    }
+   }
 
-    public function update(Request $req){
+   public function update(Request $req)
+   {
       $position = Position::find($req->position);
 
       $position->update([
@@ -78,9 +82,10 @@ class PositionController extends Controller
       ]);
 
       return redirect()->back()->with('success', 'Position successfully updated');
-    }
+   }
 
-    public function departUpdate(Request $req){
+   public function departUpdate(Request $req)
+   {
       $position = Position::find($req->position);
       $employee = Employee::find($req->employee);
       $department = Department::find($position->department_id);
@@ -95,9 +100,10 @@ class PositionController extends Controller
       $position->employees()->sync($employee->id);
 
       return redirect()->back()->with('success', 'Position Department successfully updated');
-    }
+   }
 
-    public function departDelete($id){
+   public function departDelete($id)
+   {
       // dd('ok');
 
       $position = Position::find(dekripRambo($id));
@@ -105,8 +111,5 @@ class PositionController extends Controller
       $position->delete();
 
       return redirect()->back()->with('success', 'Position Department successfully deleted');
-
-    }
-
-
+   }
 }
