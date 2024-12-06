@@ -280,39 +280,7 @@ class TransactionController extends Controller
       ])->with('i');
    }
 
-   public function monthlyAll($id)
-   {
-      $unitTransaction = UnitTransaction::find(dekripRambo($id));
-      $unit = Unit::find($unitTransaction->unit_id);
-      $units = Unit::get();
-      $locations = Location::get();
-      $firstLoc = Location::orderBy('id', 'asc')->first();
-      $locations = Location::get();
-      $firstLoc = Location::orderBy('id', 'asc')->first();
-      $transactions = Transaction::where('unit_id', $unit->id)->where('month', $unitTransaction->month)->where('year', $unitTransaction->year)->get();
 
-
-      $manhrd = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'man-hrd')->where('type', 'approve')->first();
-      $manfin = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'man-fin')->where('type', 'approve')->first();
-      $gm = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'gm')->where('type', 'approve')->first();
-      $bod = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'bod')->where('type', 'approve')->first();
-
-      return view('pages.payroll.transaction.monthly-all', [
-         'unit' => $unit,
-         'units' => $units,
-         'locations' => $locations,
-         'firstLoc' => $firstLoc,
-         'locations' => $locations,
-         'firstLoc' => $firstLoc,
-         'unitTransaction' => $unitTransaction,
-         'transactions' => $transactions,
-
-         'manhrd' => $manhrd,
-         'manfin' => $manfin,
-         'gm' => $gm,
-         'bod' => $bod,
-      ])->with('i');
-   }
 
    public function export($id)
    {

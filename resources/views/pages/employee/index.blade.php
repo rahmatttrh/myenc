@@ -41,34 +41,38 @@ Employee
    </div> --}}
 
    <div class="card shadow-none border">
-      {{-- <div class="card-header">
-         <a href=""></a>
-      </div> --}}
+      <div class="card-header d-flex justify-content-between">
+         <h2>List Karyawan</h2>
+         <div>
+            <a href="{{route('employee.nonactive')}}" class="btn btn-light border btn-sm">Non Active</a>
+            {{-- <a href="{{route('task.create')}}" class="btn btn-primary btn-sm">Add New Task</a> --}}
+         </div>
+     </div>
       <div class="card-body p-0 pt-3">
          <div class="table-responsive">
             <table id="data" class="display basic-datatables table-sm">
                <thead>
                   <tr>
                      <th class="text-center">No</th>
-                     @if (auth()->user()->hasRole('Administrator'))
+                     {{-- @if (auth()->user()->hasRole('Administrator'))
                      <th>ID</th>
                      <th class="text-truncate">User ID</th>
-                     @endif
+                     @endif --}}
                      
                      <th>NIK</th>
                      <th>Name</th>
-                     <th>KPI</th>
-                     <th>Leader</th>
+                     {{-- <th>KPI</th>
+                     <th>Leader</th> --}}
                      {{-- <th>Phone</th> --}}
                      <th class="text-truncate">Bisnis Unit</th>
                      <th>Department</th>
-                     <th>Sub</th>
+                     {{-- <th>Sub</th> --}}
                      <th  >Posisi</th>
                      {{-- <th>Kontrak/Tetap</th> --}}
                      {{-- <th class="text-right">Action</th> --}}
                   </tr>
                </thead>
-               <tfoot>
+               {{-- <tfoot>
                   <tr>
                      <th class=""></th>
                      <td @disabled(true) colspan=""></td>
@@ -77,20 +81,21 @@ Employee
                      <th></th>
                      <th></th>
                      <th></th>
+
                      <th></th>
-                     {{-- <th></th> --}}
-                     {{-- <th></th> --}}
-                     {{-- <th class="text-right">Action</th> --}}
+                     <th></th>
+                     <th></th>
+                     <th class="text-right">Action</th>
                   </tr>
-               </tfoot>
+               </tfoot> --}}
                <tbody>
                   @foreach ($employees as $employee)
                   <tr>
                      <td class="text-center">{{++$i}}</td>
-                     @if (auth()->user()->hasRole('Administrator'))
+                     {{-- @if (auth()->user()->hasRole('Administrator'))
                      <td>{{$employee->id}}</td>
                      <td>{{$employee->user_id}}</td>
-                     @endif
+                     @endif --}}
                      <td class="text-truncate">{{$employee->contract->id_no}}</td>
                      {{-- <td><a href="{{route('employee.detail', enkripRambo($employee->id))}}">{{$employee->name}}</a> </td> --}}
                      <td class="text-truncate">
@@ -101,10 +106,9 @@ Employee
                        
                      </td>
                      
-                     <td class="text-truncate">
+                     {{-- <td class="text-truncate">
                         @if ($employee->kpi_id != null)
-                        {{-- <a href="{{route('kpi.edit', enkripRambo($employee->kpi_id))}}">{{$employee->getKpi()->title}}</a> --}}
-                            {{-- <span class="text-success">OK</span> --}}
+                        {
                             <i class="fa fa-check"></i>
                             
                             @else
@@ -114,12 +118,11 @@ Employee
                      </td>
                      <td>
                         @if (count($employee->getLeaders()) > 0)
-                            {{-- OK --}}
                             <i class="fa fa-check"></i>
                             @else
                             Empty
                         @endif
-                     </td>
+                     </td> --}}
                      {{-- <td>{{$employee->biodata->phone}}</td> --}}
                      
                      <td class="text-truncate">
@@ -150,19 +153,20 @@ Employee
                             
                         @endif --}}
                      </td>
-                     <td class="text-truncate">
+                     {{-- <td class="text-truncate">
                         @if (auth()->user()->hasRole('Administrator'))
                             {{$employee->sub_dept->id ?? ''}} -
                            @endif
                         {{$employee->sub_dept->name ?? ''}}
-                        {{-- @if (count($employee->positions) > 0)
+                        
+                        @if (count($employee->positions) > 0)
                               @foreach ($employee->positions as $pos)
                                   {{$pos->sub_dept->name ?? ''}}
                               @endforeach
                             @else
                             {{$employee->sub_dept->name ?? ''}}
-                        @endif --}}
-                     </td>
+                        @endif
+                     </td> --}}
                      {{-- <td>{{$employee->contract->designation->name ?? ''}}</td> --}}
                      <td class="text-truncate">
                         @if (auth()->user()->hasRole('Administrator'))

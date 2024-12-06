@@ -51,6 +51,7 @@ use App\Http\Controllers\UnitController;
 use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\FuncController;
 use App\Http\Controllers\PayrollApprovalController;
+use App\Http\Controllers\PayslipBpjsKsController;
 use App\Http\Controllers\ReductionAdditionalController;
 use App\Http\Controllers\ReductionEmployeeController;
 use App\Http\Controllers\TaskController;
@@ -336,7 +337,7 @@ Route::middleware(["auth"])->group(function () {
 
             Route::get('/setup', [PayrollController::class, 'setup'])->name('payroll.setup');
 
-            Route::get('report/bpjsks/{id}', [PayrollController::class, 'reportBpjsKs'])->name('payroll.report.bpjsks');
+            Route::get('report/bpjsks/{id}', [PayslipBpjsKsController::class, 'reportBpjsKs'])->name('payroll.report.bpjsks');
 
             Route::put('payslip/update', [PayrollController::class, 'payslipUpdate'])->name('payroll.payslip.update');
             Route::put('payslip/show', [PayrollController::class, 'payslipShow'])->name('payslip.show');
@@ -362,7 +363,7 @@ Route::middleware(["auth"])->group(function () {
             // Route::get('/export/bpjs/{id}', [TransactionController::class, 'export'])->name('payroll.transaction.export');
 
 
-            Route::get('/monthly/all/{id}', [TransactionController::class, 'monthlyAll'])->name('payroll.transaction.monthly.all');
+            Route::get('/monthly/unit/{id}', [UnitTransactionController::class, 'detail'])->name('payroll.transaction.monthly.all');
             Route::get('/index', [TransactionController::class, 'index'])->name('payroll.transaction');
             // Route::get('/detail/{id}', [TransactionController::class, 'detail'])->name('payroll.transaction.detail');
             Route::post('store', [TransactionController::class, 'store'])->name('payroll.transaction.store');

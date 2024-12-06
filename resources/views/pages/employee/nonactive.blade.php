@@ -13,7 +13,14 @@ Non ActiveEmployee
    </nav>
 
    <div class="card shadow-none border">
-      <div class="card-body">
+      <div class="card-header d-flex justify-content-between">
+         <h2>List Karyawan Non Active</h2>
+         <div>
+            <a href="{{route('employee', enkripRambo('active'))}}" class="btn btn-light border btn-sm">Active</a>
+            {{-- <a href="{{route('task.create')}}" class="btn btn-primary btn-sm">Add New Task</a> --}}
+         </div>
+     </div>
+      <div class="card-body p-0 pt-3">
          <div class="table-responsive">
             <table id="" class="display basic-datatables table-sm table-bordered  table-striped ">
                <thead>

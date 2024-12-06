@@ -474,14 +474,7 @@ class PayrollController extends Controller
       ]);
    }
 
-   public function reportBpjsKs($id)
-   {
-      $unitTransaction = UnitTransaction::find(dekripRambo($id));
 
-      return view('pages.payroll.report.bpjsks', [
-         'unitTransaction' => $unitTransaction
-      ]);
-   }
 
    public function payslipUpdate(Request $req)
    {

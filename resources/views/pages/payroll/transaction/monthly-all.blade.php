@@ -67,7 +67,7 @@ Payroll Transaction
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
          <li class="breadcrumb-item" aria-current="page"><a href="{{route('payroll.transaction')}}">Transaction</a></li>
-         <li class="breadcrumb-item active" aria-current="page">Monthly</li>
+         <li class="breadcrumb-item active" aria-current="page">{{$unit->name}}</li>
       </ol>
    </nav>
    
@@ -97,9 +97,9 @@ Payroll Transaction
             
          </div>
          {{-- <a href="" class="btn btn-block btn-info">Submit</a> --}}
-         <a href="{{route('payroll.transaction.monthly', enkripRambo($unitTransaction->id))}}" class="btn btn-light border btn-block">Report Payslip</a>
-         <a href="{{route('payroll.report.bpjsks', enkripRambo($unitTransaction->id))}}" class="btn btn-light border btn-block">BPJS Kesehatan</a>
-         <a href="{{route('payroll.report.bpjsks', enkripRambo($unitTransaction->id))}}" class="btn btn-light border btn-block">BPJS Ketenagakerjaan</a>
+         <a href="{{route('payroll.transaction.monthly', enkripRambo($unitTransaction->id))}}" class="btn btn-light border btn-block text-left">Report Payslip</a>
+         <a href="{{route('payroll.report.bpjsks', enkripRambo($unitTransaction->id))}}" class="btn btn-light border btn-block text-left">BPJS Kesehatan</a>
+         <a href="{{route('payroll.report.bpjsks', enkripRambo($unitTransaction->id))}}" class="btn btn-light border btn-block text-left">BPJS Ketenagakerjaan</a>
 
          
 
