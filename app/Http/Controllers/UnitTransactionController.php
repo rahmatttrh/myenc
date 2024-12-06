@@ -30,10 +30,17 @@ class UnitTransactionController extends Controller
       $gm = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'gm')->where('type', 'approve')->first();
       $bod = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'bod')->where('type', 'approve')->first();
 
-      // $reportBpjsKs = PayslipBpjsKs::where('unit_transaction_id', $unitTransaction->id)->first();
+      $reportBpjsKs = PayslipBpjsKs::where('unit_transaction_id', $unitTransaction->id)->first();
 
 
-
+      if (!$reportBpjsKs) {
+         PayslipBpjsKs::create([
+            'unit_transaction_id' => $unitTransaction->id,
+            'month' => $unitTransaction->month,
+            'year' => $unitTransaction->year,
+            'status' => 0,
+         ]);
+      }
 
       // test create report bpjs ks
       // PayslipBpjsKs::create([
