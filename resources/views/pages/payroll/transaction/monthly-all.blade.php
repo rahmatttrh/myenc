@@ -67,7 +67,8 @@ Payroll Transaction
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
          <li class="breadcrumb-item" aria-current="page"><a href="{{route('payroll.transaction')}}">Transaction</a></li>
-         <li class="breadcrumb-item active" aria-current="page">{{$unit->name}}</li>
+         <li class="breadcrumb-item" aria-current="page">{{$unit->name}}</li>
+         <li class="breadcrumb-item active" aria-current="page">{{$unitTransaction->month}}</li>
       </ol>
    </nav>
    

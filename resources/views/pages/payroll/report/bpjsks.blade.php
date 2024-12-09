@@ -108,6 +108,8 @@ Payroll Report BPJS KS
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
          <li class="breadcrumb-item" aria-current="page"><a href="{{route('payroll.transaction')}}">Transaction</a></li>
+         <li class="breadcrumb-item" aria-current="page">{{$unitTransaction->unit->name}}</li>
+         <li class="breadcrumb-item" aria-current="page">{{$unitTransaction->month}}</li>
          <li class="breadcrumb-item active" aria-current="page">Report BPJS Kesehatan </li>
       </ol>
    </nav>
@@ -189,7 +191,7 @@ Payroll Report BPJS KS
                   <tr>
                      <td style="padding: 0px !important;">2</td>
                      <td style="padding: 0px !important;">IURAN UNTUK BULAN</td>
-                     <td style="padding: 0px !important;"colspan="2">NOVEMBER 2024</td>
+                     <td style="padding: 0px !important;"colspan="2" class="text-uppercase">{{$reportBpjsKs->month}} 2024</td>
                   </tr>
                   <tr>
                      <td style="padding: 0px !important;"></td>
@@ -277,6 +279,7 @@ Payroll Report BPJS KS
                   @php
                       
                       $total = 0;
+                      $totalAdditional = 0;
                   @endphp
                   @foreach ($locations as $loc)
                      @if ($loc->totalEmployee($unitTransaction->unit->id) > 0)
@@ -298,12 +301,13 @@ Payroll Report BPJS KS
                         <td>-</td>
                         <td></td>
                         <td></td>
-                        <td></td>
-                        <td></td>
+                        <td class="text-right"> {{formatRupiahB($loc->getDeductionAdditional($unitTransaction, 'employee'))}}</td>
+                        <td class="text-right">{{formatRupiahB($loc->getDeductionAdditional($unitTransaction, 'employee'))}}</td>
                      </tr>
                      @php
                          
-                         $total += $loc->getDeduction($unitTransaction, 'BPJS KS', 'company')+$loc->getDeduction($unitTransaction, 'BPJS KS', 'employee')
+                         $total += $loc->getDeduction($unitTransaction, 'BPJS KS', 'company')+$loc->getDeduction($unitTransaction, 'BPJS KS', 'employee');
+                         $totalAdditional += $loc->getDeductionAdditional($unitTransaction, 'employee');
                      @endphp
                      @endif
                   @endforeach
@@ -389,18 +393,99 @@ Payroll Report BPJS KS
                      <td></td>
                   </tr> --}}
                   <tr>
+                     <td colspan="9">BAGIAN IV - Jumlah Seluruhnya</td>
+                     
+                  </tr>
+                  <tr>
                      <td></td>
-                     <td>TOTAL</td>
+                     <td colspan="3">Jumlah seluruhnya (III-IV+V)</td>
+                     
                      <td></td>
                      <td></td>
                      <td></td>
                      <td></td>
-                     <td></td>
-                     <td></td>
-                     <td class="text-right">{{formatRupiahB($total)}}</td>
+                     <td class="text-right">{{formatRupiahB($total + $totalAdditional)}}</td>
                   </tr>
                </tbody>
                
+            </table>
+
+            <table>
+               <tbody>
+                  <tr>
+                     <td colspan="">Jakarta,</td>
+                  </tr>
+                  <tr>
+                     <td colspan="">Dibuat oleh,</td>
+                     <td colspan="">-</td>
+                     <td colspan="">Diperiksa oleh</td>
+                     <td colspan=""></td>
+                     <td colspan="">Disetujui oleh</td>
+                  </tr>
+                  <tr>
+                     <td colspan="" style="height: 80px" class="text-center">
+                        @if ($hrd)
+                        {{formatDateTime($hrd->created_at)}} 
+                        @endif
+                     </td>
+                     <td colspan="" style="height: 80px" class="text-center">
+                        @if ($manHrd)
+                        {{formatDateTime($manHrd->created_at)}} 
+                        @endif
+                     </td>
+                     <td colspan="" style="height: 80px" class="text-center">
+                        @if ($manFin)
+                        {{formatDateTime($manFin->created_at)}} 
+                        @endif
+                     </td>
+                     <td colspan="" style="height: 80px" class="text-center">
+                        @if ($gm)
+                        {{formatDateTime($gm->created_at)}} 
+                        @endif
+                     </td>
+                     <td colspan="" style="height: 80px" class="text-center">
+                        @if ($bod)
+                        {{formatDateTime($bod->created_at)}} 
+                        @endif
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        @if ($hrd)
+                           {{$hrd->employee->biodata->fullName()}}
+                        @endif
+                        
+                     </td>
+                     <td>
+                        @if ($manHrd)
+                           {{$manHrd->employee->biodata->fullName()}}
+                        @endif
+                     </td>
+                     <td>
+                        @if ($manFin)
+                           {{$manFin->employee->biodata->fullName()}}
+                        @endif
+                     </td>
+                     <td>
+                        @if ($gm)
+                           {{$gm->employee->biodata->fullName()}}
+                        @endif
+                        
+                     </td>
+                     <td>
+                        @if ($bod)
+                        {{$bod->employee->biodata->fullName()}}
+                        @endif
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>Payroll</td>
+                     <td>HRD Manager</td>
+                     <td>Manager Finance</td>
+                     <td>GM Finance & Acc</td>
+                     <td>Direktur</td>
+                  </tr>
+               </tbody>
             </table>
          {{-- </div> --}}
       </div>

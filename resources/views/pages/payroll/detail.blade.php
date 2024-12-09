@@ -249,78 +249,78 @@ Setup Payroll Employee
                               @endforeach
                               </div>
                            </div>
-                        <hr>
-                        - Deduction Gaji Karyawan berdasarkan bisnis unit <br>
-                        
-                     </div>
+                           <hr>
+                           - Deduction Gaji Karyawan berdasarkan bisnis unit <br>
+                           
+                        </div>
 
-                     <div class="tab-pane fade " id="pills-bpjs-nobd" role="tabpanel" aria-labelledby="pills-bpjs-tab-nobd">
-                        <form action="{{route('reduction.additional.store')}}" method="POST" enctype="multipart/form-data" >
-                           @csrf
-                           <input type="number" name="employeeId" id="employeeId" value="{{$employee->id}}" hidden>
-                           
-                           <div class="row">
-                              <div class="col">
-                                 <div class="form-group form-group-default">
-                                    <label>Deduction</label>
-                                    <select name="reduction" id="reduction" class="form-control">
-                                       @foreach ($reductions as $red)
-                                           <option value="{{$red->id}}">{{$red->name}}</option>
-                                       @endforeach
-                                    </select>
+                        <div class="tab-pane fade " id="pills-bpjs-nobd" role="tabpanel" aria-labelledby="pills-bpjs-tab-nobd">
+                           <form action="{{route('reduction.additional.store')}}" method="POST" enctype="multipart/form-data" >
+                              @csrf
+                              <input type="number" name="employeeId" id="employeeId" value="{{$employee->id}}" hidden>
+                              
+                              <div class="row">
+                                 <div class="col">
+                                    <div class="form-group form-group-default">
+                                       <label>Deduction</label>
+                                       <select name="reduction" id="reduction" class="form-control">
+                                          @foreach ($reductions as $red)
+                                             <option value="{{$red->id}}">{{$red->name}}</option>
+                                          @endforeach
+                                       </select>
+                                    </div>
+                                    
+                                    
+                                 </div>
+                                 <div class="col">
+                                    <div class="form-group form-group-default">
+                                       <label>Description</label>
+                                       <input type="text" class="form-control" id="desc" name="desc">
+                                    </div>
                                  </div>
                                  
-                                 
-                              </div>
-                              <div class="col">
-                                 <div class="form-group form-group-default">
-                                    <label>Description</label>
-                                    <input type="text" class="form-control" id="desc" name="desc">
+                                 <div class="col">
+                                    <button type="submit" class="btn btn-primary" >Add</button>
                                  </div>
                               </div>
                               
-                              <div class="col">
-                                 <button type="submit" class="btn btn-primary" >Add</button>
-                              </div>
-                           </div>
-                           
-                           
-         
-                        </form>
-                        <hr>
-                        <table>
-                           <thead>
-                              <tr>
-                                 <th>Deduction</th>
-                                 <th>Desc</th>
-                                 <th>Nominal</th>
-                                 <th></th>
-                              </tr>
-                           </thead>
-                           <tbody>
                               
-                              @foreach ($redEmployees->where('type', 'Additional') as $red)
-                                  <tr>
-                                    <td>{{$red->reduction->name}}</td>
-                                    <td>{{$red->description}}</td>
-                                    <td>{{formatRupiah($red->employee_value)}}</td>
-                                    <td>
-                                       <form action="{{route('reduction.employee.delete')}}" method="POST">
-                                          @csrf
-                                          <input type="number" name="redempId" id="redempId" value="{{$red->id}}" hidden>
-                                          <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                          {{-- <a type="submit" href="#">Delete</a> --}}
-                                       </form>
-                                       
-                                    </td>
-                                  </tr>
-                              @endforeach
-                           </tbody>
-                        </table>
-                        <hr>
-                        <hr>
-                        - Deduction Tambahan Gaji Karyawan diluar potongan bisnis unit <br>
-                     </div>
+            
+                           </form>
+                           <hr>
+                           <table>
+                              <thead>
+                                 <tr>
+                                    <th>Deduction</th>
+                                    <th>Desc</th>
+                                    <th>Nominal</th>
+                                    <th></th>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                                 
+                                 @foreach ($redEmployees->where('type', 'Additional') as $red)
+                                    <tr>
+                                       <td>{{$red->reduction->name}}</td>
+                                       <td>{{$red->description}}</td>
+                                       <td>{{formatRupiah($red->employee_value)}}</td>
+                                       <td>
+                                          <form action="{{route('reduction.employee.delete')}}" method="POST">
+                                             @csrf
+                                             <input type="number" name="redempId" id="redempId" value="{{$red->id}}" hidden>
+                                             <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                             {{-- <a type="submit" href="#">Delete</a> --}}
+                                          </form>
+                                          
+                                       </td>
+                                    </tr>
+                                 @endforeach
+                              </tbody>
+                           </table>
+                           <hr>
+                           <hr>
+                           - Deduction Tambahan Gaji Karyawan diluar potongan bisnis unit <br>
+                        </div>
 
                      <div class="tab-pane fade " id="pills-payslip-nobd" role="tabpanel" aria-labelledby="pills-payslip-tab-nobd">
                         <form action="{{route('payroll.payslip.update')}}" method="POST" enctype="multipart/form-data" >

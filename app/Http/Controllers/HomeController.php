@@ -373,6 +373,8 @@ class HomeController extends Controller
             $unitTransactionApproval = [];
          }
 
+         $absenceApprovals = Absence::where('status', 404)->get();
+
 
 
 
@@ -395,7 +397,8 @@ class HomeController extends Controller
             'pes' => $pes,
             'recentPes' => $recentPes,
             'positions' => [],
-            'payrollApprovals' => $unitTransactionApproval
+            'payrollApprovals' => $unitTransactionApproval,
+            'absenceApprovals' => $absenceApprovals
          ]);
       } elseif (auth()->user()->hasRole('HRD-Spv')) {
          $user = Employee::find(auth()->user()->getEmployeeId());

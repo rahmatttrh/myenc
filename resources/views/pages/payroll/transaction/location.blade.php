@@ -9,9 +9,13 @@ Payroll Transaction Location
       <ol class="breadcrumb  ">
          <li class="breadcrumb-item " aria-current="page"><a href="/">Dashboard</a></li>
          <li class="breadcrumb-item" aria-current="page"><a href="{{route('payroll.transaction')}}">Transaction</a></li>
-         <li class="breadcrumb-item active" aria-current="page">Location</li>
+         <li class="breadcrumb-item" aria-current="page">{{$unitTransaction->unit->name}}</li>
+         <li class="breadcrumb-item " aria-current="page">{{$unitTransaction->month}}</li>
+         <li class="breadcrumb-item active" aria-current="page">{{$location->name}}</li>
       </ol>
    </nav>
+
+   <a href="{{route('payroll.transaction.monthly', enkripRambo($unitTransaction->id))}}" class="btn btn-light border mb-2  mr-2 "><i class="fa fa-backward"></i> Back</a>
    
    <div class="row">
       <div class="col-md-3">

@@ -397,8 +397,11 @@ Route::middleware(["auth"])->group(function () {
             Route::get('/index', [AbsenceController::class, 'index'])->name('payroll.absence');
 
             Route::get('/form', [AbsenceController::class, 'create'])->name('payroll.absence.create');
-            Route::get('/edit/{id}', [AbsenceController::class, 'edit'])->name('payroll.absence.edit');
+
             Route::put('/update', [AbsenceController::class, 'update'])->name('payroll.absence.update');
+            Route::get('/approval', [AbsenceController::class, 'approval'])->name('payroll.absence.approval');
+            Route::put('/approve', [AbsenceController::class, 'approve'])->name('absence.approve.hrd');
+            Route::put('/reject', [AbsenceController::class, 'reject'])->name('absence.reject.hrd');
 
             Route::post('/download-template', [AbsenceController::class, 'downloadTemplate'])->name('payroll.absence.template');
             Route::get('/export', [AbsenceController::class, 'export'])->name('payroll.absence.export');
@@ -526,6 +529,9 @@ Route::middleware(["auth"])->group(function () {
          Route::patch('complain/{id}', [QuickPEController::class, 'complain'])->name('qpe.complain.patch');
          Route::patch('close-complain/{id}', [QuickPEController::class, 'closeComplain'])->name('qpe.closecomplain.patch');
       });
+
+      Route::get('payroll/absence/edit/{id}', [AbsenceController::class, 'edit'])->name('payroll.absence.edit');
+      Route::put('payroll/absence/update', [AbsenceController::class, 'update'])->name('payroll.absence.update');
    });
 
 

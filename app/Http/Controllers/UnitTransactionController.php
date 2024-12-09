@@ -8,6 +8,7 @@ use App\Models\PayslipBpjsKs;
 use App\Models\Transaction;
 use App\Models\Unit;
 use App\Models\UnitTransaction;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class UnitTransactionController extends Controller
@@ -32,11 +33,21 @@ class UnitTransactionController extends Controller
 
       $reportBpjsKs = PayslipBpjsKs::where('unit_transaction_id', $unitTransaction->id)->first();
 
+      $now = Carbon::create($unitTransaction->month);
+      // dd($now->addMonth()->format('F'));
+
 
       if (!$reportBpjsKs) {
          PayslipBpjsKs::create([
             'unit_transaction_id' => $unitTransaction->id,
-            'month' => $unitTransaction->month,
+            'month' => $now->addMonth()->format('F'),
+            'year' => $unitTransaction->year,
+            'status' => 0,
+         ]);
+      } else {
+         $reportBpjsKs->update([
+            'unit_transaction_id' => $unitTransaction->id,
+            'month' => $now->addMonth()->format('F'),
             'year' => $unitTransaction->year,
             'status' => 0,
          ]);

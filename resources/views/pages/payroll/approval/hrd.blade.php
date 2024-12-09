@@ -16,7 +16,7 @@ Payroll Absence
    <div class="card">
       <div class="card-header p-2 bg-primary text-white text-uppercase d-flex justify-content-between">
          <h4>Approval Payslip</h4>
-         @if(auth()->user()->username == 'EN-2-001')
+         @if(auth()->user()->username == 'EN-2-001' || auth()->user()->hasRole('HRD'))
             <a href="{{route('payroll.approval.manhrd.history')}}" class="badge badge-light">History</a>
             @elseif (auth()->user()->username == '11304')
             <a href="{{route('payroll.approval.manfin.history')}}" class="badge badge-light">History</a>

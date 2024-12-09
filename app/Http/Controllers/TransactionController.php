@@ -10,6 +10,7 @@ use App\Models\Location;
 use App\Models\Overtime;
 use App\Models\Payroll;
 use App\Models\PayrollApproval;
+use App\Models\PayslipBpjsKs;
 use App\Models\Reduction;
 use App\Models\ReductionAdditional;
 use App\Models\ReductionEmployee;
@@ -119,6 +120,10 @@ class TransactionController extends Controller
 
       $this->calculateTotalTransaction($transaction, $transaction->cut_from, $transaction->cut_to);
 
+      $transactionReductionAdditionals = TransactionReduction::where('transaction_id', $transaction->id)->where('class', 'additional')->get();
+
+      // dd($transaction->id);
+
 
 
 
@@ -140,7 +145,9 @@ class TransactionController extends Controller
          'absences' => $absences,
          'additionals' => $additionals,
          'addPenambahan' => $addPenambahan,
-         'addPengurangan' => $addPengurangan
+         'addPengurangan' => $addPengurangan,
+
+         'transactionReductionAdditionals' => $transactionReductionAdditionals
       ]);
    }
 
@@ -235,7 +242,7 @@ class TransactionController extends Controller
 
    public function monthly($id)
    {
-
+      // dd('ok');
       $unitTransaction = UnitTransaction::find(dekripRambo($id));
       $unit = Unit::find($unitTransaction->unit_id);
       $units = Unit::get();
@@ -251,6 +258,13 @@ class TransactionController extends Controller
 
       // dd($manhrd);
 
+      $reportBpjsKs = PayslipBpjsKs::where('unit_transaction_id', $unitTransaction->id)->first();
+      $hrd = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'hrd')->first();
+      $manHrd = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'man-hrd')->first();
+      $manFin = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'man-fin')->first();
+      $gm = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'gm')->first();
+      $bod = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'bod')->first();
+
       return view('pages.payroll.transaction.monthly-loc', [
          'unit' => $unit,
          'units' => $units,
@@ -259,10 +273,13 @@ class TransactionController extends Controller
          'unitTransaction' => $unitTransaction,
          'transactions' => $transactions,
 
-         'manhrd' => $manhrd,
-         'manfin' => $manfin,
+         'hrd' => $hrd,
+         'manHrd' => $manHrd,
+         'manFin' => $manFin,
          'gm' => $gm,
          'bod' => $bod,
+
+         'reportBpjsKs' => $reportBpjsKs
       ])->with('i');
    }
 

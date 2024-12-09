@@ -33,6 +33,43 @@ class AbsenceController extends Controller
       ])->with('i');
    }
 
+   public function approval()
+   {
+
+      $now = Carbon::now();
+      $employees = Employee::get();
+      $absences = Absence::where('status', 404)->get();
+      return view('pages.payroll.absence.approval', [
+         'employees' => $employees,
+         'absences' => $absences,
+      ])->with('i');
+   }
+
+
+
+   public function approve(Request $req)
+   {
+      $absence = Absence::find($req->absence);
+      $absence->update([
+         'status' => null,
+         'type' => $absence->type_req,
+         'type_req' => null
+      ]);
+
+      return redirect()->back()->with('success', 'Permintaan Perubahan Absensi disetujui');
+   }
+
+   public function reject(Request $req)
+   {
+      $absence = Absence::find($req->absence);
+      $absence->update([
+         'status' => 505,
+         'desc' => $req->desc
+      ]);
+
+      return redirect()->back()->with('success', 'Permintaan Perubahan Absensi ditolak');
+   }
+
    public function create()
    {
       $now = Carbon::now();
@@ -68,10 +105,20 @@ class AbsenceController extends Controller
       } else {
          $evidence = null;
       }
-      $absence->update([
-         'type' => $req->type,
-         'doc' => $evidence
-      ]);
+
+      if (auth()->user()->hasRole('HRD|HRD-Payroll')) {
+         $absence->update([
+            'type' => $req->type,
+            'doc' => $evidence
+         ]);
+      } else {
+         $absence->update([
+            'status' => 404,
+            'type_req' => $req->type,
+            'doc' => $evidence
+         ]);
+      }
+
 
       return redirect()->back()->with('success', 'Absence successfully updated');
    }

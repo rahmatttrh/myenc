@@ -410,7 +410,7 @@ Dashboard
                         <th>Employee</th>
                         <th>Type</th>
                         <th>Date</th>
-                        
+                        <th></th>
                      </tr>
                   </thead>
 
@@ -419,17 +419,37 @@ Dashboard
                      <tr>
                            <td>{{$absence->employee->nik}} {{$absence->employee->biodata->fullName()}}</td>
                         <td>
+                           {{-- {{$absence->type}} --}}
                            @if ($absence->type == 1)
-                           Alpha
+                           Alpha 
                            @elseif($absence->type == 2)
                            Terlambat ({{$absence->minute}} Menit)
                            @elseif($absence->type == 3)
                            ATL
+                           @elseif($absence->type == 4)
+                           Izin
                            @endif
+                           (
+                           @if ($absence->status == 404)
+                               Request <b>
+                                 @if ($absence->type_req == 1)
+                                    Alpha 
+                                    @elseif($absence->type_req == 2)
+                                    Terlambat ({{$absence->minute}} Menit)
+                                    @elseif($absence->type_req == 3)
+                                    ATL
+                                    @elseif($absence->type_req == 4)
+                                    Izin
+                                    @endif
+                               </b>
+                           @endif
+                           )
                         </td>
                         <td>{{formatDate($absence->date)}}</td>
                         
-                        
+                        <td>
+                           <a href="{{route('payroll.absence.edit', enkripRambo($absence->id))}}" class="">Update</a>
+                        </td>
                      </tr>
 
                      @endforeach

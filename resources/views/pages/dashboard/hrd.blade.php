@@ -13,6 +13,144 @@
             
          </h5>
       </div>
+      <div class="row d-block d-sm-none">
+         <div class="col">
+            <div class="card card-stats card-round border">
+               <div class="card-body">
+                  <div class="row align-items-center">
+                     <div class="col-icon ">
+                        <div class="icon-big text-center icon-info bubble-shadow-small">
+                           <i class="far fa-newspaper"></i>
+                        </div>
+                     </div>
+                     <div class="col col-stats ml-3 ml-sm-0">
+                        <div class="numbers">
+                           <p class="card-category">QPE</p>
+                           <h4 class="card-title">{{count($payrollApprovals)}}</h4>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            {{-- <div class="card card-stats card-primary card-round">
+               <div class="card-body">
+                  <div class="row">
+                     <div class="col-3">
+                        <div class="icon-big text-center">
+                           <i class="flaticon-interface-6"></i>
+                        </div>
+                     </div>
+                     <div class="col col-stats">
+                        <div class="numbers">
+                           <p class="card-category">QPE </p>
+                           <h4 class="card-title">0 </h4>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div> --}}
+         </div>
+
+         <div class="col ">
+            <a href="{{route('payroll.approval.hrd')}}">
+               <div class="card card-stats card-round border">
+                  <div class="card-body">
+                     <div class="row align-items-center">
+                        <div class="col-icon ">
+                           <div class="icon-big text-center icon-primary bubble-shadow-small">
+                              <i class="far fa-newspaper"></i>
+                           </div>
+                        </div>
+                        <div class="col col-stats ml-3 ml-sm-0">
+                           <div class="numbers">
+                              <p class="card-category">Payslip</p>
+                              <h4 class="card-title">{{count($payrollApprovals)}}</h4>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               {{-- <div class="card card-stats card-primary card-round">
+                  <div class="card-body">
+                     <div class="row">
+                        <div class="col-3">
+                           <div class="icon-big text-center">
+                              <i class="flaticon-interface-6"></i>
+                           </div>
+                        </div>
+                        <div class="col col-stats">
+                           <div class="numbers">
+                              <p class="card-category">Payroll</p>
+                              <h4 class="card-title">{{count($payrollApprovals)}}</h4>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div> --}}
+            </a>
+         </div>
+
+         <div class="col ">
+
+            <a href="{{route('payroll.absence.approval')}}">
+               <div class="card card-stats card-round border">
+                  <div class="card-body">
+                     <div class="row align-items-center">
+                        <div class="col-icon ">
+                           <div class="icon-big text-center icon-success bubble-shadow-small">
+                              <i class="far fa-newspaper"></i>
+                           </div>
+                        </div>
+                        <div class="col col-stats ml-3 ml-sm-0">
+                           <div class="numbers">
+                              <p class="card-category">Absence</p>
+                              <h4 class="card-title">{{count($absenceApprovals)}}</h4>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               {{-- <div class="card card-stats card-primary card-round">
+                  <div class="card-body">
+                     <div class="row">
+                        <div class="col-3">  
+                           <div class="icon-big text-center ml-3">
+                              <i class="flaticon-interface-6 "></i>
+                           </div>
+                        </div>
+                        <div class="col col-stats">
+                           <div class="numbers">
+                              <p class="card-category">Absence</p>
+                              <h4 class="card-title">{{count($absenceApprovals)}}</h4>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div> --}}
+            </a>
+         </div>
+
+         <div class="col ">
+            <div class="card card-stats card-danger card-round">
+               <div class="card-body">
+                  <div class="row">
+                     <div class="col-3 ">
+                        <div class="icon-big text-center">
+                           <i class="flaticon-interface-6"></i>
+                        </div>
+                     </div>
+                     <div class="col col-stats">
+                        <div class="numbers">
+                           <p class="card-category">SP </p>
+                           <h4 class="card-title">0 </h4>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+
       <div class="row">
         
          <div class="col-md-4">
@@ -125,6 +263,7 @@
                   <small>Teams</small>
                </div>
                <div class="card-body p-0">
+                  <div class="table-responsive overflow-auto" style="height: 200px">
                   <table class=" ">
                      {{-- <thead>
                         <tr>
@@ -166,14 +305,31 @@
                         
                      </tbody>
                   </table>
+                  </div>
                </div>
             </div>
          </div>
          <div class="col-md-8">
-
-            <div class="row">
-               <div class="col-md-4">
-                  <div class="card card-stats card-primary card-round">
+            <div class="row ">
+               <div class="col-6 col-md-4  d-none d-sm-block">
+                  <div class="card card-stats card-round border">
+                     <div class="card-body">
+                        <div class="row align-items-center">
+                           <div class="col-icon d-none d-md-block">
+                              <div class="icon-big text-center icon-info bubble-shadow-small">
+                                 <i class="far fa-newspaper"></i>
+                              </div>
+                           </div>
+                           <div class="col col-stats ml-3 ml-sm-0">
+                              <div class="numbers">
+                                 <p class="card-category">QPE</p>
+                                 <h4 class="card-title">0</h4>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  {{-- <div class="card card-stats card-primary card-round">
                      <div class="card-body">
                         <div class="row">
                            <div class="col-3">
@@ -183,18 +339,35 @@
                            </div>
                            <div class="col col-stats">
                               <div class="numbers">
-                                 <p class="card-category">QPE Approval</p>
-                                 <h4 class="card-title">0 (Disabled)</h4>
+                                 <p class="card-category">QPE </p>
+                                 <h4 class="card-title">0 </h4>
                               </div>
                            </div>
                         </div>
                      </div>
-                  </div>
+                  </div> --}}
                </div>
-
-               <div class="col-md-4">
+      
+               <div class="col-6 col-md-4  d-none d-sm-block">
                   <a href="{{route('payroll.approval.hrd')}}">
-                     <div class="card card-stats card-primary card-round">
+                     <div class="card card-stats card-round border">
+                        <div class="card-body">
+                           <div class="row align-items-center">
+                              <div class="col-icon d-none d-md-block">
+                                 <div class="icon-big text-center icon-primary bubble-shadow-small">
+                                    <i class="far fa-newspaper"></i>
+                                 </div>
+                              </div>
+                              <div class="col col-stats ml-3 ml-sm-0">
+                                 <div class="numbers">
+                                    <p class="card-category">Payslip</p>
+                                    <h4 class="card-title">{{count($payrollApprovals)}}</h4>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     {{-- <div class="card card-stats card-primary card-round">
                         <div class="card-body">
                            <div class="row">
                               <div class="col-3">
@@ -204,29 +377,69 @@
                               </div>
                               <div class="col col-stats">
                                  <div class="numbers">
-                                    <p class="card-category">Payroll Approval</p>
+                                    <p class="card-category">Payroll</p>
                                     <h4 class="card-title">{{count($payrollApprovals)}}</h4>
                                  </div>
                               </div>
                            </div>
                         </div>
-                     </div>
+                     </div> --}}
                   </a>
                </div>
-
-               <div class="col-md-4">
+      
+               <div class="col-6 col-md-4  d-none d-sm-block">
+      
+                  <a href="{{route('payroll.absence.approval')}}">
+                     <div class="card card-stats card-round border">
+                        <div class="card-body">
+                           <div class="row align-items-center">
+                              <div class="col-icon d-none d-md-block">
+                                 <div class="icon-big text-center icon-success bubble-shadow-small">
+                                    <i class="far fa-newspaper"></i>
+                                 </div>
+                              </div>
+                              <div class="col col-stats ml-3 ml-sm-0">
+                                 <div class="numbers">
+                                    <p class="card-category">Absence</p>
+                                    <h4 class="card-title">{{count($absenceApprovals)}}</h4>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     {{-- <div class="card card-stats card-primary card-round">
+                        <div class="card-body">
+                           <div class="row">
+                              <div class="col-3">  
+                                 <div class="icon-big text-center ml-3">
+                                    <i class="flaticon-interface-6 "></i>
+                                 </div>
+                              </div>
+                              <div class="col col-stats">
+                                 <div class="numbers">
+                                    <p class="card-category">Absence</p>
+                                    <h4 class="card-title">{{count($absenceApprovals)}}</h4>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div> --}}
+                  </a>
+               </div>
+      
+               <div class="col-6 col-md-4  d-none d-sm-block">
                   <div class="card card-stats card-danger card-round">
                      <div class="card-body">
                         <div class="row">
-                           <div class="col-3">
-                              <div class="icon-big text-center">
+                           <div class="col-3  d-none d-md-block">
+                              <div class="icon-big pl-3 text-center">
                                  <i class="flaticon-interface-6"></i>
                               </div>
                            </div>
                            <div class="col col-stats">
                               <div class="numbers">
-                                 <p class="card-category">SP Approval</p>
-                                 <h4 class="card-title">0 (Disabled)</h4>
+                                 <p class="card-category">SP </p>
+                                 <h4 class="card-title">0 </h4>
                               </div>
                            </div>
                         </div>
@@ -235,92 +448,97 @@
                </div>
             </div>
             
-            <div class="card">
+            
+            <div class="card " >
                <div class="card-header d-flex justify-content-between p-2 bg-primary text-white">
                   <small>8 Latest QPE</small>
                   <a href="{{route('qpe')}}" class="text-white">more...</a>
                </div>
-               <div class="card-body p-0">
-                  <table class=" ">
-                     <thead>
-                        
-                        <tr class="">
-                           {{-- <th scope="col">#</th> --}}
-                           {{-- <th></th> --}}
-                           <th>Employee</th>
-                           <th>Semester</th>
-                           <th>Achievement</th>
-                           <th>Status</th>
-                        </tr>
-                     </thead>
-                     <tbody>
-                        @foreach ($recentPes as $pe)
-                            <tr>
+               <div class="card-body p-0 " >
+                  <div class="table-responsive overflow-auto" style="height: 150px">
+                     <table class="" >
+                        <thead>
+                           
+                           <tr class="">
+                              {{-- <th scope="col">#</th> --}}
                               {{-- <th></th> --}}
-                              <td>
-                                 {{-- <a href="{{route('sp.detail', enkripRambo($pe->id))}}">{{$pe->code}}</a> --}}
-                                 @if($pe->status == '0' || $pe->status == '101')
-                                 <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
-                                 @elseif($pe->status == '1' || $pe->status == '202' )
-                                 <a href="/qpe/approval/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
-                                 @else
-                                 <a href="/qpe/show/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
-                                 @endif
-                              </td>
-                              <td>{{$pe->semester}} / {{$pe->tahun}}</td>
-                              <td>{{$pe->achievement}}</td>
-                              <td>
-                                 <x-status.pe :pe="$pe" />
-                              </td>
+                              <th>Employee</th>
+                              <th>Semester</th>
+                              <th>Achievement</th>
+                              <th>Status</th>
                            </tr>
-                            @endforeach
-   
-                     </tbody>
-                  </table>
+                        </thead>
+                        <tbody>
+                           @foreach ($recentPes as $pe)
+                              <tr>
+                                 {{-- <th></th> --}}
+                                 <td>
+                                    {{-- <a href="{{route('sp.detail', enkripRambo($pe->id))}}">{{$pe->code}}</a> --}}
+                                    @if($pe->status == '0' || $pe->status == '101')
+                                    <a href="/qpe/edit/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
+                                    @elseif($pe->status == '1' || $pe->status == '202' )
+                                    <a href="/qpe/approval/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
+                                    @else
+                                    <a href="/qpe/show/{{enkripRambo($pe->kpa->id)}}">{{$pe->employe->nik}} {{$pe->employe->biodata->fullName()}} </a>
+                                    @endif
+                                 </td>
+                                 <td>{{$pe->semester}} / {{$pe->tahun}}</td>
+                                 <td>{{$pe->achievement}}</td>
+                                 <td>
+                                    <x-status.pe :pe="$pe" />
+                                 </td>
+                              </tr>
+                              @endforeach
+      
+                        </tbody>
+                     </table>
+                  </div>
                </div>
-               <div class="card-footer">
+               {{-- <div class="card-footer">
                   <small class="text-muted">*Ini adalah 8 data QPE terkini, klik <a href="{{route('qpe')}}">Disini</a> untuk melihat seluruh data QPE.</small>
-               </div>
+               </div> --}}
             </div>
-
+           
             <div class="card">
                <div class="card-header p-2 bg-danger text-white">
                   <small>5 Latest SP</small>
                </div>
                <div class="card-body p-0">
-                  <table class="display  table-sm table-bordered  table-striped ">
-                     <thead>
-                        
-                        <tr>
-                           <th>ID</th>
-                           <th scope="col">Level</th>
-                           <th>NIK</th>
-                           <th scope="col" >Name</th>
-                           {{-- <th>Unit</th>
-                           <th>Department</th> --}}
-                           <th>Status</th>
-                        </tr>
-                        
-                     </thead>
-                     <tbody>
-                        @if (count($sps) > 0)
-                           @foreach ($sps as $sp)
+                  <div class="table-responsive overflow-auto" style="height: 150px">
+                     <table class="display  table-sm table-bordered  table-striped ">
+                        <thead>
+                           
                            <tr>
-                              <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->code}}</a></td>
-                              <td>SP {{$sp->level}}</td>
-                              <td>{{$sp->employee->nik}}</td>
-                              <td>{{$sp->employee->biodata->fullName()}}</td>
-                              <td><x-status.sp :sp="$sp" /> </td>
+                              <th>ID</th>
+                              <th scope="col">Level</th>
+                              <th>NIK</th>
+                              <th scope="col" >Name</th>
+                              {{-- <th>Unit</th>
+                              <th>Department</th> --}}
+                              <th>Status</th>
                            </tr>
-                           @endforeach
-                            @else
-                            <tr>
-                              <td colspan="5" class="text-center">Empty</td>
-                           </tr>
-                        @endif
-                        
-                     </tbody>
-                  </table>
+                           
+                        </thead>
+                        <tbody>
+                           @if (count($sps) > 0)
+                              @foreach ($sps as $sp)
+                              <tr>
+                                 <td><a href="{{route('sp.detail', enkripRambo($sp->id))}}">{{$sp->code}}</a></td>
+                                 <td>SP {{$sp->level}}</td>
+                                 <td>{{$sp->employee->nik}}</td>
+                                 <td>{{$sp->employee->biodata->fullName()}}</td>
+                                 <td><x-status.sp :sp="$sp" /> </td>
+                              </tr>
+                              @endforeach
+                              @else
+                              <tr>
+                                 <td colspan="5" class="text-center">Empty</td>
+                              </tr>
+                           @endif
+                           
+                        </tbody>
+                     </table>
+                  </div>
                </div>
             </div>
             

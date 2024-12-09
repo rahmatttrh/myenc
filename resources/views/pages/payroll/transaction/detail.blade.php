@@ -177,6 +177,26 @@ Detail Transaction Payroll Employee
                                        </tr>
                                     </tbody>
                                  </table>
+
+                                 <table class="mt-4">
+                                    <thead>
+                                       <tr>
+                                          <th colspan="">Pendapatan</th>
+                                          <th class="text-right">{{formatRupiah($payroll->total)}}</th>
+                                       </tr>
+                                       <tr>
+                                          <th colspan="">Potongan</th>
+                                          <th class="text-right">{{formatRupiah($transaction->reduction + $transaction->reduction_absence)}}</th>
+                                       </tr>
+                                       <tr>
+                                          <th colspan="">Gaji Bersih</th>
+                                          <th class="text-right">{{formatRupiah($transaction->total)}}</th>
+                                       </tr>
+                                    </thead>
+                                    <tbody>
+   
+                                    </tbody>
+                                 </table>
                               </div>
                               <div class="col-xl-6">
                                  <table>
@@ -213,29 +233,34 @@ Detail Transaction Payroll Employee
                                        </tr>
                                     </tbody>
                                  </table>
-                              </div>
 
-                              <div class="col-md-6">
-                                 <table class="mt-4">
+
+                                 <table>
                                     <thead>
                                        <tr>
-                                          <th colspan="">Pendapatan</th>
-                                          <th class="text-right">{{formatRupiah($payroll->total)}}</th>
+                                          <th colspan="2">Potongan Tambahan</th>
                                        </tr>
-                                       <tr>
-                                          <th colspan="">Potongan</th>
-                                          <th class="text-right">{{formatRupiah($transaction->reduction + $transaction->reduction_absence)}}</th>
-                                       </tr>
-                                       <tr>
-                                          <th colspan="">Gaji Bersih</th>
-                                          <th class="text-right">{{formatRupiah($transaction->total)}}</th>
-                                       </tr>
+                                       {{-- <tr>
+                                          <th>Description</th>
+                                          <th class="text-right">Nominal</th>
+                                       </tr> --}}
                                     </thead>
                                     <tbody>
-   
+                                       @foreach ($transaction->reductions->where('class', 'Additional')->where('type', 'employee') as $red)
+                                          @if ($red->value)
+                                          <tr>
+                                             <td>{{$red->name}}</td>
+                                             <td class="text-right text-danger"><b>{{formatRupiah($red->value)}}</b></td>
+                                             {{-- <td><a href="{{route('transaction.reduction.delete', enkripRambo($red->id))}}">Delete</a></td> --}}
+                                          </tr>
+                                          @endif 
+                                       @endforeach
+                                     
                                     </tbody>
                                  </table>
                               </div>
+
+                              
                               
                               <div class="col-md-12">
                                  <hr><hr>
