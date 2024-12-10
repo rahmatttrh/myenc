@@ -126,11 +126,16 @@ Payroll Transaction
    <div class="card card-with-nav shadow-none border">
       <div class="card-header  d-flex justify-content-between ">
          <div class="mt-3">
-            <h4 class="text-uppercase"><b>PAYSLIP {{$unit->name}}</b> {{$unitTransaction->month}} {{$unitTransaction->year}}</h4>
-            <small>Status : <span class="text-uppercase"> <x-status.unit-transaction :unittrans="$unitTransaction"/> </span></small> <br>
+            <h2 class="text-uppercase"><b>PAYSLIP REPORT </b> <br> {{$unit->name}} {{$unitTransaction->month}} {{$unitTransaction->year}} </h2>
+            
+            
          </div>
          
-         <h1 class="mt-3"> <b>{{formatRupiahB($unit->getUnitTransaction($unitTransaction)->sum('total'))}}</b></h1>
+         <div class="text-right">
+            <h2 class="mt-3"> <b>{{formatRupiahB($unit->getUnitTransaction($unitTransaction)->sum('total'))}}</b></h2>
+            <small>Status : <span class="text-uppercase"> <x-status.unit-transaction :unittrans="$unitTransaction"/> </span></small>
+         </div>
+         
       </div>
       <div class="card-header">
          <div class="row row-nav-line">

@@ -161,10 +161,12 @@
                <div class="card-body">
                   {{-- <span class="badge badge-dark">Level :</span> --}}
                   <x-role />
-                  <hr>
+                  <br>
+                  <br>
                   
                   {{-- Dashboard HRD <hr class="bg-white"> --}}
-                  <b>{{$employee->unit->name}}</b> - {{$employee->department->name}}<br>
+                  <h3><b class="">{{$employee->unit->name}}</b> {{$employee->department->name}}</h3>
+                     
                    
                   {{$employee->position->name}}
                   

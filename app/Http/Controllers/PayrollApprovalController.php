@@ -216,7 +216,7 @@ class PayrollApprovalController extends Controller
    public function manhrdHistory()
    {
 
-      $unitTransactions = UnitTransaction::where('status', '>', 1)->get();
+      $unitTransactions = UnitTransaction::where('status', '>', 1)->orderBy('unit_id', 'asc')->get();
 
       return view('pages.payroll.approval.history', [
          'unitTransactions' => $unitTransactions
@@ -226,7 +226,7 @@ class PayrollApprovalController extends Controller
    public function manfinHistory()
    {
 
-      $unitTransactions = UnitTransaction::where('status', '>', 2)->get();
+      $unitTransactions = UnitTransaction::where('status', '>', 2)->orderBy('unit_id', 'asc')->get();
 
       return view('pages.payroll.approval.history', [
          'unitTransactions' => $unitTransactions
