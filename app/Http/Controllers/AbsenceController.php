@@ -23,6 +23,30 @@ class AbsenceController extends Controller
       $now = Carbon::now();
       $employees = Employee::get();
       $absences = Absence::get();
+
+      if (auth()->user()->hasRole('HRD-KJ12')) {
+         $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
+            ->where('contracts.loc', 'kj1-2')
+            ->select('employees.*')
+            ->get();
+
+         $absences = Absence::where('location_id', 4)->orWhere('location_id', 5)->get();
+      } elseif (auth()->user()->hasRole('HRD-KJ45')) {
+
+         // dd('ok');
+         $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
+            ->where('contracts.loc', 'kj4')->orWhere('contracts.loc', 'kj5')
+            ->select('employees.*')
+            ->get();
+         $absences = Absence::where('location_id', 3)->get();
+      } else {
+         // dd('ok');
+         $employees = Employee::get();
+      }
+
+
+
+
       return view('pages.payroll.absence.index', [
          'employees' => $employees,
          'absences' => $absences,
@@ -75,6 +99,24 @@ class AbsenceController extends Controller
       $now = Carbon::now();
       $employees = Employee::with('biodata')->get();
       $absences = Absence::get();
+
+      if (auth()->user()->hasRole('HRD-KJ12')) {
+         $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
+            ->where('contracts.loc', 'kj1-2')
+            ->select('employees.*')
+            ->get();
+      } elseif (auth()->user()->hasRole('HRD-KJ45')) {
+
+         // dd('ok');
+         $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
+            ->where('contracts.loc', 'kj4')->orWhere('contracts.loc', 'kj5')
+            ->select('employees.*')
+            ->get();
+      } else {
+         // dd('ok');
+         $employees = Employee::get();
+      }
+
       return view('pages.payroll.absence.form', [
          'employees' => $employees,
          'absences' => $absences,

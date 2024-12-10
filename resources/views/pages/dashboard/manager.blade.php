@@ -71,7 +71,7 @@ Dashboard
                
                @if (count($employee->positions) > 0)
                      @foreach ($positions as $pos)
-                      <b>{{$pos->department->unit->name ?? '-'}} </b>
+                      <b>{{$pos->department->unit->name ?? '-'}} {{$pos->department->name ?? '-'}} </b> <br>
                      <small class="">{{$pos->name}}</small>
                      <br>
                      {{-- <div class="row">
@@ -297,7 +297,24 @@ Dashboard
          <div class="row">
             <div class="col-md-4">
                <a href="{{route('payroll.approval.gm')}}">
-                  <div class="card card-stats card-primary card-round">
+                  <div class="card card-stats card-round border">
+                     <div class="card-body">
+                        <div class="row align-items-center">
+                           <div class="col-icon d-none d-md-block">
+                              <div class="icon-big text-center icon-info bubble-shadow-small">
+                                 <i class="far fa-newspaper"></i>
+                              </div>
+                           </div>
+                           <div class="col col-stats ml-3 ml-sm-0">
+                              <div class="numbers">
+                                 <p class="card-category">Payslip</p>
+                                 <h4 class="card-title">{{count($payrollApprovals)}}</h4>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  {{-- <div class="card card-stats card-primary card-round">
                      <div class="card-body">
                         <div class="row">
                            <div class="col-3">
@@ -313,7 +330,7 @@ Dashboard
                            </div>
                         </div>
                      </div>
-                  </div>
+                  </div> --}}
                </a>
             </div>
          </div>

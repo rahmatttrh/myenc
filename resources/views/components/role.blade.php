@@ -14,6 +14,10 @@
     <span class="badge badge-light">HRD Payroll</span>
 @endif
 
+@if (auth()->user()->hasRole('HRD-KJ45'))
+    <span class="badge badge-light">HRD KJ 45</span>
+@endif
+
 {{-- @if (auth()->user()->hasRole('Manager'))
     <span class="badge badge-light">Manager</span>
 @endif

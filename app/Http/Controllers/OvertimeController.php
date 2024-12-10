@@ -26,6 +26,27 @@ class OvertimeController extends Controller
       $overtimes = Overtime::get();
 
 
+      if (auth()->user()->hasRole('HRD-KJ12')) {
+         $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
+            ->where('contracts.loc', 'kj1-2')
+            ->select('employees.*')
+            ->get();
+
+         $overtimes = Overtime::where('location_id', 3)->get();
+      } elseif (auth()->user()->hasRole('HRD-KJ45')) {
+
+         // dd('ok');
+         $employees = Employee::join('contracts', 'employees.contract_id', '=', 'contracts.id')
+            ->where('contracts.loc', 'kj4')->orWhere('contracts.loc', 'kj5')
+            ->select('employees.*')
+            ->get();
+         $overtimes = Overtime::where('location_id', 4)->orWhere('location_id', 5)->get();
+         // dd($overtimes);
+      } else {
+         // dd('ok');
+         $employees = Employee::get();
+      }
+
       // $debugOver = Overtime::find(713);
       // $employee = Employee::find($debugOver->employee_id);
       // $payroll = Payroll::find($employee->payroll_id);
@@ -91,8 +112,9 @@ class OvertimeController extends Controller
       // } else {
       //    $employees = Employee::get();
       // }
-      $employees = Employee::get();
+      // $employees = Employee::get();
       // $holidays = Holiday::orderBy('date', 'asc')->get();
+      // dd($overtimes);
       return view('pages.payroll.overtime', [
          'overtimes' => $overtimes,
          'employees' => $employees,

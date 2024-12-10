@@ -148,7 +148,7 @@ Route::middleware(["auth"])->group(function () {
 
 
 
-   Route::group(['middleware' => ['role:Administrator|BOD|HRD|HRD-Manager|HRD-Recruitment|HRD-Payroll|HRD-Spv']], function () {
+   Route::group(['middleware' => ['role:Administrator|BOD|HRD|HRD-Manager|HRD-Recruitment|HRD-Payroll|HRD-Spv|HRD-KJ45|HRD-KJ12']], function () {
       Route::prefix('announcement')->group(function () {
          Route::get('/', [AnnouncementController::class, 'index'])->name('announcement');
          Route::get('create', [AnnouncementController::class, 'create'])->name('announcement.create');
@@ -467,7 +467,7 @@ Route::middleware(["auth"])->group(function () {
 
    // Semua Role 
 
-   Route::group(['middleware' => ['role:Administrator|BOD|HRD|HRD-Manager|HRD-Recruitment|HRD-Spv|Karyawan|Manager|Asst. Manager|Supervisor|Leader']], function () {
+   Route::group(['middleware' => ['role:Administrator|BOD|HRD|HRD-Manager|HRD-Recruitment|HRD-Spv|HRD-KJ45|HRD-KJ12|Karyawan|Manager|Asst. Manager|Supervisor|Leader']], function () {
 
       Route::prefix('payroll/approval')->group(function () {
          Route::post('submit/master', [PayrollApprovalController::class, 'submit'])->name('payroll.submit.master.transaction');
