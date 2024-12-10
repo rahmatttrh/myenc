@@ -105,6 +105,8 @@ class TransactionController extends Controller
 
       $alphas = $employee->absences->where('date', '>=', $from)->where('date', '<=', $to)->where('year', $transaction->year)->where('type', 1);
       $lates = $employee->absences->where('date', '>=', $from)->where('date', '<=', $to)->where('year', $transaction->year)->where('type', 2);
+      $atls = $employee->absences->where('date', '>=', $from)->where('date', '<=', $to)->where('year', $transaction->year)->where('type', 3);
+      $izins = $employee->absences->where('date', '>=', $from)->where('date', '<=', $to)->where('year', $transaction->year)->where('type', 4);
       $totalMinuteLate = $lates->sum('minute');
 
       // dd(1 * 1/30 * $payroll->total);
@@ -135,6 +137,7 @@ class TransactionController extends Controller
          'totalOvertime' => $totalOvertime,
          'alphas' => $alphas,
          'lates' => $lates,
+         'atls' => $atls,
          'izins' => $izins,
          'absences' => $absences,
          'additionals' => $additionals,

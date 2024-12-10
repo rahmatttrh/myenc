@@ -101,46 +101,49 @@ Dashboard
                <small>Employee</small>
             </div>
             <div class="card-body p-0">
-               <table class=" ">
-                  {{-- <thead>
-                     <tr>
-                        <th></th>
-                        <th>NIK</th>
-                        <th>Name</th>
-                     </tr>
-                  </thead> --}}
-                  <tbody>
-                     @if (count($employee->positions) > 0)
-                           @foreach ($positions as $pos)
-                                 <tr>
-                                 {{-- <td></td> --}}
-                                 <td colspan="4">{{$pos->department->unit->name}} {{$pos->department->name}} ({{count($pos->department->employees)}}) </td>
-                                 {{-- <td>{{$employee->biodata->fullName()}}</td> --}}
-                                 </tr>
-                                 @foreach ($pos->department->employees->where('status', 1) as $emp)
+               <div class="table-responsive overflow-auto" style="height: 250px">
+                  <table class=" ">
+                     {{-- <thead>
+                        <tr>
+                           <th></th>
+                           <th>NIK</th>
+                           <th>Name</th>
+                        </tr>
+                     </thead> --}}
+                     <tbody>
+                        @if (count($employee->positions) > 0)
+                              @foreach ($positions as $pos)
                                     <tr>
-                                    <td></td>
-                                    {{-- <td>{{$emp->sub_dept->name ?? ''}}</td> --}}
                                     {{-- <td></td> --}}
-                                    <td>{{$emp->nik}} {{$emp->biodata->fullName()}}</td>
+                                    <td colspan="4">{{$pos->department->unit->name}} {{$pos->department->name}} ({{count($pos->department->employees)}}) </td>
+                                    {{-- <td>{{$employee->biodata->fullName()}}</td> --}}
                                     </tr>
-                                 @endforeach
-                           @endforeach
-                         @else
-                         @foreach ($teams as $emp)
-                              <tr>
-                              <td></td>
-                              {{-- <td>{{$emp->sub_dept->name}}</td> --}}
-                              {{-- <td></td> --}}
-                              <td>{{$emp->nik}} {{$emp->biodata->fullName()}}</td>
-                              </tr>
-                           @endforeach
-                     @endif
-                     
-                     
-                     
-                  </tbody>
-               </table>
+                                    @foreach ($pos->department->employees->where('status', 1) as $emp)
+                                       <tr>
+                                       <td></td>
+                                       {{-- <td>{{$emp->sub_dept->name ?? ''}}</td> --}}
+                                       {{-- <td></td> --}}
+                                       <td>{{$emp->nik}} {{$emp->biodata->fullName()}}</td>
+                                       </tr>
+                                    @endforeach
+                              @endforeach
+                            @else
+                            @foreach ($teams as $emp)
+                                 <tr>
+                                 <td></td>
+                                 {{-- <td>{{$emp->sub_dept->name}}</td> --}}
+                                 {{-- <td></td> --}}
+                                 <td>{{$emp->nik}} {{$emp->biodata->fullName()}}</td>
+                                 </tr>
+                              @endforeach
+                        @endif
+                        
+                        
+                        
+                     </tbody>
+                  </table>
+               </div>
+               
             </div>
          </div>
       </div>

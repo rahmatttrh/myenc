@@ -7,6 +7,7 @@ use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Location;
 use App\Models\Log;
+use App\Models\Overtime;
 use App\Models\Payroll;
 use App\Models\Reduction;
 use App\Models\ReductionAdditional;
@@ -515,9 +516,23 @@ class PayrollController extends Controller
    public function exportPdf($id)
    {
       $transaction = Transaction::find(dekripRambo($id));
+      $employee = Employee::find($transaction->employee_id);
 
-      return view('pages.payroll.transaction.pdf', [
-         'transaction' => $transaction
+      $from = $transaction->cut_from;
+      $to = $transaction->cut_to;
+      $alphas = $employee->absences->where('date', '>=', $from)->where('date', '<=', $to)->where('year', $transaction->year)->where('type', 1);
+      $lates = $employee->absences->where('date', '>=', $from)->where('date', '<=', $to)->where('year', $transaction->year)->where('type', 2);
+      $atls = $employee->absences->where('date', '>=', $from)->where('date', '<=', $to)->where('year', $transaction->year)->where('type', 3);
+      $izins = $employee->absences->where('date', '>=', $from)->where('date', '<=', $to)->where('year', $transaction->year)->where('type', 4);
+      $overtimes = Overtime::where('date', '>=', $from)->where('date', '<=', $to)->where('employee_id', $employee->id)->get();
+
+      return view('pages.payroll.transaction.payslip-pdf', [
+         'transaction' => $transaction,
+         'alphas' => $alphas,
+         'lates' => $lates,
+         'atls' => $atls,
+         'izins' => $izins,
+         'overtimes' => $overtimes
       ]);
    }
 }

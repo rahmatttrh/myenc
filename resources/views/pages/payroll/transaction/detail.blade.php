@@ -21,7 +21,7 @@ Detail Transaction Payroll Employee
    <div class="row">
       <div class="col-md-4">
          <a href="{{route('payroll.transaction.monthly.all', enkripRambo($transaction->unit_transaction_id))}}" class="btn btn-light border mb-2"> <i class="fa fa-backward"></i>Back</a>
-         <a href="{{route('payslip.pdf', enkripRambo($transaction->id))}}" class="btn btn-light border mb-2"><i class="fa fa-print"></i> Export to PDF</a>
+         <a href="{{route('payslip.pdf', enkripRambo($transaction->id))}}" class="btn btn-light border mb-2"><i class="fa fa-print"></i> Export Payslip</a>
          {{-- <a href=""  class="btn btn-primary btn-block">Submit</a> --}}
          {{-- <h1>Slip Gaji</h1>
          <hr> --}}
