@@ -713,7 +713,7 @@ class HomeController extends Controller
          $employee = Employee::where('nik', auth()->user()->username)->first();
          $biodata = Biodata::where('email', auth()->user()->email)->first();
          $presences = Presence::where('employee_id', auth()->user()->getEmployeeId())->orderBy('created_at', 'desc')->get();
-         $absences = Absence::where('employee_id', $employee->id)->paginate(10);
+         $absences = Absence::where('type', 1)->where('employee_id', $employee->id)->paginate(10);
          $pending = Presence::where('employee_id', auth()->user()->getEmployeeId())->where('out_time', null)->first();
          // dd($biodata->employee->id);
 

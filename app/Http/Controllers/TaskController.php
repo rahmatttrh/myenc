@@ -171,8 +171,12 @@ class TaskController extends Controller
 
          $historyTasks = Task::where('status', 2)->where('employee_id', $employee->id)->get();
          $getHistoryTasks = Task::where('status', 2)->orderBy('status', 'asc')->get();
-         foreach ($getHistoryTasks as $ght) {
-            $historyTasks->push($ght);
+         foreach ($myteams as $team) {
+            foreach ($getHistoryTasks as $ght) {
+               if ($ght->employee_id == $team->id) {
+                  $historyTasks->push($ght);
+               }
+            }
          }
       }
 

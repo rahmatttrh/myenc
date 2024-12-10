@@ -340,59 +340,62 @@ Dashboard
                <small class="text-uppercase">Task List</small>
             </div>
             <div class="card-body p-0">
-               <table class=" ">
-                  <thead>
-      
-                     <tr>
-                        <th class="text-center">#</th>
-                        <th class="">Kategori</th>
-                        <th class="">Action Plan</th>
-                        <th class="text-center">Target</th>
-                        <th class="text-center">Closed</th>
-                        <th>Status</th>
-                        {{-- <th>Date</th> --}}
-                        {{-- <th colspan="3" class="text-center">Tap In</th>
-                        <th colspan="3" class="text-center">Tap Out</th>
-                        <th rowspan="3" class="text-center">Work Hours</th> --}}
-                     </tr>
-                     
-                  </thead>
-                  <tbody>
-                     @foreach ($tasks as $task)
+               <div class="table-responsive overflow-auto" style="height: 170px">
+                  <table class=" ">
+                     <thead>
+         
                         <tr>
-                           <td>{{++$i}}</td>
-                           <td>{{$task->category}}</td>
-                           <td><a href="{{route('task.detail', enkripRambo($task->id))}}">{{$task->plan}}</a></td>
-                           <td>{{formatDate($task->target)}}</td>
-                           <td>
-                              @if ($task->closed)
-                              {{formatDate($task->closed)}}
-                                 @else
-                                 -
-                              @endif
-                           </td>
-                           @if ($task->status == 0)
-                              <td class="bg-danger text-light">Open</td>
-                              @elseif($task->status == 1)
-                              <td class="bg-info text-light">Progress</td>
-                              @else
-                              <td class="bg-success text-light">Closed</td>
-                              
-                           @endif
-                           
+                           <th class="text-center">#</th>
+                           <th class="">Kategori</th>
+                           <th class="">Action Plan</th>
+                           <th class="text-center">Target</th>
+                           <th class="text-center">Closed</th>
+                           <th>Status</th>
+                           {{-- <th>Date</th> --}}
+                           {{-- <th colspan="3" class="text-center">Tap In</th>
+                           <th colspan="3" class="text-center">Tap Out</th>
+                           <th rowspan="3" class="text-center">Work Hours</th> --}}
                         </tr>
-                     @endforeach
-                     {{-- <tr>
-                        <td>1</td>
-                        <td>MARS</td>
-                        <td>Fitur Drop Cargo by Material Man</td>
-                        <td>17/10/2024</td>
-                        <td>17/10/2024</td>
-                        <td>Done</td>
-                     </tr> --}}
-      
-                  </tbody>
-               </table>
+                        
+                     </thead>
+                     <tbody>
+                        @foreach ($tasks as $task)
+                           <tr>
+                              <td>{{++$i}}</td>
+                              <td>{{$task->category}}</td>
+                              <td><a href="{{route('task.detail', enkripRambo($task->id))}}">{{$task->plan}}</a></td>
+                              <td>{{formatDate($task->target)}}</td>
+                              <td>
+                                 @if ($task->closed)
+                                 {{formatDate($task->closed)}}
+                                    @else
+                                    -
+                                 @endif
+                              </td>
+                              @if ($task->status == 0)
+                                 <td class="bg-danger text-light">Open</td>
+                                 @elseif($task->status == 1)
+                                 <td class="bg-info text-light">Progress</td>
+                                 @else
+                                 <td class="bg-success text-light">Closed</td>
+                                 
+                              @endif
+                              
+                           </tr>
+                        @endforeach
+                        {{-- <tr>
+                           <td>1</td>
+                           <td>MARS</td>
+                           <td>Fitur Drop Cargo by Material Man</td>
+                           <td>17/10/2024</td>
+                           <td>17/10/2024</td>
+                           <td>Done</td>
+                        </tr> --}}
+         
+                     </tbody>
+                  </table>
+               </div>
+               
             </div>
          </div>
 
@@ -404,58 +407,68 @@ Dashboard
                <small class="text-uppercase">Recent Absences {{$now->format('Y')}}</small>
             </div>
             <div class="card-body p-0">
-               <table class=" table-sm p-0">
-                  <thead>
-                     <tr>
-                        <th>Employee</th>
-                        <th>Type</th>
-                        <th>Date</th>
-                        <th></th>
-                     </tr>
-                  </thead>
-
-                  <tbody>
-                     @foreach ($absences as $absence)
-                     <tr>
-                           <td>{{$absence->employee->nik}} {{$absence->employee->biodata->fullName()}}</td>
-                        <td>
-                           {{-- {{$absence->type}} --}}
-                           @if ($absence->type == 1)
-                           Alpha 
-                           @elseif($absence->type == 2)
-                           Terlambat ({{$absence->minute}} Menit)
-                           @elseif($absence->type == 3)
-                           ATL
-                           @elseif($absence->type == 4)
-                           Izin
-                           @endif
-                           (
-                           @if ($absence->status == 404)
-                               Request <b>
-                                 @if ($absence->type_req == 1)
-                                    Alpha 
-                                    @elseif($absence->type_req == 2)
-                                    Terlambat ({{$absence->minute}} Menit)
-                                    @elseif($absence->type_req == 3)
-                                    ATL
-                                    @elseif($absence->type_req == 4)
-                                    Izin
-                                    @endif
-                               </b>
-                           @endif
-                           )
-                        </td>
-                        <td>{{formatDate($absence->date)}}</td>
-                        
-                        <td>
-                           <a href="{{route('payroll.absence.edit', enkripRambo($absence->id))}}" class="">Update</a>
-                        </td>
-                     </tr>
-
-                     @endforeach
-                  </tbody>
-
-               </table>
+               <div class="table-responsive overflow-auto" style="height: 120px">
+                  <table class=" table-sm p-0 ">
+                     <thead>
+                        <tr>
+                           <th>Employee</th>
+                           <th>Type</th>
+                           <th>Date</th>
+                           <th></th>
+                        </tr>
+                     </thead>
+   
+                     <tbody>
+                        @foreach ($absences as $absence)
+                        <tr>
+                              <td>{{$absence->employee->nik}} {{$absence->employee->biodata->fullName()}}</td>
+                           <td>
+                              {{-- {{$absence->type}} --}}
+                              @if ($absence->type == 1)
+                              Alpha 
+                              @elseif($absence->type == 2)
+                              Terlambat ({{$absence->minute}} Menit)
+                              @elseif($absence->type == 3)
+                              ATL
+                              @elseif($absence->type == 4)
+                              Izin
+                              @endif
+                              
+                              @if ($absence->status == 404)
+                              (
+                                  Request <b>
+                                    @if ($absence->type_req == 1)
+                                       Alpha 
+                                       @elseif($absence->type_req == 2)
+                                       Terlambat ({{$absence->minute}} Menit)
+                                       @elseif($absence->type_req == 3)
+                                       ATL
+                                       @elseif($absence->type_req == 4)
+                                       Izin
+                                       @endif
+                                  </b>
+                                  )
+                              @endif
+                              @if ($absence->status == 505)
+                              (
+                                  Request ditolak
+                                  )
+                              @endif
+                            
+                           </td>
+                           <td>{{formatDate($absence->date)}}</td>
+                           
+                           <td>
+                              <a href="{{route('payroll.absence.edit', enkripRambo($absence->id))}}" class="">Update</a>
+                           </td>
+                        </tr>
+   
+                        @endforeach
+                     </tbody>
+   
+                  </table>
+               </div>
+               
             </div>
          </div>
       </div>

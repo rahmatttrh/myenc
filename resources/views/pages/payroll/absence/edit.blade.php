@@ -52,6 +52,14 @@ Payroll Absence
                      @endif
                   </td>
                </tr>
+               @if ($absence->status == 505)
+               <tr>
+                  <td>Status</td>
+                  <td>Request Ditolak 
+                     ({{$absence->desc}})
+                  </td>
+               </tr>
+               @endif
 
                @if ($absence->status == 404)
                <tr>
