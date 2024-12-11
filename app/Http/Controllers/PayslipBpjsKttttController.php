@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Location;
 use App\Models\PayrollApproval;
 use App\Models\PayslipBpjsKs;
-use App\Models\PayslipBpjsKt;
 use App\Models\UnitTransaction;
 use Illuminate\Http\Request;
 
@@ -16,7 +15,7 @@ class PayslipBpjsKtController extends Controller
       $unitTransaction = UnitTransaction::find(dekripRambo($id));
       $locations = Location::get();
 
-      $reportBpjsKt = PayslipBpjsKt::where('unit_transaction_id', $unitTransaction->id)->first();
+      $reportBpjsKs = PayslipBpjsKs::where('unit_transaction_id', $unitTransaction->id)->first();
 
       $hrd = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'hrd')->first();
       $manHrd = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'man-hrd')->first();
@@ -25,7 +24,7 @@ class PayslipBpjsKtController extends Controller
       $bod = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'bod')->first();
 
       return view('pages.payroll.report.bpjskt', [
-         'reportBpjsKt' => $reportBpjsKt,
+         'reportBpjsKs' => $reportBpjsKs,
          'unitTransaction' => $unitTransaction,
          'locations' => $locations,
          'hrd' => $hrd,

@@ -52,6 +52,7 @@ use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\FuncController;
 use App\Http\Controllers\PayrollApprovalController;
 use App\Http\Controllers\PayslipBpjsKsController;
+use App\Http\Controllers\PayslipBpjsKtController;
 use App\Http\Controllers\ReductionAdditionalController;
 use App\Http\Controllers\ReductionEmployeeController;
 use App\Http\Controllers\TaskController;
@@ -338,6 +339,7 @@ Route::middleware(["auth"])->group(function () {
             Route::get('/setup', [PayrollController::class, 'setup'])->name('payroll.setup');
 
             Route::get('report/bpjsks/{id}', [PayslipBpjsKsController::class, 'reportBpjsKs'])->name('payroll.report.bpjsks');
+            Route::get('report/bpjskt/{id}', [PayslipBpjsKtController::class, 'reportBpjsKt'])->name('payroll.report.bpjskt');
 
             Route::put('payslip/update', [PayrollController::class, 'payslipUpdate'])->name('payroll.payslip.update');
             Route::put('payslip/show', [PayrollController::class, 'payslipShow'])->name('payslip.show');

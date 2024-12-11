@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Location;
 use App\Models\PayrollApproval;
 use App\Models\PayslipBpjsKs;
+use App\Models\PayslipBpjsKt;
 use App\Models\Transaction;
 use App\Models\Unit;
 use App\Models\UnitTransaction;
@@ -32,9 +33,29 @@ class UnitTransactionController extends Controller
       $bod = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'bod')->where('type', 'approve')->first();
 
       $reportBpjsKs = PayslipBpjsKs::where('unit_transaction_id', $unitTransaction->id)->first();
+      $reportBpjsKt = PayslipBpjsKt::where('unit_transaction_id', $unitTransaction->id)->first();
 
       $now = Carbon::create($unitTransaction->month);
       // dd($now->addMonth()->format('F'));
+      if (!$reportBpjsKt) {
+         PayslipBpjsKt::create([
+            'unit_transaction_id' => $unitTransaction->id,
+            'month' => $now->addMonth()->format('F'),
+            'year' => $unitTransaction->year,
+            'status' => 0,
+            'payslip_employee' => count($transactions),
+            'payslip_total' => $transactions->sum('total')
+         ]);
+      } else {
+         $reportBpjsKt->update([
+            'unit_transaction_id' => $unitTransaction->id,
+            'month' => $now->addMonth()->format('F'),
+            'year' => $unitTransaction->year,
+            'status' => 0,
+            'payslip_employee' => count($transactions),
+            'payslip_total' => $transactions->sum('total')
+         ]);
+      }
 
 
       if (!$reportBpjsKs) {
@@ -43,6 +64,8 @@ class UnitTransactionController extends Controller
             'month' => $now->addMonth()->format('F'),
             'year' => $unitTransaction->year,
             'status' => 0,
+            'payslip_employee' => count($transactions),
+            'payslip_total' => $transactions->sum('total')
          ]);
       } else {
          $reportBpjsKs->update([
@@ -50,6 +73,8 @@ class UnitTransactionController extends Controller
             'month' => $now->addMonth()->format('F'),
             'year' => $unitTransaction->year,
             'status' => 0,
+            'payslip_employee' => count($transactions),
+            'payslip_total' => $transactions->sum('total')
          ]);
       }
 

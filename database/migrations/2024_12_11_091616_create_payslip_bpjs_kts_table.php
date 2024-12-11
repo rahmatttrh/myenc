@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePayslipBpjsKsTable extends Migration
+class CreatePayslipBpjsKtsTable extends Migration
 {
    /**
     * Run the migrations.
@@ -13,7 +13,7 @@ class CreatePayslipBpjsKsTable extends Migration
     */
    public function up()
    {
-      Schema::create('payslip_bpjs_ks', function (Blueprint $table) {
+      Schema::create('payslip_bpjs_kts', function (Blueprint $table) {
          $table->id();
          $table->integer('status');
          $table->integer('unit_transaction_id');
@@ -37,6 +37,6 @@ class CreatePayslipBpjsKsTable extends Migration
     */
    public function down()
    {
-      Schema::dropIfExists('payslip_bpjs_ks');
+      Schema::dropIfExists('payslip_bpjs_kts');
    }
 }

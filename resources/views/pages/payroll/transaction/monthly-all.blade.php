@@ -100,7 +100,7 @@ Payroll Transaction
          {{-- <a href="" class="btn btn-block btn-info">Submit</a> --}}
          <a href="{{route('payroll.transaction.monthly', enkripRambo($unitTransaction->id))}}" class="btn btn-light border btn-block text-left">Report Payslip</a>
          <a href="{{route('payroll.report.bpjsks', enkripRambo($unitTransaction->id))}}" class="btn btn-light border btn-block text-left">BPJS Kesehatan</a>
-         <a href="{{route('payroll.report.bpjsks', enkripRambo($unitTransaction->id))}}" class="btn btn-light border btn-block text-left">BPJS Ketenagakerjaan</a>
+         <a href="{{route('payroll.report.bpjskt', enkripRambo($unitTransaction->id))}}" class="btn btn-light border btn-block text-left">BPJS Ketenagakerjaan</a>
 
          
 

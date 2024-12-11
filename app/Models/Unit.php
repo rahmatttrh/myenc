@@ -22,17 +22,17 @@ class Unit extends Model
       return $this->hasMany(Department::class);
    }
 
-   
+
    public function employees()
    {
       return $this->hasMany(Employee::class);
    }
-   
+
    public function reductions()
    {
       return $this->hasMany(Reduction::class);
    }
-   
+
 
    // public function totalSubDept($unitId = 2)
    // {
@@ -52,7 +52,7 @@ class Unit extends Model
       }
       return $totalSubDept;
    }
-      
+
    public function unitTransactions()
    {
       return $this->hasMany(UnitTransaction::class);
@@ -97,7 +97,8 @@ class Unit extends Model
       return $employeeQpe;
    }
 
-   public function getUnitTransaction($unitTrans){
+   public function getUnitTransaction($unitTrans)
+   {
       $transactions = Transaction::where('unit_id', $this->id)->where('month', $unitTrans->month)->where('year', $unitTrans->year)->get();
       return $transactions;
    }
