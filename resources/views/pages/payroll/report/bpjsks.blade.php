@@ -152,10 +152,10 @@ Payroll Report BPJS KS
       <div class="card-body p-0">
          
          {{-- <div class="table-responsive" style=""> --}}
-            <table  class=" table table-sm no-hover" style="border-top: 1px solid rgb(219, 219, 219);">
+            <table  >
                <thead>
                   <tr>
-                     <th colspan="4" class="bg-white"><img src="{{asset('img/logo/bpjsks.png')}}" width="150px" alt=""></th>
+                     <th colspan="4 p-2" class="bg-white"><img src="{{asset('img/logo/bpjsks.png')}}" width="150px" alt=""></th>
                   </tr>
                   <tr style="padding: 0px!">
                      <th colspan="4" class="text-center bg-white p0" style="padding: 0px !important;" >RINCIAN IURAN</th>

@@ -33,6 +33,12 @@ class PayrollController extends Controller
       }
 
       // $units = Unit::get();
+      // $payrolls = Payroll::get();
+      // foreach ($payrolls as $pay) {
+      //    $pay->update([
+      //       'payslip_status' => 'show'
+      //    ]);
+      // }
 
       // foreach($employees as $emp){
       //    $payroll = Payroll::find($emp->payroll_id);
@@ -378,6 +384,63 @@ class PayrollController extends Controller
          $employee->update([
             'payroll_id' => $payroll->id
          ]);
+      }
+
+      $reductions = Reduction::where('unit_id', $employee->unit_id)->get();
+      $locations = Location::get();
+
+      foreach ($locations as $loc) {
+         if ($loc->code == $employee->contract->loc) {
+            $location = $loc->id;
+         }
+      }
+
+      foreach ($reductions as $red) {
+         $currentRed = ReductionEmployee::where('reduction_id', $red->id)->where('employee_id', $employee->id)->first();
+
+         if ($payroll->total <= $red->min_salary) {
+            $salary = $red->min_salary;
+            $realSalary = $payroll->total;
+
+            $bebanPerusahaan = ($red->company * $salary) / 100;
+            $bebanKaryawan = ($red->employee * $realSalary) / 100;
+            $bebanKaryawanReal = ($red->employee * $salary) / 100;
+            $selisih = $bebanKaryawanReal - $bebanKaryawan;
+            $bebanPerusahaanReal = $bebanPerusahaan + $selisih;
+         } else {
+            $salary = $payroll->total;
+            $bebanPerusahaan = ($red->company * $salary) / 100;
+            $bebanKaryawan = ($red->employee * $salary) / 100;
+            $bebanKaryawanReal = 0;
+            $bebanPerusahaanReal = $bebanPerusahaan;
+         }
+
+         if (!$currentRed) {
+            ReductionEmployee::create([
+               'reduction_id' => $red->id,
+               'location_id' => $location,
+               'employee_id' => $employee->id,
+               'status' => 1,
+               'type' => 'Default',
+               'employee_value' => $bebanKaryawan,
+               'employee_value_real' => $bebanKaryawanReal,
+               'company_value' => $bebanPerusahaan,
+               'company_value_real' => $bebanPerusahaanReal,
+
+            ]);
+         } else {
+            $currentRed->update([
+               'reduction_id' => $red->id,
+               'location_id' => $location,
+               'employee_id' => $employee->id,
+               'status' => 1,
+               'type' => 'Default',
+               'employee_value' => $bebanKaryawan,
+               'employee_value_real' => $bebanKaryawanReal,
+               'company_value' => $bebanPerusahaan,
+               'company_value_real' => $bebanPerusahaanReal,
+            ]);
+         }
       }
 
       $transactionCon = new TransactionController;

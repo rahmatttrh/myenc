@@ -323,6 +323,7 @@ Setup Payroll Employee
                         </div>
 
                      <div class="tab-pane fade " id="pills-payslip-nobd" role="tabpanel" aria-labelledby="pills-payslip-tab-nobd">
+                        @if ($employee->payroll_id != null)
                         <form action="{{route('payroll.payslip.update')}}" method="POST" enctype="multipart/form-data" >
                            @csrf
                            @method('PUT')
@@ -351,6 +352,8 @@ Setup Payroll Employee
                            
          
                         </form>
+                        @endif
+                        
                         
                      </div>
             
