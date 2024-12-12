@@ -225,7 +225,7 @@ Setup Payroll Employee
                                  <div class="row">
                                     <div class="col">
                                        <div class="form-group form-group-default">
-                                          <label>{{$red->reduction->name}}</label>
+                                          <label>{{$red->reduction->name}} {{$red->id}}</label>
                                           <input type="text" name="" id="" class="form-control" value="{{formatRupiah($red->employee_value)}}">
                                        </div>
                                     </div>
@@ -233,7 +233,7 @@ Setup Payroll Employee
                                        
                                           <input type="number" hidden name="redEmp" id="redEmp" value="{{$red->id}}">
                                           <div class="form-group form-group-default">
-                                             <label>Status</label>
+                                             <label>Status {{$red->status}}</label>
                                              <select class="form-control" name="status" id="status">
                                                 <option {{$red->status == 1 ? 'selected' : ''}} value="1">Enable</option>
                                                 <option {{$red->status == 0 ? 'selected' : ''}} value="0">Disable</option>

@@ -15,6 +15,8 @@ class ReductionEmployeeController extends Controller
          'status' => $req->status
       ]);
 
+      // dd($reductionEmployee->status);
+
       return redirect()->back()->with('status', 'Potongan Karyawan berhasil diubah');
    }
 

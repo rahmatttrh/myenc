@@ -11,6 +11,7 @@ use App\Models\Overtime;
 use App\Models\Payroll;
 use App\Models\PayrollApproval;
 use App\Models\PayslipBpjsKs;
+use App\Models\PayslipBpjsKt;
 use App\Models\Reduction;
 use App\Models\ReductionAdditional;
 use App\Models\ReductionEmployee;
@@ -262,6 +263,7 @@ class TransactionController extends Controller
       // dd($manhrd);
 
       $reportBpjsKs = PayslipBpjsKs::where('unit_transaction_id', $unitTransaction->id)->first();
+      $reportBpjsKt = PayslipBpjsKt::where('unit_transaction_id', $unitTransaction->id)->first();
       $hrd = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'hrd')->first();
       $manHrd = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'man-hrd')->first();
       $manFin = PayrollApproval::where('unit_transaction_id', $unitTransaction->id)->where('level', 'man-fin')->first();
@@ -282,7 +284,8 @@ class TransactionController extends Controller
          'gm' => $gm,
          'bod' => $bod,
 
-         'reportBpjsKs' => $reportBpjsKs
+         'reportBpjsKs' => $reportBpjsKs,
+         'reportBpjsKt' => $reportBpjsKt
       ])->with('i');
    }
 
