@@ -548,8 +548,11 @@ class TransactionController extends Controller
       if ($totalKeterlambatan == 6) {
          $potongan = 1 * 1 / 30 * $payroll->total;
       } elseif ($totalKeterlambatan > 6) {
-         $finalLate = $totalKeterlambatan - 6;
-         $potongan = $finalLate * 1 / 5 * $payroll->total;
+         $potonganFirst = 1 * 1 / 30 * $payroll->total;
+
+         $sisaLate = $totalKeterlambatan - 6;
+         $potonganSecond = $potonganFirst * 1 / 5;
+         $potongan = $potonganFirst +  $potonganSecond;
          // dd($finalLate);
          // dd($payroll->total);
       } else {

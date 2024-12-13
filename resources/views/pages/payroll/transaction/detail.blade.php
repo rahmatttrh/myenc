@@ -182,11 +182,11 @@ Detail Transaction Payroll Employee
                                     <thead>
                                        <tr>
                                           <th colspan="">Pendapatan</th>
-                                          <th class="text-right">{{formatRupiah($payroll->total + $transaction->additional_penambahan)}}</th>
+                                          <th class="text-right">{{formatRupiah($payroll->total + $transaction->additional_penambahan + $transaction->overtime)}}</th>
                                        </tr>
                                        <tr>
                                           <th colspan="">Potongan</th>
-                                          <th class="text-right">{{formatRupiah($transaction->reduction + $transaction->reduction_absence)}}</th>
+                                          <th class="text-right">{{formatRupiah($transaction->reduction + $transaction->reduction_absence + $transaction->reduction_late)}}</th>
                                        </tr>
                                        <tr>
                                           <th colspan="">Gaji Bersih</th>
@@ -528,18 +528,42 @@ Detail Transaction Payroll Employee
                         <div class="tab-pane fade " id="pills-additional-nobd" role="tabpanel" aria-labelledby="pills-additional-tab-nobd">
                            <div class="row">
                               
-                              <div class="col">
+                              <div class="col-6">
                                  <table class="">
                                     <thead>
                                        <tr>
-                                          <th colspan="3">Additional</th>
+                                          <th colspan="3">Penambahan</th>
                                           
                                        </tr>
                                     </thead>
                                     <tbody>
                                        @foreach ($penambahans as $item)
                                            <tr>
-                                             <td>{{$item->value}}</td>
+                                             <td>{{formatRupiahB($item->value)}}</td>
+                                             <td>{{$item->desc}}</td>
+                                           </tr>
+                                       @endforeach
+
+                                      
+                                       
+                                       
+                                       
+                                    </tbody>
+                                 </table>
+                              </div>
+                              <div class="col-6">
+                                 <table class="">
+                                    <thead>
+                                       <tr>
+                                          <th colspan="3">Pengurangan</th>
+                                          
+                                       </tr>
+                                    </thead>
+                                    <tbody>
+                                       @foreach ($pengurangans as $item)
+                                           <tr>
+                                             <td>{{formatRupiahB($item->value)}}</td>
+                                             <td>{{$item->desc}}</td>
                                            </tr>
                                        @endforeach
 
