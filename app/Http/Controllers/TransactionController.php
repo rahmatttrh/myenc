@@ -497,15 +497,18 @@ class TransactionController extends Controller
             'value' => 1 * 1 / 30 * $payroll->total
          ]);
       }
-      $totalAlpha = $alphas->sum('value');
 
+      $totalAlpha = $alphas->sum('value');
+      // dd($totalAlpha);
 
       $lates = $employee->absences->where('date', '>=', $from)->where('date', '<=', $to)->where('year', $transaction->year)->where('type', 2);
       $totalMinuteLate = $lates->sum('minute');
+      // dd($totalMinuteLate);
       $keterlambatan = intval(floor($totalMinuteLate / 30));
-
+      // dd($keterlambatan);
       $atls = $employee->absences->where('date', '>=', $from)->where('date', '<=', $to)->where('year', $transaction->year)->where('type', 3);
       $totalAtlLate = count($atls) * 2;
+
 
       $totalKeterlambatan = $keterlambatan + $totalAtlLate;
 
@@ -515,7 +518,9 @@ class TransactionController extends Controller
       if ($totalKeterlambatan == 6) {
          $potongan = 1 * 1 / 30 * $payroll->total;
       } elseif ($totalKeterlambatan > 6) {
-         $potongan = $totalKeterlambatan - 1 * 1 / 5 * $payroll->total;
+         $finalLate = $totalKeterlambatan - 6;
+         $potongan = $finalLate * 1 / 5 * $payroll->total;
+         // dd($finalLate);
       } else {
          $potongan = 0;
       }
@@ -541,7 +546,7 @@ class TransactionController extends Controller
       $totalReduction = $transaction->reductions->where('type', 'employee')->sum('value');
       // dd($totalReduction);
       $totalOvertime = $overtimes->sum('rate');
-      $totalReductionAbsence = $totalAlpha + $potongan;
+      $totalReductionAbsence = $totalAlpha;
 
 
       $transaction->update([
