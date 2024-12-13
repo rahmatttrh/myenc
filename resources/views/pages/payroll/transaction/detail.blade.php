@@ -169,7 +169,7 @@ Detail Transaction Payroll Employee
                                        </tr>
                                        <tr>
                                           <td>Tunj. Lain</td>
-                                          <td class="text-right">{{formatRupiah(0)}}</td>
+                                          <td class="text-right">{{formatRupiah($transaction->additional_penambahan)}}</td>
                                        </tr>
                                        <tr>
                                           <td>Lembur</td>
@@ -182,7 +182,7 @@ Detail Transaction Payroll Employee
                                     <thead>
                                        <tr>
                                           <th colspan="">Pendapatan</th>
-                                          <th class="text-right">{{formatRupiah($payroll->total)}}</th>
+                                          <th class="text-right">{{formatRupiah($payroll->total + $transaction->additional_penambahan)}}</th>
                                        </tr>
                                        <tr>
                                           <th colspan="">Potongan</th>
@@ -496,7 +496,7 @@ Detail Transaction Payroll Employee
                                  <table class="">
                                     <thead>
                                        <tr>
-                                          <th colspan="3">Potongan Keterlambatan</th>
+                                          <th colspan="3">Terlambat</th>
                                        </tr>
                                     </thead>
                                     <tbody>
@@ -505,15 +505,15 @@ Detail Transaction Payroll Employee
                                            
                                            <tr>
                                              <td class="">{{formatDate($late->date)}}</td>
-                                             <th>{{$late->minute}} Menit</th>
+                                             <th class="text-right">{{$late->minute}} Menit</th>
                                              {{-- <td class="text-right  text-danger">{{formatRupiah($alpha->value)}}</td> --}}
                                            </tr>
                                            
                                        @endforeach
-                                       {{-- <tr>
-                                          <td class="text-right"><b>Total</b></td>
-                                          <td class="text-right"><b>{{formatRupiah($alphas->sum('value'))}}</b></td>
-                                       </tr> --}}
+                                       <tr>
+                                          <td class="text-right"><b>Total Keterlambatan</b></td>
+                                          <td class="text-right"><b>{{$totalKeterlambatan}}</b></td>
+                                       </tr>
                                        
                                        
                                        
@@ -537,7 +537,11 @@ Detail Transaction Payroll Employee
                                        </tr>
                                     </thead>
                                     <tbody>
-                                       
+                                       @foreach ($penambahans as $item)
+                                           <tr>
+                                             <td>{{$item->value}}</td>
+                                           </tr>
+                                       @endforeach
 
                                       
                                        

@@ -55,13 +55,15 @@ class AdditionalController extends Controller
          'value' => $req->value,
          'desc' => $req->desc,
          'doc' => $doc,
-         'location_id' => $location->id
+         'location_id' => $location
       ]);
 
       $transaction = Transaction::where('employee_id', $employee->id)->where('month', $month)->where('year', $year)->first();
+      $from = $transaction->cut_from;
+      $to = $transaction->cut_to;
       if ($transaction) {
          $trans = new TransactionController;
-         $trans->calculateTotalTransaction($transaction);
+         $trans->calculateTotalTransaction($transaction, $from, $to);
       }
 
       return redirect()->back()->with('success', 'Payroll Additional successfully added');
@@ -71,9 +73,11 @@ class AdditionalController extends Controller
    {
       $additional = Additional::find(dekripRambo($id));
       $transaction = Transaction::where('employee_id', $additional->employee_id)->where('month', $additional->month)->where('year', $additional->year)->first();
+      $from = $transaction->cut_from;
+      $to = $transaction->cut_to;
       if ($transaction) {
          $trans = new TransactionController;
-         $trans->calculateTotalTransaction($transaction);
+         $trans->calculateTotalTransaction($transaction, $from, $to);
       }
 
       $additional->delete();

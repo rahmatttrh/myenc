@@ -89,8 +89,9 @@ class TransactionController extends Controller
       // dd('ok');
       $overtimes = Overtime::where('date', '>=', $from)->where('date', '<=', $to)->where('employee_id', $employee->id)->get();
       $totalOvertime = $overtimes->sum('rate');
-      $addPenambahan = Additional::where('employee_id', $employee->id)->where('date', '>=', $from)->where('date', '<=', $to)->where('type', 1)->get()->sum('value');
-      $addPengurangan = Additional::where('employee_id', $employee->id)->where('date', '>=', $from)->where('date', '<=', $to)->where('type', 2)->get()->sum('value');
+      $penambahans = Additional::where('employee_id', $employee->id)->where('date', '>=', $from)->where('date', '<=', $to)->where('type', 1)->get();
+      $pengurangans = Additional::where('employee_id', $employee->id)->where('date', '>=', $from)->where('date', '<=', $to)->where('type', 2)->get();
+      // dd($penambahan);
       $bruto = $payroll->total + $totalOvertime;
 
       $absences = $employee->absences->where('month', $transaction->month)->where('year', $transaction->year);
@@ -106,7 +107,31 @@ class TransactionController extends Controller
 
       $alphas = $employee->absences->where('date', '>=', $from)->where('date', '<=', $to)->where('year', $transaction->year)->where('type', 1);
       $lates = $employee->absences->where('date', '>=', $from)->where('date', '<=', $to)->where('year', $transaction->year)->where('type', 2);
+      $totalMinuteLate = $lates->sum('minute');
+      // dd($totalMinuteLate);
+      $keterlambatan = intval(floor($totalMinuteLate / 30));
+
       $atls = $employee->absences->where('date', '>=', $from)->where('date', '<=', $to)->where('year', $transaction->year)->where('type', 3);
+      $totalAtlLate = count($atls) * 2;
+
+
+      $totalKeterlambatan = $keterlambatan + $totalAtlLate;
+
+
+      // dd($totalKeterlambatan);
+
+
+      if ($totalKeterlambatan == 6) {
+         $potongan = 1 * 1 / 30 * $payroll->total;
+      } elseif ($totalKeterlambatan > 6) {
+         $finalLate = $totalKeterlambatan - 6;
+         $potongan = $finalLate * 1 / 5 * $payroll->total;
+         // dd($finalLate);
+         // dd($payroll->total);
+      } else {
+         $potongan = 0;
+      }
+
       $izins = $employee->absences->where('date', '>=', $from)->where('date', '<=', $to)->where('year', $transaction->year)->where('type', 4);
       $totalMinuteLate = $lates->sum('minute');
 
@@ -150,8 +175,10 @@ class TransactionController extends Controller
          'izins' => $izins,
          'absences' => $absences,
          'additionals' => $additionals,
-         'addPenambahan' => $addPenambahan,
-         'addPengurangan' => $addPengurangan,
+         'penambahans' => $penambahans,
+         'pengurangans' => $pengurangans,
+
+         'totalKeterlambatan' => $totalKeterlambatan,
 
          'transactionReductionAdditionals' => $transactionReductionAdditionals
       ]);
@@ -487,6 +514,7 @@ class TransactionController extends Controller
       $payroll = Payroll::find($employee->payroll_id);
       $transactionDetails = TransactionDetail::where('transaction_id', $transaction->id)->get();
 
+
       $overtimes = Overtime::where('date', '>=', $from)->where('date', '<=', $to)->where('employee_id', $employee->id)->get();
       // dd($from);
 
@@ -500,6 +528,7 @@ class TransactionController extends Controller
 
       $totalAlpha = $alphas->sum('value');
       // dd($totalAlpha);
+
 
       $lates = $employee->absences->where('date', '>=', $from)->where('date', '<=', $to)->where('year', $transaction->year)->where('type', 2);
       $totalMinuteLate = $lates->sum('minute');
@@ -515,15 +544,19 @@ class TransactionController extends Controller
 
       // dd($totalKeterlambatan);
 
+
       if ($totalKeterlambatan == 6) {
          $potongan = 1 * 1 / 30 * $payroll->total;
       } elseif ($totalKeterlambatan > 6) {
          $finalLate = $totalKeterlambatan - 6;
          $potongan = $finalLate * 1 / 5 * $payroll->total;
          // dd($finalLate);
+         // dd($payroll->total);
       } else {
          $potongan = 0;
       }
+
+
 
 
       $izins = $employee->absences->where('month', $transaction->month)->where('year', $transaction->year)->where('type', 3);
