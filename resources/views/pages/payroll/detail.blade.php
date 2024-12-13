@@ -173,16 +173,16 @@ Setup Payroll Employee
                                  <div class="col">
                                     <div class="form-group form-group-default">
                                        <label>Gaji Pokok</label>
-                                       <input type="text" class="form-control" id="pokok" name="pokok" value="{{$employee->payroll->pokok ?? 0}}">
+                                       <input type="text" class="form-control" id="pokok" name="pokok" value="{{formatRupiahB($employee->payroll->pokok) ?? 0}}">
                                     </div>
                                     <div class="form-group form-group-default">
                                        <label>Tunj. Jabatan</label>
-                                       <input type="text" class="form-control" id="tunj_jabatan" name="tunj_jabatan" value="{{$employee->payroll->tunj_jabatan ?? 0}}">
+                                       <input type="text" class="form-control" id="tunj_jabatan" name="tunj_jabatan" value="{{formatRupiahB($employee->payroll->tunj_jabatan) ?? 0}}">
                                     </div>
                                     
                                     <div class="form-group form-group-default">
                                        <label>Insentif</label>
-                                       <input type="text" class="form-control" id="insentif" name="insentif" value="{{$employee->payroll->insentif ?? 0}}">
+                                       <input type="text" class="form-control" id="insentif" name="insentif" value="{{formatRupiahB($employee->payroll->insentif) ?? 0}}">
                                     </div>
                                     <div class="form-group form-group-default">
                                        <label>Document</label>
@@ -192,15 +192,15 @@ Setup Payroll Employee
                                  <div class="col">
                                     <div class="form-group form-group-default">
                                        <label>Tunj. Kinerja</label>
-                                       <input type="text" class="form-control" id="tunj_kinerja" name="tunj_kinerja" value="{{$employee->payroll->tunj_kinerja ?? 0}}">
+                                       <input type="text" class="form-control" id="tunj_kinerja" name="tunj_kinerja" value="{{formatRupiahB($employee->payroll->tunj_kinerja) ?? 0}}">
                                     </div>
                                     <div class="form-group form-group-default">
                                        <label>Tunj. Ops</label>
-                                       <input type="text" class="form-control" id="tunj_ops" name="tunj_ops" value="{{$employee->payroll->tunj_ops ?? 0}}">
+                                       <input type="text" class="form-control" id="tunj_ops" name="tunj_ops" value="{{formatRupiahB($employee->payroll->tunj_ops) ?? 0}}">
                                     </div>
                                     <div class="form-group form-group-default">
                                        <label>Tunj. Fungsional</label>
-                                       <input type="text" class="form-control" id="tunj_fungsional" name="tunj_fungsional" value="{{$employee->payroll->tunj_fungsional ?? 0}}">
+                                       <input type="text" class="form-control" id="tunj_fungsional" name="tunj_fungsional" value="{{formatRupiahB($employee->payroll->tunj_fungsional) ?? 0}}">
                                     </div>
                                  </div>
                               </div>
@@ -322,40 +322,40 @@ Setup Payroll Employee
                            - Deduction Tambahan Gaji Karyawan diluar potongan bisnis unit <br>
                         </div>
 
-                     <div class="tab-pane fade " id="pills-payslip-nobd" role="tabpanel" aria-labelledby="pills-payslip-tab-nobd">
-                        @if ($employee->payroll_id != null)
-                        <form action="{{route('payroll.payslip.update')}}" method="POST" enctype="multipart/form-data" >
-                           @csrf
-                           @method('PUT')
-                           <input type="number" name="employeeId" id="employeeId" value="{{$employee->id}}" hidden>
-                           
-                           <div class="row">
-                              <div class="col">
-                                 <div class="form-group form-group-default">
-                                    <label>Show/Hide Payslip</label>
-                                    <select name="status" id="status" class="form-control">
-                                       <option value="" disabled>Choose</option>
-                                       <option {{$employee->payroll->payslip_status == 'show' ? 'selected' : '' }} value="show">Show</option>
-                                       <option {{$employee->payroll->payslip_status == 'hide' ? 'selected' : '' }} value="hide">Hide</option>
-                                    </select>
+                        <div class="tab-pane fade " id="pills-payslip-nobd" role="tabpanel" aria-labelledby="pills-payslip-tab-nobd">
+                           @if ($employee->payroll_id != null)
+                           <form action="{{route('payroll.payslip.update')}}" method="POST" enctype="multipart/form-data" >
+                              @csrf
+                              @method('PUT')
+                              <input type="number" name="employeeId" id="employeeId" value="{{$employee->id}}" hidden>
+                              
+                              <div class="row">
+                                 <div class="col">
+                                    <div class="form-group form-group-default">
+                                       <label>Show/Hide Payslip</label>
+                                       <select name="status" id="status" class="form-control">
+                                          <option value="" disabled>Choose</option>
+                                          <option {{$employee->payroll->payslip_status == 'show' ? 'selected' : '' }} value="show">Show</option>
+                                          <option {{$employee->payroll->payslip_status == 'hide' ? 'selected' : '' }} value="hide">Hide</option>
+                                       </select>
+                                    </div>
+                                    
+                                    
                                  </div>
                                  
                                  
+                                 <div class="col">
+                                    <button type="submit" class="btn btn-primary" >Update</button>
+                                 </div>
                               </div>
                               
                               
-                              <div class="col">
-                                 <button type="submit" class="btn btn-primary" >Update</button>
-                              </div>
-                           </div>
+            
+                           </form>
+                           @endif
                            
                            
-         
-                        </form>
-                        @endif
-                        
-                        
-                     </div>
+                        </div>
             
                         <div class="tab-pane fade " id="pills-document-nobd" role="tabpanel" aria-labelledby="pills-document-tab-nobd">
                            @if ($employee->payroll_id != null)

@@ -50,6 +50,7 @@ use App\Http\Controllers\TransactionReductionController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\VerificationController;
 use App\Http\Controllers\FuncController;
+use App\Http\Controllers\LocationController;
 use App\Http\Controllers\PayrollApprovalController;
 use App\Http\Controllers\PayslipBpjsKsController;
 use App\Http\Controllers\PayslipBpjsKtController;
@@ -150,6 +151,11 @@ Route::middleware(["auth"])->group(function () {
 
 
    Route::group(['middleware' => ['role:Administrator|BOD|HRD|HRD-Manager|HRD-Recruitment|HRD-Payroll|HRD-Spv|HRD-KJ45|HRD-KJ12']], function () {
+      Route::prefix('location')->group(function () {
+         Route::get('/', [LocationController::class, 'index'])->name('location');
+         // Route::get('create', [AnnouncementController::class, 'create'])->name('announcement.create');
+      });
+
       Route::prefix('announcement')->group(function () {
          Route::get('/', [AnnouncementController::class, 'index'])->name('announcement');
          Route::get('create', [AnnouncementController::class, 'create'])->name('announcement.create');

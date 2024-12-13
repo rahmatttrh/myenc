@@ -27,6 +27,11 @@
                <span class="sub-item">Shift</span>
             </a>
          </li>
+         <li>
+            <a href="{{route('location')}}">
+               <span class="sub-item">Location</span>
+            </a>
+         </li>
          {{-- <li>
             <a href="{{route('position')}}">
                <span class="sub-item">Jabatan</span>
