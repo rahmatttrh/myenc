@@ -34,7 +34,7 @@ Location
          </div> --}}
       </div>
       <div class="card-body">
-         <form action="{{route('designation.store')}}" method="POST">
+         <form action="" method="POST">
             @csrf
             <div class="row">
                <div class="col-md-12">
@@ -51,7 +51,7 @@ Location
                </div>
             </div>
             
-            <button type="submit" class="btn btn-block btn-primary">Add New Level</button>
+            {{-- <button type="submit" class="btn btn-block btn-primary">Add New Level</button> --}}
 
          </form>
       </div>
@@ -82,8 +82,8 @@ Location
                   <td>{{$loc->name}}</td>
                   <td>{{$loc->code}}</td>
                   <td class="text-right">
-                     <a href="{{route('designation.edit', enkripRambo($loc->id) )}}">Edit</a>
-                     <a href="#" data-toggle="modal" data-target="#modal-delete-{{$loc->id}}">Delete</a>
+                     {{-- <a href="{{route('designation.edit', enkripRambo($loc->id) )}}">Edit</a>
+                     <a href="#" data-toggle="modal" data-target="#modal-delete-{{$loc->id}}">Delete</a> --}}
                   </td>
                </tr>
                <x-modal.delete :id="$loc->id" :body="$loc->name" url="{{route('designation.delete', enkripRambo($loc->id))}}" />

@@ -59,28 +59,35 @@ class AdditionalController extends Controller
       ]);
 
       $transaction = Transaction::where('employee_id', $employee->id)->where('month', $month)->where('year', $year)->first();
-      $from = $transaction->cut_from;
-      $to = $transaction->cut_to;
       if ($transaction) {
+         $from = $transaction->cut_from;
+         $to = $transaction->cut_to;
          $trans = new TransactionController;
          $trans->calculateTotalTransaction($transaction, $from, $to);
       }
+
+      // if ($transaction) {
+
+      // }
 
       return redirect()->back()->with('success', 'Payroll Additional successfully added');
    }
 
    public function delete($id)
    {
+
       $additional = Additional::find(dekripRambo($id));
       $transaction = Transaction::where('employee_id', $additional->employee_id)->where('month', $additional->month)->where('year', $additional->year)->first();
-      $from = $transaction->cut_from;
-      $to = $transaction->cut_to;
+      $additional->delete();
+
       if ($transaction) {
+         $from = $transaction->cut_from;
+         $to = $transaction->cut_to;
          $trans = new TransactionController;
          $trans->calculateTotalTransaction($transaction, $from, $to);
       }
 
-      $additional->delete();
+
       return redirect()->back()->with('success', 'Additional Data successfully deleted');
    }
 }
