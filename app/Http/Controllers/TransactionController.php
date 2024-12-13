@@ -94,9 +94,9 @@ class TransactionController extends Controller
       $bruto = $payroll->total + $totalOvertime;
 
       $absences = $employee->absences->where('month', $transaction->month)->where('year', $transaction->year);
-      $alphas = $employee->absences->where('month', $transaction->month)->where('year', $transaction->year)->where('type', 1);
-      $lates = $employee->absences->where('month', $transaction->month)->where('year', $transaction->year)->where('type', 2);
-      $izins = $employee->absences->where('month', $transaction->month)->where('year', $transaction->year)->where('type', 3);
+      // $alphas = $employee->absences->where('month', $transaction->month)->where('year', $transaction->year)->where('type', 1);
+      // $lates = $employee->absences->where('month', $transaction->month)->where('year', $transaction->year)->where('type', 2);
+      // $izins = $employee->absences->where('month', $transaction->month)->where('year', $transaction->year)->where('type', 3);
       // dd($alphas);
       // dd('ok');
 
@@ -119,6 +119,8 @@ class TransactionController extends Controller
       // dd($alphas);
 
       // dd('ok');
+
+      // dd($alphas);
 
 
       $this->calculateTotalTransaction($transaction, $transaction->cut_from, $transaction->cut_to);
