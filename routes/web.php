@@ -153,6 +153,8 @@ Route::middleware(["auth"])->group(function () {
    Route::group(['middleware' => ['role:Administrator|BOD|HRD|HRD-Manager|HRD-Recruitment|HRD-Payroll|HRD-Spv|HRD-KJ45|HRD-KJ12']], function () {
       Route::prefix('location')->group(function () {
          Route::get('/', [LocationController::class, 'index'])->name('location');
+         Route::post('store', [LocationController::class, 'store'])->name('location.store');
+         Route::get('delete/{id}', [LocationController::class, 'delete'])->name('location.delete');
          // Route::get('create', [AnnouncementController::class, 'create'])->name('announcement.create');
       });
 

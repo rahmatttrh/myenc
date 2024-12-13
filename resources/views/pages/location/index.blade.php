@@ -18,7 +18,7 @@ Location
          <div class="card shadow-none border">
             <div class="card-header d-flex">
                <div class="d-flex  align-items-center">
-                  <div class="card-title">Form Location</div>
+                  <div class="card-title">Form Add Location</div>
                </div>
                {{-- <div class="btn-group btn-group-page-header ml-auto">
                      <button type="button" class="btn btn-light btn-round btn-page-header-dropdown dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -34,24 +34,24 @@ Location
          </div> --}}
       </div>
       <div class="card-body">
-         <form action="" method="POST">
+         <form action="{{route('location.store')}}" method="POST">
             @csrf
             <div class="row">
                <div class="col-md-12">
                   <div class="form-group form-group-default">
-                     <label>Level Name</label>
-                     <input id="name" name="name" type="text" class="form-control" placeholder="Fill Level Name">
+                     <label>Location Name</label>
+                     <input id="name" name="name" type="text" required class="form-control" >
                   </div>
                </div>
-               <div class="col-md-6">
+               {{-- <div class="col-md-6">
                   <div class="form-group form-group-default">
-                     <label>Golongan</label>
-                     <input id="gol" name="gol" type="text" class="form-control">
+                     <label>Code</label>
+                     <input id="code" name="code" type="text" class="form-control">
                   </div>
-               </div>
+               </div> --}}
             </div>
             
-            {{-- <button type="submit" class="btn btn-block btn-primary">Add New Level</button> --}}
+            <button type="submit" class="btn btn-block btn-primary">Submit</button>
 
          </form>
       </div>
@@ -63,15 +63,15 @@ Location
 <div class="col-md-8">
    <div class="card">
       <div class="card-header p-2 bg-primary text-white">
-         <small>Level</small>
+         <small>Location List</small>
       </div>
       <div class="card-body p-0">
          <table class="display  table-sm table-bordered   ">
             <thead>
                <tr>
                   <th class="text-center">#</th>
-                  <th>Level</th>
-                  <th>Golongan</th>
+                  <th>Name</th>
+                  <th>Code</th>
                   <th class="text-right">Action</th>
                </tr>
             </thead>
@@ -82,11 +82,11 @@ Location
                   <td>{{$loc->name}}</td>
                   <td>{{$loc->code}}</td>
                   <td class="text-right">
-                     {{-- <a href="{{route('designation.edit', enkripRambo($loc->id) )}}">Edit</a>
-                     <a href="#" data-toggle="modal" data-target="#modal-delete-{{$loc->id}}">Delete</a> --}}
+                     {{-- <a href="{{route('designation.edit', enkripRambo($loc->id) )}}">Edit</a> --}}
+                     <a href="#" data-toggle="modal" data-target="#modal-delete-{{$loc->id}}">Delete</a>
                   </td>
                </tr>
-               <x-modal.delete :id="$loc->id" :body="$loc->name" url="{{route('designation.delete', enkripRambo($loc->id))}}" />
+               <x-modal.delete :id="$loc->id" :body="$loc->name" url="{{route('location.delete', enkripRambo($loc->id))}}" />
                @endforeach
             </tbody>
          </table>
