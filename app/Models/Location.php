@@ -75,8 +75,11 @@ class Location extends Model
       $value = 0;
       $transactions = Transaction::where('location_id', $this->id)->where('unit_id', $unitId)->where('month', $unitTrans->month)->where('year', $unitTrans->year)->get();
       foreach ($transactions as $trans) {
+
          $transReduction = TransactionReduction::where('transaction_id', $trans->id)->where('name', $name)->where('type', 'employee')->first();
-         $value = $value + $transReduction->value;
+         if ($transReduction) {
+            $value = $value + $transReduction->value;
+         }
       }
 
       return $value;
