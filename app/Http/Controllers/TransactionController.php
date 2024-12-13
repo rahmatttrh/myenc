@@ -325,7 +325,7 @@ class TransactionController extends Controller
       $transactions = Transaction::where('month', $unitTransaction->month)->where('year', $unitTransaction->year)->where('unit_transaction_id', $unitTransaction->id)->where('location_id', $location->id)->get();
       // dd($unitTransaction->id);
 
-      return view('pages.payroll.transaction.location', [
+      return view('pages.payroll.report.payslip-loc', [
          'unitTransaction' => $unitTransaction,
          'transactions' => $transactions,
          'location' => $location

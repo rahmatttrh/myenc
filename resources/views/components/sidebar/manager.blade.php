@@ -28,6 +28,11 @@
             </a>
          </li>
          <li>
+            <a href="{{route('location')}}">
+               <span class="sub-item">Location</span>
+            </a>
+         </li>
+         <li>
             <a href="{{route('so')}}">
                <span class="sub-item">Struktur Organisasi</span>
             </a>
